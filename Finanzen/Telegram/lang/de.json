@@ -1,0 +1,10 @@
+{
+    "WellcomeMSG": "Willkommen zur Local-Area-Networl-Party {{LanName}} mit diesem Bot kannst du dich regestrieren.",
+    "Fragen": {
+        "PC": "Hast du einen Computer (PC) dabei?"
+    },
+    "Antworten": {
+        "Ja": "Ja",
+        "Nein": "Nein"
+    }
+}

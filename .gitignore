@@ -1,0 +1,4 @@
+node_modules/*
+Finanzen/Telegram/node_modules/*
+.env
+Finanzen/Telegram/.env

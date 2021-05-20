@@ -1,0 +1,21 @@
+{
+    "PauschalKosten": {
+        "Wasser": 250,
+        "Strom": 500,
+        "StromKWH": 18,
+        "Verbrauchsgüter": 500
+    },
+    "Flats": {
+        "Kaffee": 400,
+        "Netzwerk": 500,
+        "GameServer": 250
+    },
+    "SnackBar": {
+        "PaprikaChips": {
+            "Name": "Paprika Chips",
+            "Hersteller": "Pringels",
+            "Preis": 299,
+            "Menge": 5
+        }
+    }
+}
