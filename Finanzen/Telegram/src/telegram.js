@@ -24,20 +24,300 @@ if(fs.existsSync(`${reqPath}${process.env.Config}/mainconfig.json`)) {
 bot.on(/^\/start/i, (msg) => {
     let replyMarkup = bot.inlineKeyboard([
         [
-            bot.inlineButton('Regestrieren', {callback: '/reg'})
+            bot.inlineButton(newi18n.translate('de', 'Knöpfe.Reg'), {callback: '/reg'})
         ]
     ]);
     return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'WellcomeMSG', {LanName: mainconfig.LanName}), {replyMarkup});
 });
 
 bot.on(/^\/reg/i, (msg) => {
-    let replyMarkup = bot.inlineKeyboard([
-        [
-            bot.inlineButton(newi18n.translate('de', 'Antworten.Ja'), {callback: 'F_PC_true'}),
-            bot.inlineButton(newi18n.translate('de', 'Antworten.Nein'), {callback: 'F_PC_false'})
-        ]
-    ]);
-    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.PC'), {replyMarkup});
+    if(msg.message.chat.type === "private"){
+        let replyMarkup = bot.inlineKeyboard([
+            [
+                bot.inlineButton(newi18n.translate('de', 'Antworten.Ja'), {callback: 'F_PC_true'}),
+                bot.inlineButton(newi18n.translate('de', 'Antworten.Nein'), {callback: 'F_PC_false'})
+            ]
+        ]);
+        DB.write.Guests.NewUser(msg.from.id, msg.from.username).then(function(response) {
+            return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.PC'), {replyMarkup});
+        }).catch(function(error){
+            console.log(error)
+            return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+        })
+    }else{
+        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
+    }
+});
+
+bot.on('callbackQuery', (msg) => {
+
+	if ('inline_message_id' in msg) {	
+		var inlineId = msg.inline_message_id;
+	}else{
+		var chatId = msg.message.chat.id;
+		var messageId = msg.message.message_id;
+	}
+
+	var data = msg.data.split("_")
+
+    if(parseInt(data[1]) !== msg.from.id) //Execute always, not user bound
+	{
+		if(data[0] === 'F')
+		{
+            if(data[1] === 'PC')
+            {
+                DB.write.Guests.UpdateCollumByID(msg.from.id, "pc", data[2]).then(function(response) {
+                    let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${boolToText(data[2])}`
+                    if ('inline_message_id' in msg) {
+                        bot.editMessageText(
+                            {inlineMsgId: inlineId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }else{
+                        bot.editMessageText(
+                            {chatId: chatId, messageId: messageId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }
+
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton('1', {callback: 'F_DPC_1'}),
+                            bot.inlineButton('2', {callback: 'F_DPC_2'}),
+                            bot.inlineButton('3', {callback: 'F_DPC_3'})
+                        ],[
+                            bot.inlineButton('4', {callback: 'F_DPC_4'}),
+                            bot.inlineButton('5', {callback: 'F_DPC_5'}),
+                            bot.inlineButton('6', {callback: 'F_DPC_6'})
+                        ]
+                    ]);
+
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.Displays'), {replyMarkup});
+                }).catch(function(error){
+                    console.log(error)
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+                })
+            }
+
+            if(data[1] === 'DPC')
+            {
+                DB.write.Guests.UpdateCollumByID(msg.from.id, "displays_count", data[2]).then(function(response) {
+                    let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${data[2]}`
+                    if ('inline_message_id' in msg) {
+                        bot.editMessageText(
+                            {inlineMsgId: inlineId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }else{
+                        bot.editMessageText(
+                            {chatId: chatId, messageId: messageId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }
+
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton(newi18n.translate('de', 'Antworten.Ja'), {callback: 'F_LK_true'}),
+                            bot.inlineButton(newi18n.translate('de', 'Antworten.Nein'), {callback: 'F_LK_false'})
+                        ]
+                    ]);
+
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.LanKabel'), {replyMarkup});
+                }).catch(function(error){
+                    console.log(error)
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+                })
+            }
+
+            if(data[1] === 'LK')
+            {
+                DB.write.Guests.UpdateCollumByID(msg.from.id, "network_cable", data[2]).then(function(response) {
+                    let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${boolToText(data[2])}`
+                    if ('inline_message_id' in msg) {
+                        bot.editMessageText(
+                            {inlineMsgId: inlineId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }else{
+                        bot.editMessageText(
+                            {chatId: chatId, messageId: messageId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }
+
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton(newi18n.translate('de', 'Antworten.Ja'), {callback: 'F_VR_true'}),
+                            bot.inlineButton(newi18n.translate('de', 'Antworten.Nein'), {callback: 'F_VR_false'})
+                        ]
+                    ]);
+
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.VR'), {replyMarkup});
+                }).catch(function(error){
+                    console.log(error)
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+                })
+            }
+
+            if(data[1] === 'VR')
+            {
+                DB.write.Guests.UpdateCollumByID(msg.from.id, "vr", data[2]).then(function(response) {
+                    let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${boolToText(data[2])}`
+                    if ('inline_message_id' in msg) {
+                        bot.editMessageText(
+                            {inlineMsgId: inlineId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }else{
+                        bot.editMessageText(
+                            {chatId: chatId, messageId: messageId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }
+
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton(newi18n.translate('de', 'Antworten.Vollständig'), {callback: 'F_VC_Voll'}),
+                            bot.inlineButton(newi18n.translate('de', 'Antworten.Teil'), {callback: 'F_VC_Teil'}),
+                            bot.inlineButton(newi18n.translate('de', 'Antworten.Nein'), {callback: 'F_VC_Nein'})
+                        ],[
+                            bot.inlineButton(newi18n.translate('de', 'Antworten.NichtSagen'), {callback: 'F_VC_Secret'})
+                        ]
+                    ]);
+
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.Vaccinated'), {replyMarkup});
+                }).catch(function(error){
+                    console.log(error)
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+                })
+            }
+
+            if(data[1] === 'VC')
+            {
+                DB.write.Guests.UpdateCollumByID(msg.from.id, "vaccinated", data[2]).then(function(response) {
+                    let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${newi18n.translate('de', `Vaccinated.${data[2]}`)}`
+                    if ('inline_message_id' in msg) {
+                        bot.editMessageText(
+                            {inlineMsgId: inlineId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }else{
+                        bot.editMessageText(
+                            {chatId: chatId, messageId: messageId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }
+
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton(newi18n.translate('de', 'Arrivale.1'), {callback: 'F_EA_1'}),
+                            bot.inlineButton(newi18n.translate('de', 'Arrivale.2'), {callback: 'F_EA_2'}),
+                            bot.inlineButton(newi18n.translate('de', 'Arrivale.3'), {callback: 'F_EA_3'})
+                        ],[
+                            bot.inlineButton(newi18n.translate('de', 'Arrivale.4'), {callback: 'F_EA_4'}),
+                            bot.inlineButton(newi18n.translate('de', 'Arrivale.5'), {callback: 'F_EA_5'}),
+                            bot.inlineButton(newi18n.translate('de', 'Arrivale.6'), {callback: 'F_EA_6'})
+                        ]
+                    ]);
+
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.Arrivale'), {replyMarkup});
+                }).catch(function(error){
+                    console.log(error)
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+                })
+            }
+
+            if(data[1] === 'EA')
+            {
+                let DateArray = newi18n.translate('de', `Arrivale.${data[2]}`).split(".");
+                let newDateString = `${DateArray[1]}/${DateArray[0]}/${DateArray[2]}`;
+                let newDate = new Date(newDateString);
+                DB.write.Guests.UpdateCollumByID(msg.from.id, "expected_arrival", newDate).then(function(response) {
+                    let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${newi18n.translate('de', `Arrivale.${data[2]}_Voll`)}`
+                    if ('inline_message_id' in msg) {
+                        bot.editMessageText(
+                            {inlineMsgId: inlineId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }else{
+                        bot.editMessageText(
+                            {chatId: chatId, messageId: messageId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }
+
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton(newi18n.translate('de', 'Depature.1'), {callback: 'F_ED_1'}),
+                            bot.inlineButton(newi18n.translate('de', 'Depature.2'), {callback: 'F_ED_2'}),
+                            bot.inlineButton(newi18n.translate('de', 'Depature.3'), {callback: 'F_ED_3'})
+                        ],[
+                            bot.inlineButton(newi18n.translate('de', 'Depature.4'), {callback: 'F_ED_4'}),
+                            bot.inlineButton(newi18n.translate('de', 'Depature.5'), {callback: 'F_ED_5'}),
+                            bot.inlineButton(newi18n.translate('de', 'Depature.6'), {callback: 'F_ED_6'})
+                        ]
+                    ]);
+
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.Depature'), {replyMarkup});
+                }).catch(function(error){
+                    console.log(error)
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+                })
+            }
+
+            if(data[1] === 'ED')
+            {
+                let DateArray = newi18n.translate('de', `Depature.${data[2]}`).split(".");
+                let newDateString = `${DateArray[1]}/${DateArray[0]}/${DateArray[2]}`;
+                let newDate = new Date(newDateString);
+                DB.write.Guests.UpdateCollumByID(msg.from.id, "expected_departure", newDate).then(function(response) {
+                    let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${newi18n.translate('de', `Depature.${data[2]}_Voll`)}`
+                    if ('inline_message_id' in msg) {
+                        bot.editMessageText(
+                            {inlineMsgId: inlineId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }else{
+                        bot.editMessageText(
+                            {chatId: chatId, messageId: messageId}, Message,
+                            {parseMode: 'html'}
+                        ).catch(error => console.log('Error:', error));
+                    }
+
+                    let WebToken = randomstring.generate({
+                        length: 32, //DO NOT CHANCE!!!
+                        charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜ?!+-1234567890!'
+                    });
+
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton(newi18n.translate('de', 'Knöpfe.WebReg'), {url: `${process.env.WebPanelURL}/apu/v1/register/${WebToken}`})
+                        ]
+                    ]);
+
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.WebReg'), {replyMarkup});
+
+                    }).catch(function(error){
+                    console.log(error)
+                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+                })
+            }
+        }
+    }
 });
 
 bot.start();
+
+/**
+ * This function will translate bool to string
+ * @param {boolean | string} bool
+ * @returns {string}
+ */
+function boolToText(bool) {
+    if(bool === true || bool === "true"){
+        return newi18n.translate('de', 'Antworten.Ja')
+    }else{
+        return newi18n.translate('de', 'Antworten.Nein')
+    }
+}
+    

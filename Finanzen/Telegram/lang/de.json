@@ -1,10 +1,62 @@
 {
-    "WellcomeMSG": "Willkommen zur Local-Area-Networl-Party {{LanName}} mit diesem Bot kannst du dich regestrieren.",
+    "WellcomeMSG": "Willkommen zur Local-Area-Networl-Party {{LanName}} mit diesem Bot kannst du dich registrieren.",
     "Fragen": {
-        "PC": "Hast du einen Computer (PC) dabei?"
+        "PC": "Hast du einen Computer (PC) dabei?",
+        "Displays": "Wie viele Displays bringst du mit?",
+        "LanKabel": "Nimmst du ein Lan-Kabel für deinen PC mit?",
+        "VR": "Nimmst du eine VR Brille mit?",
+        "Vaccinated": "Welchem Impfstatus wirst du zum Zeitpunkt deiner Anreise haben?",
+        "Arrivale": "Was ist den geplanter Anreisetag?",
+        "Depature": "Was ist den geplanter Abreisetag?",
+        "WebReg": "Bitte klicke auf den Knopf um dein Webpanel Passwort zu setzen."
     },
     "Antworten": {
         "Ja": "Ja",
-        "Nein": "Nein"
+        "Nein": "Nein",
+        "Vollständig": "Vollständig",
+        "Teil": "Teil-Geimpft",
+        "NichtSagen": "Möchte ich nicht sagen"
+    },
+    "Knöpfe": {
+        "Reg": "Registrieren",
+        "WebReg": "Hier"
+    },
+    "Error": {
+        "NotPrivate": "Das ist nur im Chat direkt mit dem Bot möglich",
+        "DBFehler": "Ein Fehler mit der Datenbank ist aufgetreten"
+    },
+    "Vaccinated": {
+        "Voll": "Vollständig",
+        "Teil": "Erstgeimpft",
+        "Nein": "Nein",
+        "Secret": "Geheim"
+    },
+    "Arrivale": {
+        "1": "9.7.21",
+        "1_Voll": "Freitag: 09.07.2021",
+        "2": "10.7.21",
+        "2_Voll": "Samstag: 10.07.2021",
+        "3": "11.7.21",
+        "3_Voll": "Sonntag: 11.07.2021",
+        "4": "12.7.21",
+        "4_Voll": "Montag: 12.07.2021",
+        "5": "13.7.21",
+        "5_Voll": "Dienstag: 13.07.2021",
+        "6": "14.7.21",
+        "6_Voll": "Mittwoch: 14.07.2021"
+    },
+    "Depature": {
+        "1": "14.7.21",
+        "1_Voll": "Mittwoch: 14.07.2021",
+        "2": "15.7.21",
+        "2_Voll": "Donnerstag: 15.07.2021",
+        "3": "16.7.21",
+        "3_Voll": "Freitag: 16.07.2021",
+        "4": "17.7.21",
+        "4_Voll": "Samstag: 17.07.2021",
+        "5": "18.7.21",
+        "5_Voll": "Sonntag: 18.07.2021",
+        "6": "19.7.21",
+        "6_Voll": "Montag: 19.07.2021"
     }
 }
