@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LAN_Abrechnung"
         mc:Ignorable="d"
-        Title="LAN Abrechnung" WindowState="Maximized" d:DesignWidth="1237.5" d:DesignHeight="791.5">
-    <Grid Name="pnlMainGrid" MouseUp="PnlMainGrid_MouseUp" Background="WhiteSmoke">
-    </Grid>
+        Title="LAN Abrechnung" WindowState="Normal" d:DesignWidth="360" d:DesignHeight="360">
+    <StackPanel Margin="10">
+        <TextBox Name="txtValue" />
+        <WrapPanel Margin="0,10">
+            <TextBlock Text="Value: " FontWeight="Bold" />
+            <TextBlock Text="{Binding Path=Text, ElementName=txtValue}" />
+        </WrapPanel>
+    </StackPanel>
 </Window>
