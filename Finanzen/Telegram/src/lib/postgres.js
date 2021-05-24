@@ -22,7 +22,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     payed boolean DEFAULT False,
     pyed_id text,
     admin boolean DEFAULT False,
-    vaccinated boolean NOT NULL,
+    vaccinated text,
     time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
     if (err) {console.log(err)}
 });
@@ -43,13 +43,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
 /**
  * This function will return a guest by userid
  * @param {number} user_id
- * @returns Array
+ * @returns {Object}}
  */
  let GetGuestsByID = function(user_id) {
     return new Promise(function(resolve, reject) {
-      pool.query('SELECT * FROM guests WHERE userid = $1'[
-        user_id
-      ], (err, result) => {
+      pool.query(`SELECT * FROM guests WHERE userid = ${user_id}`, (err, result) => {
         if (err) {reject(err)}
         resolve(result.rows)
       });
@@ -63,9 +61,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
  */
  let CheckGuestByID = function(user_id) {
     return new Promise(function(resolve, reject) {
-      pool.query('SELECT * FROM guests WHERE userid = $1'[
-        user_id
-      ], (err, result) => {
+      pool.query(`SELECT * FROM guests WHERE userid = ${user_id}`, (err, result) => {
         if (err) {reject(err)}
         if(result.rows.length <= 0){
             resolve(false)
@@ -83,18 +79,33 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
  * @param {any} value
  * @returns {Promise}
  */
- let WriteCollumByID = function(User_id, collum, value) {
+ let UpdateCollumByID = function(User_id, collum, value) {
     return new Promise(function(resolve, reject) {
-      Data.TeamStats.TeamStatsByProjects[0].Project.map(project => {
-        pool.query('INSERT INTO guests ($1) VALUES ($2) WHERE userid = $3',[
-            collum, value, User_id
-        ], (err, result) => {
-          if (err) {reject(err)}
-          resolve(result)
-        });
+      pool.query(`UPDATE guests SET ${collum} = $1 WHERE userid = $2`,[
+      value, User_id
+      ], (err, result) => {
+        if (err) {reject(err)}
+        resolve(result)
       });
     });
   }
+
+/**
+ * This function will write new user to DB
+ * @param {number} User_id
+ * @param {String} username
+ * @returns {Promise}
+ */
+ let WriteNewUser = function(User_id, username) {
+  return new Promise(function(resolve, reject) {
+    pool.query('INSERT INTO guests (userid, username) VALUES ($1,$2) ON CONFLICT (userid) DO UPDATE SET username=$2',[
+      User_id, username
+    ], (err, result) => {
+      if (err) {reject(err)}
+      resolve(result)
+    });
+  });
+}
 
 let get = {
     Guests: {
@@ -108,7 +119,8 @@ let get = {
 
 let write = {
     Guests: {
-        CollumByID: WriteCollumByID
+        UpdateCollumByID: UpdateCollumByID,
+        NewUser: WriteNewUser
     }
 }
 
