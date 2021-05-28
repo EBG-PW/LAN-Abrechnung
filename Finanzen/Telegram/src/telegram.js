@@ -285,17 +285,25 @@ bot.on('callbackQuery', (msg) => {
                     }
 
                     let WebToken = randomstring.generate({
-                        length: 32, //DO NOT CHANCE!!!
-                        charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜ?!+-1234567890!'
+                        length: mainconfig.RegTokenLength, //DO NOT CHANCE!!!
+                        charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
                     });
 
-                    let replyMarkup = bot.inlineKeyboard([
-                        [
-                            bot.inlineButton(newi18n.translate('de', 'Knöpfe.WebReg'), {url: `${process.env.WebPanelURL}/apu/v1/register/${WebToken}`})
-                        ]
-                    ]);
+                    DB.write.RegToken.NewToken(msg.from.id, msg.from.username, WebToken).then(function(response) {
 
-                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.WebReg'), {replyMarkup});
+                        let replyMarkup = bot.inlineKeyboard([
+                            [
+                                bot.inlineButton(newi18n.translate('de', 'Knöpfe.WebReg'), {url: `${process.env.WebPanelURL}/apu/v1/register/${WebToken}`})
+                            ]
+                        ]);
+
+                        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.WebReg'), {replyMarkup});
+                        
+                    }).catch(function(error){
+                        console.log(error)
+                        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+                    })
+
 
                     }).catch(function(error){
                     console.log(error)

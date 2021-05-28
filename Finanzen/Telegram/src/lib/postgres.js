@@ -27,6 +27,33 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     if (err) {console.log(err)}
 });
 
+pool.query(`CREATE TABLE IF NOT EXISTS regtoken (
+  userid bigint,
+  username text,
+  token text PRIMARY KEY,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
+  if (err) {console.log(err)}
+});
+
+pool.query(`CREATE TABLE IF NOT EXISTS webtoken (
+  userid bigint,
+  username text,
+  token text PRIMARY KEY,
+  admin boolean DEFAULT False,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
+  if (err) {console.log(err)}
+});
+
+pool.query(`CREATE TABLE IF NOT EXISTS products (
+  internname text,
+  productname text,
+  manufacturer text,
+  price integer,
+  menge integer,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
+  if (err) {console.log(err)}
+});
+
 /**
  * This function will return all guests
  * @returns Array
@@ -73,6 +100,24 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
   }
 
 /**
+ * This function will check if a user is admin
+ * @param {number} user_id
+ * @returns {boolean}
+ */
+ let CheckGuestByID = function(user_id) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT admin FROM guests WHERE userid = ${user_id}`, (err, result) => {
+      if (err) {reject(err)}
+      if(result.rows[0].admin === true){
+          resolve(true)
+      }else[
+          resovle(false)
+      ]
+    });
+  });
+}
+
+/**
  * This function will write a collum and the value of that collum
  * @param {number} User_id
  * @param {String} collum
@@ -107,21 +152,60 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
   });
 }
 
+/**
+ * This function will write a new token into regtoken db
+ * @param {number} User_id
+ * @param {String} username
+ * @param {String} token
+ * @returns {Promise}
+ */
+ let WriteNewRegToken = function(User_id, username, token) {
+  return new Promise(function(resolve, reject) {
+    pool.query('INSERT INTO regtoken (userid, username, token) VALUES ($1,$2,$3)',[
+      User_id, username, token
+    ], (err, result) => {
+      if (err) {reject(err)}
+      resolve(result)
+    });
+  });
+}
+
+/**
+ * This function will get the data of a token
+ * @param {String} Token
+ * @returns {Promise}
+ */
+ let GetRegTokenByToken = function(Token) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM regtoken WHERE token = ${Token}`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result)
+    });
+  });
+}
+
+
 let get = {
-    Guests: {
-        All: GetGuests,
-        ByID: GetGuestsByID,
-        Check: {
-            ByID: CheckGuestByID
-        }
+  Guests: {
+    All: GetGuests,
+    ByID: GetGuestsByID,
+    Check: {
+      ByID: CheckGuestByID
     }
+  },
+  RegToken: {
+    ByToken: GetRegTokenByToken
+  }
 }
 
 let write = {
-    Guests: {
-        UpdateCollumByID: UpdateCollumByID,
-        NewUser: WriteNewUser
-    }
+  Guests: {
+    UpdateCollumByID: UpdateCollumByID,
+    NewUser: WriteNewUser
+  },
+  RegToken: {
+    NewToken: WriteNewRegToken
+  }
 }
 
 module.exports = {
