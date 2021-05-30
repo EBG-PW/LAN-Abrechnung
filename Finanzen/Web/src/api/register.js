@@ -43,10 +43,7 @@ router.get("/load/:Token", limiter, (reg, res, next) => {
             res.sendFile(path.join(__dirname + "../../../" + process.env.data + '/Plugin_Reg/index.html'));
         }else{
             res.status(401);
-            res.json({
-                route: "/",
-                message: "Could not load token"
-            });
+            res.sendFile(path.join(__dirname + "../../../" + process.env.data + '/Plugin_Reg/401.html'));
         }
     }).catch(function(error){
         console.log(error)
