@@ -295,7 +295,7 @@
 <div class="c-form__progress"></div>
 
 <div class="c-formContainer">
-  <div class="c-welcome">Willkommen bei der LAN-Party!</div>
+  <div id= "c-welcome-info" class="c-welcome"></div>
   <form class="c-form" action="#">
     <div class="c-form__group">
       <label class="c-form__label" for="pw">
@@ -335,23 +335,61 @@
       </label>
     </div>
 
-    <label id="start" class="c-form__toggle" for="start"><span class="c-form__toggleIcon"></span></label>
+    <label id="startL" class="c-form__toggle" for="start"></label>
   </form>
 </div>
 
 <script>
   const getUrl = window.location;
   const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+  const TokenFromUrl = getUrl.pathname.split("/")[5]
+
   $(document).ready(function(){
     getUserInfo()
   })
 
   function getUserInfo(){
-    var posting = $.get(`${baseUrl}api/v1/register/getUser`);
+    var posting = $.get(`${baseUrl}api/v1/register/getUser`,{
+			Token: TokenFromUrl
+		});
+
+    posting.done(function(data) {
+			$("#startL").html(`${data.username}<span  class="c-form__toggleIcon"></span>`);
+      $("#c-welcome-info").html(`${data.username}, willkommen bei der LAN-Party!`);
+		});
+
+    posting.fail(function(err) {
+			if(err.status === 429){
+					alert("API Rate limit!");
+			}else if(err.status === 500){
+				alert("Kritischer Fehler!");
+			}
+		});
   };
 
 	function submit(){
-		var myForm = document.getElementById('password2');
-		console.log(myForm)
+    var password1 = document.getElementById('password1').value;
+		var password2 = document.getElementById('password2').value;
+    if(password1 === password2){
+
+      var posting = $.post(`${baseUrl}api/v1/register/register`,{
+        Token: TokenFromUrl,
+        Password: password1
+      });
+
+    posting.fail(function(err) {
+			if(err.status === 429){
+        $("#c-welcome-info").html(`Error 429 - Zu viele Anfragen`);
+			}else if(err.status === 500){
+				$("#c-welcome-info").html(`Error 500 - Interner/Datenbank Fehler`);
+			}else if(err.status === 401){
+        $("#c-welcome-info").html(`Error 401 - Token not found`);
+      }
+		});
+    }else{
+      $("#c-welcome-info").html(`Die Passwörter stimmen nicht überein.`);
+      setTimeout(function(){ window.location.reload(true); }, 5000);
+      
+    }
 	}
 </script>

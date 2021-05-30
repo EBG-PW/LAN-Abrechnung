@@ -184,6 +184,20 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
   });
 }
 
+/**
+ * This function will delete a token
+ * @param {String} Token
+ * @returns {Promise}
+ */
+ let DelRegTokenByToken = function(Token) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`DELETE FROM regtoken WHERE token = '${Token}'`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result)
+    });
+  });
+}
+
 
 let get = {
   Guests: {
@@ -209,7 +223,14 @@ let write = {
   }
 }
 
+let del = {
+  RegToken: {
+    DeleteToken: DelRegTokenByToken
+  }
+}
+
 module.exports = {
     get,
-    write
+    write,
+    del
 };

@@ -58,7 +58,6 @@ router.get("/load/:Token", limiter, (reg, res, next) => {
 router.get("/getUser", limiter, async (reg, res, next) => {
     try {
         const value = await getUserCheck.validateAsync(reg.query);
-        console.log(value.Token)
         DB.get.RegToken.ByToken(value.Token).then(function(response) {
             if(response.rows.length === 1){
                 res.status(200);
@@ -85,7 +84,43 @@ router.get("/getUser", limiter, async (reg, res, next) => {
 });
 
 router.post("/register", limiter, async (reg, res, next) => {
-
+    try {
+        const value = await RegisterdCheck.validateAsync(reg.body);
+        DB.get.RegToken.ByToken(value.Token).then(function(response) {
+            if(response.rows.length === 1){
+                DB.del.RegToken.DeleteToken(value.Token).then(function(del_response) {
+                    if(del_response.rowCount === 1){
+                        bcrypt.hash(value.Password, parseInt(process.env.saltRounds), function(err, hash) {
+                            DB.write.Guests.UpdateCollumByID(response.rows[0].userid, 'passwort', hash).then(function(response) {
+                                res.status(200);
+                                res.json({
+                                    message: "Success - Password was set",
+                                });
+                            });
+                        });
+                    }else{
+                        res.status(401);
+                        res.json({
+                            message: "Token not found",
+                        });
+                    }
+                });
+            }else{
+                res.status(401);
+                res.json({
+                    message: "Token not found",
+                });
+            }
+        }).catch(function(error){
+            console.log(error)
+            res.status(500);
+            res.json({
+              message: "Databace error",
+            });
+        })
+    } catch (error) {
+        next(error);
+    }
 });
 
 module.exports = {
