@@ -293,7 +293,7 @@ bot.on('callbackQuery', (msg) => {
 
                         let replyMarkup = bot.inlineKeyboard([
                             [
-                                bot.inlineButton(newi18n.translate('de', 'Knöpfe.WebReg'), {url: `${process.env.WebPanelURL}/apu/v1/register/${WebToken}`})
+                                bot.inlineButton(newi18n.translate('de', 'Knöpfe.WebReg'), {url: `${process.env.WebPanelURL}/api/v1/register/load/${WebToken}`})
                             ]
                         ]);
 

@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(expressCspHeader({
   directives: {
       'default-src': [SELF],
-      'script-src': [SELF, INLINE, 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'],
+      'script-src': [SELF, INLINE, 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'],
       'style-src': [SELF, INLINE],
       'img-src': [SELF, INLINE],
       'worker-src': [NONE],

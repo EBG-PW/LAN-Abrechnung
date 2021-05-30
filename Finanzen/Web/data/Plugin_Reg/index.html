@@ -1,6 +1,6 @@
 <meta charset="utf-8" />
 <head>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         body {
         font-family: "Open Sans", sans-serif;
@@ -295,7 +295,7 @@
 <div class="c-form__progress"></div>
 
 <div class="c-formContainer">
-  <div class="c-welcome">Welcome aboard!</div>
+  <div class="c-welcome">Willkommen bei der LAN-Party!</div>
   <form class="c-form" action="#">
     <div class="c-form__group">
       <label class="c-form__label" for="pw">
@@ -326,7 +326,7 @@
                         pattern="[^\s]+"
                         required>
 
-                    <label class="c-form__next" onclick="myFunction()" for="finish" role="button">
+                    <label class="c-form__next" onclick="submit()" for="finish" role="button">
                         <span class="c-form__nextIcon"></span>
                     </label>
 
@@ -335,13 +335,23 @@
       </label>
     </div>
 
-    <label class="c-form__toggle" for="start">Register<span class="c-form__toggleIcon"></span></label>
+    <label id="start" class="c-form__toggle" for="start"><span class="c-form__toggleIcon"></span></label>
   </form>
 </div>
 
 <script>
-	function myFunction(){
-		var myForm = document.getElementById('c-form');
+  const getUrl = window.location;
+  const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+  $(document).ready(function(){
+    getUserInfo()
+  })
+
+  function getUserInfo(){
+    var posting = $.get(`${baseUrl}api/v1/register/getUser`);
+  };
+
+	function submit(){
+		var myForm = document.getElementById('password2');
 		console.log(myForm)
 	}
 </script>

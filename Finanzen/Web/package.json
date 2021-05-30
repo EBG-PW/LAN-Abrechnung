@@ -16,13 +16,17 @@
   },
   "license": "AGPL-3.0",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-csp-header": "^4.1.0",
+    "express-rate-limit": "^5.2.6",
     "helmet": "^4.1.0",
-    "morgan": "^1.10.0"
+    "joi": "^17.4.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.6.0"
   },
   "devDependencies": {
     "eslint": "^7.7.0",
