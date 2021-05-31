@@ -66,6 +66,7 @@
         "AddNoSuccsess": "Der Nutzer war schon Admin oder ist nicht registriert.",
         "AddSuccsess": "{{Username}}({{UserID}}) ist nun Admin.",
         "RemNoSuccsess": "Der Nutzer war kein Admin oder ist nicht registriert.",
-        "RemSuccsess": "{{Username}}({{UserID}}) ist nun kein Admin mehr."
+        "RemSuccsess": "{{Username}}({{UserID}}) ist nun kein Admin mehr.",
+        "list": "Folgende Gäste sind Admin:{{AdminList}}"
     }
 }

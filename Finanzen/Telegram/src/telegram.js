@@ -54,8 +54,8 @@ bot.on(/^\/admin( .+)*/i, (msg, props) => {
     let CheckAtributes = AtrbutCheck(props);
     DB.get.Guests.Check.Admin(msg.from.id).then(function(Admin_Check_response) {
         if(Admin_Check_response === true || parseInt(mainconfig.SudoUser) === msg.from.id){
-            if ('reply_to_message' in msg) {
-                if(CheckAtributes.hasAtributes){
+            if(CheckAtributes.hasAtributes){
+                if ('reply_to_message' in msg) {
                     if(AvaibleModes.includes(CheckAtributes.atributes[0])){
                         let UserID = msg.reply_to_message.from.id
                         let username;
@@ -86,10 +86,20 @@ bot.on(/^\/admin( .+)*/i, (msg, props) => {
                         return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Admin.MustHaveAtributes', {Atributes: AvaibleModes.join(", ")}));
                     }
                 }else{
-                    return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Admin.MustHaveAtributes', {Atributes: AvaibleModes.join(", ")}));
+                    if(CheckAtributes.atributes[0] === "list"){
+                        DB.get.Guests.Admins().then(function(Admin_List_response){
+                            let AdminList = "";
+                            Admin_List_response.map(Admin => {
+                                AdminList = `\n${AdminList}- ${Admin.username}(${Admin.userid})`
+                            });
+                            return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Admin.list', {AdminList: AdminList}));
+                        });
+                    }else{
+                        return bot.sendMessage(msg.chat.id,newi18n.translate('de', 'Admin.MustBeReply'));
+                    }
                 }
             }else{
-                return bot.sendMessage(msg.chat.id,newi18n.translate('de', 'Admin.MustBeReply'));
+                return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Admin.MustHaveAtributes', {Atributes: AvaibleModes.join(", ")}));
             }
         }else{
             return bot.sendMessage(msg.chat.id,newi18n.translate('de', 'Admin.MustBeAdmin'));

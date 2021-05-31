@@ -70,7 +70,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
 /**
  * This function will return a guest by userid
  * @param {number} user_id
- * @returns {Object}}
+ * @returns {Object}
  */
  let GetGuestsByID = function(user_id) {
     return new Promise(function(resolve, reject) {
@@ -113,6 +113,19 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
       }else{
         resolve(false)
       }
+    });
+  });
+}
+
+/**
+ * This function will return a list of Admins
+ * @returns {Object}
+ */
+ let ListAllAdmin = function() {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM guests WHERE admin = 'true'`, (err, result) => {
+      if (err) {reject(err)}
+      resolve(result.rows)
     });
   });
 }
@@ -202,6 +215,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
 let get = {
   Guests: {
     All: GetGuests,
+    Admins: ListAllAdmin,
     ByID: GetGuestsByID,
     Check: {
       ByID: CheckGuestByID,
