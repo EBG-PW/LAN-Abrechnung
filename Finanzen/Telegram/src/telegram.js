@@ -49,6 +49,54 @@ bot.on(/^\/reg/i, (msg) => {
     }
 });
 
+bot.on(/^\/admin( .+)*/i, (msg, props) => {
+    let AvaibleModes = ['add','remove','rem', 'list']
+    let CheckAtributes = AtrbutCheck(props);
+    DB.get.Guests.Check.Admin(msg.from.id).then(function(Admin_Check_response) {
+        if(Admin_Check_response === true || parseInt(mainconfig.SudoUser) === msg.from.id){
+            if ('reply_to_message' in msg) {
+                if(CheckAtributes.hasAtributes){
+                    if(AvaibleModes.includes(CheckAtributes.atributes[0])){
+                        let UserID = msg.reply_to_message.from.id
+                        let username;
+                        if ('username' in msg.reply_to_message.from) {
+                            username = msg.reply_to_message.from.username.toString();
+                        }else{
+                            username = msg.reply_to_message.from.first_name.toString();
+                        }
+
+                        if(CheckAtributes.atributes[0] === "add"){
+                            DB.write.Guests.UpdateCollumByID(UserID, 'admin', true).then(function(Admin_Update_response) {
+                                if(Admin_Update_response.rowCount === 1){
+                                    return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Admin.AddSuccsess', {Username: username, UserID: UserID}));
+                                }else{
+                                    return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Admin.AddNoSuccsess'));
+                                }
+                            });
+                        }else if(CheckAtributes.atributes[0] === "rem" || CheckAtributes.atributes[0] === "remove"){
+                            DB.write.Guests.UpdateCollumByID(UserID, 'admin', false).then(function(Admin_Update_response) {
+                                if(Admin_Update_response.rowCount === 1){
+                                    return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Admin.RemSuccsess', {Username: username, UserID: UserID}));
+                                }else{
+                                    return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Admin.RemNoSuccsess'));
+                                }
+                            });
+                        }
+                    }else{
+                        return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Admin.MustHaveAtributes', {Atributes: AvaibleModes.join(", ")}));
+                    }
+                }else{
+                    return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Admin.MustHaveAtributes', {Atributes: AvaibleModes.join(", ")}));
+                }
+            }else{
+                return bot.sendMessage(msg.chat.id,newi18n.translate('de', 'Admin.MustBeReply'));
+            }
+        }else{
+            return bot.sendMessage(msg.chat.id,newi18n.translate('de', 'Admin.MustBeAdmin'));
+        }
+    });
+});
+
 bot.on('callbackQuery', (msg) => {
 
 	if ('inline_message_id' in msg) {	
@@ -328,4 +376,34 @@ function boolToText(bool) {
         return newi18n.translate('de', 'Antworten.Nein')
     }
 }
-    
+
+/**
+ * This function will handle pops of telebot
+ * @param {props} props
+ * @returns {object}
+ */
+function AtrbutCheck(props) {
+	let input = props.match.input.split(' ')
+	if(input[0].endsWith(process.env.Telegram_Bot_Botname)){
+		let atributesWName = [];
+		for(let i=1; i <= input.length - 1; i++){
+			atributesWName.push(input[i])
+		}
+		if(atributesWName.length >= 1){
+			return {hasAtributes: true, atributes: atributesWName}
+		}else{
+			return {hasAtributes: false}
+		}
+	}else{
+		if(typeof(props.match[1]) === 'undefined'){
+			return {hasAtributes: false}
+		}else{
+			let atributeOName = [];
+			let input = props.match[1].split(' ')
+			for(let i=1; i <= input.length - 1; i++){
+				atributeOName.push(input[i])
+			}
+			return {hasAtributes: true, atributes: atributeOName}
+		}
+	}
+}

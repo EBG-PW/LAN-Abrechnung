@@ -91,10 +91,10 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
       pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
         if (err) {reject(err)}
         if(result.rows.length <= 0){
-            resolve(false)
-        }else[
-            resovle(true)
-        ]
+          resolve(false)
+        }else{
+          resolve(true)
+        }
       });
     });
   }
@@ -109,10 +109,10 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
     pool.query(`SELECT admin FROM guests WHERE userid = '${user_id}'`, (err, result) => {
       if (err) {reject(err)}
       if(result.rows[0].admin === true){
-          resolve(true)
-      }else[
-          resovle(false)
-      ]
+        resolve(true)
+      }else{
+        resolve(false)
+      }
     });
   });
 }

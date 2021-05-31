@@ -58,5 +58,14 @@
         "5_Voll": "Sonntag: 18.07.2021",
         "6": "19.7.21",
         "6_Voll": "Montag: 19.07.2021"
+    },
+    "Admin": {
+        "MustBeReply": "Dieser Befehl kann nur als Antwort verwendet werden.",
+        "MustHaveAtributes": "Dieser Befehl brauch Atribute wie: {{Atributes}}",
+        "MustBeAdmin": "Du musst selbst Admin sein um diesen Befehl zu nutzen.",
+        "AddNoSuccsess": "Der Nutzer war schon Admin oder ist nicht registriert.",
+        "AddSuccsess": "{{Username}}({{UserID}}) ist nun Admin.",
+        "RemNoSuccsess": "Der Nutzer war kein Admin oder ist nicht registriert.",
+        "RemSuccsess": "{{Username}}({{UserID}}) ist nun kein Admin mehr."
     }
 }
