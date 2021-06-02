@@ -19,7 +19,8 @@
     },
     "Knöpfe": {
         "Reg": "Registrieren",
-        "WebReg": "Hier"
+        "WebReg": "Hier",
+        "Hauptmenu": "Hauptmenü"
     },
     "Error": {
         "NotPrivate": "Das ist nur im Chat direkt mit dem Bot möglich.",
@@ -68,5 +69,8 @@
         "RemNoSuccsess": "Der Nutzer war kein Admin oder ist nicht registriert.",
         "RemSuccsess": "{{Username}}({{UserID}}) ist nun kein Admin mehr.",
         "list": "Folgende Gäste sind Admin:{{AdminList}}"
+    },
+    "PaySystem": {
+        "Sucsess": "Du hast die Regestration erfolgreich abgeschlossen\n\nBiite überweiße die Kosten für die LAN-Party nun, dein Code für den Verwendungszweg:\nLan2021-{{PayCode}}\nDie höhe der Überweißung bertägt: {{Kosten}}"
     }
 }

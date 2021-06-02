@@ -1,4 +1,5 @@
-{
+{   
+    "FixKostenProTag": 5000,
     "PauschalKosten": {
         "Wasser": 250,
         "Strom": 500,

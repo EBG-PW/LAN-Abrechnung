@@ -7,7 +7,7 @@ let reqPath = path.join(__dirname, '../');
 const { default: i18n } = require('new-i18n')
 const newi18n = new i18n(path.join(reqPath, process.env.Sprache), ["de"], "de");
 
-let mainconfig;
+let mainconfig, preisliste;
 
 const Telebot = require('telebot');
 const bot = new Telebot({
@@ -19,6 +19,9 @@ const bot = new Telebot({
 /* Import Config */
 if(fs.existsSync(`${reqPath}${process.env.Config}/mainconfig.json`)) {
 	mainconfig = JSON.parse(fs.readFileSync(`${reqPath}/${process.env.Config}/mainconfig.json`));
+}
+if(fs.existsSync(`${reqPath}${process.env.Config}/preisliste.json`)) {
+	preisliste = JSON.parse(fs.readFileSync(`${reqPath}/${process.env.Config}/preisliste.json`));
 }
 
 bot.on(/^\/start/i, (msg) => {
@@ -376,7 +379,30 @@ bot.start();
 
 /* - - - - Telegram External Functions - - - - */
 
+/**
+ * This function will send a user the conferm message of his web reg
+ * @param {number} ChatID
+ * @returns Object
+ */
+ let WebRegSendConfim = function(ChatID) {
+    return new Promise(function(resolve, reject) {
 
+        let replyMarkup = bot.inlineKeyboard([
+            [
+                bot.inlineButton(newi18n.translate('de', 'Knöpfe.Hauptmenu'), {callback: '/hauptmenu'})
+            ]
+        ]);
+
+        let Kosten = 0;
+        let PayCode = "";
+
+        bot.sendMessage(ChatID, newi18n.translate('de', 'PaySystem.Sucsess', {PayCode: PayCode,Kosten: Kosten}), {replyMarkup}).then(function(msg_send) {
+            resolve(msg_send)
+        }).catch(function(error){
+            reject(error)
+        })
+    });
+  }
 
 /* - - - - Helper Functions - - - - */
 
@@ -430,9 +456,18 @@ setInterval(function(){
     DB.message.GetAll().then(function(list) {
         if(list.rows.length >= 1){
             list.rows.map(row => {
-                console.log(row)
+                //console.log(row)
                 if(row.type === "Function"){ //Run all Funktions from here
-
+                    if(row.message === "Web_Register"){
+                        WebRegSendConfim(row.chatid).then(function(msg_send) {
+                            DB.message.Delete(row.id).then(function(del_message) {
+                                console.log(`Task for Telegram, with ID ${row.id} was prossesed.`)
+                            });
+                        }).catch(function(error){
+                            console.log(`Error while prossesing Task for Telegram, with ID ${row.id}:`)
+                            console.log(error)
+                        })
+                    }
                 }
             });
         }
