@@ -421,7 +421,7 @@ function AtrbutCheck(props) {
 setInterval(function(){
     DB.message.GetAll().then(function(list) {
         if(list.rows.length >= 1){
-            console.log(list.rows[0])
+            //console.log(list.rows[0])
         }
     });
 }, 5000);
