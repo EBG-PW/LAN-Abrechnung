@@ -25,9 +25,5 @@ namespace LAN_Abrechnung
             InitializeComponent();
         }
 
-        private void PnlMainGrid_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            MessageBox.Show("You clicked me at " + e.GetPosition(this).ToString());
-        }
     }
 }
