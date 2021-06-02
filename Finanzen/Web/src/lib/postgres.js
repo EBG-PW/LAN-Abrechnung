@@ -23,6 +23,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     pyed_id text,
     admin boolean DEFAULT False,
     vaccinated text,
+    expected_departure timestamp with time zone,
     time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
     if (err) {console.log(err)}
 });
@@ -50,6 +51,16 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
   price integer,
   used integer,
   bought integer,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
+  if (err) {console.log(err)}
+});
+
+pool.query(`CREATE TABLE IF NOT EXISTS innersync (
+  targetapp text,
+  id text,
+  message text,
+  chatid bigint,
+  type text,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
   if (err) {console.log(err)}
 });
@@ -211,6 +222,53 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
   });
 }
 
+/**
+ * This function is used to send messages to the TelegramApp
+ * @param {String} id
+ * @param {String} targetapp
+ * @param {object} message
+ * @returns {Promise}
+ */
+ let PostNewMessage = function(targetapp, id, message) {
+  return new Promise(function(resolve, reject) {
+    pool.query('INSERT INTO innersync (targetapp, id, message, chatid, type) VALUES ($1,$2,$3,$4,$5)',[
+      targetapp, id, message.text, message.chatid, message.type
+    ], (err, result) => {
+      if (err) {reject(err)}
+      resolve(result)
+    });
+  });
+}
+
+/**
+ * This function is used to delete the message send command
+ * @param {String} ID
+ * @returns {Promise}
+ */
+ let DelNewMessage = function(ID) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`DELETE FROM innersync WHERE token = '${ID}'`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result)
+    });
+  });
+}
+
+/**
+ * This function will get all messages to prosses
+ * @returns {Promise}
+ */
+ let GetNewMessages = function() {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM innersync`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result)
+    });
+  });
+}
+
+
+
 
 let get = {
   Guests: {
@@ -243,8 +301,15 @@ let del = {
   }
 }
 
+let message = {
+  PostNew: PostNewMessage,
+  Delete: DelNewMessage,
+  GetAll: GetNewMessages
+}
+
 module.exports = {
     get,
     write,
-    del
+    del,
+    message
 };

@@ -3,6 +3,7 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const Joi = require('joi');
 var path = require('path');
+const randomstring = require('randomstring');
 const DB = require('../lib/postgres');
 const bcrypt = require('bcrypt');
 
@@ -91,7 +92,14 @@ router.post("/register", limiter, async (reg, res, next) => {
                 DB.del.RegToken.DeleteToken(value.Token).then(function(del_response) {
                     if(del_response.rowCount === 1){
                         bcrypt.hash(value.Password, parseInt(process.env.saltRounds), function(err, hash) {
-                            DB.write.Guests.UpdateCollumByID(response.rows[0].userid, 'passwort', hash).then(function(response) {
+                            DB.write.Guests.UpdateCollumByID(response.rows[0].userid, 'passwort', hash).then(function(update_response) {
+                                let ID = randomstring.generate({
+                                    length: 32,
+                                    charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                                });
+                                DB.message.PostNew('Telegram', ID, {text: 'Web_Register', id: response.rows[0].userid, type: 'Function'}).then(function(New_Message) {
+                                    console.log(`New Task for Telegram, with ID ${ID} was made.`)
+                                });
                                 res.status(200);
                                 res.json({
                                     message: "Success - Password was set",
