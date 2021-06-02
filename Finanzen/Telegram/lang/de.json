@@ -1,13 +1,13 @@
 {
-    "WellcomeMSG": "Willkommen zur Local-Area-Networl-Party {{LanName}} mit diesem Bot kannst du dich registrieren.",
+    "WellcomeMSG": "Willkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.",
     "Fragen": {
         "PC": "Hast du einen Computer (PC) dabei?",
         "Displays": "Wie viele Displays bringst du mit?",
-        "LanKabel": "Nimmst du ein Lan-Kabel für deinen PC mit?",
+        "LanKabel": "Nimmst du ein LAN-Kabel für deinen PC mit?",
         "VR": "Nimmst du eine VR Brille mit?",
         "Vaccinated": "Welchem Impfstatus wirst du zum Zeitpunkt deiner Anreise haben?",
-        "Arrivale": "Was ist den geplanter Anreisetag?",
-        "Depature": "Was ist den geplanter Abreisetag?",
+        "Arrivale": "Wann ist den geplanter Anreisetag?",
+        "Depature": "Wann ist den geplanter Abreisetag?",
         "WebReg": "Bitte klicke auf den Knopf um dein Webpanel Passwort zu setzen."
     },
     "Antworten": {
@@ -22,8 +22,8 @@
         "WebReg": "Hier"
     },
     "Error": {
-        "NotPrivate": "Das ist nur im Chat direkt mit dem Bot möglich",
-        "DBFehler": "Ein Fehler mit der Datenbank ist aufgetreten"
+        "NotPrivate": "Das ist nur im Chat direkt mit dem Bot möglich.",
+        "DBFehler": "Ein Fehler mit der Datenbank ist aufgetreten."
     },
     "Vaccinated": {
         "Voll": "Vollständig",
@@ -58,5 +58,15 @@
         "5_Voll": "Sonntag: 18.07.2021",
         "6": "19.7.21",
         "6_Voll": "Montag: 19.07.2021"
+    },
+    "Admin": {
+        "MustBeReply": "Dieser Befehl kann nur als Antwort verwendet werden.",
+        "MustHaveAtributes": "Dieser Befehl brauch Atribute wie: {{Atributes}}",
+        "MustBeAdmin": "Du musst selbst Admin sein um diesen Befehl zu nutzen.",
+        "AddNoSuccsess": "Der Nutzer war schon Admin oder ist nicht registriert.",
+        "AddSuccsess": "{{Username}}({{UserID}}) ist nun Admin.",
+        "RemNoSuccsess": "Der Nutzer war kein Admin oder ist nicht registriert.",
+        "RemSuccsess": "{{Username}}({{UserID}}) ist nun kein Admin mehr.",
+        "list": "Folgende Gäste sind Admin:{{AdminList}}"
     }
 }

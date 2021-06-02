@@ -1,0 +1,37 @@
+{
+  "name": "lanwebbackend",
+  "version": "0.1.0",
+  "description": "Backend API for a lanparty",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "lint": "eslint --fix src"
+  },
+  "keywords": [],
+  "author": "BolverBlitz",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-csp-header": "^4.1.0",
+    "express-rate-limit": "^5.2.6",
+    "helmet": "^4.1.0",
+    "joi": "^17.4.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.7.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "nodemon": "^2.0.4"
+  }
+}

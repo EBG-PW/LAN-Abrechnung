@@ -1,4 +1,7 @@
 {
+    "SudoUser": "206921999",
     "LanName": "Sommerlan 2021",
-    "LanDauer": 7
+    "LanDauer": 7,
+    "RegTokenLength": 32,
+    "WebTokenLength": 64
 }
