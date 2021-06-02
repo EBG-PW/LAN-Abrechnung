@@ -46,7 +46,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS webtoken (
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS products (
-  produktname text,
+  produktname text PRIMARY KEY,
   produktcompany text,
   price integer,
   used integer,
@@ -57,7 +57,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
 
 pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   targetapp text,
-  id text,
+  id text PRIMARY KEY,
   message text,
   chatid bigint,
   type text,
@@ -247,7 +247,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  */
  let DelNewMessage = function(ID) {
   return new Promise(function(resolve, reject) {
-    pool.query(`DELETE FROM innersync WHERE token = '${ID}'`, (err, result) => {
+    pool.query(`DELETE FROM innersync WHERE id = '${ID}'`, (err, result) => {
       if (err) {reject(err)}
         resolve(result)
     });

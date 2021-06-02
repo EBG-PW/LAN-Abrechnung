@@ -374,6 +374,12 @@ bot.on('callbackQuery', (msg) => {
 
 bot.start();
 
+/* - - - - Telegram External Functions - - - - */
+
+
+
+/* - - - - Helper Functions - - - - */
+
 /**
  * This function will translate bool to string
  * @param {boolean | string} bool
@@ -418,10 +424,17 @@ function AtrbutCheck(props) {
 	}
 }
 
+/* - - - - Database Event Checker - - - - */
+
 setInterval(function(){
     DB.message.GetAll().then(function(list) {
         if(list.rows.length >= 1){
-            //console.log(list.rows[0])
+            list.rows.map(row => {
+                console.log(row)
+                if(row.type === "Function"){ //Run all Funktions from here
+
+                }
+            });
         }
     });
 }, 5000);

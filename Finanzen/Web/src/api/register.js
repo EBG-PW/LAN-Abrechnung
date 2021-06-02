@@ -97,7 +97,7 @@ router.post("/register", limiter, async (reg, res, next) => {
                                     length: 32,
                                     charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
                                 });
-                                DB.message.PostNew('Telegram', ID, {text: 'Web_Register', id: response.rows[0].userid, type: 'Function'}).then(function(New_Message) {
+                                DB.message.PostNew('Telegram', ID, {text: 'Web_Register', chatid: response.rows[0].userid, type: 'Function'}).then(function(New_Message) {
                                     console.log(`New Task for Telegram, with ID ${ID} was made.`)
                                 });
                                 res.status(200);
