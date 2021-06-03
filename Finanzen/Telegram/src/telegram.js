@@ -393,11 +393,18 @@ bot.start();
             ]
         ]);
 
-        let Kosten = 0;
-        let PayCode = "";
+        let Kosten = CentToEuro(parseInt(mainconfig.LanDauer)*parseInt(preisliste.FixKostenProTag));
+        let PayCode = randomstring.generate({
+            length: 8,
+            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+        });
 
-        bot.sendMessage(ChatID, newi18n.translate('de', 'PaySystem.Sucsess', {PayCode: PayCode,Kosten: Kosten}), {replyMarkup}).then(function(msg_send) {
-            resolve(msg_send)
+        DB.write.Guests.UpdateCollumByID(ChatID, 'pyed_id', PayCode).then(function(guest_edit_response) {
+            bot.sendMessage(ChatID, newi18n.translate('de', 'PaySystem.Sucsess', {Bank: mainconfig.KontoBank, IBAN: mainconfig.KontoIban, Kontoinhaber: mainconfig.KontoInhaber, Verwendungszweg: mainconfig.Verwendungszweg, PayCode: PayCode, Kosten: Kosten}), {parseMode: 'html', replyMarkup}).then(function(msg_send) {
+                resolve(msg_send)
+            }).catch(function(error){
+                reject(error)
+            })
         }).catch(function(error){
             reject(error)
         })
@@ -450,6 +457,15 @@ function AtrbutCheck(props) {
 	}
 }
 
+/**
+ * This function will handle pops of telebot
+ * @param {string} value
+ * @returns {string}
+ */
+function CentToEuro(value){
+    var euro = value / 100;
+    return euro.toLocaleString("de-De", {style:"currency", currency:"EUR"});
+}
 /* - - - - Database Event Checker - - - - */
 
 setInterval(function(){

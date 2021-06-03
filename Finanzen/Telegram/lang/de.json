@@ -71,6 +71,12 @@
         "list": "Folgende Gäste sind Admin:{{AdminList}}"
     },
     "PaySystem": {
-        "Sucsess": "Du hast die Regestration erfolgreich abgeschlossen\n\nBiite überweiße die Kosten für die LAN-Party nun, dein Code für den Verwendungszweg:\nLan2021-{{PayCode}}\nDie höhe der Überweißung bertägt: {{Kosten}}"
+        "Sucsess": "Du hast die Regestration erfolgreich abgeschlossen\n\nBiite überweiße die Kosten für die LAN-Party nun:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszewg:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie höhe der Überweißung bertägt: <pre language='c++'>{{Kosten}}</pre>"
+    },
+    "Hauptmenu": {
+        "Text": "Hauptmenü:\n{{Username}} hier kannst du alle Funktionen des Bots sehen.",
+        "Knöpfe": {
+
+        }
     }
 }
