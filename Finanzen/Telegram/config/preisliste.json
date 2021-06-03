@@ -1,10 +1,22 @@
 {   
     "FixKostenProTag": 5000,
     "PauschalKosten": {
-        "Wasser": 250,
-        "Strom": 500,
-        "StromKWH": 18,
-        "Verbrauchsgüter": 500
+        "Wasser": {
+            "Preis": 500,
+            "Beschreibung": "Wasserpauschale (Klo, Dusche, etc)"
+        },
+        "Strom": {
+            "Preis": 500,
+            "Beschreibung": "Strom (Flur, Räume, Küche, etc)"
+        },
+        "Verbrauchsgüter": {
+            "Preis": 500,
+            "Beschreibung": "Verbrauchsgüter (Seife, etc)"
+        },
+        "StromKWH": {
+            "Preis": 18,
+            "Beschreibung": "Preis pro KWh für PCs"
+        }
     },
     "Flats": {
         "Kaffee": 400,
