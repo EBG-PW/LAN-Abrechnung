@@ -84,13 +84,16 @@
         }
     },
     "Regeln": {
-        "Text": "Bitte lies die Hausordnung aufmerksam durch!",
-        "RegelnAnzahl": "4",
+        "Text": "Bitte lies die Hausordnung aufmerksam durch!\n\n Die folgenden Regeln sind strikt für die Dauer der LAN einzuhalten. Ein Verstoß dieser kann im Ermessen bis zum Ausschluss von der LAN führen.",
+        "RegelnAnzahl": "7",
         "Regeln": {
-            "0": "Regel 1",
-            "1": "Regel 2",
-            "2": "Regel 34",
-            "3": "Regel 69"
+            "0": "1: Im Gebäude gilt striktes Rauchverbot keine Ausnahme. Es entstehen Aerosole -> es ist <b>Verboten!</b> Für Raucher gibt es die Möglichkeit wie auch vergangenes Jahr im Innenhof bei <u>geschlossener Gebäude Türe</u> zu Rauchen.",
+            "1": "2: Nach aktuellen Bestimmungen gilt im Erdgeschoss während der Bürozeiten (7-17 Uhr Werktags) eine FFP2-Maskenpflicht!",
+            "2": "3: <b>JEDER</b> räumt sein Geschirr und seinen Müll <b>SELBSTSTÄNDIG</b> weg. (Für eine Gebühr von 150€ bekommt ihr eigenes VIP Geschirr und GEOs Dad räumt euren Müll und euer Geschirr ab.)",
+            "3": "4: Verbleibendes nicht verzehrtes Essen in den Restmüll. Pizzas haben in ihren Schachteln in den Kartonagen nichts zu suchen. Ein Verstoß gegen diese Regel hat eine Strafgebühr von 150€ zur Folge. (PS: Ja diese Regel existiert aus gutem Grund.)",
+            "4": "5: Während der Bürozeiten nur in entsprechender Kleidung durchs Gebäude gehen.",
+            "5": "6: Während der Bürozeiten den Lärmpegel auf einem angemessenen Niveau halten.",
+            "6": "7: Bei Alkoholkonsum ist trotzdem ein entsprechendes Verhalten zu erwarten. (GEOs Einstellung gegenüber exzessivem Alkoholkonsum und dessen Auswirkungen sollte jedem bekannt sein)"
         },
         "Knöpfe": {
             "Zustimmen": "Zustimmen",
