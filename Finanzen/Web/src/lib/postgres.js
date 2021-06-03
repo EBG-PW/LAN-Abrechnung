@@ -21,14 +21,47 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     expected_departure timestamp with time zone,
     accepted_rules timestamp with time zone,
     accepted_legal timestamp with time zone,
-    power_status string,
-    power_ip INET,
+    power_plugid smallint,
     payed boolean DEFAULT False,
     pyed_id text,
     admin boolean DEFAULT False,
     vaccinated text,
     time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
     if (err) {console.log(err)}
+});
+
+pool.query(`CREATE TABLE IF NOT EXISTS plugs (
+  plugid serial,
+  ipaddr inet,
+  userid bigint,
+  state boolean DEFAULT False,
+  allowed_state boolean DEFAULT False,
+  energy_now double precision,
+  voltage_now double precision,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (plugid),
+  CONSTRAINT userid_unique UNIQUE (userid),
+  CONSTRAINT ipaddr_unique UNIQUE (ipaddr))`, (err, result) => {
+  if (err) {console.log(err)}
+});
+
+pool.query(`CREATE TABLE IF NOT EXISTS plugs_history (
+  plugid smallint,
+  energy double precision,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (plugid,time),
+  CONSTRAINTS plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid) ON UPDATE CASCADE ON DELETE CASCADE)`, (err, result) => {
+  if (err) {console.log(err)}
+});
+
+pool.query(`CREATE TABLE IF NOT EXISTS power_history (
+  plugid smallint,
+  energy_now double precision,
+  voltage_now double precision,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (energy_now,voltage_now,time),
+  CONSTRAINTS plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid) ON UPDATE CASCADE ON DELETE CASCADE)`, (err, result) => {
+  if (err) {console.log(err)}
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS regtoken (
@@ -42,6 +75,8 @@ pool.query(`CREATE TABLE IF NOT EXISTS regtoken (
 pool.query(`CREATE TABLE IF NOT EXISTS webtoken (
   userid bigint,
   username text,
+  ip INET,
+  browser text,
   token text PRIMARY KEY,
   admin boolean DEFAULT False,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
