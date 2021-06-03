@@ -19,11 +19,14 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     vr boolean DEFAULT False,
     expected_arrival timestamp with time zone,
     expected_departure timestamp with time zone,
+    accepted_rules timestamp with time zone,
+    accepted_legal timestamp with time zone,
+    power_status string,
+    power_ip INET,
     payed boolean DEFAULT False,
     pyed_id text,
     admin boolean DEFAULT False,
     vaccinated text,
-    expected_departure timestamp with time zone,
     time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
     if (err) {console.log(err)}
 });
@@ -111,6 +114,24 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   }
 
 /**
+ * This function will check if a user had accepted rules & legal
+ * @param {number} user_id
+ * @returns {boolean}
+ */
+ let CheckGuestRulesByID = function(user_id) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
+      if (err) {reject(err)}
+      if(typeof result.rows[0].accepted_rules !== 'undefined' && typeof result.rows[0].accepted_legal !== 'undefined'){
+        resolve(true)
+      }else{
+        resolve(false)
+      }
+    });
+  });
+}
+
+/**
  * This function will check if a user is admin
  * @param {number} user_id
  * @returns {boolean}
@@ -119,8 +140,12 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   return new Promise(function(resolve, reject) {
     pool.query(`SELECT admin FROM guests WHERE userid = '${user_id}'`, (err, result) => {
       if (err) {reject(err)}
-      if(result.rows[0].admin === true){
-        resolve(true)
+      if(result.rows.length === 1){
+        if(result.rows[0].admin === true){
+          resolve(true)
+        }else{
+          resolve(false)
+        }
       }else{
         resolve(false)
       }
@@ -277,7 +302,8 @@ let get = {
     ByID: GetGuestsByID,
     Check: {
       ByID: CheckGuestByID,
-      Admin: CheckIfAdminbyID
+      Admin: CheckIfAdminbyID,
+      Rules: CheckGuestRulesByID
     }
   },
   RegToken: {

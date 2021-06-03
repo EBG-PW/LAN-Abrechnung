@@ -28,7 +28,7 @@ if(fs.existsSync(`${reqPath}${process.env.Config}/preisliste.json`)) {
 bot.on(/^\/start/i, (msg) => {
     let replyMarkup = bot.inlineKeyboard([
         [
-            bot.inlineButton(newi18n.translate('de', 'Knöpfe.Reg'), {callback: '/reg'})
+            bot.inlineButton(newi18n.translate('de', 'Knöpfe.Reg'), {callback: `R_${msg.from.id}`})
         ]
     ]);
     return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'WellcomeMSG', {LanName: mainconfig.LanName}), {replyMarkup});
