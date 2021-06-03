@@ -82,5 +82,41 @@
             "WebSession": "Websession",
             "Webpanel": "Webpanel"
         }
+    },
+    "Regeln": {
+        "Text": "Bitte lies die Hausordnung aufmerksam durch!",
+        "RegelnAnzahl": "4",
+        "Regeln": {
+            "0": "Regel 1",
+            "1": "Regel 2",
+            "2": "Regel 34",
+            "3": "Regel 69"
+        },
+        "Knöpfe": {
+            "Zustimmen": "Zustimmen",
+            "Ablehnen": "Ablehnen"
+        },
+        "Antworten": {
+            "Zustimmen": "Zugestimmt",
+            "Ablehnen": "Abgelehnt"
+        }
+    },
+    "Legal": {
+        "Text": "Bitte lies die Bestimmungen aufmerksam durch!",
+        "LegalAnzahl": "4",
+        "Legal": {
+            "0": "Legal 1",
+            "1": "Legal 2",
+            "2": "Legal 34",
+            "3": "Legal 69"
+        },
+        "Knöpfe": {
+            "Zustimmen": "Zustimmen",
+            "Ablehnen": "Ablehnen"
+        },
+        "Antworten": {
+            "Zustimmen": "Zugestimmt",
+            "Ablehnen": "Abgelehnt"
+        }
     }
 }

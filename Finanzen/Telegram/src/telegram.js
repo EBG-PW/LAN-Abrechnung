@@ -26,30 +26,16 @@ if(fs.existsSync(`${reqPath}${process.env.Config}/preisliste.json`)) {
 }
 
 bot.on(/^\/start/i, (msg) => {
-    let replyMarkup = bot.inlineKeyboard([
-        [
-            bot.inlineButton(newi18n.translate('de', 'Knöpfe.Reg'), {callback: `R_${msg.from.id}`})
-        ]
-    ]);
-    return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'WellcomeMSG', {LanName: mainconfig.LanName}), {replyMarkup});
-});
-
-bot.on(/^\/reg/i, (msg) => {
-    if(msg.message.chat.type === "private"){
+    console.log(msg)
+    if(msg.chat.type === "private"){
         let replyMarkup = bot.inlineKeyboard([
             [
-                bot.inlineButton(newi18n.translate('de', 'Antworten.Ja'), {callback: 'F_PC_true'}),
-                bot.inlineButton(newi18n.translate('de', 'Antworten.Nein'), {callback: 'F_PC_false'})
+                bot.inlineButton(newi18n.translate('de', 'Knöpfe.Reg'), {callback: `R_${msg.from.id}_rules`})
             ]
         ]);
-        DB.write.Guests.NewUser(msg.from.id, msg.from.username).then(function(response) {
-            return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.PC'), {replyMarkup});
-        }).catch(function(error){
-            console.log(error)
-            return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
-        })
+        return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'WellcomeMSG', {LanName: mainconfig.LanName}), {replyMarkup});
     }else{
-        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
+        return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
     }
 });
 
@@ -388,6 +374,8 @@ bot.on('callbackQuery', (msg) => {
                             ]
                         ]);
 
+                        console.log(replyMarkup)
+
                         return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.WebReg'), {replyMarkup});
                         
                     }).catch(function(error){
@@ -402,6 +390,134 @@ bot.on('callbackQuery', (msg) => {
                 })
             }
         }
+    }else{
+        if(data[0] === 'R')
+            {
+                if(data[2] === 'rules')
+                {
+                    if(data.length === 3){
+                        DB.write.Guests.NewUser(msg.from.id, msg.from.username).then(function(response) {
+
+                            let replyMarkup = bot.inlineKeyboard([
+                                [
+                                    bot.inlineButton(newi18n.translate('de', 'Regeln.Knöpfe.Zustimmen'), {callback: `R_${msg.from.id}_rules_true`}),
+                                    bot.inlineButton(newi18n.translate('de', 'Regeln.Knöpfe.Ablehnen'), {callback: `R_${msg.from.id}_rules_false`})
+                                ]
+                            ]);
+                            
+                            let Message = []
+                            Message.push(newi18n.translate('de', 'Regeln.Text'))
+                            for (i = 0; i < parseInt(newi18n.translate('de', 'Regeln.RegelnAnzahl')); i++) { 
+                                Message.push(newi18n.translate('de', `Regeln.Regeln.${i}`))
+                            }
+
+                            Message = Message.join("\n")
+
+                        if ('inline_message_id' in msg) {
+                            bot.editMessageText(
+                                {inlineMsgId: inlineId}, Message,
+                                {parseMode: 'html', replyMarkup}
+                            ).catch(error => console.log('Error:', error));
+                        }else{
+                            bot.editMessageText(
+                                {chatId: chatId, messageId: messageId}, Message,
+                                {parseMode: 'html', replyMarkup}
+                            ).catch(error => console.log('Error:', error));
+                        }
+
+                        }).catch(function(error){
+                            console.log(error)
+                            return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+                        })
+                    }else{
+                        if(data[3] === "true"){
+                            let newDate = new Date(Date.now());
+                            DB.write.Guests.UpdateCollumByID(msg.from.id, "accepted_rules", newDate).then(function(response) {
+                                let replyMarkup = bot.inlineKeyboard([
+                                    [
+                                        bot.inlineButton(newi18n.translate('de', 'Legal.Knöpfe.Zustimmen'), {callback: `R_${msg.from.id}_legal_true`}),
+                                        bot.inlineButton(newi18n.translate('de', 'Legal.Knöpfe.Ablehnen'), {callback: `R_${msg.from.id}_legal_false`})
+                                    ]
+                                ]);
+                                
+                                let Message = []
+                                Message.push(newi18n.translate('de', 'Legal.Text'))
+                                for (i = 0; i < parseInt(newi18n.translate('de', 'Legal.LegalAnzahl')); i++) { 
+                                    Message.push(newi18n.translate('de', `Legal.Legal.${i}`))
+                                }
+    
+                                Message = Message.join("\n")
+    
+                            if ('inline_message_id' in msg) {
+                                bot.editMessageText(
+                                    {inlineMsgId: inlineId}, Message,
+                                    {parseMode: 'html', replyMarkup}
+                                ).catch(error => console.log('Error:', error));
+                            }else{
+                                bot.editMessageText(
+                                    {chatId: chatId, messageId: messageId}, Message,
+                                    {parseMode: 'html', replyMarkup}
+                                ).catch(error => console.log('Error:', error));
+                            }
+                            });
+                        }else{
+                            let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${newi18n.translate('de', `Regeln.Antworten.Ablehnen`)}`
+                            if ('inline_message_id' in msg) {
+                                bot.editMessageText(
+                                    {inlineMsgId: inlineId}, Message,
+                                    {parseMode: 'html'}
+                                ).catch(error => console.log('Error:', error));
+                            }else{
+                                bot.editMessageText(
+                                    {chatId: chatId, messageId: messageId}, Message,
+                                    {parseMode: 'html'}
+                                ).catch(error => console.log('Error:', error));
+                            }
+                        }
+                    }
+                }
+
+                if(data[2] === 'legal')
+                {
+                    if(data[3] === "true"){
+                        let newDate = new Date(Date.now());
+                        DB.write.Guests.UpdateCollumByID(msg.from.id, "accepted_legal", newDate).then(function(response) {
+                            let replyMarkup = bot.inlineKeyboard([
+                                [
+                                    bot.inlineButton(newi18n.translate('de', 'Antworten.Ja'), {callback: 'F_PC_true'}),
+                                    bot.inlineButton(newi18n.translate('de', 'Antworten.Nein'), {callback: 'F_PC_false'})
+                                ]
+                            ]);
+                            let Message = newi18n.translate('de', 'Fragen.PC');
+    
+                            if ('inline_message_id' in msg) {
+                                bot.editMessageText(
+                                    {inlineMsgId: inlineId}, Message,
+                                    {parseMode: 'html', replyMarkup}
+                                ).catch(error => console.log('Error:', error));
+                            }else{
+                                bot.editMessageText(
+                                    {chatId: chatId, messageId: messageId}, Message,
+                                    {parseMode: 'html', replyMarkup}
+                                ).catch(error => console.log('Error:', error));
+                            }
+                        });
+                    }else{
+                        let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${newi18n.translate('de', `Legal.Antworten.Ablehnen`)}`
+                        if ('inline_message_id' in msg) {
+                            bot.editMessageText(
+                                {inlineMsgId: inlineId}, Message,
+                                {parseMode: 'html'}
+                            ).catch(error => console.log('Error:', error));
+                        }else{
+                            bot.editMessageText(
+                                {chatId: chatId, messageId: messageId}, Message,
+                                {parseMode: 'html'}
+                            ).catch(error => console.log('Error:', error));
+                        }
+                    }
+                }
+            }
     }
 });
 
