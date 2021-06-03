@@ -2,6 +2,7 @@ require('dotenv').config();
 const path = require('path');
 const DB = require('./lib/postgres');
 const fs = require('fs');
+const util = require('util')
 const randomstring = require('randomstring');
 let reqPath = path.join(__dirname, '../');
 const { default: i18n } = require('new-i18n')
@@ -47,6 +48,35 @@ bot.on(/^\/reg/i, (msg) => {
             console.log(error)
             return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
         })
+    }else{
+        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
+    }
+});
+
+bot.on(/^\/hauptmenu/i, (msg) => {
+    if(msg.message.chat.type === "private"){
+        let replyMarkup = bot.inlineKeyboard([
+            [
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Flats'), {callback: 'M_Flat'}),
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Artikel'), {callback: 'M_Art'})
+            ],
+            [
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Zahlung'), {callback: 'M_Pay'}),
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.WebSession'), {callback: 'M_WebS'})
+            ],
+            [
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Webpanel'), {url: `${process.env.WebPanelURL}`}),
+            ]
+        ]);
+
+        let username;
+        if ('username' in msg.from) {
+             username = msg.from.username.toString();
+        }else{
+            username = msg.from.first_name.toString();
+        }
+
+        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Hauptmenu.Text', {Username: username}), {replyMarkup});
     }else{
         return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
     }

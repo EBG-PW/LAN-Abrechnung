@@ -76,7 +76,11 @@
     "Hauptmenu": {
         "Text": "Hauptmenü:\n{{Username}} hier kannst du alle Funktionen des Bots sehen.",
         "Knöpfe": {
-
+            "Zahlung": "Zahlung",
+            "Artikel": "Artikel kaufen",
+            "Flats": "Flatrates",
+            "WebSession": "Websession",
+            "Webpanel": "Webpanel"
         }
     }
 }
