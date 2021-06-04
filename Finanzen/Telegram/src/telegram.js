@@ -43,11 +43,11 @@ bot.on(/^\/hauptmenu/i, (msg) => {
     if(msg.message.chat.type === "private"){
         let replyMarkup = bot.inlineKeyboard([
             [
-                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Flats'), {callback: 'M_Flat'}),
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Zahlung'), {callback: 'M_Pay'}),
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Artikel'), {callback: 'M_Art'})
             ],
             [
-                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Zahlung'), {callback: 'M_Pay'}),
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Spenden'), {callback: 'M_Donate'}),
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.WebSession'), {callback: 'M_WebS'})
             ],
             [

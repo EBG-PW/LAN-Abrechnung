@@ -2,7 +2,7 @@
     "FixKostenProTag": 5000,
     "PauschalKosten": {
         "Wasser": {
-            "Preis": 500,
+            "Preis": 200,
             "Beschreibung": "Wasserpauschale (Klo, Dusche, etc)"
         },
         "Strom": {
@@ -10,18 +10,17 @@
             "Beschreibung": "Strom (Flur, Räume, Küche, etc)"
         },
         "Verbrauchsgüter": {
-            "Preis": 500,
+            "Preis": 300,
             "Beschreibung": "Verbrauchsgüter (Seife, etc)"
+        },
+        "Netzwerk": {
+            "Preis": 500,
+            "Beschreibung": "Netzwerk Infrastruktur"
         },
         "StromKWH": {
             "Preis": 18,
             "Beschreibung": "Preis pro KWh für PCs"
         }
-    },
-    "Flats": {
-        "Kaffee": 400,
-        "Netzwerk": 500,
-        "GameServer": 250
     },
     "SnackBar": {
         "PaprikaChips": {
