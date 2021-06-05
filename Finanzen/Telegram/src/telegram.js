@@ -26,7 +26,6 @@ if(fs.existsSync(`${reqPath}${process.env.Config}/preisliste.json`)) {
 }
 
 bot.on(/^\/start/i, (msg) => {
-    console.log(msg)
     if(msg.chat.type === "private"){
         let replyMarkup = bot.inlineKeyboard([
             [
@@ -444,6 +443,11 @@ bot.on('callbackQuery', (msg) => {
                                 Message.push(newi18n.translate('de', 'Legal.Text'))
                                 for (i = 0; i < parseInt(newi18n.translate('de', 'Legal.LegalAnzahl')); i++) { 
                                     Message.push(newi18n.translate('de', `Legal.Legal.${i}`))
+                                }
+
+                                Message.push(`\n\n${newi18n.translate('de', `Legal.Preisliste`)}`)
+                                for (var key in preisliste.PauschalKosten) {
+                                    Message.push(`<b>${CentToEuro(preisliste.PauschalKosten[key].Preis)}</b> für <i>${preisliste.PauschalKosten[key].Beschreibung}</i>`)
                                 }
     
                                 Message = Message.join("\n")

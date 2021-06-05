@@ -84,7 +84,7 @@
         }
     },
     "Regeln": {
-        "Text": "Bitte lies die Hausordnung aufmerksam durch!\n\n Die folgenden Regeln sind strikt für die Dauer der LAN einzuhalten. Ein Verstoß dieser kann im Ermessen bis zum Ausschluss von der LAN führen.",
+        "Text": "<b>Bitte lies die Hausordnung aufmerksam durch!</b>\n\n <i>Die folgenden Regeln sind strikt für die Dauer der LAN einzuhalten. Ein Verstoß dieser kann im Ermessen bis zum Ausschluss von der LAN führen.</i>",
         "RegelnAnzahl": "7",
         "Regeln": {
             "0": "1: Im Gebäude gilt striktes Rauchverbot keine Ausnahme. Es entstehen Aerosole -> es ist <b>Verboten!</b> Für Raucher gibt es die Möglichkeit wie auch vergangenes Jahr im Innenhof bei <u>geschlossener Gebäude Türe</u> zu Rauchen.",
@@ -105,7 +105,8 @@
         }
     },
     "Legal": {
-        "Text": "Bitte lies die Bestimmungen aufmerksam durch!",
+        "Text": "<b>Bitte lies die Bestimmungen aufmerksam durch!</b>",
+        "Preisliste": "Die folgenden Abgaben sind verpflichtend von jedem Gast zu zahlen und werden automatisch berechnet.",
         "LegalAnzahl": "4",
         "Legal": {
             "0": "Legal 1",

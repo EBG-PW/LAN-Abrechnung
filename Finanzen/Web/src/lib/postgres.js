@@ -29,7 +29,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
     if (err) {console.log(err)}
 });
-
+/*
 pool.query(`CREATE TABLE IF NOT EXISTS plugs (
   plugid serial,
   ipaddr inet,
@@ -63,7 +63,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS power_history (
   CONSTRAINTS plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid) ON UPDATE CASCADE ON DELETE CASCADE)`, (err, result) => {
   if (err) {console.log(err)}
 });
-
+*/
 pool.query(`CREATE TABLE IF NOT EXISTS regtoken (
   userid bigint,
   username text,
