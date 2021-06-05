@@ -373,8 +373,6 @@ bot.on('callbackQuery', (msg) => {
                             ]
                         ]);
 
-                        console.log(replyMarkup)
-
                         return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Fragen.WebReg'), {replyMarkup});
                         
                     }).catch(function(error){
