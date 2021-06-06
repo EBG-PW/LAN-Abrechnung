@@ -2,7 +2,7 @@
     "FixKostenProTag": 5000,
     "PauschalKosten": {
         "Wasser": {
-            "Preis": 200,
+            "Preis": 100,
             "Beschreibung": "Wasserpauschale (Klo, Dusche, etc)"
         },
         "Strom": {
@@ -10,7 +10,7 @@
             "Beschreibung": "Strom (Flur, Räume, Küche, etc)"
         },
         "Verbrauchsgüter": {
-            "Preis": 300,
+            "Preis": 400,
             "Beschreibung": "Verbrauchsgüter (Seife, etc)"
         },
         "Netzwerk": {
@@ -18,7 +18,7 @@
             "Beschreibung": "Netzwerk Infrastruktur"
         },
         "StromKWH": {
-            "Preis": 18,
+            "Preis": 18.1,
             "Beschreibung": "Preis pro KWh für PCs"
         }
     },
