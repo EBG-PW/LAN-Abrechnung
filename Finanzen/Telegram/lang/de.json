@@ -62,7 +62,7 @@
     },
     "Admin": {
         "MustBeReply": "Dieser Befehl kann nur als Antwort verwendet werden.",
-        "MustHaveAtributes": "Dieser Befehl brauch Atribute wie: {{Atributes}}",
+        "MustHaveAtributes": "Dieser Befehl brauch Attribute wie: {{Atributes}}",
         "MustBeAdmin": "Du musst selbst Admin sein um diesen Befehl zu nutzen.",
         "AddNoSuccsess": "Der Nutzer war schon Admin oder ist nicht registriert.",
         "AddSuccsess": "{{Username}}({{UserID}}) ist nun Admin.",
@@ -71,7 +71,7 @@
         "list": "Folgende Gäste sind Admin:{{AdminList}}"
     },
     "PaySystem": {
-        "Sucsess": "Du hast die Regestration erfolgreich abgeschlossen\n\nBiite überweiße die Kosten für die LAN-Party nun:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszewg:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie höhe der Überweißung bertägt: <pre language='c++'>{{Kosten}}</pre>"
+        "Sucsess": "Du hast die Registration erfolgreich abgeschlossen\n\nBitte überweise die Kosten für die LAN-Party nun:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Höhe der Überweisung beträgt: <pre language='c++'>{{Kosten}}</pre>"
     },
     "Hauptmenu": {
         "Text": "Hauptmenü:\n{{Username}} hier kannst du alle Funktionen des Bots sehen.",
@@ -105,14 +105,12 @@
         }
     },
     "Legal": {
-        "Text": "<b>Bitte lies die Bestimmungen aufmerksam durch!</b>",
+        "Text": "<b>Bitte lies die Bestimmungen aufmerksam durch und stimme ihnen zu!</b>",
         "Preisliste": "Die folgenden Abgaben sind verpflichtend von jedem Gast zu zahlen und werden automatisch berechnet.",
-        "LegalAnzahl": "4",
+        "LegalAnzahl": "2",
         "Legal": {
-            "0": "Legal 1",
-            "1": "Legal 2",
-            "2": "Legal 34",
-            "3": "Legal 69"
+            "0": "Zur Abrechnung der Stromkosten wird dir ein Stromzähler zur Verfügung gestellt. Die Benutzung des Zählers ist verpflichtend. Der Zähler ist nicht amtlich geeicht und hat eine Toleranz von 1%",
+            "1": "Es gibt einige allgemeine Abgaben für die LAN diese sind unten aufgeführt und dienen dazu um dieses Event ohne verlust für GEO und seinen Dad durchführen zu können.",
         },
         "Knöpfe": {
             "Zustimmen": "Zustimmen",
