@@ -18,7 +18,7 @@
             "Beschreibung": "Netzwerk Infrastruktur"
         },
         "StromKWH": {
-            "Preis": 18.1,
+            "Preis": 19,
             "Beschreibung": "Preis pro KWh für PCs"
         }
     },
