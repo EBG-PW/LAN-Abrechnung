@@ -93,6 +93,16 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
   if (err) {console.log(err)}
 });
 
+pool.query(`CREATE TABLE IF NOT EXISTS shopinglist (
+  userid bigint,
+  produktname text PRIMARY KEY,
+  produktcompany text,
+  price integer,
+  bought integer,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
+  if (err) {console.log(err)}
+});
+
 pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   targetapp text,
   id text PRIMARY KEY,
