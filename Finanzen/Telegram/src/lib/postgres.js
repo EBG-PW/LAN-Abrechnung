@@ -87,7 +87,6 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
   produktname text PRIMARY KEY,
   produktcompany text,
   price integer,
-  user integer,
   amount integer,
   bought integer,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
