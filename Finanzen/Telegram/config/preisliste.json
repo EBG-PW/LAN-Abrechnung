@@ -28,6 +28,36 @@
             "Hersteller": "Pringels",
             "Preis": 299,
             "Menge": 5
+        },
+        "OnionChips": {
+            "Name": "Sourcream Chips",
+            "Hersteller": "Pringels",
+            "Preis": 299,
+            "Menge": 8
+        },
+        "VanilleMilch": {
+            "Name": "Vanille Milch",
+            "Hersteller": "Müllermilch",
+            "Preis": 199,
+            "Menge": 5
+        },
+        "Cola": {
+            "Name": "Cola",
+            "Hersteller": "Coca-Cola Company",
+            "Preis": 99,
+            "Menge": 50
+        },
+        "Fanta": {
+            "Name": "Fanta",
+            "Hersteller": "Coca-Cola Company",
+            "Preis": 99,
+            "Menge": 50
+        },
+        "SchokoladeAlpenmilch": {
+            "Name": "Milka Alpenmilch",
+            "Hersteller": "Milka",
+            "Preis": 129,
+            "Menge": 55
         }
     }
 }
