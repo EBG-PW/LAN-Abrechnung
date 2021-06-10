@@ -120,5 +120,8 @@
             "Zustimmen": "Zugestimmt",
             "Ablehnen": "Abgelehnt"
         }
+    },
+    "loadprice" :{
+        "Text": "Es wurden {{Amount}} Artikel eingelesen oder geupdatet und das hat {{duration}} gedauert."
     }
 }

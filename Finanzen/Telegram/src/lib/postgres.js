@@ -29,7 +29,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
     if (err) {console.log(err)}
 });
-/*
+
 pool.query(`CREATE TABLE IF NOT EXISTS plugs (
   plugid serial,
   ipaddr inet,
@@ -41,7 +41,12 @@ pool.query(`CREATE TABLE IF NOT EXISTS plugs (
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (plugid),
   CONSTRAINT userid_unique UNIQUE (userid),
-  CONSTRAINT ipaddr_unique UNIQUE (ipaddr))`, (err, result) => {
+  CONSTRAINT ipaddr_unique UNIQUE (ipaddr),
+  CONSTRAINT plugid_fk FOREIGN KEY(userid)
+  REFERENCES guests(userid)
+  ON UPDATE CASCADE
+  ON DELETE CASCADE
+  NOT VALID)`, (err, result) => { 
   if (err) {console.log(err)}
 });
 
@@ -50,7 +55,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS plugs_history (
   energy double precision,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (plugid,time),
-  CONSTRAINTS plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid) ON UPDATE CASCADE ON DELETE CASCADE)`, (err, result) => {
+  CONSTRAINT plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid))`, (err, result) => {
   if (err) {console.log(err)}
 });
 
@@ -59,11 +64,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS power_history (
   energy_now double precision,
   voltage_now double precision,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (energy_now,voltage_now,time),
-  CONSTRAINTS plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid) ON UPDATE CASCADE ON DELETE CASCADE)`, (err, result) => {
+  PRIMARY KEY (plugid,time),
+  CONSTRAINT plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid))`, (err, result) => {
   if (err) {console.log(err)}
 });
-*/
+
 pool.query(`CREATE TABLE IF NOT EXISTS regtoken (
   userid bigint,
   username text,
@@ -88,18 +93,19 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
   produktcompany text,
   price integer,
   amount integer,
-  bought integer,
+  bought integer DEFAULT 0,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
   if (err) {console.log(err)}
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS shopinglist (
   userid bigint,
-  produktname text PRIMARY KEY,
+  produktname text,
   produktcompany text,
   price integer,
   bought integer,
-  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (userid,time))`, (err, result) => {
   if (err) {console.log(err)}
 });
 
@@ -337,7 +343,21 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   });
 }
 
-
+/**
+ * This function will add or update a product
+ * @param {object} Product
+ * @returns {Promise}
+ */
+ let AddProduct = function(Product) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`INSERT INTO products(produktname, produktcompany, price, amount) VALUES ($1,$2,$3,$4) ON CONFLICT (produktname) DO UPDATE SET produktcompany=$2, price=$3, amount=$4, time=now()`,[
+      Product.Name, Product.Hersteller, Product.Preis, Product.Menge
+    ], (err, result) => {
+      if (err) {reject(err)}
+        resolve(result)
+    });
+  });
+}
 
 
 let get = {
@@ -363,6 +383,9 @@ let write = {
   },
   RegToken: {
     NewToken: WriteNewRegToken
+  },
+  Products: {
+    Add: AddProduct
   }
 }
 

@@ -25,6 +25,29 @@ if(fs.existsSync(`${reqPath}${process.env.Config}/preisliste.json`)) {
 	preisliste = JSON.parse(fs.readFileSync(`${reqPath}/${process.env.Config}/preisliste.json`));
 }
 
+bot.on(/^\/loadprice/i, (msg) => {
+    var run_start = new Date().getTime();
+    DB.get.Guests.Check.Admin(msg.from.id).then(function(Admin_Check_response) {
+        if(Admin_Check_response){
+            let Restul_array = [];
+            for (var key in preisliste.SnackBar) {
+                Restul_array.push(DB.write.Products.Add(preisliste.SnackBar[key]))
+            }
+            Promise.all(Restul_array).then(function(Insert_Response) {
+                return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'loadprice.Text', {Amount: Insert_Response.length, duration: TimeConvert(new Date().getTime()-run_start)}));
+            }).catch(function(error){
+                console.log(error)
+                return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+            })
+        }else{
+            return bot.sendMessage(msg.chat.id,newi18n.translate('de', 'Admin.MustBeAdmin'));
+        }
+    }).catch(function(error){
+        console.log(error)
+        return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+    })
+});
+
 bot.on(/^\/start/i, (msg) => {
     if(msg.chat.type === "private"){
         let replyMarkup = bot.inlineKeyboard([
@@ -122,7 +145,10 @@ bot.on(/^\/admin( .+)*/i, (msg, props) => {
         }else{
             return bot.sendMessage(msg.chat.id,newi18n.translate('de', 'Admin.MustBeAdmin'));
         }
-    });
+    }).catch(function(error){
+        console.log(error)
+        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+    })
 });
 
 bot.on('callbackQuery', (msg) => {
@@ -606,7 +632,7 @@ function AtrbutCheck(props) {
 }
 
 /**
- * This function will handle pops of telebot
+ * This function will convert cents to Euro ISO 
  * @param {string} value
  * @returns {string}
  */
@@ -614,6 +640,23 @@ function CentToEuro(value){
     var euro = value / 100;
     return euro.toLocaleString("de-De", {style:"currency", currency:"EUR"});
 }
+
+/**
+ * This function will convert a timediff into a humane readable string
+ * @param {number} timediff
+ * @returns {string}
+ */
+function TimeConvert(timediff){
+    if(timediff >= 1000){
+        if(timediff/1000 >= 60){
+            return `${timediff/1000*60}m`
+        }
+        return `${timediff/1000}s`
+    }else{
+        return `${timediff}ms`
+    }
+}
+
 /* - - - - Database Event Checker - - - - */
 
 setInterval(function(){
