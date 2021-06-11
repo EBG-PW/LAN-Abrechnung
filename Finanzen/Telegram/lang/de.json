@@ -107,10 +107,11 @@
     "Legal": {
         "Text": "<b>Bitte lies die Bestimmungen aufmerksam durch und stimme ihnen zu!</b>",
         "Preisliste": "Die folgenden Abgaben sind verpflichtend von jedem Gast zu zahlen und werden automatisch berechnet.",
-        "LegalAnzahl": "2",
+        "LegalAnzahl": "3",
         "Legal": {
             "0": "Zur Abrechnung der Stromkosten wird dir ein Stromzähler zur Verfügung gestellt. Die Benutzung des Zählers ist verpflichtend. Der Zähler ist nicht amtlich geeicht und hat eine Toleranz von 1%",
-            "1": "Es gibt einige allgemeine Abgaben für die LAN diese sind unten aufgeführt und dienen dazu um dieses Event ohne verlust für GEO und seinen Dad durchführen zu können."
+            "1": "Es gibt einige allgemeine Abgaben für die LAN diese sind unten aufgeführt und dienen dazu um dieses Event ohne verlust für GEO und seinen Dad durchführen zu können.",
+            "2": "Du hast kein Problem damit spontan kein Netzwerk mehr zu haben oder einen freundlichen RubberDucky in deinen PC zu bekommen. :D"
         },
         "Knöpfe": {
             "Zustimmen": "Zustimmen",
