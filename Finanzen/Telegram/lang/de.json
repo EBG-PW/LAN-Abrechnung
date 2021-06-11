@@ -140,7 +140,7 @@
             "ID": "N{{ID}}",
             "Text": "{{Produkt}} von {{Hersteller}}",
             "Beschreibung": "Preis pro Stück: {{Preis}} - Es sind {{Verfügbar}} auf Lager",
-            "Message": "<b>Ausgewählter Artikel:</b> {{produktname}} von {{produktcompany}}\nPreis pro Stück: {{price}}\nAuf Lager: {{storrage}}\n\nWähle die menge der Artikel und bestätige deine Buchung. Entnehme die Artikel erst nach der Bestätigung."
+            "Message": "<b>Ausgewählter Artikel:</b> {{produktname}} von {{produktcompany}}\nPreis pro Stück: {{price}}\nAuf Lager: {{storrage}}\n\nUm den Artikel zu kaufen klick unten auf den Knopf."
         },
         "Knöpfe": {
             "Add": "+1",
