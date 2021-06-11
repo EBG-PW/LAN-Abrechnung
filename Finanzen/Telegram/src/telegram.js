@@ -562,7 +562,9 @@ bot.on('inlineQuery', msg => {
             description: msg.query,
             message_text: (`${newi18n.translate('de', `Inline.NoQuery.Message`)}`)
         });
-		return bot.answerQuery(answers);
+		return bot.answerQuery(answers).catch(function(error){
+            console.log(error)
+        })
 	}else{
         DB.get.Products.LikeGet(query).then(function(Product_Response) {
             let rows = Product_Response.rows
@@ -573,20 +575,45 @@ bot.on('inlineQuery', msg => {
 					description: msg.query,
 					message_text: (`${newi18n.translate('de', `Inline.NotFound.Message`)}`)
 				});
-				return bot.answerQuery(answers);
+				return bot.answerQuery(answers).catch(function(error){
+                    console.log(error)
+                })
 			}else{
 				idCount = 0;
 				for(i in rows){
+                    /*
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Add'), {callback: 'Buy_Add'}),
+                            bot.inlineButton(`1`, {callback: 'None'}),
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Remove'), {callback: 'Buy_Rem'})
+                        ],[
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Abbrechen'), {callback: 'Buy_Escape'}),
+                            bot.inlineButton(`${CentToEuro(rows[i].price)}`, {callback: 'None'}),
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Bestätigen'), {callback: 'Buy_Confirm'})
+                        ]
+                    ]);
+                    */
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Kaufen'), {callback: `Buy_${msg.from.id}_${rows[i].produktname}`,})
+                        ]
+                    ]);
+                        console.log(replyMarkup)
 						answers.addArticle({
 							id: `${newi18n.translate('de', `Inline.Found.ID`, {ID: idCount})}`,
 							title: `${newi18n.translate('de', `Inline.Found.Text`, {Produkt: rows[i].produktname, Hersteller: rows[i].produktcompany})}`,
 							description: `${newi18n.translate('de', `Inline.Found.Beschreibung`, {Preis: CentToEuro(rows[i].price), Verfügbar: rows[i].amount-rows[i].bought})}`,
-							message_text: `${newi18n.translate('de', `Inline.Found.Message`)}`,
+							message_text: `${newi18n.translate('de', `Inline.Found.Message`, {price: CentToEuro(rows[i].price), storrage: rows[i].amount-rows[i].bought, produktname: rows[i].produktname, produktcompany: rows[i].produktcompany})}`,
+                            reply_markup: replyMarkup,
 							parse_mode: 'html'
+                            
 						});
 						idCount++
 				}
-				return bot.answerQuery(answers);
+				return bot.answerQuery(answers).catch(function(error){
+                    console.log(error)
+                })
 			}
         });
 	}
