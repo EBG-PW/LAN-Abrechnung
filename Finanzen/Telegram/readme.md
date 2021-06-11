@@ -23,8 +23,8 @@ WebPanelURL=https://lan.ebg.pw
    
 ## Commands
 ### Admin
-__/loadprice__ - Will update the products table from the file preisliste.json
-__/admin <Action>__ - Add/Remove/List users with admin permissions of the project
+__/loadprice__ - Will update the products table from the file preisliste.json  
+__/admin <Action>__ - Add/Remove/List users with admin permissions of the project  
 ### User
-__/start__ - Displays welcome message and button to register
-__/hauptmenu__ - Will show the main menue with all buttons
+__/start__ - Displays welcome message and button to register  
+__/hauptmenu__ - Will show the main menue with all buttons  
