@@ -359,6 +359,34 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   });
 }
 
+/**
+ * This function will query products with the like parameter
+ * @param {string} query
+ * @returns {Promise}
+ */
+ let LookLikeProduct = function(query) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM products WHERE LOWER(produktname) LIKE LOWER('%${query}%')`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result)
+    });
+  });
+}
+
+/**
+ * This function will return all about a product
+ * @param {string} produktname
+ * @returns {Promise}
+ */
+ let GetProduct = function(produktname) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM products WHERE produktname = '%${produktname}%'`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result)
+    });
+  });
+}
+
 
 let get = {
   Guests: {
@@ -373,6 +401,10 @@ let get = {
   },
   RegToken: {
     ByToken: GetRegTokenByToken
+  },
+  Products: {
+    LikeGet: LookLikeProduct,
+    Get: GetProduct
   }
 }
 

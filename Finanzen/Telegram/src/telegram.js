@@ -549,6 +549,49 @@ bot.on('callbackQuery', (msg) => {
     }
 });
 
+/* - - - - Telegram Inline Handler - - - - */
+
+bot.on('inlineQuery', msg => {
+	let query = msg.query.toLowerCase();
+	let queryarr = query.split('');
+    const answers = bot.answerList(msg.id, {cacheTime: 1});
+    if(queryarr.length === 0){
+		answers.addArticle({
+            id: `${newi18n.translate('de', `Inline.NoQuery.ID`)}`,
+            title: `${newi18n.translate('de', `Inline.NoQuery.Text`)}`,
+            description: msg.query,
+            message_text: (`${newi18n.translate('de', `Inline.NoQuery.Message`)}`)
+        });
+		return bot.answerQuery(answers);
+	}else{
+        DB.get.Products.LikeGet(query).then(function(Product_Response) {
+            let rows = Product_Response.rows
+			if(Object.entries(rows).length === 0){
+				answers.addArticle({
+					id: `${newi18n.translate('de', `Inline.NotFound.ID`)}`,
+					title: `${newi18n.translate('de', `Inline.NotFound.Text`)}`,
+					description: msg.query,
+					message_text: (`${newi18n.translate('de', `Inline.NotFound.Message`)}`)
+				});
+				return bot.answerQuery(answers);
+			}else{
+				idCount = 0;
+				for(i in rows){
+						answers.addArticle({
+							id: `${newi18n.translate('de', `Inline.Found.ID`, {ID: idCount})}`,
+							title: `${newi18n.translate('de', `Inline.Found.Text`, {Produkt: rows[i].produktname, Hersteller: rows[i].produktcompany})}`,
+							description: `${newi18n.translate('de', `Inline.Found.Beschreibung`, {Preis: CentToEuro(rows[i].price), Verfügbar: rows[i].amount-rows[i].bought})}`,
+							message_text: `${newi18n.translate('de', `Inline.Found.Message`)}`,
+							parse_mode: 'html'
+						});
+						idCount++
+				}
+				return bot.answerQuery(answers);
+			}
+        });
+	}
+});
+
 bot.start();
 
 /* - - - - Telegram External Functions - - - - */

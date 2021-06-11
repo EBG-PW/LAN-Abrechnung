@@ -122,7 +122,25 @@
             "Ablehnen": "Abgelehnt"
         }
     },
-    "loadprice" :{
+    "loadprice": {
         "Text": "Es wurden {{Amount}} Artikel eingelesen oder geupdatet und das hat {{duration}} gedauert."
+    },
+    "Inline": {
+        "NoQuery": {
+            "ID": "NoQuery",
+            "Text": "Bitte gib einen Artikel in die Leiste ein",
+            "Message": "Um einen Artikel zu kaufen, musst du den Namen in der Chat Leiste eingeben und dann das passende Feld auswählen."
+        },
+        "NotFound": {
+            "ID": "NotFound",
+            "Text": "Artikel konnte nicht gefunden werden",
+            "Message": "Der Artikel {{}} konnte leider nicht gefunden werden."
+        },
+        "Found": {
+            "ID": "N{{ID}}",
+            "Text": "{{Produkt}} von {{Hersteller}}",
+            "Beschreibung": "Preis pro Stück: {{Preis}} - Es sind {{Verfügbar}} auf Lager",
+            "Message": "Temp"
+        }
     }
 }
