@@ -148,6 +148,8 @@
             "Abbrechen": "Abbrechen",
             "Bestätigen": "Bestätigen",
             "Kaufen": "Buchen"
-        }
+        },
+        "MainMessage": "<b>Ausgewählter Artikel:</b> {{produktname}} von {{produktcompany}}\nPreis pro Stück: {{price}}\nAuf Lager: {{storrage}}\n\nBitte wähle unten die Menge aus und bestetige deinen Kauf. Warte bitte auf die Bestätigung durch den Bot",
+        "MainProgress": "Buchungsmenü wird aufgerufen..."
     }
 }

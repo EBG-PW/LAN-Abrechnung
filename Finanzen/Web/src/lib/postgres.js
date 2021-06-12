@@ -380,7 +380,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  */
  let GetProduct = function(produktname) {
   return new Promise(function(resolve, reject) {
-    pool.query(`SELECT * FROM products WHERE produktname = '%${produktname}%'`, (err, result) => {
+    pool.query(`SELECT * FROM products WHERE produktname = '${produktname}'`, (err, result) => {
       if (err) {reject(err)}
         resolve(result)
     });
