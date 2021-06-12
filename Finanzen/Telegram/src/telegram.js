@@ -152,7 +152,6 @@ bot.on(/^\/admin( .+)*/i, (msg, props) => {
 });
 
 bot.on('callbackQuery', (msg) => {
-    console.log(msg)
 	if ('inline_message_id' in msg) {	
 		var inlineId = msg.inline_message_id;
 	}else{
@@ -176,8 +175,8 @@ bot.on('callbackQuery', (msg) => {
                             bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Remove'), {callback: `Buy_Rem`})
                         ],[
                             bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Abbrechen'), {callback: `Buy_Escape`}),
-                            bot.inlineButton(`${CentToEuro(product_response.rows[0].price)}`, {callback: 'None'}),
-                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Bestätigen'), {callback: `Bu_Confirm`})
+                            bot.inlineButton(`${CentToEuro(product_response.rows[0].price)}`, {callback: `${product_response.rows[0].price}`}),
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Bestätigen'), {callback: `Buy_Confirm`})
                         ]
                     ]);
 
@@ -197,6 +196,36 @@ bot.on('callbackQuery', (msg) => {
 
                     return bot.sendMessage(msg.from.id, newi18n.translate('de', 'Inline.MainMessage', {price: CentToEuro(product_response.rows[0].price), storrage: product_response.rows[0].amount-product_response.rows[0].bought, produktname: product_response.rows[0].produktname, produktcompany: product_response.rows[0].produktcompany}), {parseMode: `html`,replyMarkup});
                 });
+            }
+            if(data[1] === 'Add')
+            {
+                let product = msg.message.reply_markup.inline_keyboard[0][1].callback_data;
+                let amount_to_buy = msg.message.reply_markup.inline_keyboard[0][1].text;
+                let price = msg.message.reply_markup.inline_keyboard[1][1].callback_data;
+
+                let replyMarkup = bot.inlineKeyboard([
+                    [
+                        bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Add'), {callback: `Buy_Add`}),
+                        bot.inlineButton(`${parseInt(amount_to_buy)+1}`, {callback: `${product}`}),
+                        bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Remove'), {callback: `Buy_Rem`})
+                    ],[
+                        bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Abbrechen'), {callback: `Buy_Escape`}),
+                        bot.inlineButton(`${CentToEuro(parseInt(price)*(parseInt(amount_to_buy)+1))}`, {callback: `${price}`}),
+                        bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Bestätigen'), {callback: `Buy_Confirm`})
+                    ]
+                ]);
+
+                if ('inline_message_id' in msg) {
+                    bot.editMessageText(
+                        {inlineMsgId: inlineId}, msg.message.text,
+                        {parseMode: 'html', replyMarkup}
+                    ).catch(error => console.log('Error:', error));
+                }else{
+                    bot.editMessageText(
+                        {chatId: chatId, messageId: messageId}, msg.message.text,
+                        {parseMode: 'html', replyMarkup}
+                    ).catch(error => console.log('Error:', error));
+                }
             }
         }
 		if(data[0] === 'F')
@@ -581,11 +610,7 @@ bot.on('callbackQuery', (msg) => {
                     }
                 }
             }
-            if(data[0] === 'Buy')
-            {
-
-            }
-    }
+        }
 });
 
 /* - - - - Telegram Inline Handler - - - - */
