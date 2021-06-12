@@ -1,5 +1,6 @@
 {
     "WellcomeMSG": "Willkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.",
+    "WellcomeMSGAR": "Willkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.\n\nDu bist bereits regestriert. Hier das Haumtmenü.",
     "Fragen": {
         "PC": "Hast du einen Computer (PC) dabei?",
         "Displays": "Wie viele Displays bringst du mit?",

@@ -52,12 +52,23 @@ bot.on(/^\/loadprice/i, (msg) => {
 
 bot.on(/^\/start/i, (msg) => {
     if(msg.chat.type === "private"){
-        let replyMarkup = bot.inlineKeyboard([
-            [
-                bot.inlineButton(newi18n.translate('de', 'Knöpfe.Reg'), {callback: `R_${msg.from.id}_rules`})
-            ]
-        ]);
-        return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'WellcomeMSG', {LanName: mainconfig.LanName}), {replyMarkup});
+        DB.get.Guests.Check.ByID(msg.from.id).then(function(User_Check_response) {
+            if(!User_Check_response){
+                let replyMarkup = bot.inlineKeyboard([
+                    [
+                        bot.inlineButton(newi18n.translate('de', 'Knöpfe.Reg'), {callback: `R_${msg.from.id}_rules`})
+                    ]
+                ]);
+                return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'WellcomeMSG', {LanName: mainconfig.LanName}), {replyMarkup});
+            }else{
+                let replyMarkup = bot.inlineKeyboard([
+                    [
+                        bot.inlineButton(newi18n.translate('de', 'Knöpfe.Hauptmenu'), {callback: `/hauptmenu`})
+                    ]
+                ]);
+                return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'WellcomeMSGAR', {LanName: mainconfig.LanName}), {replyMarkup});
+            }
+        });
     }else{
         return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
     }
