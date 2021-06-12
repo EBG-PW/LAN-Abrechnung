@@ -149,7 +149,10 @@
             "Bestätigen": "Bestätigen",
             "Kaufen": "Buchen"
         },
-        "MainMessage": "<b>Ausgewählter Artikel:</b> {{produktname}} von {{produktcompany}}\nPreis pro Stück: {{price}}\nAuf Lager: {{storrage}}\n\nBitte wähle unten die Menge aus und bestetige deinen Kauf. Warte bitte auf die Bestätigung durch den Bot",
-        "MainProgress": "Buchungsmenü wird aufgerufen..."
+        "MainMessage": "<b>Ausgewählter Artikel:</b> {{produktname}} von {{produktcompany}}\nPreis pro Stück: {{price}}\nAuf Lager: {{storrage}}\n\nBitte wähle unten die Menge aus und bestetige deinen Kauf. Warte bitte auf die Bestätigung durch den Bot.",
+        "MainProgress": "Buchungsmenü wird aufgerufen...",
+        "Escape": "Buchungsmenü wurde geschlossen...",
+        "TooMutch": "Du kannst nicht mehr kaufen als auf Lager ist.",
+        "TooLitle": "Du kannst nicht weniger als eins kaufen"
     }
 }

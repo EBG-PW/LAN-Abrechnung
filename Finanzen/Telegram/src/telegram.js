@@ -171,7 +171,7 @@ bot.on('callbackQuery', (msg) => {
                     let replyMarkup = bot.inlineKeyboard([
                         [
                             bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Add'), {callback: `Buy_Add`}),
-                            bot.inlineButton(`1`, {callback: `${data[2]}`}),
+                            bot.inlineButton(`1/${product_response.rows[0].amount-product_response.rows[0].bought}`, {callback: `${data[2]}`}),
                             bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Remove'), {callback: `Buy_Rem`})
                         ],[
                             bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Abbrechen'), {callback: `Buy_Escape`}),
@@ -198,32 +198,94 @@ bot.on('callbackQuery', (msg) => {
                 });
             }
             if(data[1] === 'Add')
-            {
+            {   
+                let amount_split = msg.message.reply_markup.inline_keyboard[0][1].text.split("/")
                 let product = msg.message.reply_markup.inline_keyboard[0][1].callback_data;
-                let amount_to_buy = msg.message.reply_markup.inline_keyboard[0][1].text;
+                let amount_to_buy = amount_split[0];
+                let amount_max = amount_split[1]
                 let price = msg.message.reply_markup.inline_keyboard[1][1].callback_data;
 
-                let replyMarkup = bot.inlineKeyboard([
-                    [
-                        bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Add'), {callback: `Buy_Add`}),
-                        bot.inlineButton(`${parseInt(amount_to_buy)+1}`, {callback: `${product}`}),
-                        bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Remove'), {callback: `Buy_Rem`})
-                    ],[
-                        bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Abbrechen'), {callback: `Buy_Escape`}),
-                        bot.inlineButton(`${CentToEuro(parseInt(price)*(parseInt(amount_to_buy)+1))}`, {callback: `${price}`}),
-                        bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Bestätigen'), {callback: `Buy_Confirm`})
-                    ]
-                ]);
+                if(amount_max > amount_to_buy){
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Add'), {callback: `Buy_Add`}),
+                            bot.inlineButton(`${parseInt(amount_to_buy)+1}/${amount_max}`, {callback: `${product}`}),
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Remove'), {callback: `Buy_Rem`})
+                        ],[
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Abbrechen'), {callback: `Buy_Escape`}),
+                            bot.inlineButton(`${CentToEuro(parseInt(price)*(parseInt(amount_to_buy)+1))}`, {callback: `${price}`}),
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Bestätigen'), {callback: `Buy_Confirm`})
+                        ]
+                    ]);
+    
+                    if ('inline_message_id' in msg) {
+                        bot.editMessageText(
+                            {inlineMsgId: inlineId}, msg.message.text,
+                            {parseMode: 'html', replyMarkup}
+                        ).catch(error => console.log('Error:', error));
+                    }else{
+                        bot.editMessageText(
+                            {chatId: chatId, messageId: messageId}, msg.message.text,
+                            {parseMode: 'html', replyMarkup}
+                        ).catch(error => console.log('Error:', error));
+                    }
+                }else{
+                    bot.answerCallbackQuery(msg.id,{
+                        text: newi18n.translate('de', 'Inline.TooMutch'),
+                        showAlert: true
+                    });
+                }
+            }
+            if(data[1] === 'Rem')
+            {   
+                let amount_split = msg.message.reply_markup.inline_keyboard[0][1].text.split("/")
+                let product = msg.message.reply_markup.inline_keyboard[0][1].callback_data;
+                let amount_to_buy = amount_split[0];
+                let amount_max = amount_split[1]
+                let price = msg.message.reply_markup.inline_keyboard[1][1].callback_data;
 
+                if(1 < amount_to_buy){
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Add'), {callback: `Buy_Add`}),
+                            bot.inlineButton(`${parseInt(amount_to_buy)-1}/${amount_max}`, {callback: `${product}`}),
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Remove'), {callback: `Buy_Rem`})
+                        ],[
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Abbrechen'), {callback: `Buy_Escape`}),
+                            bot.inlineButton(`${CentToEuro(parseInt(price)*(parseInt(amount_to_buy)-1))}`, {callback: `${price}`}),
+                            bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Bestätigen'), {callback: `Buy_Confirm`})
+                        ]
+                    ]);
+    
+                    if ('inline_message_id' in msg) {
+                        bot.editMessageText(
+                            {inlineMsgId: inlineId}, msg.message.text,
+                            {parseMode: 'html', replyMarkup}
+                        ).catch(error => console.log('Error:', error));
+                    }else{
+                        bot.editMessageText(
+                            {chatId: chatId, messageId: messageId}, msg.message.text,
+                            {parseMode: 'html', replyMarkup}
+                        ).catch(error => console.log('Error:', error));
+                    }
+                }else{
+                    bot.answerCallbackQuery(msg.id,{
+                        text: newi18n.translate('de', 'Inline.TooLitle'),
+                        showAlert: true
+                    });
+                }
+            }
+            if(data[1] === 'Escape')
+            {   
                 if ('inline_message_id' in msg) {
                     bot.editMessageText(
-                        {inlineMsgId: inlineId}, msg.message.text,
-                        {parseMode: 'html', replyMarkup}
+                        {inlineMsgId: inlineId}, newi18n.translate('de', 'Inline.Escape'),
+                        {parseMode: 'html'}
                     ).catch(error => console.log('Error:', error));
                 }else{
                     bot.editMessageText(
-                        {chatId: chatId, messageId: messageId}, msg.message.text,
-                        {parseMode: 'html', replyMarkup}
+                        {chatId: chatId, messageId: messageId}, newi18n.translate('de', 'Inline.Escape'),
+                        {parseMode: 'html'}
                     ).catch(error => console.log('Error:', error));
                 }
             }
