@@ -19,7 +19,7 @@
         },
         "StromKWH": {
             "Preis": 19,
-            "Beschreibung": "Preis pro KWh für PCs"
+            "Beschreibung": "Preis pro kWh"
         }
     },
     "SnackBar": {
