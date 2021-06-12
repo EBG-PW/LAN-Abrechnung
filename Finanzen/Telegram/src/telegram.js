@@ -10,6 +10,8 @@ const newi18n = new i18n(path.join(reqPath, process.env.Sprache), ["de"], "de");
 
 let mainconfig, preisliste;
 
+console.log("All Systems Running!")
+
 const Telebot = require('telebot');
 const bot = new Telebot({
 	token: process.env.Telegram_Bot_Token,
