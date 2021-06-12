@@ -53,7 +53,7 @@ bot.on(/^\/loadprice/i, (msg) => {
 bot.on(/^\/start/i, (msg) => {
     if(msg.chat.type === "private"){
         DB.get.Guests.Check.ByID(msg.from.id).then(function(User_Check_response) {
-            if(!User_Check_response){
+            if(!User_Check_response || parseInt(mainconfig.SudoUser) === msg.from.id){
                 let replyMarkup = bot.inlineKeyboard([
                     [
                         bot.inlineButton(newi18n.translate('de', 'Knöpfe.Reg'), {callback: `R_${msg.from.id}_rules`})
