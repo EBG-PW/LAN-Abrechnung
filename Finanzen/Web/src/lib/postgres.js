@@ -141,7 +141,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
     return new Promise(function(resolve, reject) {
       pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
         if (err) {reject(err)}
-        resolve(result.rows)
+        resolve(result.rows[0])
       });
     });
   }
@@ -163,6 +163,38 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
       });
     });
   }
+
+/**
+ * This function will check if a user finished registration
+ * @param {number} user_id
+ * @returns {boolean}
+ */
+ let RegCheckGuestByID = function(user_id) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
+      if (err) {reject(err)}
+      if(result.rows[0].pyed_id !== null){
+        resolve(true)
+      }else{
+        resolve(false)
+      }
+    });
+  });
+}
+
+/**
+ * This function will check if a user has payed
+ * @param {number} user_id
+ * @returns {boolean}
+ */
+ let PayedCheckGuestByID = function(user_id) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result.rows[0].payed)
+    });
+  });
+}
 
 /**
  * This function will check if a user had accepted rules & legal
