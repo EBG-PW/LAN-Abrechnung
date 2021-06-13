@@ -80,7 +80,13 @@ bot.on(/^\/start/i, (msg) => {
 });
 
 bot.on(/^\/hauptmenu/i, (msg) => {
-    if(msg.message.chat.type === "private"){
+    let private;
+    if(msg.chat){
+        if(msg.chat.type === "private"){private = true}
+    }else{
+        if(msg.message.chat.type === "private"){private = true}
+    }
+    if(private){
         let replyMarkup = bot.inlineKeyboard([
             [
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Zahlung'), {callback: 'M_Pay'}),
@@ -102,9 +108,17 @@ bot.on(/^\/hauptmenu/i, (msg) => {
             username = msg.from.first_name.toString();
         }
 
-        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Hauptmenu.Text', {Username: username}), {replyMarkup});
+        if(msg.chat){
+            return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Hauptmenu.Text', {Username: username}), {replyMarkup});
+        }else{
+            return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Hauptmenu.Text', {Username: username}), {replyMarkup});
+        }
     }else{
-        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
+        if(msg.chat){
+            return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
+        }else{
+            return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
+        }
     }
 });
 
