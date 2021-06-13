@@ -428,7 +428,9 @@ let get = {
     Check: {
       ByID: CheckGuestByID,
       Admin: CheckIfAdminbyID,
-      Rules: CheckGuestRulesByID
+      Rules: CheckGuestRulesByID,
+      Reg: RegCheckGuestByID,
+      Payed: PayedCheckGuestByID
     }
   },
   RegToken: {
