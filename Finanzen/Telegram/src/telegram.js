@@ -87,7 +87,7 @@ bot.on(/^\/hauptmenu/i, (msg) => {
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Artikel'), {inlineCurrent: ''})
             ],
             [
-                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Spenden'), {callback: 'M_Donate'}),
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Spenden'), {inlineCurrent: 'spende'}),
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.WebSession'), {callback: 'M_WebS'})
             ],
             [
@@ -223,7 +223,7 @@ bot.on('callbackQuery', (msg) => {
                 let amount_max = amount_split[1]
                 let price = msg.message.reply_markup.inline_keyboard[1][1].callback_data;
 
-                if(amount_max > amount_to_buy){
+                if(parseInt(amount_max) > parseInt(amount_to_buy)){
                     let replyMarkup = bot.inlineKeyboard([
                         [
                             bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Add'), {callback: `Buy_Add`}),
@@ -262,7 +262,7 @@ bot.on('callbackQuery', (msg) => {
                 let amount_max = amount_split[1]
                 let price = msg.message.reply_markup.inline_keyboard[1][1].callback_data;
 
-                if(1 < amount_to_buy){
+                if(1 < parseInt(amount_to_buy)){
                     let replyMarkup = bot.inlineKeyboard([
                         [
                             bot.inlineButton(newi18n.translate('de', 'Inline.Knöpfe.Add'), {callback: `Buy_Add`}),

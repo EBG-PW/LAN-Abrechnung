@@ -23,6 +23,12 @@
         }
     },
     "SnackBar": {
+        "Spende": {
+            "Name": "Spende",
+            "Hersteller": "EBG.PW",
+            "Preis": 100,
+            "Menge": 500
+        },
         "PaprikaChips": {
             "Name": "Paprika Chips",
             "Hersteller": "Pringels",
