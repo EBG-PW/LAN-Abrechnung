@@ -141,7 +141,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
     return new Promise(function(resolve, reject) {
       pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
         if (err) {reject(err)}
-        resolve(result.rows[0])
+        resolve(result.rows)
       });
     });
   }

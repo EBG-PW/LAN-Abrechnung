@@ -61,7 +61,7 @@ bot.on(/^\/start/i, (msg) => {
                 ]);
                 return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'WellcomeMSG', {LanName: mainconfig.LanName}), {replyMarkup});
             }else{
-                if(User_response.pyed_id !== null){
+                if(User_response[0].pyed_id !== null){
                     let replyMarkup = bot.inlineKeyboard([
                         [
                             bot.inlineButton(newi18n.translate('de', 'Knöpfe.Hauptmenu'), {callback: `/hauptmenu`})
@@ -73,7 +73,10 @@ bot.on(/^\/start/i, (msg) => {
                     
                 }
             }
-        });
+        }).catch(function(error){
+            console.log(error)
+            return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+        })
     }else{
         return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
     }
@@ -94,7 +97,7 @@ bot.on(/^\/hauptmenu/i, (msg) => {
             ],
             [
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Spenden'), {inlineCurrent: 'spende'}),
-                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.WebSession'), {callback: 'M_WebS'})
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Other'), {callback: 'M_Other'})
             ],
             [
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Webpanel'), {url: `${process.env.WebPanelURL}`}),
