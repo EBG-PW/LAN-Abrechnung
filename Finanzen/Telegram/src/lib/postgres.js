@@ -127,7 +127,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
     return new Promise(function(resolve, reject) {
       pool.query('SELECT * FROM guests', (err, result) => {
         if (err) {reject(err)}
-        resolve(result.rows)
+        resolve(result.rows);
       });
     });
   }
@@ -141,7 +141,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
     return new Promise(function(resolve, reject) {
       pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
         if (err) {reject(err)}
-        resolve(result.rows)
+        resolve(result.rows);
       });
     });
   }
@@ -156,9 +156,9 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
       pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
         if (err) {reject(err)}
         if(result.rows.length <= 0){
-          resolve(false)
+          resolve(false);
         }else{
-          resolve(true)
+          resolve(true);
         }
       });
     });
@@ -174,9 +174,9 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
     pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
       if (err) {reject(err)}
       if(result.rows[0].pyed_id !== null){
-        resolve(true)
+        resolve(true);
       }else{
-        resolve(false)
+        resolve(false);
       }
     });
   });
@@ -191,7 +191,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   return new Promise(function(resolve, reject) {
     pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
       if (err) {reject(err)}
-        resolve(result.rows[0].payed)
+        resolve(result.rows[0].payed);
     });
   });
 }
@@ -206,9 +206,9 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
     pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
       if (err) {reject(err)}
       if(typeof result.rows[0].accepted_rules !== 'undefined' && typeof result.rows[0].accepted_legal !== 'undefined'){
-        resolve(true)
+        resolve(true);
       }else{
-        resolve(false)
+        resolve(false);
       }
     });
   });
@@ -225,12 +225,12 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
       if (err) {reject(err)}
       if(result.rows.length === 1){
         if(result.rows[0].admin === true){
-          resolve(true)
+          resolve(true);
         }else{
-          resolve(false)
+          resolve(false);
         }
       }else{
-        resolve(false)
+        resolve(false);
       }
     });
   });
@@ -244,7 +244,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   return new Promise(function(resolve, reject) {
     pool.query(`SELECT * FROM guests WHERE admin = 'true'`, (err, result) => {
       if (err) {reject(err)}
-      resolve(result.rows)
+      resolve(result.rows);
     });
   });
 }
@@ -262,7 +262,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
       value, User_id
       ], (err, result) => {
         if (err) {reject(err)}
-        resolve(result)
+        resolve(result);
       });
     });
   }
@@ -279,7 +279,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
       User_id, username
     ], (err, result) => {
       if (err) {reject(err)}
-      resolve(result)
+      resolve(result);
     });
   });
 }
@@ -297,7 +297,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
       User_id, username, token
     ], (err, result) => {
       if (err) {reject(err)}
-      resolve(result)
+      resolve(result);
     });
   });
 }
@@ -311,7 +311,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   return new Promise(function(resolve, reject) {
     pool.query(`SELECT * FROM regtoken WHERE token = '${Token}'`, (err, result) => {
       if (err) {reject(err)}
-        resolve(result)
+        resolve(result);
     });
   });
 }
@@ -325,7 +325,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   return new Promise(function(resolve, reject) {
     pool.query(`DELETE FROM regtoken WHERE token = '${Token}'`, (err, result) => {
       if (err) {reject(err)}
-        resolve(result)
+        resolve(result);
     });
   });
 }
@@ -343,7 +343,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
       targetapp, id, message.text, message.chatid, message.type
     ], (err, result) => {
       if (err) {reject(err)}
-      resolve(result)
+      resolve(result);
     });
   });
 }
@@ -357,7 +357,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   return new Promise(function(resolve, reject) {
     pool.query(`DELETE FROM innersync WHERE id = '${ID}'`, (err, result) => {
       if (err) {reject(err)}
-        resolve(result)
+        resolve(result);
     });
   });
 }
@@ -370,7 +370,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   return new Promise(function(resolve, reject) {
     pool.query(`SELECT * FROM innersync WHERE type = 'Function'`, (err, result) => {
       if (err) {reject(err)}
-        resolve(result)
+        resolve(result);
     });
   });
 }
@@ -386,7 +386,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
       Product.Name, Product.Hersteller, Product.Preis, Product.Menge
     ], (err, result) => {
       if (err) {reject(err)}
-        resolve(result)
+        resolve(result);
     });
   });
 }
@@ -400,7 +400,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   return new Promise(function(resolve, reject) {
     pool.query(`SELECT * FROM products WHERE LOWER(produktname) LIKE LOWER('%${query}%')`, (err, result) => {
       if (err) {reject(err)}
-        resolve(result)
+        resolve(result);
     });
   });
 }
@@ -414,7 +414,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   return new Promise(function(resolve, reject) {
     pool.query(`SELECT * FROM products WHERE produktname = '${produktname}'`, (err, result) => {
       if (err) {reject(err)}
-        resolve(result)
+        resolve(result);
     });
   });
 }
