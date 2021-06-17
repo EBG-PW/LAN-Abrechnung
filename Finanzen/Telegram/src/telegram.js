@@ -96,7 +96,7 @@ bot.on(/^\/hauptmenu/i, (msg) => {
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Artikel'), {inlineCurrent: ''})
             ],
             [
-                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Spenden'), {inlineCurrent: 'spende'}),
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Spenden'), {callback: '/donate'}),
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Other'), {callback: '/moreinfo'})
             ],
             [
@@ -140,7 +140,7 @@ bot.on(/^\/maincallback/i, (msg) => {
             bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Artikel'), {inlineCurrent: ''})
         ],
         [
-            bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Spenden'), {inlineCurrent: 'spende'}),
+            bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Spenden'), {callback: '/donate'}),
             bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Other'), {callback: '/moreinfo'})
         ],
         [
@@ -213,11 +213,25 @@ bot.on(/^\/moreinfo/i, (msg) => {
     }
 });
 
+bot.on(/^\/donate/i, (msg) => {
+    let replyMarkup = bot.inlineKeyboard([
+        [
+            bot.inlineButton(newi18n.translate('de', 'Spenden.Knöpfe.Spenden'), {inlineCurrent: 'spende'})
+        ],
+        [
+            bot.inlineButton(newi18n.translate('de', 'Moreinfo.Legal.Exit'), {callback: `delete_this`})
+        ]
+    ]);
+    let Message = newi18n.translate('de', 'Spenden.Text')
+    
+    return bot.sendMessage(msg.message.chat.id, Message, {replyMarkup, parseMode: 'html'});
+});
+
 bot.on(/^\/rules/i, (msg) => {
     DB.get.Guests.ByID(msg.from.id).then(function(Guest_response) {
         let replyMarkup = bot.inlineKeyboard([
             [
-                bot.inlineButton(newi18n.translate('de', 'Moreinfo.Regeln.Exit'), {callback: `delete_this`}),
+                bot.inlineButton(newi18n.translate('de', 'Moreinfo.Regeln.Exit'), {callback: `delete_this`})
             ]
         ]);
         let Message = []
@@ -238,7 +252,7 @@ bot.on(/^\/legal/i, (msg) => {
     DB.get.Guests.ByID(msg.from.id).then(function(Guest_response) {
         let replyMarkup = bot.inlineKeyboard([
             [
-                bot.inlineButton(newi18n.translate('de', 'Moreinfo.Legal.Exit'), {callback: `delete_this`}),
+                bot.inlineButton(newi18n.translate('de', 'Moreinfo.Legal.Exit'), {callback: `delete_this`})
             ]
         ]);
         let Message = []
@@ -482,10 +496,14 @@ bot.on('callbackQuery', (msg) => {
                                             DB.write.shopinglist.Buy(msg.from.id, SQLprodukt).then(function(Write_Shoppinglist) {
                                                 console.log(Write_Shoppinglist)
                                                 let MSG;
-                                                if(amount_to_buy >= 2){
-                                                    MSG = newi18n.translate('de', 'Inline.ItemsBought', {produktname: product, produktcompany: product_response.rows[0].produktcompany, price: CentToEuro(price*amount_to_buy), amount: amount_to_buy})
+                                                if(product === "Spende"){
+                                                    MSG = newi18n.translate('de', 'Inline.Donation', {price: CentToEuro(price*amount_to_buy)})
                                                 }else{
-                                                    MSG = newi18n.translate('de', 'Inline.ItemBought', {produktname: product, produktcompany: product_response.rows[0].produktcompany, price: CentToEuro(price*amount_to_buy), amount: amount_to_buy})
+                                                    if(amount_to_buy >= 2){
+                                                        MSG = newi18n.translate('de', 'Inline.ItemsBought', {produktname: product, produktcompany: product_response.rows[0].produktcompany, price: CentToEuro(price*amount_to_buy), amount: amount_to_buy})
+                                                    }else{
+                                                        MSG = newi18n.translate('de', 'Inline.ItemBought', {produktname: product, produktcompany: product_response.rows[0].produktcompany, price: CentToEuro(price*amount_to_buy), amount: amount_to_buy})
+                                                    }
                                                 }
                                                 if ('inline_message_id' in msg) {
                                                     bot.editMessageText(
