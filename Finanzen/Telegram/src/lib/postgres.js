@@ -420,6 +420,20 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
 }
 
 /**
+ * This function will return all products
+ * @param {string} cull
+ * @returns {Promise}
+ */
+ let GetAllProduct = function(cull) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM products ORDER BY ${cull}`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+/**
  * This function will write a collum and the value of that collum
  * @param {string} produktname
  * @param {number} old_bought
@@ -473,7 +487,8 @@ let get = {
   },
   Products: {
     LikeGet: LookLikeProduct,
-    Get: GetProduct
+    Get: GetProduct,
+    GetAll: GetAllProduct
   }
 }
 

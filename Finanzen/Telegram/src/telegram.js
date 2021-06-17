@@ -783,15 +783,21 @@ bot.on('inlineQuery', msg => {
 	let queryarr = query.split('');
     const answers = bot.answerList(msg.id, {cacheTime: 1});
     if(queryarr.length === 0){
-		answers.addArticle({
-            id: `${newi18n.translate('de', `Inline.NoQuery.ID`)}`,
-            title: `${newi18n.translate('de', `Inline.NoQuery.Text`)}`,
-            description: msg.query,
-            message_text: (`${newi18n.translate('de', `Inline.NoQuery.Message`)}`)
+        DB.get.Products.GetAll("produktname").then(function(AllProducts) {
+            let ProductString = "";
+            AllProducts.rows.map(Product => {
+                ProductString = `${ProductString}${Product.produktname} - Auf Lager: ${Product.amount-Product.bought} zum Preis von ${CentToEuro(Product.price)} pro Stück\n`
+            })
+            answers.addArticle({
+                id: `${newi18n.translate('de', `Inline.NoQuery.ID`)}`,
+                title: `${newi18n.translate('de', `Inline.NoQuery.Text`)}`,
+                description: msg.query,
+                message_text: (`${newi18n.translate('de', `Inline.NoQuery.Message`)}\n${ProductString}`)
+            });
+            return bot.answerQuery(answers).catch(function(error){
+                console.log(error)
+            })
         });
-		return bot.answerQuery(answers).catch(function(error){
-            console.log(error)
-        })
 	}else{
         DB.get.Products.LikeGet(query).then(function(Product_Response) {
             let rows = Product_Response.rows
