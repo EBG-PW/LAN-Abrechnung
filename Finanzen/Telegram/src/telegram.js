@@ -213,19 +213,46 @@ bot.on(/^\/moreinfo/i, (msg) => {
     }
 });
 
+bot.on(/^\/rules/i, (msg) => {
+    DB.get.Guests.ByID(msg.from.id).then(function(Guest_response) {
+        let replyMarkup = bot.inlineKeyboard([
+            [
+                bot.inlineButton(newi18n.translate('de', 'Moreinfo.Regeln.Exit'), {callback: `delete_this`}),
+            ]
+        ]);
+        let Message = []
+        Message.push(newi18n.translate('de', 'Regeln.Text'))
+        for (i = 0; i < parseInt(newi18n.translate('de', 'Regeln.RegelnAnzahl')); i++) { 
+            Message.push(newi18n.translate('de', `Regeln.Regeln.${i}`))
+        }
+        Message.push(newi18n.translate('de', `Moreinfo.Regeln.AcceptedDate`, {akteptiert: new Date(Guest_response[0].accepted_rules).toLocaleDateString('de-DE')}))
+        Message = Message.join("\n")
+        return bot.sendMessage(msg.message.chat.id, Message, {replyMarkup, parseMode: 'html'});
+    }).catch(function(error){
+        console.log(error)
+        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+    })
+});
+
 bot.on(/^\/legal/i, (msg) => {
-    let replyMarkup = bot.inlineKeyboard([
-        [
-            bot.inlineButton(newi18n.translate('de', 'Moreinfo.Legal.Exit'), {callback: `delete_this`}),
-        ]
-    ]);
-    let Message = []
-        Message.push(newi18n.translate('de', 'Legal.Text'))
-    for (i = 0; i < parseInt(newi18n.translate('de', 'Legal.LegalAnzahl')); i++) { 
-        Message.push('- ' + newi18n.translate('de', `Legal.Legal.${i}`))
-    }
-    Message = Message.join("\n")
-    return bot.sendMessage(msg.message.chat.id, Message, {replyMarkup, parseMode: 'html'});
+    DB.get.Guests.ByID(msg.from.id).then(function(Guest_response) {
+        let replyMarkup = bot.inlineKeyboard([
+            [
+                bot.inlineButton(newi18n.translate('de', 'Moreinfo.Legal.Exit'), {callback: `delete_this`}),
+            ]
+        ]);
+        let Message = []
+            Message.push(newi18n.translate('de', 'Legal.Text'))
+        for (i = 0; i < parseInt(newi18n.translate('de', 'Legal.LegalAnzahl')); i++) { 
+            Message.push('- ' + newi18n.translate('de', `Legal.Legal.${i}`))
+        }
+        Message.push(newi18n.translate('de', `Moreinfo.Legal.AcceptedDate`, {akteptiert: new Date(Guest_response[0].accepted_legal).toLocaleDateString('de-DE')}))
+        Message = Message.join("\n")
+        return bot.sendMessage(msg.message.chat.id, Message, {replyMarkup, parseMode: 'html'});
+    }).catch(function(error){
+        console.log(error)
+        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+    })
 });
 
 bot.on(/^\/admin( .+)*/i, (msg, props) => {
@@ -303,6 +330,7 @@ bot.on('callbackQuery', (msg) => {
 	{   if(data[0] === 'delete'){
             if(data[1] === 'this'){
                 //delete message here!
+                bot.deleteMessage(chatId, messageId).catch(error => console.log('Error:', error));
             }
         }
         if(data[0] === 'Buy')

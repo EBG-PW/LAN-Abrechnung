@@ -76,7 +76,7 @@
         "Sucsess": "Du hast die Registration erfolgreich abgeschlossen\n\nBitte überweise die Kosten für die LAN-Party nun:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Höhe der Überweisung beträgt: <pre language='c++'>{{Kosten}}</pre>"
     },
     "Hauptmenu": {
-        "Text": "Hauptmenü:\n{{Username}} hier kannst du alle Funktionen des Bots sehen.",
+        "Text": "Hauptmenü:\n{{Username}} hier kannst du alle Funktionen des Bots sehen.\n\nUnter 'Mehr Infos' findest du die Hausordnung und Konditionen denen du zugestimmt hast.",
         "Knöpfe": {
             "Zahlung": "Zahlung",
             "Artikel": "Artikel kaufen",
@@ -88,12 +88,17 @@
     "Moreinfo":{
         "Text": "Mehr Infos:\n{{Username}} hier findest du weitere nützliche Informationen.",
         "Knöpfe": {
-            "Rules": "Regelm",
+            "Rules": "Regeln",
             "Legal": "Legal",
             "Hauptmenu": "⏪ Hauptmenü"
         },
+        "Regeln": {
+            "Exit": "❌ Schließen",
+            "AcceptedDate": "\nDas hast au am {{akteptiert}} akteptiert"
+        },
         "Legal": {
-            "Exit": "❌ Schließen"
+            "Exit": "❌ Schließen",
+            "AcceptedDate": "\nDas hast au am {{akteptiert}} akteptiert"
         }
     },
     "Regeln": {
