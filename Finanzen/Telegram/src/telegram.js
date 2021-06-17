@@ -97,7 +97,7 @@ bot.on(/^\/hauptmenu/i, (msg) => {
             ],
             [
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Spenden'), {inlineCurrent: 'spende'}),
-                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Other'), {callback: 'M_Other'})
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Other'), {callback: '/moreinfo'})
             ],
             [
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Webpanel'), {url: `${process.env.WebPanelURL}`}),
@@ -123,6 +123,109 @@ bot.on(/^\/hauptmenu/i, (msg) => {
             return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
         }
     }
+});
+
+bot.on(/^\/maincallback/i, (msg) => {
+    //THIS WILL ONLY WORK WHEN CALLED BY INLINE FUNCTION
+    if ('inline_message_id' in msg) {	
+		var inlineId = msg.inline_message_id;
+	}else{
+		var chatId = msg.message.chat.id;
+		var messageId = msg.message.message_id;
+	}
+
+    let replyMarkup = bot.inlineKeyboard([
+        [
+            bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Zahlung'), {callback: 'M_Pay'}),
+            bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Artikel'), {inlineCurrent: ''})
+        ],
+        [
+            bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Spenden'), {inlineCurrent: 'spende'}),
+            bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Other'), {callback: '/moreinfo'})
+        ],
+        [
+            bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Webpanel'), {url: `${process.env.WebPanelURL}`}),
+        ]
+    ]);
+
+        let username;
+        if ('username' in msg.from) {
+             username = msg.from.username.toString();
+        }else{
+            username = msg.from.first_name.toString();
+        }
+
+        let Message = newi18n.translate('de', 'Hauptmenu.Text', {Username: username})
+
+        if ('inline_message_id' in msg) {
+            bot.editMessageText(
+                {inlineMsgId: inlineId}, Message,
+                {parseMode: 'html', replyMarkup}
+            ).catch(error => console.log('Error:', error));
+        }else{
+            bot.editMessageText(
+                {chatId: chatId, messageId: messageId}, Message,
+                {parseMode: 'html', replyMarkup}
+            ).catch(error => console.log('Error:', error));
+        }
+
+
+});
+
+bot.on(/^\/moreinfo/i, (msg) => {
+    //THIS WILL ONLY WORK WHEN CALLED BY INLINE FUNCTION
+    if ('inline_message_id' in msg) {	
+		var inlineId = msg.inline_message_id;
+	}else{
+		var chatId = msg.message.chat.id;
+		var messageId = msg.message.message_id;
+	}
+
+    let replyMarkup = bot.inlineKeyboard([
+        [
+            bot.inlineButton(newi18n.translate('de', 'Moreinfo.Knöpfe.Rules'), {callback: '/rules'}),
+            bot.inlineButton(newi18n.translate('de', 'Moreinfo.Knöpfe.Legal'), {callback: `/legal`})
+        ],
+        [
+            bot.inlineButton(newi18n.translate('de', 'Moreinfo.Knöpfe.Hauptmenu'), {callback: `/maincallback`}),
+        ]
+    ]);
+
+    let username;
+    if ('username' in msg.from) {
+         username = msg.from.username.toString();
+    }else{
+        username = msg.from.first_name.toString();
+    }
+
+    let Message = newi18n.translate('de', 'Moreinfo.Text', {Username: username})
+
+    if ('inline_message_id' in msg) {
+        bot.editMessageText(
+            {inlineMsgId: inlineId}, Message,
+            {parseMode: 'html', replyMarkup}
+        ).catch(error => console.log('Error:', error));
+    }else{
+        bot.editMessageText(
+            {chatId: chatId, messageId: messageId}, Message,
+            {parseMode: 'html', replyMarkup}
+        ).catch(error => console.log('Error:', error));
+    }
+});
+
+bot.on(/^\/legal/i, (msg) => {
+    let replyMarkup = bot.inlineKeyboard([
+        [
+            bot.inlineButton(newi18n.translate('de', 'Moreinfo.Legal.Exit'), {callback: `delete_this`}),
+        ]
+    ]);
+    let Message = []
+        Message.push(newi18n.translate('de', 'Legal.Text'))
+    for (i = 0; i < parseInt(newi18n.translate('de', 'Legal.LegalAnzahl')); i++) { 
+        Message.push('- ' + newi18n.translate('de', `Legal.Legal.${i}`))
+    }
+    Message = Message.join("\n")
+    return bot.sendMessage(msg.message.chat.id, Message, {replyMarkup, parseMode: 'html'});
 });
 
 bot.on(/^\/admin( .+)*/i, (msg, props) => {
@@ -197,7 +300,11 @@ bot.on('callbackQuery', (msg) => {
 	var data = msg.data.split("_")
 
     if(parseInt(data[1]) !== msg.from.id) //Execute always, not user bound
-	{   
+	{   if(data[0] === 'delete'){
+            if(data[1] === 'this'){
+                //delete message here!
+            }
+        }
         if(data[0] === 'Buy')
 		{
             if(data[1] === 'Main')

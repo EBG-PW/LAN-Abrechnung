@@ -81,8 +81,19 @@
             "Zahlung": "Zahlung",
             "Artikel": "Artikel kaufen",
             "Spenden": "Spenden",
-            "Other": "Mehr Funktionen",
+            "Other": "Mehr Infos",
             "Webpanel": "Webpanel"
+        }
+    },
+    "Moreinfo":{
+        "Text": "Mehr Infos:\n{{Username}} hier findest du weitere nützliche Informationen.",
+        "Knöpfe": {
+            "Rules": "Regelm",
+            "Legal": "Legal",
+            "Hauptmenu": "⏪ Hauptmenü"
+        },
+        "Legal": {
+            "Exit": "❌ Schließen"
         }
     },
     "Regeln": {
