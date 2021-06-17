@@ -131,7 +131,7 @@
         "NoQuery": {
             "ID": "NoQuery",
             "Text": "Bitte gib einen Artikel in die Leiste ein",
-            "Message": "Um einen Artikel zu kaufen, musst du den Namen in der Chat Leiste eingeben und dann das passende Feld auswählen."
+            "Message": "Um einen Artikel zu kaufen, musst du den Namen in der Chat Leiste eingeben und dann das passende Feld auswählen. Hier eine Liste aller Artikel: "
         },
         "NotFound": {
             "ID": "NotFound",
@@ -151,10 +151,18 @@
             "Bestätigen": "Bestätigen",
             "Kaufen": "Buchen"
         },
+        "Confirm": {
+            "NotPayed": "Du hast noch nicht gezahlt bzw deine Zahlung wurde noch nicht verarbeitet.",
+            "DoesNotExist": "Das ausgewählte Produkt {{produktname}} von {{produktcompany}} wurde leider aus dem Angebot entfernt.",
+            "NotEnoth": "Das Produkt {{produktname}} von {{produktcompany}} ist leider nicht mehr in ausrechender Menge verfügbar!",
+            "OtherBuy": "Produkt wurde zeitgleich von jemand anderem gekauft, versuche es bitte nochmal!"
+        },
         "MainMessage": "<b>Ausgewählter Artikel:</b> {{produktname}} von {{produktcompany}}\nPreis pro Stück: {{price}}\nAuf Lager: {{storrage}}\n\nBitte wähle unten die Menge aus und bestetige deinen Kauf. Warte bitte auf die Bestätigung durch den Bot.",
         "MainProgress": "Buchungsmenü wird aufgerufen...",
         "Escape": "Buchungsmenü wurde geschlossen...",
         "TooMutch": "Du kannst nicht mehr kaufen als auf Lager ist.",
-        "TooLitle": "Du kannst nicht weniger als eins kaufen"
+        "TooLitle": "Du kannst nicht weniger als eins kaufen.",
+        "ItemBought": "Du hast erfolgreich {{amount}} mal das Produkt {{produktname}} von {{produktcompany}} für {{price}} gekauft.\n\nDu kannst den Artikel nun entnehmen.",
+        "ItemsBought": "Du hast erfolgreich {{amount}} mal die Produkte {{produktname}} von {{produktcompany}} für {{price}} gekauft.\n\nDu kannst die Artikel nun entnehmen."
     }
 }

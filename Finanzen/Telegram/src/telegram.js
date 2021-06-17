@@ -336,14 +336,46 @@ bot.on('callbackQuery', (msg) => {
                         DB.get.Products.Get(product).then(function(product_response) {
                             if(product_response.rows.length >= 1) {
                                 if(parseInt(product_response.rows[0].amount)-parseInt(product_response.rows[0].bought) >= parseInt(amount_to_buy)){
-                                    console.log("Buchung...")
+                                    DB.write.Products.UpdateBought(product, product_response.rows[0].bought, amount_to_buy).then(function(update_response) {
+                                        if(update_response.rowCount === 1){
+                                            let SQLprodukt = {
+                                                produktname: product,
+                                                produktcompany: product_response.rows[0].produktcompany,
+                                                price: product_response.rows[0].price*amount_to_buy,
+                                                bought: amount_to_buy
+                                            }
+                                            DB.write.shopinglist.Buy(msg.from.id, SQLprodukt).then(function(Write_Shoppinglist) {
+                                                console.log(Write_Shoppinglist)
+                                                let MSG;
+                                                if(amount_to_buy >= 2){
+                                                    MSG = newi18n.translate('de', 'Inline.ItemsBought', {produktname: product, produktcompany: product_response.rows[0].produktcompany, price: CentToEuro(price*amount_to_buy), amount: amount_to_buy})
+                                                }else{
+                                                    MSG = newi18n.translate('de', 'Inline.ItemBought', {produktname: product, produktcompany: product_response.rows[0].produktcompany, price: CentToEuro(price*amount_to_buy), amount: amount_to_buy})
+                                                }
+                                                if ('inline_message_id' in msg) {
+                                                    bot.editMessageText(
+                                                        {inlineMsgId: inlineId}, MSG,
+                                                        {parseMode: 'html'}
+                                                    ).catch(error => console.log('Error:', error));
+                                                }else{
+                                                    bot.editMessageText(
+                                                        {chatId: chatId, messageId: messageId}, MSG,
+                                                        {parseMode: 'html'}
+                                                    ).catch(error => console.log('Error:', error));
+                                                }
+                                            })
+                                        }else{
+                                            //Produkt wurde zeitgleich von jemand anderem gekauft
+                                            return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Inline.Confirm.OtherBuy'));
+                                        }
+                                    });
                                 }else{
                                     //Produkt nicht in ausreichender Menge verfügbar
-                                    console.log("Produkt nicht in ausreichender Menge verfügbar")
+                                    return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Inline.Confirm.NotEnoth', {produktname: product, produktcompany: product_response.rows[0].produktcompany}));
                                 }
                             }else{
                                 //Produkt existiert nimmer
-                                console.log("Produkt existiert nimmer")
+                                return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Inline.Confirm.DoesNotExist', {produktname: product, produktcompany: product_response.rows[0].produktcompany}));
                             }
                         }).catch(function(error){
                             console.log(error)
@@ -351,7 +383,7 @@ bot.on('callbackQuery', (msg) => {
                         })
                     }else{
                         //Nutzer hat noch nicht gezahlt
-                        console.log("Nutzer hat noch nicht gezahlt")
+                        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Inline.Confirm.NotPayed'));
                     }
                 }).catch(function(error){
                     console.log(error)

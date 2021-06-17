@@ -419,6 +419,41 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   });
 }
 
+/**
+ * This function will write a collum and the value of that collum
+ * @param {string} produktname
+ * @param {number} old_bought
+ * @param {number} new_bought
+ * @returns {Promise}
+ */
+ let UpdateProductByName = function(produktname, old_bought, new_bought) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`UPDATE products SET bought = $1 WHERE produktname = $2 AND bought = $3`,[
+      new_bought, produktname, old_bought
+    ], (err, result) => {
+      if (err) {reject(err)}
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * This function will add a bought product to shopinglist
+ * @param {number} userid
+ * @param {object} product
+ * @returns {Promise}
+ */
+ let NewItemBought = function(userid, product) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`INSERT INTO shopinglist(userid, produktname, produktcompany, price, bought) VALUES ($1,$2,$3,$4,$5)`,[
+      userid, product.produktname, product.produktcompany, product.price, product.bought
+    ], (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
 
 let get = {
   Guests: {
@@ -451,7 +486,11 @@ let write = {
     NewToken: WriteNewRegToken
   },
   Products: {
-    Add: AddProduct
+    Add: AddProduct,
+    UpdateBought: UpdateProductByName
+  },
+  shopinglist: {
+    Buy: NewItemBought
   }
 }
 
