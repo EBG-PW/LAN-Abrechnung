@@ -92,7 +92,7 @@ bot.on(/^\/hauptmenu/i, (msg) => {
     if(private){
         let replyMarkup = bot.inlineKeyboard([
             [
-                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Zahlung'), {callback: 'M_Pay'}),
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Zahlung'), {callback: '/payed'}),
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Artikel'), {inlineCurrent: ''})
             ],
             [
@@ -136,7 +136,7 @@ bot.on(/^\/maincallback/i, (msg) => {
 
     let replyMarkup = bot.inlineKeyboard([
         [
-            bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Zahlung'), {callback: 'M_Pay'}),
+            bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Zahlung'), {callback: '/payed'}),
             bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Artikel'), {inlineCurrent: ''})
         ],
         [
@@ -211,6 +211,51 @@ bot.on(/^\/moreinfo/i, (msg) => {
             {parseMode: 'html', replyMarkup}
         ).catch(error => console.log('Error:', error));
     }
+});
+
+bot.on(/^\/payed/i, (msg) => {
+    //THIS WILL ONLY WORK WHEN CALLED BY INLINE FUNCTION
+    if ('inline_message_id' in msg) {	
+		var inlineId = msg.inline_message_id;
+	}else{
+		var chatId = msg.message.chat.id;
+		var messageId = msg.message.message_id;
+	}
+    DB.get.Guests.ByID(msg.from.id).then(function(Guest_response) {
+        let replyMarkup = bot.inlineKeyboard([
+            [
+                bot.inlineButton(newi18n.translate('de', 'Moreinfo.Knöpfe.Hauptmenu'), {callback: `/maincallback`})
+            ]
+        ]);
+        let username;
+        if ('username' in msg.from) {
+             username = msg.from.username.toString();
+        }else{
+            username = msg.from.first_name.toString();
+        }
+        let Kosten = CentToEuro(parseInt(mainconfig.LanDauer)*parseInt(preisliste.FixKostenProTag));
+        let Status_String = ""
+        if(Guest_response[0].payed === true){
+            Status_String = newi18n.translate('de', 'Payed.True')
+        }else{
+            Status_String = newi18n.translate('de', 'Payed.False')
+        }
+        let Message = newi18n.translate('de', 'Payed.Text', {Username: username,Status_String: Status_String, money: Kosten, PayedID: Guest_response[0].pyed_id})
+        if ('inline_message_id' in msg) {
+            bot.editMessageText(
+                {inlineMsgId: inlineId}, Message,
+                {parseMode: 'html', replyMarkup}
+            ).catch(error => console.log('Error:', error));
+        }else{
+            bot.editMessageText(
+                {chatId: chatId, messageId: messageId}, Message,
+                {parseMode: 'html', replyMarkup}
+            ).catch(error => console.log('Error:', error));
+        }
+    }).catch(function(error){
+        console.log(error)
+        return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+    })
 });
 
 bot.on(/^\/donate/i, (msg) => {
@@ -494,7 +539,6 @@ bot.on('callbackQuery', (msg) => {
                                                 bought: amount_to_buy
                                             }
                                             DB.write.shopinglist.Buy(msg.from.id, SQLprodukt).then(function(Write_Shoppinglist) {
-                                                console.log(Write_Shoppinglist)
                                                 let MSG;
                                                 if(product === "Spende"){
                                                     MSG = newi18n.translate('de', 'Inline.Donation', {price: CentToEuro(price*amount_to_buy)})

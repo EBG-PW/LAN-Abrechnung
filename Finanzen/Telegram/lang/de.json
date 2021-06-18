@@ -76,7 +76,7 @@
         "Sucsess": "Du hast die Registration erfolgreich abgeschlossen\n\nBitte überweise die Kosten für die LAN-Party nun:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Höhe der Überweisung beträgt: <pre language='c++'>{{Kosten}}</pre>"
     },
     "Hauptmenu": {
-        "Text": "Hauptmenü:\n{{Username}} hier kannst du alle Funktionen des Bots sehen.\n\nUnter 'Mehr Infos' findest du die Hausordnung und Konditionen denen du zugestimmt hast.",
+        "Text": "<b>Hauptmenü:</b>\n{{Username}} hier kannst du alle Funktionen des Bots sehen.\n\nUnter 'Mehr Infos' findest du die Hausordnung und Konditionen denen du zugestimmt hast.",
         "Knöpfe": {
             "Zahlung": "Zahlung",
             "Artikel": "Artikel kaufen",
@@ -84,6 +84,11 @@
             "Other": "Mehr Infos",
             "Webpanel": "Webpanel"
         }
+    },
+    "Payed": {
+        "Text": "{{Username}}, {{Status_String}}\n\nBetrag: {{money}}\nID: {{PayedID}}",
+        "True": "deine Zahlung wurde von unserem System <b>bestätigt</b>",
+        "False": "deine Zahlung wurde von unserem System noch <b>nicht bestätigt</b>, sollte das zu beginn der LAN-Party noch immer der Fall sein wende dich bitte an die Veranstalter!"
     },
     "Spenden": {
         "Text": "Du kannst gerne eine Kleinigkeit 'Spenden', wenn du zufrieden mit der Planung und Organisation bist.\n\nKlicke dazu einfach auf den Knopf unten und wähle die Spendenhöhe aus ;)",
