@@ -259,17 +259,34 @@ bot.on(/^\/payed/i, (msg) => {
 });
 
 bot.on(/^\/donate/i, (msg) => {
+    //THIS WILL ONLY WORK WHEN CALLED BY INLINE FUNCTION
+    if ('inline_message_id' in msg) {	
+		var inlineId = msg.inline_message_id;
+	}else{
+		var chatId = msg.message.chat.id;
+		var messageId = msg.message.message_id;
+	}
     let replyMarkup = bot.inlineKeyboard([
         [
             bot.inlineButton(newi18n.translate('de', 'Spenden.Knöpfe.Spenden'), {inlineCurrent: 'spende'})
         ],
         [
-            bot.inlineButton(newi18n.translate('de', 'Moreinfo.Legal.Exit'), {callback: `delete_this`})
+            bot.inlineButton(newi18n.translate('de', 'Moreinfo.Knöpfe.Hauptmenu'), {callback: `/maincallback`})
         ]
     ]);
     let Message = newi18n.translate('de', 'Spenden.Text')
     
-    return bot.sendMessage(msg.message.chat.id, Message, {replyMarkup, parseMode: 'html'});
+    if ('inline_message_id' in msg) {
+        bot.editMessageText(
+            {inlineMsgId: inlineId}, Message,
+            {parseMode: 'html', replyMarkup}
+        ).catch(error => console.log('Error:', error));
+    }else{
+        bot.editMessageText(
+            {chatId: chatId, messageId: messageId}, Message,
+            {parseMode: 'html', replyMarkup}
+        ).catch(error => console.log('Error:', error));
+    }
 });
 
 bot.on(/^\/rules/i, (msg) => {
