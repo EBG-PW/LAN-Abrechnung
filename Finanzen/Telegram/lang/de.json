@@ -64,8 +64,8 @@
     },
     "Admin": {
         "MustBeReply": "Dieser Befehl kann nur als Antwort verwendet werden.",
-        "MustHaveAtributes": "Dieser Befehl brauch Attribute wie: {{Atributes}}",
-        "MustBeAdmin": "Du musst selbst Admin sein um diesen Befehl zu nutzen.",
+        "MustHaveAtributes": "Dieser Befehl braucht Attribute wie: {{Atributes}}",
+        "MustBeAdmin": "Du musst selbst ein Admin sein um diesen Befehl zu nutzen.",
         "AddNoSuccsess": "Der Nutzer war schon Admin oder ist nicht registriert.",
         "AddSuccsess": "{{Username}}({{UserID}}) ist nun Admin.",
         "RemNoSuccsess": "Der Nutzer war kein Admin oder ist nicht registriert.",
@@ -86,14 +86,14 @@
         }
     },
     "Spenden": {
-        "Text": "Du kannst gerne eine Kleinigkeit 'Spenden', wenn du zufrieden mit der Planung und Organisation bist.\n\nKlicke dazu einfach auf den Knopf unten und wähle die Spendenhöhe aus;)",
+        "Text": "Du kannst gerne eine Kleinigkeit 'Spenden', wenn du zufrieden mit der Planung und Organisation bist.\n\nKlicke dazu einfach auf den Knopf unten und wähle die Spendenhöhe aus ;)",
         "Knöpfe": {
             "Spenden": "Jetzt Spenden",
             "Hauptmenu": "⏪ Hauptmenü"
         }
     },
     "Moreinfo":{
-        "Text": "Mehr Infos:\n{{Username}} hier findest du weitere nützliche Informationen.",
+        "Text": "<b>Mehr Infos:</b>\n{{Username}} hier findest du weitere nützliche Informationen.",
         "Knöpfe": {
             "Rules": "Regeln",
             "Legal": "Legal",
@@ -101,11 +101,11 @@
         },
         "Regeln": {
             "Exit": "❌ Schließen",
-            "AcceptedDate": "\nDas hast au am {{akteptiert}} akteptiert"
+            "AcceptedDate": "\nDu hast die Regeln am {{akteptiert}} akteptiert"
         },
         "Legal": {
             "Exit": "❌ Schließen",
-            "AcceptedDate": "\nDas hast au am {{akteptiert}} akteptiert"
+            "AcceptedDate": "\nDu hast die Hinweise und Bestimmungen am {{akteptiert}} akteptiert"
         }
     },
     "Regeln": {
@@ -154,7 +154,7 @@
         "NoQuery": {
             "ID": "NoQuery",
             "Text": "Bitte gib einen Artikel in die Leiste ein",
-            "Message": "Um einen Artikel zu kaufen, musst du den Namen in der Chat Leiste eingeben und dann das passende Feld auswählen. Hier eine Liste aller Artikel: "
+            "Message": "Um einen Artikel zu kaufen, musst du den Namen in der Chat Leiste eingeben und dann das passende Feld auswählen.\n\n<b>Hier eine Liste aller Artikel:</b>\n"
         },
         "NotFound": {
             "ID": "NotFound",
@@ -175,10 +175,10 @@
             "Kaufen": "Buchen"
         },
         "Confirm": {
-            "NotPayed": "Du hast noch nicht gezahlt bzw deine Zahlung wurde noch nicht verarbeitet.",
+            "NotPayed": "Du hast noch nicht gezahlt oder deine Zahlung wurde noch nicht verarbeitet.",
             "DoesNotExist": "Das ausgewählte Produkt {{produktname}} von {{produktcompany}} wurde leider aus dem Angebot entfernt.",
             "NotEnoth": "Das Produkt {{produktname}} von {{produktcompany}} ist leider nicht mehr in ausrechender Menge verfügbar!",
-            "OtherBuy": "Produkt wurde zeitgleich von jemand anderem gekauft, versuche es bitte nochmal!"
+            "OtherBuy": "Das gewählte Produkt wurde zeitgleich von jemand anderem gekauft, versuche es bitte nochmals!"
         },
         "MainMessage": "<b>Ausgewählter Artikel:</b> {{produktname}} von {{produktcompany}}\nPreis pro Stück: {{price}}\nAuf Lager: {{storrage}}\n\nBitte wähle unten die Menge aus und bestetige deinen Kauf. Warte bitte auf die Bestätigung durch den Bot.",
         "MainProgress": "Buchungsmenü wird aufgerufen...",
