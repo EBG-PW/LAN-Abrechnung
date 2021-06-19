@@ -100,7 +100,7 @@ bot.on(/^\/hauptmenu/i, (msg) => {
                 bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Other'), {callback: '/moreinfo'})
             ],
             [
-                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Webpanel'), {url: `${process.env.WebPanelURL}`}),
+                bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Webpanel'), {url: `${process.env.WebPanelURL}/api/v1/login/login/${msg.from.id}`}),
             ]
         ]);
 
@@ -144,7 +144,7 @@ bot.on(/^\/maincallback/i, (msg) => {
             bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Other'), {callback: '/moreinfo'})
         ],
         [
-            bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Webpanel'), {url: `${process.env.WebPanelURL}`}),
+            bot.inlineButton(newi18n.translate('de', 'Hauptmenu.Knöpfe.Webpanel'), {url: `${process.env.WebPanelURL}/api/v1/login/login/${msg.from.id}`}),
         ]
     ]);
 
