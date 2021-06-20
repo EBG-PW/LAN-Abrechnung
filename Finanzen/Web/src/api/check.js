@@ -4,16 +4,14 @@ const rateLimit = require('express-rate-limit');
 useragent = require('express-useragent');
 const Joi = require('joi');
 var path = require('path');
-const randomstring = require('randomstring');
 const DB = require('../lib/postgres');
-const bcrypt = require('bcrypt');
 
 
 const PluginConfig = {
 };
 
 /* Plugin info */
-const PluginName = 'Lan-WebLogin';
+const PluginName = 'Lan-TokenCheck';
 const PluginRequirements = [];
 const PluginVersion = '0.0.1';
 const PluginAuthor = 'BolverBlitz';
@@ -24,23 +22,11 @@ const limiter = rateLimit({
     max: 150
   });
 
-const LoginCheck = Joi.object({
-    userid: Joi.number().required(),
-    password: Joi.string().required()
+const TokenCheck = Joi.object({
+    Token: Joi.string().required()
 });
 
 const router = express.Router();
-
-router.get("/login/:UserID", limiter, (reg, res, next) => {
-    res.status(200);
-    res.sendFile(path.join(__dirname + "../../../" + process.env.data + '/Plugin_Login/index.html'));
-});
-
-
-router.get("/login", limiter, (reg, res, next) => {
-    res.status(200);
-    res.sendFile(path.join(__dirname + "../../../" + process.env.data + '/Plugin_Login/index.html'));
-});
 
 router.post("/check", limiter, async (reg, res, next) => {
     try {
@@ -106,4 +92,4 @@ module.exports = {
 	PluginVersion: PluginVersion,
 	PluginAuthor: PluginAuthor,
 	PluginDocs: PluginDocs
-  };
+};
