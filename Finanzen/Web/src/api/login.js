@@ -48,20 +48,35 @@ router.get("/login", limiter, (reg, res, next) => {
 router.post("/check", limiter, async (reg, res, next) => {
     try {
         const value = await LoginCheck.validateAsync(reg.body);
-        DB.get.Guests.ByID(value.userid).then(function(result) {
-            if(typeof result[0] === "undefined"){
+        DB.get.Guests.ByID(value.userid).then(function(Guest_result) {
+            if(typeof Guest_result[0] === "undefined"){
                 res.status(401);
                 res.json({
                   message: "Falscher Benutzername oder Passwort",
                 });
             }else{
-                bcrypt.compare(value.password, result[0].passwort).then(function(result) {
+                bcrypt.compare(value.password, Guest_result[0].passwort).then(function(result) {
                     if(result){
-                        var source = reg.headers['user-agent']
-                        console.log(useragent.parse(source))
-                        console.log("Loged")
-                        console.log(reg.headers['x-forwarded-for'] || reg.socket.remoteAddress )
+                        let source = reg.headers['user-agent']
+                        let UserAgent = useragent.parse(source)
+                        let IP = reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
+                        let WebToken = randomstring.generate({
+                            length: process.env.WebTokenLength, //DO NOT CHANCE!!!
+                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                        });
                         //Write new Webtoken
+                        DB.write.webtoken.Add(value.userid, Guest_result[0].username, IP, UserAgent.source, WebToken, Guest_result[0].admin).then(function(WebToken_respone) {
+                            res.status(200);
+                            res.json({
+                            Token: WebToken,
+                            });
+                        }).catch(function(error){
+                            console.log(error)
+                            res.status(500);
+                            res.json({
+                                message: "Kritischer Fehler!",
+                            });
+                        })
                     }else if(!result){ //Not sure why this is !
                         res.status(401);
                         res.json({
@@ -75,47 +90,13 @@ router.post("/check", limiter, async (reg, res, next) => {
                       }
                 });
             }
-        });
-        /*
-        DB.get.RegToken.ByToken(value.Token).then(function(response) {
-            if(response.rows.length === 1){
-                DB.del.RegToken.DeleteToken(value.Token).then(function(del_response) {
-                    if(del_response.rowCount === 1){
-                        bcrypt.hash(value.Password, parseInt(process.env.saltRounds), function(err, hash) {
-                            DB.write.Guests.UpdateCollumByID(response.rows[0].userid, 'passwort', hash).then(function(update_response) {
-                                let ID = randomstring.generate({
-                                    length: 32,
-                                    charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
-                                });
-                                DB.message.PostNew('Telegram', ID, {text: 'Web_Register', chatid: response.rows[0].userid, type: 'Function'}).then(function(New_Message) {
-                                    console.log(`New Task for Telegram, with ID ${ID} was made.`)
-                                });
-                                res.status(200);
-                                res.json({
-                                    message: "Success - Password was set",
-                                });
-                            });
-                        });
-                    }else{
-                        res.status(401);
-                        res.json({
-                            message: "Token not found",
-                        });
-                    }
-                });
-            }else{
-                res.status(401);
-                res.json({
-                    message: "Token not found",
-                });
-            }
         }).catch(function(error){
             console.log(error)
             res.status(500);
             res.json({
-              message: "Databace error",
+                message: "Kritischer Fehler!",
             });
-        })*/
+        })
     } catch (error) {
         next(error);
     }

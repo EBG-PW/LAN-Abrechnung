@@ -468,6 +468,40 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   });
 }
 
+/**
+ * This function will add a bought product to shopinglist
+ * @param {number} userid
+ * @param {string} username
+ * @param {string} ip
+ * @param {string} browser
+ * @param {string} token
+ * @param {boolean} admin
+ * @returns {Promise}
+ */
+ let AddWebToken = function(userid, username, ip, browser, token, admin) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`INSERT INTO webtoken(userid, username, ip, browser, token, admin) VALUES ($1,$2,$3,$4,$5,$6)`,[
+      userid, username, ip, browser, token, admin
+    ], (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+/**
+ * This function is used to delete a webtoken
+ * @param {String} token
+ * @returns {Promise}
+ */
+ let DelWebToken = function(token) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`DELETE FROM webtoken WHERE token = '${token}'`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
 
 let get = {
   Guests: {
@@ -506,12 +540,18 @@ let write = {
   },
   shopinglist: {
     Buy: NewItemBought
+  },
+  webtoken: {
+    Add: AddWebToken
   }
 }
 
 let del = {
   RegToken: {
     DeleteToken: DelRegTokenByToken
+  },
+  webtoken: {
+    Del: DelWebToken
   }
 }
 

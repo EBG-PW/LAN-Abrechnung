@@ -351,6 +351,11 @@
   function FillUserIDFromURL(){
     document.getElementById('userid').value = UserIDFromUrl
   }
+  function CheckTokenValidity(){
+    if (localStorage.getItem("Token") !== null) {
+      //Token was found, now validate it and if valid forward to /public
+    }
+  }
 
 	function submit(){
     var userid = document.getElementById('userid').value;
@@ -361,7 +366,9 @@
       password: password
     });
     posting.done(function(result) {
-      console.log(result)
+      localStorage.setItem('Token', result.Token);
+      window.location.replace(`${baseUrl}public/`);
+      $("#c-welcome-info").html(`Login Erfolgreich...`);
     })
 
     posting.fail(function(err) {
