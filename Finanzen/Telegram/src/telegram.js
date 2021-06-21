@@ -112,9 +112,9 @@ bot.on(/^\/hauptmenu/i, (msg) => {
         }
 
         if(msg.chat){
-            return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Hauptmenu.Text', {Username: username}), {replyMarkup});
+            return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Hauptmenu.Text', {Username: username}), {parseMode: 'html', replyMarkup});
         }else{
-            return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Hauptmenu.Text', {Username: username}), {replyMarkup});
+            return bot.sendMessage(msg.message.chat.id, newi18n.translate('de', 'Hauptmenu.Text', {Username: username}), {parseMode: 'html', replyMarkup});
         }
     }else{
         if(msg.chat){
