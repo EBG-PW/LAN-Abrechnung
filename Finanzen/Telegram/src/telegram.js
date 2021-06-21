@@ -372,7 +372,7 @@ bot.on(/^\/admin( .+)*/i, (msg, props) => {
                         DB.get.Guests.Admins().then(function(Admin_List_response){
                             let AdminList = "";
                             Admin_List_response.map(Admin => {
-                                AdminList = `\n${AdminList}- ${Admin.username}(${Admin.userid})`
+                                AdminList = `${AdminList}\n- ${Admin.username}(${Admin.userid})`
                             });
                             return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Admin.list', {AdminList: AdminList}));
                         });
