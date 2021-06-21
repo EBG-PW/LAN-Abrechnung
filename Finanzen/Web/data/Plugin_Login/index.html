@@ -345,6 +345,7 @@
   const UserIDFromUrl = getUrl.pathname.split("/")[5]
 
   $(document).ready(function(){
+    CheckTokenValidity()
     FillUserIDFromURL()
   })
 
@@ -354,6 +355,12 @@
   function CheckTokenValidity(){
     if (localStorage.getItem("Token") !== null) {
       //Token was found, now validate it and if valid forward to /public
+      var posting = $.post(`${baseUrl}api/v1/check`,{
+        Token: localStorage.getItem("Token")
+      });
+      posting.done(function(result) {
+        window.location.replace(`${baseUrl}public/`);
+      })
     }
   }
 

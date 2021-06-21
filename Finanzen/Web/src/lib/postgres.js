@@ -490,6 +490,20 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
 }
 
 /**
+ * This function is used to get a token from the DB
+ * @param {String} token
+ * @returns {Promise}
+ */
+ let GetWebToken = function(token) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM webtoken WHERE token = '${token}'`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+/**
  * This function is used to delete a webtoken
  * @param {String} token
  * @returns {Promise}
@@ -523,6 +537,9 @@ let get = {
     LikeGet: LookLikeProduct,
     Get: GetProduct,
     GetAll: GetAllProduct
+  },
+  webtokens: {
+    Get: GetWebToken
   }
 }
 
