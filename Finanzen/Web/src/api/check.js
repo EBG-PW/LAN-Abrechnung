@@ -45,7 +45,6 @@ router.post("/", limiter, async (reg, res, next) => {
                 });
             }else{
                 DB.del.webtoken.Del(value.Token).then(function(Check) {
-                    console.log(Check.rowCount)
                     res.status(401);
                     res.json({
                         Message: "Token invalid"
