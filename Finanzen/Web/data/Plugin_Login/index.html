@@ -311,7 +311,7 @@
                         <span class="c-form__nextIcon"></span>
                     </label>
 
-      <span class="c-form__groupLabel">UserID:</span>
+      <span class="c-form__groupLabel">UserID</span>
       <b class="c-form__border"></b>
       </label>
     </div>
@@ -330,7 +330,7 @@
                         <span class="c-form__nextIcon"></span>
                     </label>
 
-      <span class="c-form__groupLabel">Passwort:</span>
+      <span class="c-form__groupLabel">Passwort</span>
       <b class="c-form__border"></b>
       </label>
     </div>
@@ -350,7 +350,9 @@
   })
 
   function FillUserIDFromURL(){
-    document.getElementById('userid').value = UserIDFromUrl
+    if(typeof UserIDFromUrl !== "undefined"){
+      document.getElementById('userid').value = UserIDFromUrl
+    }
   }
   function CheckTokenValidity(){
     if (localStorage.getItem("Token") !== null) {
