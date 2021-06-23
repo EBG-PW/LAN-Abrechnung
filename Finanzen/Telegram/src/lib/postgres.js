@@ -452,6 +452,20 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
 }
 
 /**
+ * This function will get all bough items of a user
+ * @param {number} userid
+ * @returns {Promise}
+ */
+ let GetAllBoughItemsByUser = function(userid) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM shopinglist WHERE userid = '${userid}'`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+/**
  * This function will add a bought product to shopinglist
  * @param {number} userid
  * @param {object} product
@@ -537,6 +551,9 @@ let get = {
     LikeGet: LookLikeProduct,
     Get: GetProduct,
     GetAll: GetAllProduct
+  },
+  shopinglist: {
+    Get: GetAllBoughItemsByUser
   },
   webtokens: {
     Get: GetWebToken
