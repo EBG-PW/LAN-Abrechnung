@@ -8,7 +8,12 @@
  */
 function createHeaderLinks(rights, active) {
     var HeaderHTML = "";
-        HeaderHTML += `<li><a href="index.html">Startseite</a></li>`
+        
+        if(active.toLowerCase() === "Startseite".toLowerCase()){
+            HeaderHTML += `<li><a href="index.html" class="active">Startseite</a></li>`
+        }else{
+            HeaderHTML += `<li><a href="index.html">Startseite</a></li>`
+        }
 
         if(active.toLowerCase() === "Shopping".toLowerCase()){
             HeaderHTML += `<li><a href="Shopping.html" class="active">Einkaufliste</a></li>`
