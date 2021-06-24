@@ -18,10 +18,7 @@
 			<header id="header">
 				<a href="index.html" class="title">Hyperspace</a>
 				<nav>
-					<ul>
-						<li><a href="index.html">Home</a></li>
-						<li><a href="generic.html" class="active">Generic</a></li>
-						<li><a href="elements.html">Elements</a></li>
+					<ul id="LinksList">
 					</ul>
 				</nav>
 			</header>
@@ -60,7 +57,10 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script>
-				CheckTokenValidity()
+				CheckTokenValidity().then(function(TokenData) {
+					console.log(TokenData)
+					//createHeaderLinks()
+				})
 			</script>
 	</body>
 	</body>

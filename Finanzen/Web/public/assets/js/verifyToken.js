@@ -1,4 +1,5 @@
 function CheckTokenValidity(){
+  return new Promise(function(resolve, reject) {
   const getUrl = window.location;
   const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
   if (localStorage.getItem("Token") !== null) {
@@ -7,7 +8,7 @@ function CheckTokenValidity(){
       Token: localStorage.getItem("Token")
     });
     posting.done(function(result) {
-      return result
+      resolve(result.TokenData)
     })
     posting.fail(function(err) {
 			if(err.status === 401){
@@ -17,4 +18,5 @@ function CheckTokenValidity(){
   }else{
     window.location.replace(`${baseUrl}api/v1/login/login`);
   }
+  });
 }
