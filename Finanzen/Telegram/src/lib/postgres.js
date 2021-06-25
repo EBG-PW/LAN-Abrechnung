@@ -24,6 +24,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     power_plugid smallint,
     payed boolean DEFAULT False,
     pyed_id text,
+    payed_ammount bigint,
     admin boolean DEFAULT False,
     vaccinated text,
     time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
