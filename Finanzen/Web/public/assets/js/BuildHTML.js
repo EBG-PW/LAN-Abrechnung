@@ -1,5 +1,5 @@
 /**
- * Will return the header based on active and persmissions
+ * Will create the header based on active and persmissions
  * @param {string} active Current HTML
  * @param {boolean} rights Its this user a Admin
  * @returns {Promise}
@@ -39,4 +39,16 @@ function createHeaderLinks(rights, active) {
         HeaderHTML += `<li><p id="logout" onclick="logout()">Ausloggen</p></li>`
 
     $("#LinksList").html(HeaderHTML);
+}
+
+/**
+ * Will create the wlcome message on top left side
+ * @param {object} TokenData 
+ * @returns {Promise}
+ */
+ function createHeaderMessage(TokenData) {
+     let SofwareName = "LAN-Manager"
+     let HeaderHTML = `${SofwareName}: Willkommen ${TokenData.username}`;
+
+    $("#HeaderWelcome").text(HeaderHTML);
 }
