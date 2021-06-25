@@ -48,7 +48,7 @@ router.post("/", limiter, async (reg, res, next) => {
                     res.status(401);
                     res.json({
                         Message: "Token invalid"
-                      });
+                    });
                 })
             }
         });

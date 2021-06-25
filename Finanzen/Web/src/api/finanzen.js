@@ -24,8 +24,7 @@ const limiter = rateLimit({
   });
 
 const ShoppingList = Joi.object({
-    Token: Joi.string().required(),
-    UserID: Joi.number().required()
+    Token: Joi.string().required()
 });
 
 const router = express.Router();
