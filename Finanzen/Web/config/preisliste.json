@@ -1,0 +1,69 @@
+{   
+    "FixKostenProTag": 1875,
+    "PauschalKosten": {
+        "Wasser": {
+            "Preis": 100,
+            "Beschreibung": "Wasserpauschale (Klo, Dusche, etc)"
+        },
+        "Strom": {
+            "Preis": 500,
+            "Beschreibung": "Strom (Flur, Räume, Küche, etc)"
+        },
+        "Verbrauchsgüter": {
+            "Preis": 400,
+            "Beschreibung": "Verbrauchsgüter (Seife, etc)"
+        },
+        "Netzwerk": {
+            "Preis": 500,
+            "Beschreibung": "Netzwerk Infrastruktur"
+        },
+        "StromKWH": {
+            "Preis": 19,
+            "Beschreibung": "Preis pro kWh"
+        }
+    },
+    "SnackBar": {
+        "Spende": {
+            "Name": "Spende",
+            "Hersteller": "EBG.PW",
+            "Preis": 100,
+            "Menge": 500
+        },
+        "PaprikaChips": {
+            "Name": "Paprika Chips",
+            "Hersteller": "Pringels",
+            "Preis": 299,
+            "Menge": 5
+        },
+        "OnionChips": {
+            "Name": "Sourcream Chips",
+            "Hersteller": "Pringels",
+            "Preis": 399,
+            "Menge": 8
+        },
+        "VanilleMilch": {
+            "Name": "Vanille Milch",
+            "Hersteller": "Müllermilch",
+            "Preis": 199,
+            "Menge": 5
+        },
+        "Cola": {
+            "Name": "Cola",
+            "Hersteller": "Coca-Cola Company",
+            "Preis": 99,
+            "Menge": 50
+        },
+        "Fanta": {
+            "Name": "Fanta",
+            "Hersteller": "Coca-Cola Company",
+            "Preis": 99,
+            "Menge": 50
+        },
+        "SchokoladeAlpenmilch": {
+            "Name": "Milka Alpenmilch",
+            "Hersteller": "Milka",
+            "Preis": 129,
+            "Menge": 55
+        }
+    }
+}

@@ -134,6 +134,19 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   }
 
 /**
+ * This function will return all guests without sectet stuff
+ * @returns Array
+ */
+ let GetGuestsSave = function() {
+  return new Promise(function(resolve, reject) {
+    pool.query('SELECT userid, username, pc, displays_count, network_cable, vr, expected_arrival, expected_departure, admin, vaccinated FROM guests', (err, result) => {
+      if (err) {reject(err)}
+      resolve(result.rows);
+    });
+  });
+}
+
+/**
  * This function will return a guest by userid
  * @param {number} user_id
  * @returns {Object}
@@ -535,6 +548,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
 let get = {
   Guests: {
     All: GetGuests,
+    AllSave: GetGuestsSave,
     Admins: ListAllAdmin,
     ByID: GetGuestsByID,
     Check: {
