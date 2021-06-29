@@ -1077,15 +1077,18 @@ bot.start();
             charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
         });
 
-        DB.write.Guests.UpdateCollumByID(ChatID, 'pyed_id', PayCode).then(function(guest_edit_response) {
-            bot.sendMessage(ChatID, newi18n.translate('de', 'PaySystem.Sucsess', {Bank: mainconfig.KontoBank, IBAN: mainconfig.KontoIban, Kontoinhaber: mainconfig.KontoInhaber, Verwendungszweg: mainconfig.Verwendungszweg, PayCode: PayCode, Kosten: Kosten}), {parseMode: 'html', replyMarkup}).then(function(msg_send) {
-                resolve(msg_send)
+        let Money_Amount = Kosten;
+        DB.write.Guests.UpdateCollumByID(ChatID, 'payed_ammount', Money_Amount).then(function(money_edit_response) {
+            DB.write.Guests.UpdateCollumByID(ChatID, 'pyed_id', PayCode).then(function(guest_edit_response) {
+                bot.sendMessage(ChatID, newi18n.translate('de', 'PaySystem.Sucsess', {Bank: mainconfig.KontoBank, IBAN: mainconfig.KontoIban, Kontoinhaber: mainconfig.KontoInhaber, Verwendungszweg: mainconfig.Verwendungszweg, PayCode: PayCode, Kosten: Kosten}), {parseMode: 'html', replyMarkup}).then(function(msg_send) {
+                    resolve(msg_send)
+                }).catch(function(error){
+                    reject(error)
+                })
             }).catch(function(error){
                 reject(error)
             })
-        }).catch(function(error){
-            reject(error)
-        })
+        });
     });
   }
 
