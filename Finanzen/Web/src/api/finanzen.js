@@ -38,9 +38,16 @@ router.get("/shoppinglist", limiter, async (reg, res, next) => {
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
         TV.check(value.Token, para, false).then(function(Check) {
-            DB.get.shopinglist.Get(Check.Data.userid).then(function(ShoppingList_response) {
-                console.log(ShoppingList_response)
-            });
+            if(Check.State === true){
+                DB.get.shopinglist.Get(Check.Data.userid).then(function(ShoppingList_response) {
+                    console.log(ShoppingList_response)
+                });
+            }else{
+                res.status(401);
+                res.json({
+                    Message: "Token invalid"
+                });
+            }
         });
     } catch (error) {
         next(error);
