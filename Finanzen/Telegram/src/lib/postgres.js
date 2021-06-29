@@ -25,6 +25,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     payed boolean DEFAULT False,
     pyed_id text,
     payed_ammount bigint,
+    lang text,
     admin boolean DEFAULT False,
     vaccinated text,
     time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
@@ -85,6 +86,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS webtoken (
   browser text,
   token text PRIMARY KEY,
   admin boolean DEFAULT False,
+  lang text,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
   if (err) {console.log(err)}
 });

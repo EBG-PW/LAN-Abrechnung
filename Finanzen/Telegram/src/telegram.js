@@ -172,6 +172,46 @@ bot.on(/^\/maincallback/i, (msg) => {
 
 });
 
+bot.on(/^\/lang/i, (msg) => {
+    //THIS WILL ONLY WORK WHEN CALLED BY INLINE FUNCTION
+    if ('inline_message_id' in msg) {	
+		var inlineId = msg.inline_message_id;
+	}else{
+		var chatId = msg.message.chat.id;
+		var messageId = msg.message.message_id;
+	}
+
+    let replyMarkup = bot.inlineKeyboard([
+        [
+            bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.DE'), {callback: `lang_de`}),
+        ],
+        [
+            bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.Zurück'), {callback: `/moreinfo`}),
+        ]
+    ]);
+
+    let username;
+    if ('username' in msg.from) {
+         username = msg.from.username.toString();
+    }else{
+        username = msg.from.first_name.toString();
+    }
+
+    let Message = newi18n.translate('de', 'Sprachen.Text', {Username: username})
+
+    if ('inline_message_id' in msg) {
+        bot.editMessageText(
+            {inlineMsgId: inlineId}, Message,
+            {parseMode: 'html', replyMarkup}
+        ).catch(error => console.log('Error:', error));
+    }else{
+        bot.editMessageText(
+            {chatId: chatId, messageId: messageId}, Message,
+            {parseMode: 'html', replyMarkup}
+        ).catch(error => console.log('Error:', error));
+    }
+});
+
 bot.on(/^\/moreinfo/i, (msg) => {
     //THIS WILL ONLY WORK WHEN CALLED BY INLINE FUNCTION
     if ('inline_message_id' in msg) {	
@@ -185,6 +225,9 @@ bot.on(/^\/moreinfo/i, (msg) => {
         [
             bot.inlineButton(newi18n.translate('de', 'Moreinfo.Knöpfe.Rules'), {callback: '/rules'}),
             bot.inlineButton(newi18n.translate('de', 'Moreinfo.Knöpfe.Legal'), {callback: `/legal`})
+        ],
+        [
+            bot.inlineButton(newi18n.translate('de', 'Moreinfo.Knöpfe.Sprache'), {callback: `/lang`}),
         ],
         [
             bot.inlineButton(newi18n.translate('de', 'Moreinfo.Knöpfe.Hauptmenu'), {callback: `/maincallback`}),
@@ -408,6 +451,11 @@ bot.on('callbackQuery', (msg) => {
                 //delete message here!
                 bot.deleteMessage(chatId, messageId).catch(error => console.log('Error:', error));
             }
+        }
+        if(data[0] === "lang"){
+            DB.write.Guests.UpdateCollumByID(msg.from.id, 'lang', data[1]).then(function(lang_edit_response) {
+                bot.answerCallbackQuery(msg.id)
+            });
         }
         if(data[0] === 'Buy')
 		{

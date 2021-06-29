@@ -97,11 +97,19 @@
             "Hauptmenu": "⏪ Hauptmenü"
         }
     },
+    "Sprachen": {
+        "Text": "Hier kannst du deine Sprache ändern",
+        "Knöpfe": {
+            "DE": "🇩🇪 German",
+            "Zurück": "⏪ Zurück"
+        }
+    },
     "Moreinfo":{
         "Text": "<b>Mehr Infos:</b>\n{{Username}} hier findest du weitere nützliche Informationen.",
         "Knöpfe": {
             "Rules": "Regeln",
             "Legal": "Legal",
+            "Sprache": "Sprache",
             "Hauptmenu": "⏪ Hauptmenü"
         },
         "Regeln": {
