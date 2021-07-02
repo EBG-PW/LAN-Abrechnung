@@ -38,6 +38,8 @@ app.get('/lawstuff', (req, res) => {
   res.sendFile(path.join(__dirname + '/html/lawstuff.html'));
 });
 
+app.use('/public', express.static('public'));
+
 app.use('/api/v1', api);
 
 app.use(middlewares.notFound);
