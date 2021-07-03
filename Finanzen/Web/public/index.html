@@ -48,6 +48,7 @@
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/verifyToken.js"></script>
+			<script src="https://unpkg.com/new-i18n@3.0.0-5/lib/index.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
@@ -57,9 +58,12 @@
 			<script src="assets/js/BuildHTML.js"></script>
 			<script>
 				CheckTokenValidity().then(function(TokenData) {
-					console.log(TokenData)
-					createHeaderLinks(TokenData.admin, "Startseite")
-					createHeaderMessage(TokenData)
+					//This will wirte all Token data to localstorrage to be used in all funktions
+					writeTokenDataToLocalStorrage(TokenData)
+					//Will create the header based on active and persmissions
+					createHeaderLinks("Startseite")
+					//Will translate a key value to the language of the token
+					createHeaderMessage()
 				})
 			</script>
 	</body>

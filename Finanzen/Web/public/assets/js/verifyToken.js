@@ -1,3 +1,7 @@
+/**
+ * This will check the current saved Token (if exists) if its valid
+ * @returns {Promise}
+ */
 function CheckTokenValidity(){
   return new Promise(function(resolve, reject) {
     const getUrl = window.location;
@@ -19,4 +23,17 @@ function CheckTokenValidity(){
       window.location.replace(`${baseUrl}api/v1/login/login`);
     }
   });
+}
+
+/**
+ * This will wirte all Token data to localstorrage to be used in all funktions
+ * @param {object} TokenData Token Object
+ */
+function writeTokenDataToLocalStorrage(TokenData){
+  localStorage.setItem('Username', TokenData.username);
+  localStorage.setItem('ip', TokenData.ip);
+  localStorage.setItem('Browser', TokenData.browser);
+  localStorage.setItem('Admin', TokenData.admin);
+  localStorage.setItem('Time', TokenData.time);
+  localStorage.setItem('Language', TokenData.lang);
 }

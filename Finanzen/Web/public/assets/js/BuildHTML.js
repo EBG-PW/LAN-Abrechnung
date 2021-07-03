@@ -1,12 +1,11 @@
 /**
  * Will create the header based on active and persmissions
  * @param {string} active Current HTML
- * @param {boolean} rights Its this user a Admin
  * @returns {Promise}
  * User: Startseite | Shopping | Strom  
  * Admin: Gäste
  */
-function createHeaderLinks(rights, active) {
+function createHeaderLinks(active) {
     var HeaderHTML = "";
         
         if(active.toLowerCase() === "Startseite".toLowerCase()){
@@ -27,7 +26,7 @@ function createHeaderLinks(rights, active) {
             HeaderHTML += `<li><a href="Strom.html">Strom</a></li>`
         }
 
-        if(rights){
+        if(localStorage.getItem('Admin')){
             //IF Admin add :D
             if(active.toLowerCase() === "Gäste".toLowerCase()){
                 HeaderHTML += `<li><a href="Users.html" class="active">Gäste</a></li>`
@@ -43,12 +42,11 @@ function createHeaderLinks(rights, active) {
 
 /**
  * Will create the wlcome message on top left side
- * @param {object} TokenData 
  * @returns {Promise}
  */
- function createHeaderMessage(TokenData) {
+ function createHeaderMessage() {
      let SofwareName = "LAN-Manager"
-     let HeaderHTML = `${SofwareName}: Willkommen ${TokenData.username}`;
+     let HeaderHTML = `${SofwareName}: Willkommen ${localStorage.getItem('Username')}`;
 
     $("#HeaderWelcome").text(HeaderHTML);
 }
