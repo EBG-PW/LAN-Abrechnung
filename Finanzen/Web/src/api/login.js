@@ -62,7 +62,7 @@ router.post("/check", limiter, async (reg, res, next) => {
                             charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
                         });
                         //Write new Webtoken
-                        DB.write.webtoken.Add(value.userid, Guest_result[0].username, IP, UserAgent.source, WebToken, Guest_result[0].admin).then(function(WebToken_respone) {
+                        DB.write.webtoken.Add(value.userid, Guest_result[0].username, IP, UserAgent.source, WebToken, Guest_result[0].admin, Guest_result[0].lang).then(function(WebToken_respone) {
                             res.status(200);
                             res.json({
                             Token: WebToken,

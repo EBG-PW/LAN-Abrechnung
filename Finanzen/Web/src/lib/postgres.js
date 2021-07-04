@@ -509,12 +509,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {string} browser
  * @param {string} token
  * @param {boolean} admin
+ * @param {string} lang
  * @returns {Promise}
  */
- let AddWebToken = function(userid, username, ip, browser, token, admin) {
+ let AddWebToken = function(userid, username, ip, browser, token, admin, lang) {
   return new Promise(function(resolve, reject) {
-    pool.query(`INSERT INTO webtoken(userid, username, ip, browser, token, admin) VALUES ($1,$2,$3,$4,$5,$6)`,[
-      userid, username, ip, browser, token, admin
+    pool.query(`INSERT INTO webtoken(userid, username, ip, browser, token, admin, lang) VALUES ($1,$2,$3,$4,$5,$6,$7)`,[
+      userid, username, ip, browser, token, admin, lang
     ], (err, result) => {
       if (err) {reject(err)}
         resolve(result);
