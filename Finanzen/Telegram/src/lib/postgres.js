@@ -103,6 +103,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
 
 pool.query(`CREATE TABLE IF NOT EXISTS shopinglist (
   userid bigint,
+  username text,
   produktname text,
   produktcompany text,
   price integer,
