@@ -289,12 +289,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * This function will write new user to DB
  * @param {number} User_id
  * @param {String} username
+ * @param {string} lang
  * @returns {Promise}
  */
- let WriteNewUser = function(User_id, username) {
+ let WriteNewUser = function(User_id, username, lang) {
   return new Promise(function(resolve, reject) {
-    pool.query('INSERT INTO guests (userid, username) VALUES ($1,$2) ON CONFLICT (userid) DO UPDATE SET username=$2',[
-      User_id, username
+    pool.query('INSERT INTO guests (userid, username, lang) VALUES ($1,$2,$3) ON CONFLICT (userid) DO UPDATE SET username=$2',[
+      User_id, username, lang
     ], (err, result) => {
       if (err) {reject(err)}
       resolve(result);

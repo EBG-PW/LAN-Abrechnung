@@ -908,7 +908,8 @@ bot.on('callbackQuery', (msg) => {
                 if(data[2] === 'rules')
                 {
                     if(data.length === 3){
-                        DB.write.Guests.NewUser(msg.from.id, msg.from.username).then(function(response) {
+                        let UserLang = msg.from.language_code || mainconfig.DefaultLang
+                        DB.write.Guests.NewUser(msg.from.id, msg.from.username, UserLang).then(function(response) {
 
                             let replyMarkup = bot.inlineKeyboard([
                                 [
