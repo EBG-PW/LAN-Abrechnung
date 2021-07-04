@@ -11,6 +11,7 @@ const pool = new pg.Pool({
 
 pool.query(`CREATE TABLE IF NOT EXISTS guests (
     userid bigint PRIMARY KEY,
+    hauptgast_userid bigint,
     username text,
     passwort text,
     pc boolean DEFAULT False,
@@ -485,13 +486,14 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
 /**
  * This function will add a bought product to shopinglist
  * @param {number} userid
+ * @param {string} username
  * @param {object} product
  * @returns {Promise}
  */
- let NewItemBought = function(userid, product) {
+ let NewItemBought = function(userid, username, product) {
   return new Promise(function(resolve, reject) {
-    pool.query(`INSERT INTO shopinglist(userid, produktname, produktcompany, price, bought) VALUES ($1,$2,$3,$4,$5)`,[
-      userid, product.produktname, product.produktcompany, product.price, product.bought
+    pool.query(`INSERT INTO shopinglist(userid, username, produktname, produktcompany, price, bought) VALUES ($1,$2,$3,$4,$5,$6)`,[
+      userid, username, product.produktname, product.produktcompany, product.price, product.bought
     ], (err, result) => {
       if (err) {reject(err)}
         resolve(result);

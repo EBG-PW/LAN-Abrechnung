@@ -11,6 +11,7 @@ const pool = new pg.Pool({
 
 pool.query(`CREATE TABLE IF NOT EXISTS guests (
     userid bigint PRIMARY KEY,
+    hauptgast_userid bigint,
     username text,
     passwort text,
     pc boolean DEFAULT False,
