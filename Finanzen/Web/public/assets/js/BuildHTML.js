@@ -9,33 +9,33 @@ function createHeaderLinks(active) {
     var HeaderHTML = "";
         
         if(active.toLowerCase() === "Startseite".toLowerCase()){
-            HeaderHTML += `<li><a href="index.html" class="active">Startseite</a></li>`
+            HeaderHTML += `<li><a href="index.html" class="active">${translate('Header.Links.Startseite')}</a></li>`
         }else{
-            HeaderHTML += `<li><a href="index.html">Startseite</a></li>`
+            HeaderHTML += `<li><a href="index.html">${translate('Header.Links.Startseite')}</a></li>`
         }
 
         if(active.toLowerCase() === "Shopping".toLowerCase()){
-            HeaderHTML += `<li><a href="Shopping.html" class="active">Einkaufliste</a></li>`
+            HeaderHTML += `<li><a href="Shopping.html" class="active">${translate('Header.Links.Einkaufliste')}</a></li>`
         }else{
-            HeaderHTML += `<li><a href="Shopping.html">Einkaufliste</a></li>`
+            HeaderHTML += `<li><a href="Shopping.html">${translate('Header.Links.Einkaufliste')}</a></li>`
         }
 
         if(active.toLowerCase() === "Strom".toLowerCase()){
-            HeaderHTML += `<li><a href="Strom.html" class="active">Strom</a></li>`
+            HeaderHTML += `<li><a href="Strom.html" class="active">${translate('Header.Links.Strom')}</a></li>`
         }else{
-            HeaderHTML += `<li><a href="Strom.html">Strom</a></li>`
+            HeaderHTML += `<li><a href="Strom.html">${translate('Header.Links.Strom')}</a></li>`
         }
 
         if(localStorage.getItem('Admin')){
             //IF Admin add :D
             if(active.toLowerCase() === "Gäste".toLowerCase()){
-                HeaderHTML += `<li><a href="Users.html" class="active">Gäste</a></li>`
+                HeaderHTML += `<li><a href="Users.html" class="active">${translate('Header.Links.Gäste')}</a></li>`
             }else{
-                HeaderHTML += `<li><a href="Users.html">Gäste</a></li>`
+                HeaderHTML += `<li><a href="Users.html">${translate('Header.Links.Gäste')}</a></li>`
             }
         }
 
-        HeaderHTML += `<li><p id="logout" onclick="logout()">Ausloggen</p></li>`
+        HeaderHTML += `<li><p id="logout" onclick="logout()">${translate('Header.Links.Ausloggen')}</p></li>`
 
     $("#LinksList").html(HeaderHTML);
 }
@@ -46,7 +46,7 @@ function createHeaderLinks(active) {
  */
  function createHeaderMessage() {
      let SofwareName = "LAN-Manager"
-     let HeaderHTML = `${SofwareName}: Willkommen ${localStorage.getItem('Username')}`;
+     let HeaderHTML = `${SofwareName}: ${translate('Header.Willkommen')} ${localStorage.getItem('Username')}`;
 
     $("#HeaderWelcome").text(HeaderHTML);
 }

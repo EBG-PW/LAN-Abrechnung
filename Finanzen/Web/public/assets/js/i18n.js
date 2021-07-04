@@ -1,24 +1,49 @@
 const i18n = new I18n({
-    fallback: 'en',
+    fallback: 'de',
     languages: {
-      en: {
-        title: 'This is the title in English',
-        description: 'This is the description in English',
-      },
       de: {
-        title: 'Das ist der Titel auf Deutsch',
-        description: 'Dies ist die Beschreibung auf Deutsch',
+        Header: {
+          Links: {
+            Startseite: "Startseite",
+            Einkaufliste: "Einkaufliste",
+            Strom: "Strom",
+            Gäste: "Gäste",
+            Ausloggen: "Ausloggen"
+          },
+          Willkommen: "Willkommen"
+        },
+        Startseite: {
+          
+        }
       },
+      en: {
+        Header: {
+          Links: {
+            Startseite: "Main",
+            Einkaufliste: "Shoppingcart",
+            Strom: "Power",
+            Gäste: "Guests",
+            Ausloggen: "Logout"
+          },
+          Willkommen: "Wellcome"
+        },
+        Startseite: {
+          
+        }
+      }
     }
 });
 
 /**
  * Will translate a key value to the language of the token
- * @param {string} Key Current HTML
- * @returns {string} Stransladed String
- * User: Startseite | Shopping | Strom  
- * Admin: Gäste
+ * @param {string} Key Object Key to translate
+ * @param {object} Variables
+ * @returns {string} Transladed String
  */
-function i18ntranslate(Key){
+function translate(Key, Variables){
+  if(Variables){
+    return i18n.translate(localStorage.getItem('Language'), Key, Variables);
+  }else{
     return i18n.translate(localStorage.getItem('Language'), Key);
+  }
 }
