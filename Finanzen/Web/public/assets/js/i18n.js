@@ -19,7 +19,7 @@ const i18n = new I18n({
       en: {
         Header: {
           Links: {
-            Startseite: "Main",
+            Startseite: "Mainpadge",
             Einkaufliste: "Shoppingcart",
             Strom: "Power",
             Gäste: "Guests",

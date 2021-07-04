@@ -29,11 +29,11 @@
 				<!-- Main -->
 					<section id="main" class="wrapper">
 						<div class="inner">
-							<h1 class="major">Startseite</h1>
+							<h1 class="major" id="MainHeadline"></h1>
 							<a id="StartseiteText"></a>
 						</div>
 					</section>
-
+					
 			</div>
 
 		<!-- Footer -->
@@ -66,6 +66,8 @@
 					createHeaderLinks("Startseite")
 					//Will translate a key value to the language of the token
 					createHeaderMessage()
+					//Write transladed headline in Main wrapper
+					$("#MainHeadline").html(translate('Header.Links.Startseite'));
 				})
 			</script>
 	</body>
