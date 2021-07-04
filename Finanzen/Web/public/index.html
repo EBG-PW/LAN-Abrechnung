@@ -31,9 +31,10 @@
 						<div class="inner">
 							<h1 class="major" id="MainHeadline"></h1>
 							<a id="StartseiteText"></a>
+							<div id="StartSeitenTabelle"></div>
 						</div>
 					</section>
-					
+
 			</div>
 
 		<!-- Footer -->
@@ -57,7 +58,9 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/BackendCalls.js"></script>
 			<script src="assets/js/BuildHTML.js"></script>
+			<script src="assets/js/table.js"></script>
 			<script>
 				CheckTokenValidity().then(function(TokenData) {
 					//This will wirte all Token data to localstorrage to be used in all funktions
@@ -68,6 +71,12 @@
 					createHeaderMessage()
 					//Write transladed headline in Main wrapper
 					$("#MainHeadline").html(translate('Header.Links.Startseite'));
+					//Request Userdata for the Usertable
+					getUserData().then(function(UserDataList) {
+						console.log(UserDataList)
+						//Add Table FOrmat parameter...
+						$("#StartSeitenTabelle").html(CreateTable(['username', 'pc', 'displays_count', 'network_cable', 'vr', 'expected_arrival', 'expected_departure'], UserDataList.GuestsList_response, 'StartSeiteUserTabelle'))
+					});
 				})
 			</script>
 	</body>

@@ -14,6 +14,17 @@ const i18n = new I18n({
         },
         Startseite: {
           
+        },
+        Tabeles: {
+          StartSeiteUserTabelle: {
+            username: "Nutzername",
+            pc: "PC",
+            displays_count: "Monitore",
+            network_cable: "LAN-Kabel",
+            vr: "VR",
+            expected_arrival: "Ankuft",
+            expected_departure: "Abfahrt"
+          }
         }
       },
       en: {

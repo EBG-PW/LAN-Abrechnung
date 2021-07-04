@@ -18,7 +18,7 @@ function CreateTable(TableHeadData, TableData, TableName) {
 	var TableBodyDataPart = [];
 	TableData.map(Data => {
 		for (const [key, value] of Object.entries(Data)) {
-			if(TableHeadDatas.includes(key)){
+			if(TableHeadData.includes(key)){
 			let index = TableHeadData.indexOf(key);
 				TableBodyDataPart.splice(index, 0, `<td>${value}</td>`)
 			}

@@ -7,7 +7,7 @@
         const getUrl = window.location;
         const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
         if (localStorage.getItem("Token") !== null) {
-            var posting = $.post(`${baseUrl}api/v1/user/getuser`,{
+            var posting = $.get(`${baseUrl}api/v1/user/userlist`,{
               Token: localStorage.getItem("Token")
             });
             posting.done(function(result) {
