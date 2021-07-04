@@ -590,8 +590,8 @@ bot.on('callbackQuery', (msg) => {
                 let amount_to_buy = amount_split[0];
                 let price = msg.message.reply_markup.inline_keyboard[1][1].callback_data;
 
-                DB.get.Guests.Check.Payed(msg.from.id).then(function(payed_response) {
-                    if(payed_response === true || payed_response === "true"){
+                DB.get.Guests.ByID(msg.from.id).then(function(guest_response) {
+                    if(guest_response[0].payed === true || guest_response[0].payed === "true"){
                         DB.get.Products.Get(product).then(function(product_response) {
                             if(product_response.rows.length >= 1) {
                                 if(parseInt(product_response.rows[0].amount)-parseInt(product_response.rows[0].bought) >= parseInt(amount_to_buy)){
@@ -603,7 +603,7 @@ bot.on('callbackQuery', (msg) => {
                                                 price: product_response.rows[0].price*amount_to_buy,
                                                 bought: amount_to_buy
                                             }
-                                            DB.write.shopinglist.Buy(msg.from.id, SQLprodukt).then(function(Write_Shoppinglist) {
+                                            DB.write.shopinglist.Buy(msg.from.id, guest_response[0].username, SQLprodukt).then(function(Write_Shoppinglist) {
                                                 let MSG;
                                                 if(product === "Spende"){
                                                     MSG = newi18n.translate('de', 'Inline.Donation', {price: CentToEuro(price*amount_to_buy)})
