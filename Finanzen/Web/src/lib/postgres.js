@@ -104,7 +104,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
 
 pool.query(`CREATE TABLE IF NOT EXISTS shopinglist (
   userid bigint,
-  username text,
+  byer_userid text,
   produktname text,
   produktcompany text,
   price integer,
@@ -487,14 +487,14 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
 /**
  * This function will add a bought product to shopinglist
  * @param {number} userid
- * @param {string} username
+ * @param {string} byer_userid
  * @param {object} product
  * @returns {Promise}
  */
- let NewItemBought = function(userid, username, product) {
+ let NewItemBought = function(userid, byer_userid, product) {
   return new Promise(function(resolve, reject) {
-    pool.query(`INSERT INTO shopinglist(userid, username, produktname, produktcompany, price, bought) VALUES ($1,$2,$3,$4,$5,$6)`,[
-      userid, username, product.produktname, product.produktcompany, product.price, product.bought
+    pool.query(`INSERT INTO shopinglist(userid, byer_userid, produktname, produktcompany, price, bought) VALUES ($1,$2,$3,$4,$5,$6)`,[
+      userid, byer_userid, product.produktname, product.produktcompany, product.price, product.bought
     ], (err, result) => {
       if (err) {reject(err)}
         resolve(result);
@@ -503,7 +503,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
 }
 
 /**
- * This function will add a bought product to shopinglist
+ * This function will add a bought product to webtokens
  * @param {number} userid
  * @param {string} username
  * @param {string} ip

@@ -603,7 +603,7 @@ bot.on('callbackQuery', (msg) => {
                                                 price: product_response.rows[0].price*amount_to_buy,
                                                 bought: amount_to_buy
                                             }
-                                            DB.write.shopinglist.Buy(msg.from.id, guest_response[0].username, SQLprodukt).then(function(Write_Shoppinglist) {
+                                            DB.write.shopinglist.Buy(msg.from.id, msg.from.id, SQLprodukt).then(function(Write_Shoppinglist) { //Here Stuff needs to be chanced when subusers will be added!!
                                                 let MSG;
                                                 if(product === "Spende"){
                                                     MSG = newi18n.translate('de', 'Inline.Donation', {price: CentToEuro(price*amount_to_buy)})
