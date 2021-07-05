@@ -73,9 +73,8 @@
 					$("#MainHeadline").html(translate('Header.Links.Startseite'));
 					//Request Userdata for the Usertable
 					getUserData().then(function(UserDataList) {
-						console.log(UserDataList)
 						//Add Table FOrmat parameter...
-						$("#StartSeitenTabelle").html(CreateTable(['username', 'pc', 'displays_count', 'network_cable', 'vr', 'expected_arrival', 'expected_departure'], UserDataList.GuestsList_response, 'StartSeiteUserTabelle'))
+						$("#StartSeitenTabelle").html(CreateTable(['username', 'pc', 'displays_count', 'network_cable', 'vr', 'expected_arrival', 'expected_departure'], UserDataList.GuestsList_response, 'StartSeiteUserTabelle', true))
 					});
 				})
 			</script>

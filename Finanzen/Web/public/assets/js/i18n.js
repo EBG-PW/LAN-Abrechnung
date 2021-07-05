@@ -25,6 +25,26 @@ const i18n = new I18n({
             expected_arrival: "Ankuft",
             expected_departure: "Abfahrt"
           }
+        },
+        Tage: {
+          Long: {
+            0: "Montag",
+            1: "Dienstag",
+            2: "Mittwoch",
+            3: "Donnerstag",
+            4: "Freitag",
+            5: "Samstag",
+            6: "Sonntag"
+          },
+          Short: {
+            0: "MO",
+            1: "DI",
+            2: "MI",
+            3: "DO",
+            4: "FR",
+            5: "SA",
+            6: "SO"
+          }
         }
       },
       en: {
