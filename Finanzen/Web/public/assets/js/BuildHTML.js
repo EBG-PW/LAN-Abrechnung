@@ -45,8 +45,19 @@ function createHeaderLinks(active) {
  * @returns {Promise}
  */
  function createHeaderMessage() {
-     let SofwareName = "LAN-Manager"
+     let SofwareName = "LAN-Manager" //Chance this if your event has a diffrent Name
      let HeaderHTML = `${SofwareName}: ${translate('Header.Willkommen')} ${localStorage.getItem('Username')}`;
 
     $("#HeaderWelcome").text(HeaderHTML);
+}
+
+/**
+ * Will create the web title
+ * @returns {Promise}
+ */
+ function createSiteTitle() {
+    let SofwareName = "LAN-Manager" //Chance this if your event has a diffrent Name
+    let HeaderHTML = `${SofwareName}: ${localStorage.getItem('Username')}`;
+
+   $("#SideTile").text(HeaderHTML);
 }

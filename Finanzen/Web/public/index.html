@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Generic - Hyperspace by HTML5 UP</title>
+		<title id="SideTile"></title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -69,6 +69,7 @@
 					createHeaderLinks("Startseite")
 					//Will translate a key value to the language of the token
 					createHeaderMessage()
+					createSiteTitle()
 					//Write transladed headline in Main wrapper
 					$("#MainHeadline").html(translate('Header.Links.Startseite'));
 					//Request Userdata for the Usertable
