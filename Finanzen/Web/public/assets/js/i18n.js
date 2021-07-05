@@ -28,22 +28,22 @@ const i18n = new I18n({
         },
         Tage: {
           Long: {
-            0: "Montag",
-            1: "Dienstag",
-            2: "Mittwoch",
-            3: "Donnerstag",
-            4: "Freitag",
-            5: "Samstag",
-            6: "Sonntag"
+            0: "Sonntag",
+            1: "Montag",
+            2: "Dienstag",
+            3: "Mittwoch",
+            4: "Donnerstag",
+            5: "Freitag",
+            6: "Samstag"
           },
           Short: {
-            0: "MO",
-            1: "DI",
-            2: "MI",
-            3: "DO",
-            4: "FR",
-            5: "SA",
-            6: "SO"
+            0: "SO",
+            1: "MO",
+            2: "DI",
+            3: "MI",
+            4: "DO",
+            5: "FR",
+            6: "SA"
           }
         }
       },

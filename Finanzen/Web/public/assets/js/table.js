@@ -1,10 +1,11 @@
 /**
- * Creats a table from a REST API response with only the collums given in TableHeadData
+ * Creats a table from a REST API response with only the collums given in TableHeadData  
+ * --!!-- Note, only Numbers below 100K will be prossed as numbers, if Convert is active!!
  * @param {array} TableHeadData Define here what data should be in the table
  * @param {array} TableData Table Data as Array of Objects
  * @param {string} TableName Table Name to require the strings (translations)
  * @param {boolean} Convert If True, Timestrings and Booleans will be converted
- * @returns {string} HTML-Formaded Table String
+ * @returns {string} HTML-Formaded Table String  
  */
 function CreateTable(TableHeadData, TableData, TableName, Convert) {
 	var TableElements = [];
@@ -37,7 +38,7 @@ function ConvertString(D, C) {
             return "✅";
         }else if(D === false || D === 'false'){
             return "❌";
-        }else if(!isNaN(Date.parse(D))){
+        }else if(!isNaN(new Date(D).getTime()) && new Date(D).getTime() >= 100000){
             return `${translate(`Tage.Short.${new Date(D).getDay()}`)} - ${new Date(D).toLocaleDateString('de-DE')}`
         }else{
             return D
