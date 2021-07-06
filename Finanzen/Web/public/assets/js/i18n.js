@@ -24,6 +24,16 @@ const i18n = new I18n({
             vr: "VR",
             expected_arrival: "Ankuft",
             expected_departure: "Abfahrt"
+          },
+          GästeAdminUserTabelle: {
+            username: "Nutzername",
+            userid: "NutzerID",
+            payed: "Gezahlt",
+            admin: "Admin",
+            vaccinated: "Geimpft",
+            payed_ammount: "Zahlung",
+            button_chancePlugAllowedState: "Steckdose Erlauebn"
+
           }
         },
         Tage: {

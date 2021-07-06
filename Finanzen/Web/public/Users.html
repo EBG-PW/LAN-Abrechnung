@@ -67,16 +67,28 @@
 					//This will wirte all Token data to localstorrage to be used in all funktions
 					writeTokenDataToLocalStorrage(TokenData)
 					//Will create the header based on active and persmissions
-					createHeaderLinks("Startseite")
+					createHeaderLinks("Gäste")
 					//Will translate a key value to the language of the token
 					createHeaderMessage()
 					createSiteTitle()
 					//Write transladed headline in Main wrapper
-					$("#MainHeadline").html(translate('Header.Links.Startseite'));
+					$("#MainHeadline").html(translate('Header.Links.Gäste'));
 					//Request Userdata for the Usertable
-					getUserData().then(function(UserDataList) {
-						//Add Table FOrmat parameter...
-						$("#StartSeitenTabelle").html(CreateTable(['username', 'pc', 'displays_count', 'network_cable', 'vr', 'expected_arrival', 'expected_departure'], UserDataList.GuestsList_response, 'StartSeiteUserTabelle', true))
+					getAdminUserData().then(function(AdminUserDataList) {
+						//Add Table Format parameter...
+						for (let i = 0; i < AdminUserDataList.GuestsList_response.length; i++) {
+							//Convert Cents from API to Euro
+							AdminUserDataList.GuestsList_response[i].payed_ammount = CentToEuro(AdminUserDataList.GuestsList_response[i].payed_ammount)
+							//Add Button to switch pugs allowed status
+							AdminUserDataList.GuestsList_response[i].button_chancePlugAllowedState = {
+								text: "true",
+								style: "color: #00ff22 !important;",
+								function: "AddToTeam",
+								functionVar: AdminUserDataList.GuestsList_response[i].userid,
+								Convert: false
+							}
+						} 
+						$("#StartSeitenTabelle").html(ButtonCreateTable(['username', 'userid', 'payed', 'admin', 'vaccinated', 'payed_ammount', 'button_chancePlugAllowedState'], ['button_chancePlugAllowedState'], AdminUserDataList.GuestsList_response, 'GästeAdminUserTabelle', true))
 					});
 				})
 			</script>

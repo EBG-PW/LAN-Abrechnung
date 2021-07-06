@@ -61,3 +61,13 @@ function createHeaderLinks(active) {
 
    $("#SideTile").text(HeaderHTML);
 }
+
+/**
+ * This function will convert cents to Euro ISO 
+ * @param {string} value
+ * @returns {string}
+ */
+ function CentToEuro(value){
+    var euro = value / 100;
+    return euro.toLocaleString("de-De", {style:"currency", currency:"EUR"});
+}
