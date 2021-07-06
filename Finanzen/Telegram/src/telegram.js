@@ -603,7 +603,13 @@ bot.on('callbackQuery', (msg) => {
                                                 price: product_response.rows[0].price*amount_to_buy,
                                                 bought: amount_to_buy
                                             }
-                                            DB.write.shopinglist.Buy(msg.from.id, msg.from.id, SQLprodukt).then(function(Write_Shoppinglist) { //Here Stuff needs to be chanced when subusers will be added!!
+
+                                            let transaction_id = randomstring.generate({
+                                                length: mainconfig.RegTokenLength, //DO NOT CHANCE!!!
+                                                charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                                            });
+
+                                            DB.write.shopinglist.Buy(msg.from.id, msg.from.id, SQLprodukt, transaction_id).then(function(Write_Shoppinglist) { //Here Stuff needs to be chanced when subusers will be added!!
                                                 let MSG;
                                                 if(product === "Spende"){
                                                     MSG = newi18n.translate('de', 'Inline.Donation', {price: CentToEuro(price*amount_to_buy)})
