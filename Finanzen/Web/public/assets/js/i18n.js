@@ -32,6 +32,7 @@ const i18n = new I18n({
             admin: "Admin",
             vaccinated: "Geimpft",
             payed_ammount: "Zahlung",
+            pyed_id: "Zahlungs ID",
             button_chancePlugAllowedState: "Steckdose Erlauebn"
 
           }
