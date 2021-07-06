@@ -103,6 +103,7 @@ router.post("/register", limiter, async (reg, res, next) => {
                                 res.status(200);
                                 res.json({
                                     message: "Success - Password was set",
+                                    userid: response.rows[0].userid
                                 });
                             });
                         });

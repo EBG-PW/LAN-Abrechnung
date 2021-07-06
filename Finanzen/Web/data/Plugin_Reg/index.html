@@ -377,15 +377,19 @@
         Password: password1
       });
 
-    posting.fail(function(err) {
-			if(err.status === 429){
-        $("#c-welcome-info").html(`Error 429 - Zu viele Anfragen`);
-			}else if(err.status === 500){
-				$("#c-welcome-info").html(`Error 500 - Interner/Datenbank Fehler`);
-			}else if(err.status === 401){
-        $("#c-welcome-info").html(`Error 401 - Token not found`);
-      }
-		});
+      posting.done(function(result) {
+        setTimeout(function(){ window.location.replace(`${baseUrl}api/v1/login/login/${result.userid}`); }, 5000);
+      })
+
+      posting.fail(function(err) {
+        if(err.status === 429){
+          $("#c-welcome-info").html(`Error 429 - Zu viele Anfragen`);
+        }else if(err.status === 500){
+          $("#c-welcome-info").html(`Error 500 - Interner/Datenbank Fehler`);
+        }else if(err.status === 401){
+          $("#c-welcome-info").html(`Error 401 - Token not found`);
+        }
+      });
     }else{
       $("#c-welcome-info").html(`Die Passwörter stimmen nicht überein.`);
       setTimeout(function(){ window.location.reload(true); }, 5000);
