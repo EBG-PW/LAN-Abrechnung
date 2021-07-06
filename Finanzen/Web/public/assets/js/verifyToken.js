@@ -31,6 +31,7 @@ function CheckTokenValidity(){
  */
 function writeTokenDataToLocalStorrage(TokenData){
   localStorage.setItem('Username', TokenData.username);
+  localStorage.setItem('UserID', TokenData.userid);
   localStorage.setItem('ip', TokenData.ip);
   localStorage.setItem('Browser', TokenData.browser);
   localStorage.setItem('Admin', TokenData.admin);
