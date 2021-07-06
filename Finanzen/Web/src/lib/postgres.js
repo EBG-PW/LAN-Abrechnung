@@ -109,6 +109,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS shopinglist (
   produktcompany text,
   price integer,
   bought integer,
+  transaction_id text,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (userid,time))`, (err, result) => {
   if (err) {console.log(err)}
@@ -489,12 +490,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {number} userid
  * @param {string} byer_userid
  * @param {object} product
+ * @param {string} transaction_id
  * @returns {Promise}
  */
- let NewItemBought = function(userid, byer_userid, product) {
+ let NewItemBought = function(userid, byer_userid, product, transaction_id) {
   return new Promise(function(resolve, reject) {
-    pool.query(`INSERT INTO shopinglist(userid, byer_userid, produktname, produktcompany, price, bought) VALUES ($1,$2,$3,$4,$5,$6)`,[
-      userid, byer_userid, product.produktname, product.produktcompany, product.price, product.bought
+    pool.query(`INSERT INTO shopinglist(userid, byer_userid, produktname, produktcompany, price, bought, transaction_id) VALUES ($1,$2,$3,$4,$5,$6,$7)`,[
+      userid, byer_userid, product.produktname, product.produktcompany, product.price, product.bought, transaction_id
     ], (err, result) => {
       if (err) {reject(err)}
         resolve(result);
