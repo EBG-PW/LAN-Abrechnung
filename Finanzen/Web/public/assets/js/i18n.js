@@ -15,6 +15,15 @@ const i18n = new I18n({
         Startseite: {
           
         },
+        Shoppingseite: {
+          Text: "Deine gesamten Ausgaben auf Buffet, Getränke und Bestellungen belaufen sich auf {{total}}."
+        },
+        Stromseite: {
+          
+        },
+        GästeSeite: {
+          
+        },
         Tabeles: {
           StartSeiteUserTabelle: {
             username: "Nutzername",

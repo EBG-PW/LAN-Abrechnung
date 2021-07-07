@@ -30,7 +30,8 @@
 					<section id="main" class="wrapper">
 						<div class="inner">
 							<h1 class="major" id="MainHeadline"></h1>
-							<a id="ShoppingText"></a>
+							<h4 id="ShoppingText"></h4>
+							<br>
 							<div id="ShoppingTabelle"></div>
 						</div>
 					</section>
@@ -74,9 +75,10 @@
 					createSiteTitle()
 					//Write transladed headline in Main wrapper
 					$("#MainHeadline").html(translate('Header.Links.Einkaufliste'));
+					GetTotalSpend().then(function(TotalSpend) {
+						$("#ShoppingText").html(translate('Shoppingseite.Text', {total: CentToEuro(TotalSpend.total)}));
+					});
 					Table_ShoppingListTable()
-
-
 				})
 			</script>
 	</body>

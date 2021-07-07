@@ -58,6 +58,39 @@ router.get("/shoppinglist", limiter, async (reg, res, next) => {
     }
 });
 
+router.get("/gettotalspend", limiter, async (reg, res, next) => {
+    try {
+        const value = await ShoppingList.validateAsync(reg.query);
+        let source = reg.headers['user-agent']
+        let para = {
+            Browser: useragent.parse(source),
+            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
+        }
+        TV.check(value.Token, para, false).then(function(Check) {
+            if(Check.State === true){
+                DB.get.shopinglist.Get(Check.Data.userid).then(function(ShoppingList_response) {
+                    let total = 0;
+                    ShoppingList_response.rows.map(row => {
+                        total = total + row.price
+                    })
+                    res.status(200);
+                    res.json({
+                        total
+                    });
+                    
+                });
+            }else{
+                res.status(401);
+                res.json({
+                    Message: "Token invalid"
+                });
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = {
 	router: router,
 	PluginName: PluginName,
