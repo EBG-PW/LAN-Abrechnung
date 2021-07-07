@@ -30,8 +30,8 @@
 					<section id="main" class="wrapper">
 						<div class="inner">
 							<h1 class="major" id="MainHeadline"></h1>
-							<a id="StartseiteText"></a>
-							<div id="StartSeitenTabelle"></div>
+							<a id="ShoppingText"></a>
+							<div id="ShoppingTabelle"></div>
 						</div>
 					</section>
 
@@ -68,13 +68,15 @@
 					//This will wirte all Token data to localstorrage to be used in all funktions
 					writeTokenDataToLocalStorrage(TokenData)
 					//Will create the header based on active and persmissions
-					createHeaderLinks("Startseite")
+					createHeaderLinks("Shopping")
 					//Will translate a key value to the language of the token
 					createHeaderMessage()
 					createSiteTitle()
 					//Write transladed headline in Main wrapper
-					$("#MainHeadline").html(translate('Header.Links.Startseite'));
-					Table_UserDataList()
+					$("#MainHeadline").html(translate('Header.Links.Einkaufliste'));
+					Table_ShoppingListTable()
+
+
 				})
 			</script>
 	</body>

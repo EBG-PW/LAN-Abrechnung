@@ -33,8 +33,15 @@ const i18n = new I18n({
             vaccinated: "Geimpft",
             payed_ammount: "Zahlung",
             pyed_id: "Zahlungs ID",
-            button_chancePlugAllowedState: "Steckdose Erlauebn"
-
+            button_chancePlugAllowedState: "Steckdose Erlauben"
+          },
+          ShoppinglistTabelle: {
+            userid: "NutzerID",
+            byer_userid: "ID des Käufers",
+            produktname: "Produkt Name",
+            produktcompany: "Hersteller",
+            bought: "Anzahl",
+            price: "Preis"
           }
         },
         Tage: {
@@ -55,6 +62,12 @@ const i18n = new I18n({
             4: "DO",
             5: "FR",
             6: "SA"
+          }
+        },
+        undefined: "Undefiniert",
+        Buttons: {
+          toggle_allowed_state: {
+            no_chance: "Fehler: Dieser Nutzer hat vermutlich keine Steckdose"
           }
         }
       },
@@ -87,5 +100,19 @@ function translate(Key, Variables){
     return i18n.translate(localStorage.getItem('Language'), Key, Variables);
   }else{
     return i18n.translate(localStorage.getItem('Language'), Key);
+  }
+}
+
+function convertFlags(lang_string){
+  if(lang_string === "de"){
+    return "🇩🇪";
+  }else if(lang_string === "en"){
+    return "🇬🇧";
+  }else if(lang_string === "ua"){
+    return "🇺🇦";
+  }else if(lang_string === "it"){
+    return "🇮🇹";
+  }else{
+    return lang_string
   }
 }

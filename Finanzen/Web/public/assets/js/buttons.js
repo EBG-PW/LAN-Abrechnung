@@ -29,3 +29,29 @@
             });
         }
 }
+
+/**
+ * Will send a logout request to destroy the current token
+ * @returns {Promise}
+ */
+function toggle_allowed_state(userid){
+    const getUrl = window.location;
+        const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+        if (localStorage.getItem("Token") !== null) {
+            var posting = $.get(`${baseUrl}api/v1/strom/PlugsToggleAllowedState`,{
+              Token: localStorage.getItem("Token"),
+              UserID: userid
+            });
+            posting.done(function(result) {
+                Table_AdminUserDataList()
+            })
+            posting.fail(function(err) {
+              if(err.status === 401){
+                console.log(err)
+              }else if(err.status === 500){
+                console.log(err)
+                alert(translate('Buttons.toggle_allowed_state.no_chance'))
+              }
+            });
+        }
+}

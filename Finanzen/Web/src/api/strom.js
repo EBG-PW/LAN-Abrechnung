@@ -12,7 +12,7 @@ const PluginConfig = {
 };
 
 /* Plugin info */
-const PluginName = 'Lan-Finanzen';
+const PluginName = 'Lan-Strom';
 const PluginRequirements = [];
 const PluginVersion = '0.0.1';
 const PluginAuthor = 'BolverBlitz';
@@ -23,36 +23,46 @@ const limiter = rateLimit({
     max: 150
   });
 
-const ShoppingList = Joi.object({
-    Token: Joi.string().required()
+const PlugsToggleAllowedStateCheck = Joi.object({
+    Token: Joi.string().required(),
+    UserID: Joi.number().required()
 });
 
 const router = express.Router();
 
-router.get("/shoppinglist", limiter, async (reg, res, next) => {
+router.get("/PlugsToggleAllowedState", limiter, async (reg, res, next) => {
     try {
-        const value = await ShoppingList.validateAsync(reg.query);
+        const value = await PlugsToggleAllowedStateCheck.validateAsync(reg.query);
         let source = reg.headers['user-agent']
         let para = {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, false).then(function(Check) {
+        TV.check(value.Token, para, true).then(function(Check) {
             if(Check.State === true){
-                DB.get.shopinglist.Get(Check.Data.userid).then(function(ShoppingList_response) {
-                    res.status(200);
-                    res.json({
-                        ShoppingList_response: ShoppingList_response.rows
-                    });
-                    
+                DB.write.plugs.toggle_allowed_state(value.UserID).then(function(toggle_response) {
+                    if(toggle_response.rowCount === 1){
+                        res.status(200);
+                        res.json({
+                             Message: "Sucsess"
+                        });  
+                    }else{
+                        res.status(500);
+                        res.json({
+                             Message: "Nothing chanced. This either means the UserID isn´t known, or the user has no plug yet"
+                        }); 
+                    }
                 });
             }else{
                 res.status(401);
                 res.json({
-                    Message: "Token invalid"
+                     Message: "Token invalid"
                 });
             }
-        });
+        }).catch(function(error){
+            res.status(500);
+            console.log(error)
+        })
     } catch (error) {
         next(error);
     }

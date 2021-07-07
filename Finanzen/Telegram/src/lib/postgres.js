@@ -1,4 +1,5 @@
 const pg = require('pg');
+const internal = require('stream');
 const util = require('util')
 
 const pool = new pg.Pool({
@@ -131,7 +132,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  */
  let GetGuests = function() {
     return new Promise(function(resolve, reject) {
-      pool.query('SELECT * FROM guests', (err, result) => {
+      pool.query('SELECT guests.userid, guests.username, guests.passwort, guests.pc, guests.displays_count, guests.network_cable, guests.vr, guests.expected_arrival, guests.expected_departure, guests.accepted_rules, guests.accepted_legal, guests.payed, guests.pyed_id, guests.admin, guests.vaccinated, guests.time, guests.payed_ammount, guests.lang, plugs.allowed_state FROM guests LEFT JOIN plugs ON guests.userid = plugs.userid', (err, result) => {
         if (err) {reject(err)}
         resolve(result.rows);
       });
@@ -144,7 +145,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  */
  let GetGuestsSave = function() {
   return new Promise(function(resolve, reject) {
-    pool.query('SELECT userid, username, pc, displays_count, network_cable, vr, expected_arrival, expected_departure, admin, vaccinated FROM guests', (err, result) => {
+    pool.query('SELECT userid, username, pc, displays_count, network_cable, vr, expected_arrival, expected_departure, lang FROM guests', (err, result) => {
       if (err) {reject(err)}
       resolve(result.rows);
     });
@@ -554,6 +555,20 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   });
 }
 
+/**
+ * This function is used toggle the allowed state in the plugs table
+ * @param {number} userid
+ * @returns {Promise}
+ */
+ let PlugsToggleAllowedState = function(userid) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`UPDATE plugs SET allowed_state = NOT allowed_state WHERE userid = '${userid}'`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
 let get = {
   Guests: {
     All: GetGuests,
@@ -601,6 +616,9 @@ let write = {
   },
   webtoken: {
     Add: AddWebToken
+  },
+  plugs: {
+    toggle_allowed_state: PlugsToggleAllowedState
   }
 }
 
