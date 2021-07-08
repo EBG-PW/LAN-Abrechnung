@@ -116,6 +116,28 @@ pool.query(`CREATE TABLE IF NOT EXISTS shopinglist (
   if (err) {console.log(err)}
 });
 
+pool.query(`CREATE TABLE IF NOT EXISTS bestellung (
+  url text,
+  orderid text,
+  timeuntil timestamp with time zone,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (userid,time))`, (err, result) => {
+  if (err) {console.log(err)}
+});
+
+pool.query(`CREATE TABLE IF NOT EXISTS bestellungen (
+  userid bigint,
+  artikel text,
+  amount integer,
+  price integer,
+  orderid text,
+  key text,
+  status boolean DEFAULT False,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (userid,time))`, (err, result) => {
+  if (err) {console.log(err)}
+});
+
 pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   targetapp text,
   id text PRIMARY KEY,
@@ -583,6 +605,33 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   });
 }
 
+/**
+ * This function will add a new order
+ * @param {string} url
+ * @param {string} orderid
+ * @param {string} timeuntil
+ * @returns {Promise}
+ */
+ let AddOrder = function(url, orderid, timeuntil) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`INSERT INTO bestellung(url, orderid, timeuntil) VALUES ($1,$2,$3)`,[
+      url, orderid, timeuntil
+    ], (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+pool.query(`CREATE TABLE IF NOT EXISTS bestellung (
+  url text,
+  orderid text,
+  timeuntil timestamp with time zone,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (userid,time))`, (err, result) => {
+  if (err) {console.log(err)}
+});
+
 let get = {
   Guests: {
     All: GetGuests,
@@ -638,6 +687,9 @@ let write = {
   },
   plugs: {
     toggle_allowed_state: PlugsToggleAllowedState
+  },
+  order: {
+    AddOrder: AddOrder
   }
 }
 

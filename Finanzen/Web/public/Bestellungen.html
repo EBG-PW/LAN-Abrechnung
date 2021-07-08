@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title id="SideTile"></title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" id="HeaderWelcome" class="title"></a>
+				<nav>
+					<ul id="LinksList">
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major" id="MainHeadline"></h1>
+							<h4 id="BestellungText"></h4>
+							<br>
+							<div id="StartSeitenTabelle"></div>
+							<br>
+							<!-- Form -->
+							<section>
+								<h2 id="FormName"></h2>
+								<form method="post" id="cform" action="#">
+									<div class="row gtr-uniform">
+										<div class="col-6 col-12-xsmall">
+											<input type="text" name="demo-name" id="EssenListe" value="" placeholder="" />
+										</div>
+										<div class="col-6 col-12-xsmall">
+											<input type="email" name="demo-email" id="Zeit" value="" placeholder="" />
+										</div>
+										<div class="col-12">
+											<ul class="actions">
+												<li><input type="submit" id="Submit" value="Neue Bestellung" class="primary" /></li>
+											</ul>
+										</div>
+									</div>
+								</form>
+								<div id="result"></div>
+							</section>
+						</div>
+					</section>
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; LAN-Manager by EBG.PW | All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li><li>Projekt und Dokumentation: <a href="https://github.com/EBG-PW/LAN-Abrechnung">Github</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script>const exports = {};//Fixes i18n Stuff lol.</script>
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/verifyToken.js"></script>
+			<script src="https://unpkg.com/new-i18n@3.0.0-5/lib/index.js"></script>
+			<script src="assets/js/i18n.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="assets/js/BackendCalls.js"></script>
+			<script src="assets/js/BuildHTML.js"></script>
+			<script src="assets/js/table.js"></script>
+			<script src="assets/js/htmltables.js"></script>
+			<script src="assets/js/buttons.js"></script>
+			<script>
+				CheckTokenValidity().then(function(TokenData) {
+					//This will wirte all Token data to localstorrage to be used in all funktions
+					writeTokenDataToLocalStorrage(TokenData)
+					//Will create the header based on active and persmissions
+					createHeaderLinks("Bestellungen")
+					//Will translate a key value to the language of the token
+					createHeaderMessage()
+					createSiteTitle()
+					//Write transladed headline in Main wrapper
+					$("#MainHeadline").html(translate('Header.Links.Bestellungen'));
+					$("#BestellungText").html(translate('Bestellungen.Text'));
+					$("#FormName").html(translate('Bestellungen.Form.FormName'));
+					$("#EssenListe").attr("placeholder", translate('Bestellungen.Form.EssenListe'));
+					$("#Zeit").attr("placeholder", translate('Bestellungen.Form.Zeit'));
+					$("#Submit").html(translate('Bestellungen.Form.Submit'));
+					$("#cform").submit(function(event) {
+						event.preventDefault();
+						var $form = $(this)
+						const getUrl = window.location;
+        				const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+						var posting = $.post(`${baseUrl}api/v1/bestellungen/new`,{
+							Token: localStorage.getItem("Token"),
+							EssenListe: $('#EssenListe').val(),
+							Zeit: $('#Zeit').val()
+						});
+
+						posting.done(function(data) {
+							$('#result').text(translate('Bestellungen.Form.Result')); 
+						});
+					})
+				})
+			</script>
+	</body>
+	</body>
+</html>

@@ -8,6 +8,7 @@ const i18n = new I18n({
             Einkaufliste: "Einkaufliste",
             Strom: "Strom",
             Gäste: "Gäste",
+            Bestellungen: "Bestellungen",
             Ausloggen: "Ausloggen"
           },
           Willkommen: "Willkommen"
@@ -24,6 +25,16 @@ const i18n = new I18n({
         },
         GästeSeite: {
           
+        },
+        Bestellungen: {
+          Text: "Erstelle eine neue Bestellung",
+          Form: {
+            FormName: "Neue Bestellung",
+            EssenListe: "Link zur Speißekarte",
+            Zeit: "Zeit für bestellung in Minuten",
+            Submit: "Neue Bestellung",
+            Result: "Neue Bestellung erfolgreich angelegt"
+          }
         },
         Tabeles: {
           StartSeiteUserTabelle: {

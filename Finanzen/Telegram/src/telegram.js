@@ -29,6 +29,9 @@ if(fs.existsSync(`${reqPath}${process.env.Config}/preisliste.json`)) {
 
 bot.on(/^\/loadprice/i, (msg) => {
     var run_start = new Date().getTime();
+    if(fs.existsSync(`${reqPath}${process.env.Config}/preisliste.json`)) {
+        preisliste = JSON.parse(fs.readFileSync(`${reqPath}/${process.env.Config}/preisliste.json`));
+    }
     DB.get.Guests.Check.Admin(msg.from.id).then(function(Admin_Check_response) {
         if(Admin_Check_response){
             let Restul_array = [];

@@ -3,7 +3,7 @@
  * @param {string} active Current HTML
  * @returns {Promise}
  * User: Startseite | Shopping | Strom  
- * Admin: Gäste
+ * Admin: Gäste | Bestellungen
  */
 function createHeaderLinks(active) {
     var HeaderHTML = "";
@@ -32,6 +32,12 @@ function createHeaderLinks(active) {
                 HeaderHTML += `<li><a href="Users.html" class="active">${translate('Header.Links.Gäste')}</a></li>`
             }else{
                 HeaderHTML += `<li><a href="Users.html">${translate('Header.Links.Gäste')}</a></li>`
+            }
+
+            if(active.toLowerCase() === "Bestellungen".toLowerCase()){
+                HeaderHTML += `<li><a href="Bestellungen.html" class="active">${translate('Header.Links.Bestellungen')}</a></li>`
+            }else{
+                HeaderHTML += `<li><a href="Bestellungen.html">${translate('Header.Links.Bestellungen')}</a></li>`
             }
         }
 
