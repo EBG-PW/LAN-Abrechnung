@@ -19,7 +19,7 @@ const i18n = new I18n({
           Text: "Deine gesamten Ausgaben auf Buffet, Getränke und Bestellungen belaufen sich auf {{total}}."
         },
         Stromseite: {
-          
+          Text: "Dein Energieverbrauch bisher sind {{totalkwh}}kWh. Das kostet dich {{totalkostenkwh}}"
         },
         GästeSeite: {
           

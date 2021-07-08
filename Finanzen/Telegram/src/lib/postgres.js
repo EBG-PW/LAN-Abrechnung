@@ -569,6 +569,20 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   });
 }
 
+/**
+ * This function is used to get the KWH used by a user
+ * @param {number} userid
+ * @returns {Promise}
+ */
+ let GetKWHbyUserID = function(userid) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT Distinct plugid,(first_value(energy) over (partition by plugid order by time desc) - first_value(energy) over (partition by plugid order by time asc) ) as diff from plugs_history WHERE plugid = (SELECT plugid FROM plugs WHERE userid = '${userid}')`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
 let get = {
   Guests: {
     All: GetGuests,
@@ -596,6 +610,11 @@ let get = {
   },
   webtokens: {
     Get: GetWebToken
+  },
+  plugs: {
+    power: {
+      kwh: GetKWHbyUserID
+    }
   }
 }
 
