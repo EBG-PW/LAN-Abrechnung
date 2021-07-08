@@ -25,8 +25,8 @@ function createHeaderLinks(active) {
         }else{
             HeaderHTML += `<li><a href="Strom.html">${translate('Header.Links.Strom')}</a></li>`
         }
-
-        if(localStorage.getItem('Admin')){
+        
+        if(localStorage.getItem('Admin') === true || localStorage.getItem('Admin') === "true"){
             //IF Admin add :D
             if(active.toLowerCase() === "Gäste".toLowerCase()){
                 HeaderHTML += `<li><a href="Users.html" class="active">${translate('Header.Links.Gäste')}</a></li>`
