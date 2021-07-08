@@ -13,7 +13,8 @@ const i18n = new I18n({
           Willkommen: "Willkommen"
         },
         Startseite: {
-          
+          Guthaben: "Dein Restguthaben beträgt {{restguthaben}}",
+          Text: "Dein Startguthaben beträgt {{guthaben}}, davon werden dir {{essenkosten}} für Essen abgezogen und {{stromkosten}} für verbrauchte Energie."
         },
         Shoppingseite: {
           Text: "Deine gesamten Ausgaben auf Buffet, Getränke und Bestellungen belaufen sich auf {{total}}."

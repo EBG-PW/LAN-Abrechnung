@@ -29,6 +29,37 @@ const UserList = Joi.object({
 
 const router = express.Router();
 
+router.get("/user", limiter, async (reg, res, next) => {
+    try {
+        const value = await UserList.validateAsync(reg.query);
+        let source = reg.headers['user-agent']
+        let para = {
+            Browser: useragent.parse(source),
+            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
+        }
+        TV.check(value.Token, para, false).then(function(Check) {
+            if(Check.State === true){
+                DB.get.Guests.ByID(Check.Data.userid).then(function(Guest_response) {
+                    res.status(200);
+                    res.json({
+                        me: Guest_response[0]
+                    });
+                });
+            }else{
+                res.status(401);
+                res.json({
+                     Message: "Token invalid"
+                });
+            }
+        }).catch(function(error){
+            res.status(500);
+            console.log(error)
+        })
+    } catch (error) {
+        next(error);
+    }
+});
+
 router.get("/userlist", limiter, async (reg, res, next) => {
     try {
         const value = await UserList.validateAsync(reg.query);

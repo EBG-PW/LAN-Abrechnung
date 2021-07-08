@@ -30,8 +30,11 @@
 					<section id="main" class="wrapper">
 						<div class="inner">
 							<h1 class="major" id="MainHeadline"></h1>
-							<a id="StartseiteText"></a>
+							<h2 id="Guthaben"></h2>
+							<h4 id="StartseiteText"></h4>
+							<br>
 							<div id="StartSeitenTabelle"></div>
+							<br
 						</div>
 					</section>
 
@@ -75,6 +78,14 @@
 					//Write transladed headline in Main wrapper
 					$("#MainHeadline").html(translate('Header.Links.Startseite'));
 					Table_UserDataList()
+					Promise.all([GetTotalSpend(), GeTotalKWH(), getMYData()]).then((values) => {
+						let RestGuthaben = CentToEuro(values[2].me.payed_ammount - (values[0].total + (values[1].kwh*values[1].price)))
+						let Guthaben = CentToEuro(values[2].me.payed_ammount)
+						let EssenKosten = CentToEuro(values[0].total)
+						let Stromkosten = CentToEuro(values[1].kwh*values[1].price)
+						$("#Guthaben").html(translate('Startseite.Guthaben', {restguthaben: RestGuthaben}));
+						$("#StartseiteText").html(translate('Startseite.Text', {guthaben: Guthaben, essenkosten: EssenKosten, stromkosten: Stromkosten}));
+					});
 				})
 			</script>
 	</body>

@@ -1,6 +1,6 @@
 {
   "name": "lanwebbackend",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Backend API for a lanparty",
   "main": "index.js",
   "scripts": {
