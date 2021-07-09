@@ -1,13 +1,24 @@
 require('dotenv').config();
 const express = require('express');
+const fs = require('fs');
 const rateLimit = require('express-rate-limit');
 useragent = require('express-useragent');
 const Joi = require('joi');
 var path = require('path');
+let reqPath = path.join(__dirname, '../../');
 const DB = require('../lib/postgres');
 const TV = require('../lib/TokenVerification');
 const randomstring = require('randomstring');
 
+let mainconfig, preisliste;
+
+/* Import Config */
+if(fs.existsSync(`${reqPath}${process.env.Config}/mainconfig.json`)) {
+	mainconfig = JSON.parse(fs.readFileSync(`${reqPath}/${process.env.Config}/mainconfig.json`));
+}
+if(fs.existsSync(`${reqPath}${process.env.Config}/preisliste.json`)) {
+	preisliste = JSON.parse(fs.readFileSync(`${reqPath}/${process.env.Config}/preisliste.json`));
+}
 
 const PluginConfig = {
 };
@@ -50,21 +61,21 @@ router.post("/new", limiter, async (reg, res, next) => {
                 let Zeit = new Date().getTime() + (value.Zeit * 60 * 1000)
                 let ZeitString = new Date(Zeit);
                 DB.write.order.AddOrder(value.EssenListe, ID, ZeitString).then(function(response) {
-                    //console.log(response)
-                    
+                    let TaskID = randomstring.generate({
+                        length: 32,
+                        charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                    });
+                    DB.message.PostNew('Telegram', TaskID, {text: `Es wird Essen bestellt!<nl><nl>Bitte auf ${value.EssenListe} eins oder mehrere Gerichte raussuchen.<nl>Bitte bis <b>${new Date(Zeit).toLocaleString('de-DE')}</b> bestellen.<nl>Bestellen im Webpanel mit der ID: <pre language="c++">${ID}</pre>`, chatid: mainconfig.LanChat, type: 'Message'}).then(function(New_Message) {
+                        console.log(`New Task for Telegram, with ID ${TaskID} was made.`)
+                        
+                        res.status(200);
+                        res.json({
+                            message: "Success",
+                        });
+                        
+                    });
                 });
-                /*
-                DB.message.PostNew('Telegram', ID, {text: 'Web_Register', chatid: response.rows[0].userid, type: 'Function'}).then(function(New_Message) {
-                    console.log(`New Task for Telegram, with ID ${ID} was made.`)
-                });
-                */
-               /*
-                res.status(200);
-                res.json({
-                    message: "Success - Password was set",
-                    userid: response.rows[0].userid
-                });
-                */
+               
             }else{
                 res.status(401);
                 res.json({

@@ -411,7 +411,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  */
  let GetNewMessages = function() {
   return new Promise(function(resolve, reject) {
-    pool.query(`SELECT * FROM innersync WHERE type = 'Function'`, (err, result) => {
+    pool.query(`SELECT * FROM innersync`, (err, result) => {
       if (err) {reject(err)}
         resolve(result);
     });

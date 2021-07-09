@@ -1207,6 +1207,15 @@ function CentToEuro(value){
 }
 
 /**
+ * This function will convert <nl> to \n
+ * @param {string} value
+ * @returns {string}
+ */
+ function NLtoJSNL(value){
+    return value.split("<nl>").join("\n")
+}
+
+/**
  * This function will convert a timediff into a humane readable string
  * @param {number} timediff
  * @returns {string}
@@ -1228,7 +1237,6 @@ setInterval(function(){
     DB.message.GetAll().then(function(list) {
         if(list.rows.length >= 1){
             list.rows.map(row => {
-                //console.log(row)
                 if(row.type === "Function"){ //Run all Funktions from here
                     if(row.message === "Web_Register"){
                         WebRegSendConfim(row.chatid).then(function(msg_send) {
@@ -1240,6 +1248,15 @@ setInterval(function(){
                             console.log(error)
                         })
                     }
+                }else if(row.type === "Message"){
+                    bot.sendMessage(row.chatid, NLtoJSNL(row.message), {parseMode: 'html'}).then(function(sendMessage) {
+                        DB.message.Delete(row.id).then(function(del_message) {
+                            console.log(`Task for Telegram, with ID ${row.id} was prossesed.`)
+                        });
+                    }).catch(function(error){
+                        console.log(`Error while prossesing Task for Telegram, with ID ${row.id}:`)
+                        console.log(error)
+                    })
                 }
             });
         }
