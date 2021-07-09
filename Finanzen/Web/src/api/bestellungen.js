@@ -49,15 +49,22 @@ router.post("/new", limiter, async (reg, res, next) => {
                 });
                 let Zeit = new Date().getTime() + (value.Zeit * 60 * 1000)
                 let ZeitString = new Date(Zeit);
-                DB.write.order.AddOrder(value.EssenListe, ID, ZeitString)
+                DB.write.order.AddOrder(value.EssenListe, ID, ZeitString).then(function(response) {
+                    //console.log(response)
+                    
+                });
+                /*
                 DB.message.PostNew('Telegram', ID, {text: 'Web_Register', chatid: response.rows[0].userid, type: 'Function'}).then(function(New_Message) {
                     console.log(`New Task for Telegram, with ID ${ID} was made.`)
                 });
+                */
+               /*
                 res.status(200);
                 res.json({
                     message: "Success - Password was set",
                     userid: response.rows[0].userid
                 });
+                */
             }else{
                 res.status(401);
                 res.json({

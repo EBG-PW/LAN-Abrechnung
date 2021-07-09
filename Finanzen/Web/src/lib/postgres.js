@@ -121,7 +121,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS bestellung (
   orderid text,
   timeuntil timestamp with time zone,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (userid,time))`, (err, result) => {
+  PRIMARY KEY (url,time))`, (err, result) => {
   if (err) {console.log(err)}
 });
 
@@ -131,7 +131,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS bestellungen (
   amount integer,
   price integer,
   orderid text,
-  key text,
+  orderkey text,
   status boolean DEFAULT False,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (userid,time))`, (err, result) => {
@@ -622,15 +622,6 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
     });
   });
 }
-
-pool.query(`CREATE TABLE IF NOT EXISTS bestellung (
-  url text,
-  orderid text,
-  timeuntil timestamp with time zone,
-  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (userid,time))`, (err, result) => {
-  if (err) {console.log(err)}
-});
 
 let get = {
   Guests: {
