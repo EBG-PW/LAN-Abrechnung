@@ -1064,7 +1064,8 @@ bot.on('inlineQuery', msg => {
                 id: `${newi18n.translate('de', `Inline.NoQuery.ID`)}`,
                 title: `${newi18n.translate('de', `Inline.NoQuery.Text`)}`,
                 description: msg.query,
-                message_text: (`${newi18n.translate('de', `Inline.NoQuery.Message`)}\n${ProductString}`)
+                message_text: (`${newi18n.translate('de', `Inline.NoQuery.Message`)}\n${ProductString}`),
+                parse_mode: 'html' 
             });
             return bot.answerQuery(answers).catch(function(error){
                 console.log(error)
@@ -1078,7 +1079,8 @@ bot.on('inlineQuery', msg => {
 					id: `${newi18n.translate('de', `Inline.NotFound.ID`)}`,
 					title: `${newi18n.translate('de', `Inline.NotFound.Text`)}`,
 					description: msg.query,
-					message_text: (`${newi18n.translate('de', `Inline.NotFound.Message`)}`)
+					message_text: (`${newi18n.translate('de', `Inline.NotFound.Message`)}`),
+                    parse_mode: 'html' 
 				});
 				return bot.answerQuery(answers).catch(function(error){
                     console.log(error)
