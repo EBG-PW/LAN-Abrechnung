@@ -77,6 +77,62 @@
 }
 
 /**
+ * Will get UserOrders from the backend
+ * @param {string} OrderID
+ * @returns {Promise}
+ */
+ function getAdminUserOrderData(OrderID) {
+  return new Promise(function(resolve, reject) {
+      const getUrl = window.location;
+      const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+      if (localStorage.getItem("Token") !== null) {
+          var posting = $.get(`${baseUrl}api/v1/bestellungen/getUserOrders`,{
+            Token: localStorage.getItem("Token"),
+            orderid: OrderID
+          });
+          posting.done(function(result) {
+            resolve(result)
+          })
+          posting.fail(function(err) {
+            if(err.status === 401){
+              resolve(err.status)
+            }else if(err.status === 500){
+              resolve(err.status)
+            }
+          });
+      }
+  });
+}
+
+/**
+ * Will get UserOrdersForSelfUser from the backend
+ * @param {string} OrderID
+ * @returns {Promise}
+ */
+ function getUserOrderData(OrderID) {
+  return new Promise(function(resolve, reject) {
+      const getUrl = window.location;
+      const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+      if (localStorage.getItem("Token") !== null) {
+          var posting = $.get(`${baseUrl}api/v1/bestellungen/getUserOrdersForToken`,{
+            Token: localStorage.getItem("Token"),
+            orderid: OrderID
+          });
+          posting.done(function(result) {
+            resolve(result)
+          })
+          posting.fail(function(err) {
+            if(err.status === 401){
+              resolve(err.status)
+            }else if(err.status === 500){
+              resolve(err.status)
+            }
+          });
+      }
+  });
+}
+
+/**
  * Will get shoppinghistory of the user
  * @returns {Promise}
  */

@@ -501,12 +501,14 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  */
  let GetAllBoughItemsByUser = function(userid) {
   return new Promise(function(resolve, reject) {
-    pool.query(`SELECT * FROM shopinglist WHERE userid = '${userid}'`, (err, result) => {
+    pool.query(`SELECT guests.username, shopinglist.userid, shopinglist.produktname, shopinglist.produktcompany, shopinglist.price, shopinglist.bought, shopinglist.byer_userid, shopinglist.transaction_id FROM shopinglist INNER JOIN guests ON shopinglist.userid = guests.userid WHERE shopinglist.userid = '${userid}' ORDER BY shopinglist.time DESC`, (err, result) => {
       if (err) {reject(err)}
         resolve(result);
     });
   });
 }
+
+
 
 /**
  * This function will add a bought product to shopinglist
@@ -623,6 +625,161 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   });
 }
 
+/**
+ * This function will add a new orderd article
+ * @param {number} userid
+ * @param {string} artikel
+ * @param {number} amount
+ * @param {number} price
+ * @param {string} orderid
+ * @param {string} orderkey
+ * @returns {Promise}
+ */
+ let AddOrderArticle = function(userid, artikel, amount, price, orderid, orderkey) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`INSERT INTO bestellungen(userid, artikel, amount, price, orderid, key) VALUES ($1,$2,$3,$4,$5,$6)`,[
+      userid, artikel, amount, price, orderid, orderkey
+    ], (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+/**
+ * This function will get Order Data by ID 
+ * @param {string} OrderID
+ * @returns {Promise}
+ */
+ let GetOrderByID = function(OrderID) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM bestellung WHERE orderid = $1`,[
+      OrderID
+    ], (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+/**
+ * This function will get Order Data by ID 
+ * @param {string} OrderID
+ * @param {boolean} status
+ * @returns {Promise}
+ */
+ let GetOrderByIDList = function(OrderID, status) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.key, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE orderid = $1 AND status = $2`,[
+      OrderID, status
+    ], (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+
+
+/**
+ * This function will get Order Data by ID and user
+ * @param {string} OrderID
+ * @param {number} UserID
+ * @returns {Promise}
+ */
+ let GetOrderByIDForUser = function(OrderID, UserID) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT * FROM bestellung WHERE orderid = $1 AND userid = $2`,[
+      OrderID, UserID
+    ], (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+/**
+ * This function will delete Order Data by Order_key
+ * @param {string} Key
+ * @param {number} UserID
+ * @returns {Promise}
+ */
+ let DelOrderByKey = function(Key, UserID) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`DELETE FROM bestellungen WHERE Key = $1 AND userid = $2`,[
+      Key, UserID
+    ], (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+/**
+ * This function will get Order Data by Order_key
+ * @param {string} Key
+ * @returns {Promise}
+ */
+ let GetOrderByKey = function(Key) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.key, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE key = $1`,[
+      Key
+    ], (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+/**
+ * This function will get Order Data by Order_key and UserID
+ * @param {string} OrderID
+ * @param {number} UserID
+ * @returns {Promise}
+ */
+ let GetOrderByOrderIDandUserID = function(OrderID, UserID) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.key, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE bestellungen.orderid = $1 AND bestellungen.userid = $2`,[
+      OrderID, UserID
+    ], (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+
+/**
+ * This function is used toggle the order state by key
+ * @param {string} Key
+ * @returns {Promise}
+ */
+ let OrderToggleState = function(Key) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`UPDATE bestellungen SET status = NOT status WHERE key = '${Key}'`, (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
+/**
+ * This function is used toggle the order state by key
+ * @param {string} Key
+ * @param {boolean} State
+ * @returns {Promise}
+ */
+ let OrderSwitchState = function(Key, State) {
+  return new Promise(function(resolve, reject) {
+    pool.query(`UPDATE bestellungen SET status = $1 WHERE key = $2`, [
+      State, Key
+    ], (err, result) => {
+      if (err) {reject(err)}
+        resolve(result);
+    });
+  });
+}
+
 let get = {
   Guests: {
     All: GetGuests,
@@ -655,6 +812,13 @@ let get = {
     power: {
       kwh: GetKWHbyUserID
     }
+  },
+  order: {
+    GetOrder: GetOrderByID,
+    GetOrderList: GetOrderByIDList,
+    GetOderForUser: GetOrderByIDForUser,
+    GetByKey: GetOrderByKey,
+    GetOrderByOrderID: GetOrderByOrderIDandUserID
   }
 }
 
@@ -680,7 +844,10 @@ let write = {
     toggle_allowed_state: PlugsToggleAllowedState
   },
   order: {
-    AddOrder: AddOrder
+    AddOrder: AddOrder,
+    AddOrderArticle: AddOrderArticle,
+    ToggleState: OrderToggleState,
+    SwitchState: OrderSwitchState
   }
 }
 
@@ -690,6 +857,9 @@ let del = {
   },
   webtoken: {
     Del: DelWebToken
+  },
+  order: {
+    ByKey: DelOrderByKey
   }
 }
 

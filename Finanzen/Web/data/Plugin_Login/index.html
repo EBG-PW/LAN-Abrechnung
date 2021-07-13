@@ -381,7 +381,7 @@
 			}else if(err.status === 500){
 				$("#c-welcome-info").html(`Error 500 - Interner/Datenbank Fehler`);
         setTimeout(function(){ window.location.reload(true); }, 5000);
-			}else if(err.status === 401){
+			}else if(err.status === 401 || err.status === 400){
         $("#c-welcome-info").html(`Die Logindaten stimmen nicht`);
         setTimeout(function(){ window.location.reload(true); }, 5000);
       }

@@ -58,7 +58,7 @@ function CreateTable(TableHeadData, TableData, TableName, Convert) {
 			if(TableHeadData.includes(key)){
 			let index = TableHeadData.indexOf(key);
 				if(KeyButtonList.includes(key)){
-					TableBodyDataPart.splice(index, 0, `<td><button type="button" style="${value.style}" onclick="${value.function}(${value.functionVar})">${ConvertString(value.text, value.Convert)}</button></td>`)
+					TableBodyDataPart.splice(index, 0, `<td><button type="button" style="${value.style}" onclick="${value.function}('${value.functionVar}')">${ConvertString(value.text, value.Convert)}</button></td>`)
 				}else{
 					TableBodyDataPart.splice(index, 0, `<td>${ConvertString(value, Convert)}</td>`)
 				}

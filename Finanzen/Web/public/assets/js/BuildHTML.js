@@ -25,6 +25,12 @@ function createHeaderLinks(active) {
         }else{
             HeaderHTML += `<li><a href="Strom.html">${translate('Header.Links.Strom')}</a></li>`
         }
+
+        if(active.toLowerCase() === "UserBestellungen".toLowerCase()){
+            HeaderHTML += `<li><a href="UserBestellungen.html" class="active">${translate('Header.Links.UserBestellungen')}</a></li>`
+        }else{
+            HeaderHTML += `<li><a href="UserBestellungen.html">${translate('Header.Links.UserBestellungen')}</a></li>`
+        }
         
         if(localStorage.getItem('Admin') === true || localStorage.getItem('Admin') === "true"){
             //IF Admin add :D

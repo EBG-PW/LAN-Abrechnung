@@ -55,6 +55,54 @@ function Table_ShoppingListTable() {
         }
         //Add Table Format parameter...
         //'byerid', geht nicht weil... Keine Ahung. Hoffentlich gehts mit anderer Query von Geo die den Usernamen gibt lol
-        $("#ShoppingTabelle").html(CreateTable(['userid', 'produktname', 'produktcompany', 'bought', 'price'], ShoppingListData.ShoppingList_response, 'ShoppinglistTabelle', true))
+        $("#ShoppingTabelle").html(CreateTable(['username', 'produktname', 'produktcompany', 'bought', 'price'], ShoppingListData.ShoppingList_response, 'ShoppinglistTabelle', true))
+    });
+}
+
+//This is used in Bestellungen.html
+function Table_BestellungList(orderid) {
+    getAdminUserOrderData(orderid).then(function(getAdminUserOrderData) {
+        for (let i = 0; i < getAdminUserOrderData.GetOrder_response.length; i++) {
+
+            //Convert Cents from API to Euro
+            getAdminUserOrderData.GetOrder_response[i].price = CentToEuro(getAdminUserOrderData.GetOrder_response[i].price)
+            
+            getAdminUserOrderData.GetOrder_response[i].button_SetStatus = {
+                text: translate('Tabeles.AdminUserOrderTabelle.button_SetStatus_text'),
+                style: 'color: #fafa00 !important;',
+                function: "switch_order_to_shopinglist",
+                functionVar: getAdminUserOrderData.GetOrder_response[i].key,
+                Convert: false
+            }
+        } 
+        //Add Table Format parameter...
+        $("#resultOrderList").html(ButtonCreateTable(['username', 'artikel', 'amount', 'price', 'button_SetStatus'], ['button_SetStatus'], getAdminUserOrderData.GetOrder_response, 'AdminUserOrderTabelle', true))
+    });
+}
+
+//This is used in Bestellungen.html
+function Table_UserBestellungList(orderid) {
+    getUserOrderData(orderid).then(function(getUserUserOrderData) {
+        for (let i = 0; i < getUserUserOrderData.GetOrder_response.length; i++) {
+
+            //Convert Cents from API to Euro
+            getUserUserOrderData.GetOrder_response[i].price = CentToEuro(getUserUserOrderData.GetOrder_response[i].price)
+
+            if(getUserUserOrderData.GetOrder_response[i].status === true || getUserUserOrderData.GetOrder_response[i].status === "true"){
+                getUserUserOrderData.GetOrder_response[i].status = translate('Tabeles.UserUserOrderTabelle.status_text_true')
+            }else{
+                getUserUserOrderData.GetOrder_response[i].status = translate('Tabeles.UserUserOrderTabelle.status_text_false')
+            }
+            
+            getUserUserOrderData.GetOrder_response[i].button_delete = {
+                text: translate('Tabeles.UserUserOrderTabelle.button_delete_text'),
+                style: 'color: #ff0000 !important;',
+                function: "delete_user_order_by_key",
+                functionVar: getUserUserOrderData.GetOrder_response[i].key,
+                Convert: false
+            }
+        } 
+        //Add Table Format parameter...
+        $("#UserresultOrderList").html(ButtonCreateTable(['username', 'artikel', 'amount', 'price', 'status', 'button_delete'], ['button_delete'], getUserUserOrderData.GetOrder_response, 'UserUserOrderTabelle', true))
     });
 }

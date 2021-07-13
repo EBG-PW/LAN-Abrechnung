@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title id="SideTile"></title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" id="HeaderWelcome" class="title"></a>
+				<nav>
+					<ul id="LinksList">
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major" id="MainHeadline"></h1>
+							<!-- Form -->
+							<section>
+								<h2 id="FormUserBestellungenName"></h2>
+								<form method="post" id="eform" action="#">
+									<div class="row gtr-uniform">
+										<div class="col-12 col-1-xsmall">
+											<input type="text" name="orderid" id="orderid" value="" placeholder="" />
+										</div>
+										<div class="col-2">
+											<select name="ammount-category" id="ammount">
+												<option value="1">1x</option>
+												<option value="2">2x</option>
+												<option value="3">3x</option>
+												<option value="4">4x</option>
+												<option value="5">5x</option>
+											</select>
+										</div>
+										<div class="col-8 col-12-xsmall">
+											<input type="text" name="article" id="article" value="" placeholder="" />
+										</div>
+										<div class="col-2 col-12-xsmall">
+											<input type="text" name="price" id="price" value="" placeholder="" />
+										</div>
+										<div class="col-12">
+											<ul class="actions">
+												<li><input type="submit" id="Submit" value="" class="primary" /></li>
+											</ul>
+										</div>
+									</div>
+								</form>
+								<div id="result"></div>
+							</section>
+							<div id="UserresultOrderList"></div>
+						</div>
+					</section>
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; LAN-Manager by EBG.PW | All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li><li>Projekt und Dokumentation: <a href="https://github.com/EBG-PW/LAN-Abrechnung">Github</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script>const exports = {};//Fixes i18n Stuff lol.</script>
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/verifyToken.js"></script>
+			<script src="https://unpkg.com/new-i18n@3.0.0-5/lib/index.js"></script>
+			<script src="assets/js/i18n.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="assets/js/BackendCalls.js"></script>
+			<script src="assets/js/BuildHTML.js"></script>
+			<script src="assets/js/table.js"></script>
+			<script src="assets/js/htmltables.js"></script>
+			<script src="assets/js/buttons.js"></script>
+			<script>
+				CheckTokenValidity().then(function(TokenData) {
+					//This will wirte all Token data to localstorrage to be used in all funktions
+					writeTokenDataToLocalStorrage(TokenData)
+					//Will create the header based on active and persmissions
+					createHeaderLinks("UserBestellungen")
+					//Will translate a key value to the language of the token
+					createHeaderMessage()
+					createSiteTitle()
+					//Write transladed headline in Main wrapper
+					$("#MainHeadline").html(translate('Header.Links.UserBestellungen'));
+					$("#FormUserBestellungenName").html(translate('UserBestellungenseite.Form.FormName'));
+					$("#article").attr("placeholder", (translate('UserBestellungenseite.Form.article')));
+					$("#price").attr("placeholder", (translate('UserBestellungenseite.Form.price')));
+					$("#Submit").attr("value", (translate('UserBestellungenseite.Form.Submit')));
+					$("#orderid").attr("placeholder", (translate('UserBestellungenseite.Form.orderid')));
+					
+					const getUrl = window.location;
+					const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+					const OrderIDFromUrl = getUrl.search.split("?").join("")
+
+					$("#orderid").attr("value", (OrderIDFromUrl));
+
+					$("#eform").submit(function(event) {
+						event.preventDefault();
+						var $form = $(this)
+						const getUrl = window.location;
+        				const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+
+						let price = $('#price').val()
+						price = price.replace(",",".")
+						price = price.replace("€","");
+						price = Number(price)*100;
+
+						var posting = $.post(`${baseUrl}api/v1/bestellungen/newUserOrder`,{
+							Token: localStorage.getItem("Token"),
+							orderid: $('#orderid').val(),
+							article: $('#article').val(),
+							price: price,
+							Amount: $('#ammount').val()
+						});
+
+						posting.done(function(data) {
+							$("#result").text(translate('UserBestellungenseite.Form.Succsess'));
+							$("#article").val("");
+							$("#price").val("");
+							$("#ammount").val("1");
+							Table_UserBestellungList($('#orderid').val())
+						});
+
+						posting.fail(function(err) {
+							if(err.status === 400){
+								/*Handle API request validation*/
+								if(err.responseJSON.message === '"price" must be a number'){
+									$('#result').text(translate('UserBestellungenseite.Form.Errors.PriceNumber'));
+									$('#price').addClass("highlight");
+										setTimeout(function () {
+										  $('#price').removeClass('highlight');
+										}, 2000);
+									}else{
+										let RespArr = err.responseJSON.message.split('"');
+
+										function jsUcfirst(string) 
+										{
+											return string.charAt(0).toUpperCase() + string.slice(1);
+										}
+
+										if(RespArr[2].replace(/"/g,'',) === " is not allowed to be empty"){
+											$('#result').text("Bad Stuff :(");
+											if(RespArr[1].replace(/"/g,'',) === "article"){
+												$('#article').addClass("highlight");
+												setTimeout(function () {
+													$('#article').removeClass('highlight');
+												}, 2000);
+												$('#result').text(translate('UserBestellungenseite.Form.Errors.ArticleNull'));
+											}
+
+											if(RespArr[1].replace(/"/g,'',) === "orderid"){
+												$('#orderid').addClass("highlight");
+													setTimeout(function () {
+												  		$('#orderid').removeClass('highlight');
+													}, 2000);
+												$('#result').text(translate('UserBestellungenseite.Form.Errors.OrderidNull'));
+											}
+										}
+									}
+									/*Handle API rate limiting*/
+							}else if(err.status === 429){
+								$('#result').text(translate('UserBestellungenseite.Form.Errors.TomManyRequests'));
+							}else if(err.status === 410){
+								$('#result').text(translate('UserBestellungenseite.Form.Errors.OutOfTime'));
+							}else{
+								$('#result').text('Unknown ERROR!');
+							}
+						});
+					})
+
+					Table_UserBestellungList($('#orderid').val())
+
+				})
+			</script>
+	</body>
+	</body>
+</html>

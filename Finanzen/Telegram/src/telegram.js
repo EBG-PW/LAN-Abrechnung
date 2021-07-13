@@ -496,6 +496,7 @@ bot.on('callbackQuery', (msg) => {
             }
             if(data[1] === 'Add')
             {
+                bot.answerCallbackQuery(msg.id);
                 let amount_split = msg.message.reply_markup.inline_keyboard[0][1].text.split("/")
                 let product = msg.message.reply_markup.inline_keyboard[0][1].callback_data;
                 let amount_to_buy = amount_split[0];
@@ -535,6 +536,7 @@ bot.on('callbackQuery', (msg) => {
             }
             if(data[1] === 'Rem')
             {   
+                bot.answerCallbackQuery(msg.id);
                 let amount_split = msg.message.reply_markup.inline_keyboard[0][1].text.split("/")
                 let product = msg.message.reply_markup.inline_keyboard[0][1].callback_data;
                 let amount_to_buy = amount_split[0];
@@ -598,7 +600,7 @@ bot.on('callbackQuery', (msg) => {
                         DB.get.Products.Get(product).then(function(product_response) {
                             if(product_response.rows.length >= 1) {
                                 if(parseInt(product_response.rows[0].amount)-parseInt(product_response.rows[0].bought) >= parseInt(amount_to_buy)){
-                                    DB.write.Products.UpdateBought(product, product_response.rows[0].bought, amount_to_buy).then(function(update_response) {
+                                    DB.write.Products.UpdateBought(product, product_response.rows[0].bought, Number(product_response.rows[0].bought) + Number(amount_to_buy)).then(function(update_response) {
                                         if(update_response.rowCount === 1){
                                             let SQLprodukt = {
                                                 produktname: product,

@@ -47,12 +47,36 @@
 										</div>
 										<div class="col-12">
 											<ul class="actions">
-												<li><input type="submit" id="Submit" value="Neue Bestellung" class="primary" /></li>
+												<li><input type="submit" id="Submit" value="" class="primary" /></li>
 											</ul>
 										</div>
 									</div>
 								</form>
 								<div id="result"></div>
+							</section>
+						</div>
+					</section>
+
+					<section id="main" class="wrapper style2 fade-up">
+						<div class="inner">
+							<div id="StartSeitenTabelle"></div>
+							<br>
+							<!-- Form -->
+							<section>
+								<h2 id="FormNameOrderList"></h2>
+								<form method="post" id="dform" action="#">
+									<div class="row gtr-uniform">
+										<div class="col-12 col-1-xsmall">
+											<input type="text" name="orderid" id="orderid" value="" placeholder="" />
+										</div>
+										<div class="col-12">
+											<ul class="actions">
+												<li><input type="submit" id="SubmitOrderList" value="" class="primary" /></li>
+											</ul>
+										</div>
+									</div>
+								</form>
+								<div id="resultOrderList"></div>
 							</section>
 						</div>
 					</section>
@@ -99,7 +123,7 @@
 					$("#FormName").html(translate('Bestellungen.Form.FormName'));
 					$("#EssenListe").attr("placeholder", translate('Bestellungen.Form.EssenListe'));
 					$("#Zeit").attr("placeholder", translate('Bestellungen.Form.Zeit'));
-					$("#Submit").html(translate('Bestellungen.Form.Submit'));
+					$("#Submit").attr("value", (translate('Bestellungen.Form.Submit')));
 					$("#cform").submit(function(event) {
 						event.preventDefault();
 						var $form = $(this)
@@ -114,6 +138,16 @@
 						posting.done(function(data) {
 							$('#result').text(translate('Bestellungen.Form.Result')); 
 						});
+					})
+
+					//Manage the Order List
+					$("#orderid").attr("placeholder", (translate('Bestellungen.Form.orderid')));
+					$("#FormNameOrderList").html(translate('Bestellungen.Form.FormNameOrderList'));
+					$("#SubmitOrderList").attr("value", (translate('Bestellungen.Form.SubmitOrderList')));
+					
+					$("#dform").submit(function(event) {
+						event.preventDefault();
+						Table_BestellungList($('#orderid').val())
 					})
 				})
 			</script>

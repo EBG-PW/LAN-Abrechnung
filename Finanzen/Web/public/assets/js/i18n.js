@@ -7,6 +7,7 @@ const i18n = new I18n({
             Startseite: "Startseite",
             Einkaufliste: "Einkaufliste",
             Strom: "Strom",
+            UserBestellungen: "Bestellung",
             Gäste: "Gäste",
             Bestellungen: "Bestellungen",
             Ausloggen: "Ausloggen"
@@ -23,16 +24,38 @@ const i18n = new I18n({
         Stromseite: {
           Text: "Dein Energieverbrauch bisher sind {{totalkwh}}kWh. Das kostet dich {{totalkostenkwh}}"
         },
+        UserBestellungenseite: {
+          Text: "",
+          Form: {
+            orderid: "Bestellungs ID",
+            FormName: "Artikel Bestellen",
+            article: "Genauer Artikel Name + Extras",
+            price: "Einzelpreis",
+            Submit: "Hinzufügen",
+            Succsess: "Hinzufügen erfolgreich!",
+            Errors: {
+              PriceNumber: "Preis muss eine Nummer sein",
+              PriceNull: "Preis muss angegeben werden",
+              ArticleNull: "Artikel muss angegeben werden",
+              OrderidNull: "Bestellungs ID muss ausgefüllt sein",
+              TomManyRequests: "Zu viele Anfrage, bitte versuchen Sie es später erneut!",
+              OutOfTime: "Leider ist der Bestellzeitraum abgelaufen!"
+            }
+          }
+        },
         GästeSeite: {
           
         },
         Bestellungen: {
           Text: "Erstelle eine neue Bestellung",
           Form: {
+            FormNameOrderList: "Bestellungen der Nutzer",
+            orderid: "Bestellungs ID",
             FormName: "Neue Bestellung",
-            EssenListe: "Link zur Speißekarte",
+            EssenListe: "Link zur Speisekarte",
             Zeit: "Zeit für bestellung in Minuten",
             Submit: "Neue Bestellung",
+            SubmitOrderList: "Zeige Bestellungen",
             Result: "Neue Bestellung erfolgreich angelegt"
           }
         },
@@ -56,8 +79,28 @@ const i18n = new I18n({
             pyed_id: "Zahlungs ID",
             button_chancePlugAllowedState: "Steckdose Erlauben"
           },
+          AdminUserOrderTabelle: {
+            username: "Nutzername",
+            artikel: "Artikel",
+            amount: "Anzahl",
+            price: "Preis",
+            button_SetPrice: "Ändere Preis",
+            button_SetStatus: "Bestellt?",
+            button_SetStatus_text: "Wurde bestellt"
+          },
+          UserUserOrderTabelle: {
+            username: "Nutzername",
+            artikel: "Artikel",
+            amount: "Anzahl",
+            price: "Preis",
+            status: "Status",
+            status_text_true: "Wurde bestellt",
+            status_text_false: "Nicht bestellt",
+            button_delete: "Löschen",
+            button_delete_text: "X"
+          },
           ShoppinglistTabelle: {
-            userid: "NutzerID",
+            username: "Nutzername",
             byer_userid: "ID des Käufers",
             produktname: "Produkt Name",
             produktcompany: "Hersteller",
@@ -89,6 +132,9 @@ const i18n = new I18n({
         Buttons: {
           toggle_allowed_state: {
             no_chance: "Fehler: Dieser Nutzer hat vermutlich keine Steckdose"
+          },
+          delete_user_order_by_key: {
+            notime: "Die Bearbeitsungszeit für diese Bestellunge ist bereits Abgelaufen"
           }
         }
       },

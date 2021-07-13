@@ -71,6 +71,20 @@ input, select, textarea {
 	appearance: none;
 }
 
+@keyframes highlight {
+    0% {
+        background: #ffff99; 
+    }
+    100% {
+        background: none;
+    }
+}
+
+.highlight {
+    animation: highlight 2s;
+	border-radius: 6px;
+}
+
 /* Basic */
 
 	@-ms-viewport {
