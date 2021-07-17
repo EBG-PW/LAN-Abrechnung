@@ -211,7 +211,7 @@ router.get("/getUserOrdersForToken", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, true).then(function(Check) {
+        TV.check(value.Token, para, false).then(function(Check) {
             if(Check.State === true){
                 DB.get.order.GetOrderByOrderID(value.orderid, Check.Data.userid).then(function(GetOrder_response) {
                     res.status(200);
