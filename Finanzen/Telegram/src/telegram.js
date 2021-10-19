@@ -187,6 +187,7 @@ bot.on(/^\/lang/i, (msg) => {
     let replyMarkup = bot.inlineKeyboard([
         [
             bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.DE'), {callback: `lang_de`}),
+            bot.inlineButton(newi18n.translate('en', 'Sprachen.Knöpfe.EN'), {callback: 'lang_en'}),
         ],
         [
             bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.Zurück'), {callback: `/moreinfo`}),
