@@ -1,0 +1,19 @@
+{
+  "name": "lan-abrechnung",
+  "version": "0.0.1",
+  "description": "Manage your Lanparty",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EBG-PW/LAN-Abrechnung.git"
+  },
+  "author": "BolverBlitz, geozukunft, GodOfOwls",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/EBG-PW/LAN-Abrechnung/issues"
+  },
+  "homepage": "https://github.com/EBG-PW/LAN-Abrechnung#readme"
+}
