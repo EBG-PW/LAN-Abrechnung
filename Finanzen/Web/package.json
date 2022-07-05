@@ -25,9 +25,9 @@
     "express-rate-limit": "^5.2.6",
     "express-useragent": "^1.0.15",
     "helmet": "^4.1.0",
-    "joi": "^17.4.0",
+    "joi": "^17.6.0",
     "morgan": "^1.10.0",
-    "pg": "^8.6.0",
+    "pg": "^8.7.3",
     "randomstring": "^1.2.1",
     "sanitize-html": "^2.4.0"
   },
