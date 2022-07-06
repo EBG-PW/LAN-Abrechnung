@@ -1,0 +1,30 @@
+module.exports = {
+  apps: [{
+    name: "LanManager - Web",
+    instances: 1,
+    max_restarts: 2,
+    env: {
+      "NODE_ENV": "development",
+      "PORT": "80",
+      "IP": "localhost",
+      "saltRounds": "10",
+      "DB_USER": "",
+      "DB_HOST": "",
+      "DB_NAME": "",
+      "DB_PASSWORD": "",
+      "DB_PORT": "",
+      "WebPanelURL": "http://localhost",
+      "WebTokenLength": "64",
+      "WebTokenDurationH": "48",
+    },
+    script: "./Web/index.js"
+  }, {
+    name: "LanManager - TelegramBot",
+    instances: 1,
+    max_restarts: 2,
+    env: {
+      "NODE_ENV": "development"
+    },
+    script: "./Telegram/index.js"
+  }]
+}
