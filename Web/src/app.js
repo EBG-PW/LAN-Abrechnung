@@ -32,13 +32,14 @@ app.use(expressCspHeader({
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname + '/html/index.html'));
+  res.sendFile(path.join(__dirname, '..', 'www-public', 'index.html'));
 });
+
 app.get('/lawstuff', (req, res) => {
   res.sendFile(path.join(__dirname + '/html/lawstuff.html'));
 });
 
-app.use('/public', express.static('public'));
+app.use('/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets')));
 
 app.use('/api/v1', api);
 
