@@ -1,4 +1,4 @@
-const app = require('./app');
+const app = require('./src/app');
 
 console.log("All Systems Running!")
 

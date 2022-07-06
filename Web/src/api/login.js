@@ -5,8 +5,8 @@ useragent = require('express-useragent');
 const Joi = require('joi');
 var path = require('path');
 const randomstring = require('randomstring');
-const DB = require('../lib/postgres');
-const TV = require('../lib/TokenVerification');
+const DB = require('../../lib/postgres');
+const TV = require('../../lib/TokenVerification');
 const bcrypt = require('bcrypt');
 
 

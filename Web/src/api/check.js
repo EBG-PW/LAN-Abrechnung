@@ -4,8 +4,8 @@ const rateLimit = require('express-rate-limit');
 useragent = require('express-useragent');
 const Joi = require('joi');
 var path = require('path');
-const DB = require('../lib/postgres');
-const TV = require('../lib/TokenVerification');
+const DB = require('../../lib/postgres');
+const TV = require('../../lib/TokenVerification');
 
 
 const PluginConfig = {

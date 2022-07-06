@@ -6,17 +6,17 @@ useragent = require('express-useragent');
 const Joi = require('joi');
 var path = require('path');
 let reqPath = path.join(__dirname, '../../');
-const DB = require('../lib/postgres');
-const TV = require('../lib/TokenVerification');
+const DB = require('../../lib/postgres');
+const TV = require('../../lib/TokenVerification');
 
 let mainconfig, preisliste;
 
 /* Import Config */
-if(fs.existsSync(`${reqPath}${process.env.Config}/mainconfig.json`)) {
-	mainconfig = JSON.parse(fs.readFileSync(`${reqPath}/${process.env.Config}/mainconfig.json`));
+if(fs.existsSync(path.join(__dirname, '../', '../', 'config', 'mainconfig.json'))) {
+    mainconfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'mainconfig.json')));
 }
-if(fs.existsSync(`${reqPath}${process.env.Config}/preisliste.json`)) {
-	preisliste = JSON.parse(fs.readFileSync(`${reqPath}/${process.env.Config}/preisliste.json`));
+if(fs.existsSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json'))) {
+	preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json')));
 }
 
 const PluginConfig = {

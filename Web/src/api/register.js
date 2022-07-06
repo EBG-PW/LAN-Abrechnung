@@ -4,7 +4,7 @@ const rateLimit = require('express-rate-limit');
 const Joi = require('joi');
 var path = require('path');
 const randomstring = require('randomstring');
-const DB = require('../lib/postgres');
+const DB = require('../../lib/postgres');
 const bcrypt = require('bcrypt');
 
 

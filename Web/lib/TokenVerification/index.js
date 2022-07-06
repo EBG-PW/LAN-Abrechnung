@@ -1,5 +1,5 @@
 require('dotenv').config();
-const DB = require('../lib/postgres');
+const DB = require('../postgres');
 
 /**
  * Wil check if a Token is valid, also verifyes admin Permissions
