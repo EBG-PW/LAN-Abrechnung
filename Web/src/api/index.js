@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
 const router = express.Router();
 
 var plugins = [];
@@ -17,7 +18,7 @@ Array.prototype.remove = function() {
   return this;
 };
 
-fs.readdir("./src/api", function(err, filenames) {
+fs.readdir(path.join(__dirname), function(err, filenames) {
   filenames.remove('index.js');
   for (i = 0; i < filenames.length; i++) { 
     if(filenames[i].startsWith("disabled.")){
@@ -33,7 +34,7 @@ fs.readdir("./src/api", function(err, filenames) {
 });
 
 /* Load in all the plugins */
-fs.readdir("./src/api", function(err, filenames) {
+fs.readdir(path.join(__dirname), function(err, filenames) {
   filenames.remove('index.js');
   for (i = 0; i < filenames.length; i++) { 
     if(filenames[i].startsWith("disabled.")){
