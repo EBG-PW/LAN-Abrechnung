@@ -352,20 +352,20 @@
   function CheckTokenValidity(){
     if (localStorage.getItem("Token") !== null) {
       //Token was found, now validate it and if valid forward to /public
-      var posting = $.post(`${baseUrl}api/v1/check`,{
+      const posting = $.post(`${baseUrl}api/v1/check`,{
         Token: localStorage.getItem("Token")
       });
       posting.done(function(result) {
-        window.location.replace(`${baseUrl}public/`);
+        window.location.replace(`${baseUrl}/`);
       })
     }
   }
 
 	function submit(){
-    var userid = document.getElementById('userid').value;
-		var password = document.getElementById('password').value;
+    const userid = document.getElementById('userid').value;
+		const password = document.getElementById('password').value;
 
-    var posting = $.post(`${baseUrl}api/v1/login/check`,{
+    const posting = $.post(`${baseUrl}api/v1/login/check`,{
       userid: userid,
       password: password
     });

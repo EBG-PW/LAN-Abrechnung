@@ -32,8 +32,25 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'www-public', 'index.html'));
 });
 
-app.get('/lawstuff', (req, res) => {
-  res.sendFile(path.join(__dirname + '/html/lawstuff.html'));
+app.get('/Bestellung', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'www-public', 'Bestellung.html'));
+});
+
+app.get('/Shopping', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'www-public', 'Shopping.html'));
+});
+
+
+app.get('/Strom', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'www-public', 'Strom.html'));
+});
+
+app.get('/Users', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'www-public', 'Users.html'));
+});
+
+app.get('/UserBestellungen', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'www-public', 'UserBestellungen.html'));
 });
 
 app.use('/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets')));

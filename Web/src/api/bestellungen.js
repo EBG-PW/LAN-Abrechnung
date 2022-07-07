@@ -26,9 +26,9 @@ const customJoi = Joi.extend((joi) => {
         base: joi.string(),
         rules: {
             htmlStrip: {
-  
+
                 validate(value) {
-  
+
                     return SanitizeHtml(value, {
                         allowedTags: [],
                         allowedAttributes: {},
@@ -37,12 +37,12 @@ const customJoi = Joi.extend((joi) => {
             },
         },
     };
-  });
+});
 
 const limiter = rateLimit({
     windowMs: 60 * 1000,
     max: 150
-  });
+});
 
 const TokenCheck = Joi.object({
     Token: Joi.string().required(),
@@ -78,37 +78,37 @@ router.post("/new", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, true).then(function(Check) {
-            if(Check.State === true){
+        TV.check(value.Token, para, true).then(function (Check) {
+            if (Check.State === true) {
                 let ID = randomstring.generate({
                     length: 32,
                     charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
                 });
                 let Zeit = new Date().getTime() + (value.Zeit * 60 * 1000)
                 let ZeitString = new Date(Zeit);
-                DB.write.order.AddOrder(value.EssenListe, ID, ZeitString).then(function(response) {
+                DB.write.order.AddOrder(value.EssenListe, ID, ZeitString).then(function (response) {
                     let TaskID = randomstring.generate({
                         length: 32,
                         charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
                     });
-                    DB.message.PostNew('Telegram', TaskID, {text: `Es wird Essen bestellt!<nl><nl>Bitte auf ${value.EssenListe} eins oder mehrere Gerichte raussuchen.<nl>Bitte bis <b>${new Date(Zeit).toLocaleString('de-DE')}:${new Date(Zeit).getMilliseconds()}</b> bestellen.<nl>Bestellen im Webpanel mit der ID: <pre language="c++">${ID}</pre><nl><nl>${process.env.WebPanelURL}/public/UserBestellungen.html?${ID}`, chatid: mainconfig.LanChat, type: 'Message'}).then(function(New_Message) {
+                    DB.message.PostNew('Telegram', TaskID, { text: `Es wird Essen bestellt!<nl><nl>Bitte auf ${value.EssenListe} eins oder mehrere Gerichte raussuchen.<nl>Bitte bis <b>${new Date(Zeit).toLocaleString('de-DE')}:${new Date(Zeit).getMilliseconds()}</b> bestellen.<nl>Bestellen im Webpanel mit der ID: <pre language="c++">${ID}</pre><nl><nl>${process.env.WebPanelURL}/public/UserBestellungen.html?${ID}`, chatid: mainconfig.LanChat, type: 'Message' }).then(function (New_Message) {
                         console.log(`New Task for Telegram, with ID ${TaskID} was made.`)
-                        
+
                         res.status(200);
                         res.json({
                             message: "Success",
                         });
-                        
+
                     });
                 });
-               
-            }else{
+
+            } else {
                 res.status(401);
                 res.json({
-                     Message: "Token invalid"
+                    Message: "Token invalid"
                 });
             }
-        }).catch(function(error){
+        }).catch(function (error) {
             res.status(500);
             console.log(error)
         })
@@ -125,34 +125,42 @@ router.post("/newUserOrder", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, false).then(function(Check) {
-            if(Check.State === true){
-                DB.get.order.GetOrder(value.orderid).then(function(Order_Response) {
-                    if(Order_Response.rows[0].timeuntil > new Date().getTime()){
-                        let OrderKey = randomstring.generate({
-                            length: 32,
-                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
-                        });
-                        DB.write.order.AddOrderArticle(Check.Data.userid, value.article, value.Amount, Number(value.price)*Number(value.Amount), value.orderid, OrderKey).then(function(AddOrderArticle_Response) {
-                            res.status(200);
-                            res.json({
-                                Message: "Succsess"
-                            });
-                        });
-                    }else{
-                        res.status(410);
+        TV.check(value.Token, para, false).then(function (Check) {
+            if (Check.State === true) {
+                DB.get.order.GetOrder(value.orderid).then(function (Order_Response) {
+                    //Handle if the OrderID was not found
+                    if (Order_Response.rows.length === 0) {
+                        res.status(404);
                         res.json({
-                            Message: "Time not valid anymore"
+                            Message: "Order not found"
                         });
+                    } else {
+                        if (Order_Response.rows[0].timeuntil > new Date().getTime()) {
+                            let OrderKey = randomstring.generate({
+                                length: 32,
+                                charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                            });
+                            DB.write.order.AddOrderArticle(Check.Data.userid, value.article, value.Amount, Number(value.price) * Number(value.Amount), value.orderid, OrderKey).then(function (AddOrderArticle_Response) {
+                                res.status(200);
+                                res.json({
+                                    Message: "Succsess"
+                                });
+                            });
+                        } else {
+                            res.status(410);
+                            res.json({
+                                Message: "Time not valid anymore"
+                            });
+                        }
                     }
                 });
-            }else{
+            } else {
                 res.status(401);
                 res.json({
-                     Message: "Token invalid"
+                    Message: "Token invalid"
                 });
             }
-        }).catch(function(error){
+        }).catch(function (error) {
             res.status(500);
             console.log(error)
         })
@@ -169,21 +177,21 @@ router.get("/getUserOrders", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, true).then(function(Check) {
-            if(Check.State === true){
-                DB.get.order.GetOrderList(value.orderid, false).then(function(GetOrder_response) {
+        TV.check(value.Token, para, true).then(function (Check) {
+            if (Check.State === true) {
+                DB.get.order.GetOrderList(value.orderid, false).then(function (GetOrder_response) {
                     res.status(200);
                     res.json({
                         GetOrder_response: GetOrder_response.rows
                     });
                 });
-            }else{
+            } else {
                 res.status(401);
                 res.json({
-                     Message: "Token invalid"
+                    Message: "Token invalid"
                 });
             }
-        }).catch(function(error){
+        }).catch(function (error) {
             res.status(500);
             console.log(error)
         })
@@ -200,21 +208,21 @@ router.get("/getUserOrdersForToken", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, false).then(function(Check) {
-            if(Check.State === true){
-                DB.get.order.GetOrderByOrderID(value.orderid, Check.Data.userid).then(function(GetOrder_response) {
+        TV.check(value.Token, para, false).then(function (Check) {
+            if (Check.State === true) {
+                DB.get.order.GetOrderByOrderID(value.orderid, Check.Data.userid).then(function (GetOrder_response) {
                     res.status(200);
                     res.json({
                         GetOrder_response: GetOrder_response.rows
                     });
                 });
-            }else{
+            } else {
                 res.status(401);
                 res.json({
-                     Message: "Token invalid"
+                    Message: "Token invalid"
                 });
             }
-        }).catch(function(error){
+        }).catch(function (error) {
             res.status(500);
             console.log(error)
         })
@@ -231,9 +239,9 @@ router.get("/switchOrderStateByKey", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, true).then(function(Check) {
-            if(Check.State === true){
-                DB.get.order.GetByKey(value.key).then(function(GetOrder_response) {
+        TV.check(value.Token, para, true).then(function (Check) {
+            if (Check.State === true) {
+                DB.get.order.GetByKey(value.key).then(function (GetOrder_response) {
                     let T_ID = randomstring.generate({
                         length: 32,
                         charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
@@ -244,23 +252,23 @@ router.get("/switchOrderStateByKey", limiter, async (reg, res, next) => {
                         price: GetOrder_response.rows[0].price,
                         bought: GetOrder_response.rows[0].amount
                     }
-                    DB.write.shopinglist.Buy(GetOrder_response.rows[0].userid, GetOrder_response.rows[0].userid, Product, T_ID).then(function(Buy_response) {
-                        DB.write.order.SwitchState(value.key, true).then(function(Switch_response) {
+                    DB.write.shopinglist.Buy(GetOrder_response.rows[0].userid, GetOrder_response.rows[0].userid, Product, T_ID).then(function (Buy_response) {
+                        DB.write.order.SwitchState(value.key, true).then(function (Switch_response) {
                             res.status(200);
                             res.json({
-                                 Message: "Succsess",
-                                 orderid: GetOrder_response.rows[0].orderid
-                            }); 
+                                Message: "Succsess",
+                                orderid: GetOrder_response.rows[0].orderid
+                            });
                         });
                     })
                 });
-            }else{
+            } else {
                 res.status(401);
                 res.json({
-                     Message: "Token invalid"
+                    Message: "Token invalid"
                 });
             }
-        }).catch(function(error){
+        }).catch(function (error) {
             res.status(500);
             console.log(error)
         })
@@ -277,19 +285,19 @@ router.post("/delUserOrder", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, false).then(function(Check) {
-            if(Check.State === true){
-                DB.get.order.GetByKey(value.key).then(function(Order_key_Response) {
-                    DB.get.order.GetOrder(Order_key_Response.rows[0].orderid).then(function(Order_Response) {
-                        if(Order_Response.rows[0].timeuntil > new Date().getTime()){
-                            DB.del.order.ByKey(value.key, Check.Data.userid).then(function(Del_Response) {
+        TV.check(value.Token, para, false).then(function (Check) {
+            if (Check.State === true) {
+                DB.get.order.GetByKey(value.key).then(function (Order_key_Response) {
+                    DB.get.order.GetOrder(Order_key_Response.rows[0].orderid).then(function (Order_Response) {
+                        if (Order_Response.rows[0].timeuntil > new Date().getTime()) {
+                            DB.del.order.ByKey(value.key, Check.Data.userid).then(function (Del_Response) {
                                 res.status(200);
                                 res.json({
                                     Message: "Succsess",
                                     orderid: Order_key_Response.rows[0].orderid
                                 });
                             });
-                        }else{
+                        } else {
                             res.status(410);
                             res.json({
                                 Message: "Time not valid anymore"
@@ -297,13 +305,13 @@ router.post("/delUserOrder", limiter, async (reg, res, next) => {
                         }
                     });
                 });
-            }else{
+            } else {
                 res.status(401);
                 res.json({
-                     Message: "Token invalid"
+                    Message: "Token invalid"
                 });
             }
-        }).catch(function(error){
+        }).catch(function (error) {
             res.status(500);
             console.log(error)
         })
@@ -314,10 +322,10 @@ router.post("/delUserOrder", limiter, async (reg, res, next) => {
 
 
 module.exports = {
-	router: router,
-	PluginName: PluginName,
-	PluginRequirements: PluginRequirements,
-	PluginVersion: PluginVersion,
-	PluginAuthor: PluginAuthor,
-	PluginDocs: PluginDocs
+    router: router,
+    PluginName: PluginName,
+    PluginRequirements: PluginRequirements,
+    PluginVersion: PluginVersion,
+    PluginAuthor: PluginAuthor,
+    PluginDocs: PluginDocs
 };

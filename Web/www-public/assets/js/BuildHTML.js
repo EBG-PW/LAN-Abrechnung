@@ -9,41 +9,41 @@ function createHeaderLinks(active) {
     var HeaderHTML = "";
         
         if(active.toLowerCase() === "Startseite".toLowerCase()){
-            HeaderHTML += `<li><a href="index.html" class="active">${translate('Header.Links.Startseite')}</a></li>`
+            HeaderHTML += `<li><a href="/" class="active">${translate('Header.Links.Startseite')}</a></li>`
         }else{
-            HeaderHTML += `<li><a href="index.html">${translate('Header.Links.Startseite')}</a></li>`
+            HeaderHTML += `<li><a href="/">${translate('Header.Links.Startseite')}</a></li>`
         }
 
         if(active.toLowerCase() === "Shopping".toLowerCase()){
-            HeaderHTML += `<li><a href="Shopping.html" class="active">${translate('Header.Links.Einkaufliste')}</a></li>`
+            HeaderHTML += `<li><a href="Shopping" class="active">${translate('Header.Links.Einkaufliste')}</a></li>`
         }else{
-            HeaderHTML += `<li><a href="Shopping.html">${translate('Header.Links.Einkaufliste')}</a></li>`
+            HeaderHTML += `<li><a href="Shopping">${translate('Header.Links.Einkaufliste')}</a></li>`
         }
 
         if(active.toLowerCase() === "Strom".toLowerCase()){
-            HeaderHTML += `<li><a href="Strom.html" class="active">${translate('Header.Links.Strom')}</a></li>`
+            HeaderHTML += `<li><a href="Strom" class="active">${translate('Header.Links.Strom')}</a></li>`
         }else{
-            HeaderHTML += `<li><a href="Strom.html">${translate('Header.Links.Strom')}</a></li>`
+            HeaderHTML += `<li><a href="Strom">${translate('Header.Links.Strom')}</a></li>`
         }
 
         if(active.toLowerCase() === "UserBestellungen".toLowerCase()){
-            HeaderHTML += `<li><a href="UserBestellungen.html" class="active">${translate('Header.Links.UserBestellungen')}</a></li>`
+            HeaderHTML += `<li><a href="UserBestellungen" class="active">${translate('Header.Links.UserBestellungen')}</a></li>`
         }else{
-            HeaderHTML += `<li><a href="UserBestellungen.html">${translate('Header.Links.UserBestellungen')}</a></li>`
+            HeaderHTML += `<li><a href="UserBestellungen">${translate('Header.Links.UserBestellungen')}</a></li>`
         }
         
         if(localStorage.getItem('Admin') === true || localStorage.getItem('Admin') === "true"){
             //IF Admin add :D
             if(active.toLowerCase() === "Gäste".toLowerCase()){
-                HeaderHTML += `<li><a href="Users.html" class="active">${translate('Header.Links.Gäste')}</a></li>`
+                HeaderHTML += `<li><a href="Users" class="active">${translate('Header.Links.Gäste')}</a></li>`
             }else{
-                HeaderHTML += `<li><a href="Users.html">${translate('Header.Links.Gäste')}</a></li>`
+                HeaderHTML += `<li><a href="Users">${translate('Header.Links.Gäste')}</a></li>`
             }
 
             if(active.toLowerCase() === "Bestellungen".toLowerCase()){
-                HeaderHTML += `<li><a href="Bestellungen.html" class="active">${translate('Header.Links.Bestellungen')}</a></li>`
+                HeaderHTML += `<li><a href="Bestellungen" class="active">${translate('Header.Links.Bestellungen')}</a></li>`
             }else{
-                HeaderHTML += `<li><a href="Bestellungen.html">${translate('Header.Links.Bestellungen')}</a></li>`
+                HeaderHTML += `<li><a href="Bestellungen">${translate('Header.Links.Bestellungen')}</a></li>`
             }
         }
 

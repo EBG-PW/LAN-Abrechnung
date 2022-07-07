@@ -21,7 +21,7 @@ const PluginDocs = '';
 const limiter = rateLimit({
     windowMs: 60 * 1000,
     max: 150
-  });
+});
 
 const TokenCheck = Joi.object({
     Token: Joi.string().required()
@@ -37,14 +37,14 @@ router.post("/", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, false).then(function(Check) {
-            if(Check.State){
+        TV.check(value.Token, para, false).then(function (Check) {
+            if (Check.State) {
                 res.status(200);
                 res.json({
-                  TokenData: Check.Data
+                    TokenData: Check.Data
                 });
-            }else{
-                DB.del.webtoken.Del(value.Token).then(function(Check) {
+            } else {
+                DB.del.webtoken.Del(value.Token).then(function (Check) {
                     res.status(401);
                     res.json({
                         Message: "Token invalid"
@@ -58,10 +58,10 @@ router.post("/", limiter, async (reg, res, next) => {
 });
 
 module.exports = {
-	router: router,
-	PluginName: PluginName,
-	PluginRequirements: PluginRequirements,
-	PluginVersion: PluginVersion,
-	PluginAuthor: PluginAuthor,
-	PluginDocs: PluginDocs
+    router: router,
+    PluginName: PluginName,
+    PluginRequirements: PluginRequirements,
+    PluginVersion: PluginVersion,
+    PluginAuthor: PluginAuthor,
+    PluginDocs: PluginDocs
 };

@@ -23,7 +23,7 @@ const PluginDocs = '';
 const limiter = rateLimit({
     windowMs: 60 * 1000,
     max: 150
-  });
+});
 
 const LoginCheck = Joi.object({
     userid: Joi.number().required(),
@@ -50,15 +50,15 @@ router.get("/login", limiter, (reg, res, next) => {
 router.post("/check", limiter, async (reg, res, next) => {
     try {
         const value = await LoginCheck.validateAsync(reg.body);
-        DB.get.Guests.ByID(value.userid).then(function(Guest_result) {
-            if(typeof Guest_result[0] === "undefined"){
+        DB.get.Guests.ByID(value.userid).then(function (Guest_result) {
+            if (typeof Guest_result[0] === "undefined") {
                 res.status(401);
                 res.json({
-                  message: "Falscher Benutzername oder Passwort",
+                    message: "Falscher Benutzername oder Passwort",
                 });
-            }else{
-                bcrypt.compare(value.password, Guest_result[0].passwort).then(function(result) {
-                    if(result){
+            } else {
+                bcrypt.compare(value.password, Guest_result[0].passwort).then(function (result) {
+                    if (result) {
                         let source = reg.headers['user-agent']
                         let UserAgent = useragent.parse(source)
                         let IP = reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
@@ -67,32 +67,32 @@ router.post("/check", limiter, async (reg, res, next) => {
                             charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
                         });
                         //Write new Webtoken
-                        DB.write.webtoken.Add(value.userid, Guest_result[0].username, IP, UserAgent.source, WebToken, Guest_result[0].admin, Guest_result[0].lang).then(function(WebToken_respone) {
+                        DB.write.webtoken.Add(value.userid, Guest_result[0].username, IP, UserAgent.source, WebToken, Guest_result[0].admin, Guest_result[0].lang).then(function (WebToken_respone) {
                             res.status(200);
                             res.json({
-                            Token: WebToken,
+                                Token: WebToken,
                             });
-                        }).catch(function(error){
+                        }).catch(function (error) {
                             console.log(error)
                             res.status(500);
                             res.json({
                                 message: "Kritischer Fehler!",
                             });
                         })
-                    }else if(!result){ //Not sure why this is !
+                    } else if (!result) { //Not sure why this is !
                         res.status(401);
                         res.json({
-                          message: "Falscher Benutzername oder Passwort",
+                            message: "Falscher Benutzername oder Passwort",
                         });
-                      }else{
+                    } else {
                         res.status(500);
                         res.json({
-                          message: "Kritischer Fehler!",
+                            message: "Kritischer Fehler!",
                         });
-                      }
+                    }
                 });
             }
-        }).catch(function(error){
+        }).catch(function (error) {
             console.log(error)
             res.status(500);
             res.json({
@@ -112,16 +112,16 @@ router.post("/logout", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, false).then(function(Check) {
-            if(Check.State){
-                DB.del.webtoken.Del(value.Token).then(function(Check) {
+        TV.check(value.Token, para, false).then(function (Check) {
+            if (Check.State) {
+                DB.del.webtoken.Del(value.Token).then(function (Check) {
                     res.status(200);
                     res.json({
                         Message: "Sucsess"
                     });
                 })
-            }else{
-                DB.del.webtoken.Del(value.Token).then(function(Check) {
+            } else {
+                DB.del.webtoken.Del(value.Token).then(function (Check) {
                     res.status(401);
                     res.json({
                         Message: "Token invalid"
@@ -135,10 +135,10 @@ router.post("/logout", limiter, async (reg, res, next) => {
 });
 
 module.exports = {
-	router: router,
-	PluginName: PluginName,
-	PluginRequirements: PluginRequirements,
-	PluginVersion: PluginVersion,
-	PluginAuthor: PluginAuthor,
-	PluginDocs: PluginDocs
-  };
+    router: router,
+    PluginName: PluginName,
+    PluginRequirements: PluginRequirements,
+    PluginVersion: PluginVersion,
+    PluginAuthor: PluginAuthor,
+    PluginDocs: PluginDocs
+};

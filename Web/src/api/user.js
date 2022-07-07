@@ -21,7 +21,7 @@ const PluginDocs = '';
 const limiter = rateLimit({
     windowMs: 60 * 1000,
     max: 150
-  });
+});
 
 const UserList = Joi.object({
     Token: Joi.string().required()
@@ -37,21 +37,21 @@ router.get("/user", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, false).then(function(Check) {
-            if(Check.State === true){
-                DB.get.Guests.ByID(Check.Data.userid).then(function(Guest_response) {
+        TV.check(value.Token, para, false).then(function (Check) {
+            if (Check.State === true) {
+                DB.get.Guests.ByID(Check.Data.userid).then(function (Guest_response) {
                     res.status(200);
                     res.json({
                         me: Guest_response[0]
                     });
                 });
-            }else{
+            } else {
                 res.status(401);
                 res.json({
-                     Message: "Token invalid"
+                    Message: "Token invalid"
                 });
             }
-        }).catch(function(error){
+        }).catch(function (error) {
             res.status(500);
             console.log(error)
         })
@@ -68,21 +68,21 @@ router.get("/userlist", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, false).then(function(Check) {
-            if(Check.State === true){
-                DB.get.Guests.AllSave().then(function(GuestsList_response) {
+        TV.check(value.Token, para, false).then(function (Check) {
+            if (Check.State === true) {
+                DB.get.Guests.AllSave().then(function (GuestsList_response) {
                     res.status(200);
                     res.json({
                         GuestsList_response
                     });
                 });
-            }else{
+            } else {
                 res.status(401);
                 res.json({
-                     Message: "Token invalid"
+                    Message: "Token invalid"
                 });
             }
-        }).catch(function(error){
+        }).catch(function (error) {
             res.status(500);
             console.log(error)
         })
@@ -99,21 +99,21 @@ router.get("/adminuserlist", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, true).then(function(Check) {
-            if(Check.State === true){
-                DB.get.Guests.All().then(function(GuestsList_response) {
+        TV.check(value.Token, para, true).then(function (Check) {
+            if (Check.State === true) {
+                DB.get.Guests.All().then(function (GuestsList_response) {
                     res.status(200);
                     res.json({
                         GuestsList_response
                     });
                 });
-            }else{
+            } else {
                 res.status(401);
                 res.json({
-                     Message: "Token invalid"
+                    Message: "Token invalid"
                 });
             }
-        }).catch(function(error){
+        }).catch(function (error) {
             res.status(500);
             console.log(error)
         })
@@ -123,10 +123,10 @@ router.get("/adminuserlist", limiter, async (reg, res, next) => {
 });
 
 module.exports = {
-	router: router,
-	PluginName: PluginName,
-	PluginRequirements: PluginRequirements,
-	PluginVersion: PluginVersion,
-	PluginAuthor: PluginAuthor,
-	PluginDocs: PluginDocs
+    router: router,
+    PluginName: PluginName,
+    PluginRequirements: PluginRequirements,
+    PluginVersion: PluginVersion,
+    PluginAuthor: PluginAuthor,
+    PluginDocs: PluginDocs
 };

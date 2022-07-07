@@ -21,7 +21,7 @@ const PluginDocs = '';
 const limiter = rateLimit({
     windowMs: 60 * 1000,
     max: 150
-  });
+});
 
 const ShoppingList = Joi.object({
     Token: Joi.string().required()
@@ -37,16 +37,16 @@ router.get("/shoppinglist", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, false).then(function(Check) {
-            if(Check.State === true){
-                DB.get.shopinglist.Get(Check.Data.userid).then(function(ShoppingList_response) {
+        TV.check(value.Token, para, false).then(function (Check) {
+            if (Check.State === true) {
+                DB.get.shopinglist.Get(Check.Data.userid).then(function (ShoppingList_response) {
                     res.status(200);
                     res.json({
                         ShoppingList_response: ShoppingList_response.rows
                     });
-                    
+
                 });
-            }else{
+            } else {
                 res.status(401);
                 res.json({
                     Message: "Token invalid"
@@ -66,9 +66,9 @@ router.get("/gettotalspend", limiter, async (reg, res, next) => {
             Browser: useragent.parse(source),
             IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
         }
-        TV.check(value.Token, para, false).then(function(Check) {
-            if(Check.State === true){
-                DB.get.shopinglist.Get(Check.Data.userid).then(function(ShoppingList_response) {
+        TV.check(value.Token, para, false).then(function (Check) {
+            if (Check.State === true) {
+                DB.get.shopinglist.Get(Check.Data.userid).then(function (ShoppingList_response) {
                     let total = 0;
                     ShoppingList_response.rows.map(row => {
                         total = total + row.price
@@ -77,9 +77,9 @@ router.get("/gettotalspend", limiter, async (reg, res, next) => {
                     res.json({
                         total
                     });
-                    
+
                 });
-            }else{
+            } else {
                 res.status(401);
                 res.json({
                     Message: "Token invalid"
@@ -92,10 +92,10 @@ router.get("/gettotalspend", limiter, async (reg, res, next) => {
 });
 
 module.exports = {
-	router: router,
-	PluginName: PluginName,
-	PluginRequirements: PluginRequirements,
-	PluginVersion: PluginVersion,
-	PluginAuthor: PluginAuthor,
-	PluginDocs: PluginDocs
+    router: router,
+    PluginName: PluginName,
+    PluginRequirements: PluginRequirements,
+    PluginVersion: PluginVersion,
+    PluginAuthor: PluginAuthor,
+    PluginDocs: PluginDocs
 };
