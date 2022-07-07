@@ -41,10 +41,10 @@ router.get("/load/:Token", limiter, (reg, res, next) => {
     DB.get.RegToken.ByToken(reg.params.Token).then(function(response) {
         if(response.rows.length === 1){
             res.status(200);
-            res.sendFile(path.join(__dirname + "../../../" + process.env.data + '/Plugin_Reg/index.html'));
+            res.sendFile(path.join(__dirname + '../../../' + 'data' + '/Plugin_Reg/index.html'));
         }else{
             res.status(401);
-            res.sendFile(path.join(__dirname + "../../../" + process.env.data + '/Plugin_Reg/401.html'));
+            res.sendFile(path.join(__dirname + '../../../' + 'data' + '/Plugin_Reg/401.html'));
         }
     }).catch(function(error){
         console.log(error)
