@@ -1,5 +1,5 @@
 const path = require('path');
-const DB = require('../lib/postgres');
+const DB = require('../../Web/lib/postgres');
 const fs = require('fs');
 const util = require('util')
 const randomstring = require('randomstring');
