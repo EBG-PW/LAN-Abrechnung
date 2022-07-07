@@ -10,16 +10,6 @@ const DB = require('../../lib/postgres');
 const TV = require('../../lib/TokenVerification');
 const randomstring = require('randomstring');
 
-let mainconfig, preisliste;
-
-/* Import Config */
-if(fs.existsSync(path.join(__dirname, '../', '../', 'config', 'mainconfig.json'))) {
-    mainconfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'mainconfig.json')));
-}
-if(fs.existsSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json'))) {
-	preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json')));
-}
-
 const PluginConfig = {
 };
 

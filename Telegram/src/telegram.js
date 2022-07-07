@@ -1,12 +1,11 @@
-require('dotenv').config();
 const path = require('path');
-const DB = require('./lib/postgres');
+const DB = require('../lib/postgres');
 const fs = require('fs');
 const util = require('util')
 const randomstring = require('randomstring');
 let reqPath = path.join(__dirname, '../');
 const { default: i18n } = require('new-i18n')
-const newi18n = new i18n(path.join(reqPath, process.env.Sprache), ["de"], "de");
+const newi18n = new i18n(path.join(__dirname, '../', 'lang'), ["de"], process.env.Fallback_Language);
 
 let mainconfig, preisliste;
 
@@ -20,22 +19,22 @@ const bot = new Telebot({
 });
 
 /* Import Config */
-if(fs.existsSync(`${reqPath}${process.env.Config}/mainconfig.json`)) {
-	mainconfig = JSON.parse(fs.readFileSync(`${reqPath}/${process.env.Config}/mainconfig.json`));
+if(fs.existsSync(path.join(__dirname, '../', '../', 'config', 'mainconfig.json'))) {
+    mainconfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'mainconfig.json')));
 }
-if(fs.existsSync(`${reqPath}${process.env.Config}/preisliste.json`)) {
-	preisliste = JSON.parse(fs.readFileSync(`${reqPath}/${process.env.Config}/preisliste.json`));
+if(fs.existsSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json'))) {
+	preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json')));
 }
 
 bot.on(/^\/loadprice/i, (msg) => {
     var run_start = new Date().getTime();
-    if(fs.existsSync(`${reqPath}${process.env.Config}/preisliste.json`)) {
-        preisliste = JSON.parse(fs.readFileSync(`${reqPath}/${process.env.Config}/preisliste.json`));
+    if(fs.existsSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json'))) {
+        preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json')));
     }
     DB.get.Guests.Check.Admin(msg.from.id).then(function(Admin_Check_response) {
         if(Admin_Check_response){
             let Restul_array = [];
-            for (var key in preisliste.SnackBar) {
+            for (const key in preisliste.SnackBar) {
                 Restul_array.push(DB.write.Products.Add(preisliste.SnackBar[key]))
             }
             Promise.all(Restul_array).then(function(Insert_Response) {
@@ -84,6 +83,61 @@ bot.on(/^\/start/i, (msg) => {
         return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
     }
 });
+
+bot.on(/^\/lang/i, (msg) => {
+    //THIS WILL ONLY WORK WHEN CALLED BY INLINE FUNCTION
+    if ('inline_message_id' in msg) {	
+		var inlineId = msg.inline_message_id;
+	}else{
+		var chatId = msg.message.chat.id;
+		var messageId = msg.message.message_id;
+	}
+
+    let replyMarkup = bot.inlineKeyboard([
+        [
+            bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.DE'), {callback: `lang_de`}),
+            bot.inlineButton(newi18n.translate('en', 'Sprachen.Knöpfe.EN'), {callback: 'lang_en'}),
+        ],
+        [
+            bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.Zurück'), {callback: `/moreinfo`}),
+        ]
+    ]);
+
+    let username;
+    if ('username' in msg.from) {
+         username = msg.from.username.toString();
+    }else{
+        username = msg.from.first_name.toString();
+    }
+
+    let Message = newi18n.translate('de', 'Sprachen.Text', {Username: username})
+
+    if ('inline_message_id' in msg) {
+        bot.editMessageText(
+            {inlineMsgId: inlineId}, Message,
+            {parseMode: 'html', replyMarkup}
+        ).catch(error => console.log('Error:', error));
+    }else{
+        bot.editMessageText(
+            {chatId: chatId, messageId: messageId}, Message,
+            {parseMode: 'html', replyMarkup}
+        ).catch(error => console.log('Error:', error));
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 bot.on(/^\/hauptmenu/i, (msg) => {
     let private;
@@ -173,47 +227,6 @@ bot.on(/^\/maincallback/i, (msg) => {
         }
 
 
-});
-
-bot.on(/^\/lang/i, (msg) => {
-    //THIS WILL ONLY WORK WHEN CALLED BY INLINE FUNCTION
-    if ('inline_message_id' in msg) {	
-		var inlineId = msg.inline_message_id;
-	}else{
-		var chatId = msg.message.chat.id;
-		var messageId = msg.message.message_id;
-	}
-
-    let replyMarkup = bot.inlineKeyboard([
-        [
-            bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.DE'), {callback: `lang_de`}),
-            bot.inlineButton(newi18n.translate('en', 'Sprachen.Knöpfe.EN'), {callback: 'lang_en'}),
-        ],
-        [
-            bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.Zurück'), {callback: `/moreinfo`}),
-        ]
-    ]);
-
-    let username;
-    if ('username' in msg.from) {
-         username = msg.from.username.toString();
-    }else{
-        username = msg.from.first_name.toString();
-    }
-
-    let Message = newi18n.translate('de', 'Sprachen.Text', {Username: username})
-
-    if ('inline_message_id' in msg) {
-        bot.editMessageText(
-            {inlineMsgId: inlineId}, Message,
-            {parseMode: 'html', replyMarkup}
-        ).catch(error => console.log('Error:', error));
-    }else{
-        bot.editMessageText(
-            {chatId: chatId, messageId: messageId}, Message,
-            {parseMode: 'html', replyMarkup}
-        ).catch(error => console.log('Error:', error));
-    }
 });
 
 bot.on(/^\/moreinfo/i, (msg) => {
@@ -336,6 +349,21 @@ bot.on(/^\/donate/i, (msg) => {
     }
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 bot.on(/^\/rules/i, (msg) => {
     DB.get.Guests.ByID(msg.from.id).then(function(Guest_response) {
         let replyMarkup = bot.inlineKeyboard([
@@ -378,6 +406,20 @@ bot.on(/^\/legal/i, (msg) => {
     })
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Admin Managment 
 bot.on(/^\/admin( .+)*/i, (msg, props) => {
     let AvaibleModes = ['add','remove','rem', 'list']
     let CheckAtributes = AtrbutCheck(props);
@@ -439,6 +481,16 @@ bot.on(/^\/admin( .+)*/i, (msg, props) => {
     })
 });
 
+
+
+
+
+
+
+
+
+
+//Inline Buttons Hanlder
 bot.on('callbackQuery', (msg) => {
 	if ('inline_message_id' in msg) {	
 		var inlineId = msg.inline_message_id;
@@ -665,9 +717,24 @@ bot.on('callbackQuery', (msg) => {
                 })
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Methods to handle the regestration Questions...
 		if(data[0] === 'F')
 		{
-            if(data[1] === 'PC')
+            if(data[1] === 'PC') //If quest has PC with him
             {
                 DB.write.Guests.UpdateCollumByID(msg.from.id, "pc", data[2]).then(function(response) {
                     let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${boolToText(data[2])}`
@@ -702,7 +769,7 @@ bot.on('callbackQuery', (msg) => {
                 })
             }
 
-            if(data[1] === 'DPC')
+            if(data[1] === 'DPC') //How many Displays does he got (For Space Reasons)
             {
                 DB.write.Guests.UpdateCollumByID(msg.from.id, "displays_count", data[2]).then(function(response) {
                     let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${data[2]}`
@@ -732,7 +799,7 @@ bot.on('callbackQuery', (msg) => {
                 })
             }
 
-            if(data[1] === 'LK')
+            if(data[1] === 'LK') //Does the guest got a LAN cable that he will bring to the event
             {
                 DB.write.Guests.UpdateCollumByID(msg.from.id, "network_cable", data[2]).then(function(response) {
                     let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${boolToText(data[2])}`
@@ -762,7 +829,7 @@ bot.on('callbackQuery', (msg) => {
                 })
             }
 
-            if(data[1] === 'VR')
+            if(data[1] === 'VR')  //Does teh guest got a VR-Headset (For Space resons)
             {
                 DB.write.Guests.UpdateCollumByID(msg.from.id, "vr", data[2]).then(function(response) {
                     let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${boolToText(data[2])}`
@@ -795,7 +862,7 @@ bot.on('callbackQuery', (msg) => {
                 })
             }
 
-            if(data[1] === 'VC')
+            if(data[1] === 'VC')  //Is the guest Vaccinated
             {
                 DB.write.Guests.UpdateCollumByID(msg.from.id, "vaccinated", data[2]).then(function(response) {
                     let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${newi18n.translate('de', `Vaccinated.${data[2]}`)}`
@@ -813,13 +880,13 @@ bot.on('callbackQuery', (msg) => {
 
                     let replyMarkup = bot.inlineKeyboard([
                         [
-                            bot.inlineButton(newi18n.translate('de', 'Arrivale.1'), {callback: 'F_EA_1'}),
-                            bot.inlineButton(newi18n.translate('de', 'Arrivale.2'), {callback: 'F_EA_2'}),
-                            bot.inlineButton(newi18n.translate('de', 'Arrivale.3'), {callback: 'F_EA_3'})
+                            bot.inlineButton(newi18n.translate('de', 'Arrivale.1_Voll'), {callback: 'F_EA_1'}),
+                            bot.inlineButton(newi18n.translate('de', 'Arrivale.2_Voll'), {callback: 'F_EA_2'}),
+                            bot.inlineButton(newi18n.translate('de', 'Arrivale.3_Voll'), {callback: 'F_EA_3'})
                         ],[
-                            bot.inlineButton(newi18n.translate('de', 'Arrivale.4'), {callback: 'F_EA_4'}),
-                            bot.inlineButton(newi18n.translate('de', 'Arrivale.5'), {callback: 'F_EA_5'}),
-                            bot.inlineButton(newi18n.translate('de', 'Arrivale.6'), {callback: 'F_EA_6'})
+                            bot.inlineButton(newi18n.translate('de', 'Arrivale.4_Voll'), {callback: 'F_EA_4'}),
+                            bot.inlineButton(newi18n.translate('de', 'Arrivale.5_Voll'), {callback: 'F_EA_5'}),
+                            bot.inlineButton(newi18n.translate('de', 'Arrivale.6_Voll'), {callback: 'F_EA_6'})
                         ]
                     ]);
 
@@ -830,7 +897,7 @@ bot.on('callbackQuery', (msg) => {
                 })
             }
 
-            if(data[1] === 'EA')
+            if(data[1] === 'EA')  //Planned arrival time
             {
                 let DateArray = newi18n.translate('de', `Arrivale.${data[2]}`).split(".");
                 let newDateString = `${DateArray[1]}/${DateArray[0]}/${DateArray[2]}`;
@@ -851,13 +918,13 @@ bot.on('callbackQuery', (msg) => {
 
                     let replyMarkup = bot.inlineKeyboard([
                         [
-                            bot.inlineButton(newi18n.translate('de', 'Depature.1'), {callback: 'F_ED_1'}),
-                            bot.inlineButton(newi18n.translate('de', 'Depature.2'), {callback: 'F_ED_2'}),
-                            bot.inlineButton(newi18n.translate('de', 'Depature.3'), {callback: 'F_ED_3'})
+                            bot.inlineButton(newi18n.translate('de', 'Depature.1_Voll'), {callback: 'F_ED_1'}),
+                            bot.inlineButton(newi18n.translate('de', 'Depature.2_Voll'), {callback: 'F_ED_2'}),
+                            bot.inlineButton(newi18n.translate('de', 'Depature.3_Voll'), {callback: 'F_ED_3'})
                         ],[
-                            bot.inlineButton(newi18n.translate('de', 'Depature.4'), {callback: 'F_ED_4'}),
-                            bot.inlineButton(newi18n.translate('de', 'Depature.5'), {callback: 'F_ED_5'}),
-                            bot.inlineButton(newi18n.translate('de', 'Depature.6'), {callback: 'F_ED_6'})
+                            bot.inlineButton(newi18n.translate('de', 'Depature.4_Voll'), {callback: 'F_ED_4'}),
+                            bot.inlineButton(newi18n.translate('de', 'Depature.5_Voll'), {callback: 'F_ED_5'}),
+                            bot.inlineButton(newi18n.translate('de', 'Depature.6_Voll'), {callback: 'F_ED_6'})
                         ]
                     ]);
 
@@ -868,7 +935,7 @@ bot.on('callbackQuery', (msg) => {
                 })
             }
 
-            if(data[1] === 'ED')
+            if(data[1] === 'ED') //Planned departure time
             {
                 let DateArray = newi18n.translate('de', `Depature.${data[2]}`).split(".");
                 let newDateString = `${DateArray[1]}/${DateArray[0]}/${DateArray[2]}`;
@@ -914,12 +981,13 @@ bot.on('callbackQuery', (msg) => {
                 })
             }
         }
-    }else{
+    }else{ //USER BOUNT QUESTIONS (May be executed first)
         if(data[0] === 'R')
             {
-                if(data[2] === 'rules')
+                if(data[2] === 'rules') //If Rules are accepted
                 {
                     if(data.length === 3){
+                        // IF user didn´t awnser yet
                         let UserLang = msg.from.language_code || mainconfig.DefaultLang
                         DB.write.Guests.NewUser(msg.from.id, msg.from.username, UserLang).then(function(response) {
 
@@ -956,6 +1024,7 @@ bot.on('callbackQuery', (msg) => {
                         })
                     }else{
                         if(data[3] === "true"){
+                            //If user accepted rules, then gets forwarted to leagal stuff
                             let newDate = new Date(Date.now());
                             DB.write.Guests.UpdateCollumByID(msg.from.id, "accepted_rules", newDate).then(function(response) {
                                 let replyMarkup = bot.inlineKeyboard([
@@ -991,6 +1060,7 @@ bot.on('callbackQuery', (msg) => {
                             }
                             });
                         }else{
+                            //User did not accept rules, so it ends here
                             let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${newi18n.translate('de', `Regeln.Antworten.Ablehnen`)}`
                             if ('inline_message_id' in msg) {
                                 bot.editMessageText(
@@ -1010,6 +1080,7 @@ bot.on('callbackQuery', (msg) => {
                 if(data[2] === 'legal')
                 {
                     if(data[3] === "true"){
+                        //If user accepted legal, then gets forwarted to questions
                         let newDate = new Date(Date.now());
                         DB.write.Guests.UpdateCollumByID(msg.from.id, "accepted_legal", newDate).then(function(response) {
                             let replyMarkup = bot.inlineKeyboard([
@@ -1033,6 +1104,7 @@ bot.on('callbackQuery', (msg) => {
                             }
                         });
                     }else{
+                        //User did not accept legal, so it ends here
                         let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${newi18n.translate('de', `Legal.Antworten.Ablehnen`)}`
                         if ('inline_message_id' in msg) {
                             bot.editMessageText(
@@ -1052,6 +1124,7 @@ bot.on('callbackQuery', (msg) => {
 });
 
 /* - - - - Telegram Inline Handler - - - - */
+/* - - This is the live search function - - */
 
 bot.on('inlineQuery', msg => {
 	let query = msg.query.toLowerCase();

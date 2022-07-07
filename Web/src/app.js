@@ -6,9 +6,6 @@ const cors = require('cors');
 var path = require('path');
 const bodyParser = require('body-parser');
 
-
-require('dotenv').config();
-
 const middlewares = require('./middlewares');
 const api = require('./api');
 
