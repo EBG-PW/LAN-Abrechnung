@@ -13,6 +13,7 @@
     "fs": "0.0.1-security",
     "new-i18n": "3.0.0-2",
     "pg": "^8.6.0",
+    "pm2-ctl": "^0.0.2",
     "randomstring": "^1.2.1",
     "telebot": "^1.4.1"
   }
