@@ -1,13 +1,12 @@
 const pg = require('pg');
-const internal = require('stream');
-const util = require('util')
+const { log } = require('../../lib/logger');
 
 const pool = new pg.Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 })
 
 pool.query(`CREATE TABLE IF NOT EXISTS guests (
@@ -31,7 +30,14 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     admin boolean DEFAULT False,
     vaccinated text,
     time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
-    if (err) {console.log(err)}
+  if (err) { console.log(err) }
+});
+
+pool.query(`CREATE TABLE IF NOT EXISTS tg_users (
+    userid bigint PRIMARY KEY,
+    language text,
+    time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
+  if (err) { console.log(err) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS plugs (
@@ -50,8 +56,8 @@ pool.query(`CREATE TABLE IF NOT EXISTS plugs (
   REFERENCES guests(userid)
   ON UPDATE CASCADE
   ON DELETE CASCADE
-  NOT VALID)`, (err, result) => { 
-  if (err) {console.log(err)}
+  NOT VALID)`, (err, result) => {
+  if (err) { console.log(err) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS plugs_history (
@@ -60,7 +66,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS plugs_history (
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (plugid,time),
   CONSTRAINT plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid))`, (err, result) => {
-  if (err) {console.log(err)}
+  if (err) { console.log(err) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS power_history (
@@ -70,7 +76,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS power_history (
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (plugid,time),
   CONSTRAINT plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid))`, (err, result) => {
-  if (err) {console.log(err)}
+  if (err) { console.log(err) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS regtoken (
@@ -78,7 +84,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS regtoken (
   username text,
   token text PRIMARY KEY,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
-  if (err) {console.log(err)}
+  if (err) { console.log(err) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS webtoken (
@@ -90,7 +96,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS webtoken (
   admin boolean DEFAULT False,
   lang text,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
-  if (err) {console.log(err)}
+  if (err) { console.log(err) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS products (
@@ -100,7 +106,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
   amount integer,
   bought integer DEFAULT 0,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
-  if (err) {console.log(err)}
+  if (err) { console.log(err) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS shopinglist (
@@ -113,7 +119,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS shopinglist (
   transaction_id text,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (userid,time))`, (err, result) => {
-  if (err) {console.log(err)}
+  if (err) { console.log(err) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS bestellung (
@@ -122,7 +128,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS bestellung (
   timeuntil timestamp with time zone,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (url,time))`, (err, result) => {
-  if (err) {console.log(err)}
+  if (err) { console.log(err) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS bestellungen (
@@ -135,7 +141,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS bestellungen (
   status boolean DEFAULT False,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (userid,time))`, (err, result) => {
-  if (err) {console.log(err)}
+  if (err) { console.log(err) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS innersync (
@@ -145,30 +151,30 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   chatid bigint,
   type text,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
-  if (err) {console.log(err)}
+  if (err) { console.log(err) }
 });
 
 /**
  * This function will return all guests
  * @returns Array
  */
- let GetGuests = function() {
-    return new Promise(function(resolve, reject) {
-      pool.query('SELECT guests.userid, guests.username, guests.passwort, guests.pc, guests.displays_count, guests.network_cable, guests.vr, guests.expected_arrival, guests.expected_departure, guests.accepted_rules, guests.accepted_legal, guests.payed, guests.pyed_id, guests.admin, guests.vaccinated, guests.time, guests.payed_ammount, guests.lang, plugs.allowed_state FROM guests LEFT JOIN plugs ON guests.userid = plugs.userid', (err, result) => {
-        if (err) {reject(err)}
-        resolve(result.rows);
-      });
+let GetGuests = function () {
+  return new Promise(function (resolve, reject) {
+    pool.query('SELECT guests.userid, guests.username, guests.passwort, guests.pc, guests.displays_count, guests.network_cable, guests.vr, guests.expected_arrival, guests.expected_departure, guests.accepted_rules, guests.accepted_legal, guests.payed, guests.pyed_id, guests.admin, guests.vaccinated, guests.time, guests.payed_ammount, guests.lang, plugs.allowed_state FROM guests LEFT JOIN plugs ON guests.userid = plugs.userid', (err, result) => {
+      if (err) { reject(err) }
+      resolve(result.rows);
     });
-  }
+  });
+}
 
 /**
  * This function will return all guests without sectet stuff
  * @returns Array
  */
- let GetGuestsSave = function() {
-  return new Promise(function(resolve, reject) {
+let GetGuestsSave = function () {
+  return new Promise(function (resolve, reject) {
     pool.query('SELECT userid, username, pc, displays_count, network_cable, vr, expected_arrival, expected_departure, lang FROM guests', (err, result) => {
-      if (err) {reject(err)}
+      if (err) { reject(err) }
       resolve(result.rows);
     });
   });
@@ -179,45 +185,45 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {number} user_id
  * @returns {Object}
  */
- let GetGuestsByID = function(user_id) {
-    return new Promise(function(resolve, reject) {
-      pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
-        if (err) {reject(err)}
-        resolve(result.rows);
-      });
+let GetGuestsByID = function (user_id) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
+      if (err) { reject(err) }
+      resolve(result.rows);
     });
-  }
+  });
+}
 
 /**
  * This function will check if a user exists
  * @param {number} user_id
  * @returns {boolean}
  */
- let CheckGuestByID = function(user_id) {
-    return new Promise(function(resolve, reject) {
-      pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
-        if (err) {reject(err)}
-        if(result.rows.length <= 0){
-          resolve(false);
-        }else{
-          resolve(true);
-        }
-      });
+let CheckGuestByID = function (user_id) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
+      if (err) { reject(err) }
+      if (result.rows.length <= 0) {
+        resolve(false);
+      } else {
+        resolve(true);
+      }
     });
-  }
+  });
+}
 
 /**
  * This function will check if a user finished registration
  * @param {number} user_id
  * @returns {boolean}
  */
- let RegCheckGuestByID = function(user_id) {
-  return new Promise(function(resolve, reject) {
+let RegCheckGuestByID = function (user_id) {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
-      if (err) {reject(err)}
-      if(result.rows[0].pyed_id !== null){
+      if (err) { reject(err) }
+      if (result.rows[0].pyed_id !== null) {
         resolve(true);
-      }else{
+      } else {
         resolve(false);
       }
     });
@@ -229,11 +235,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {number} user_id
  * @returns {boolean}
  */
- let PayedCheckGuestByID = function(user_id) {
-  return new Promise(function(resolve, reject) {
+let PayedCheckGuestByID = function (user_id) {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result.rows[0].payed);
+      if (err) { reject(err) }
+      resolve(result.rows[0].payed);
     });
   });
 }
@@ -243,13 +249,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {number} user_id
  * @returns {boolean}
  */
- let CheckGuestRulesByID = function(user_id) {
-  return new Promise(function(resolve, reject) {
+let CheckGuestRulesByID = function (user_id) {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT * FROM guests WHERE userid = '${user_id}'`, (err, result) => {
-      if (err) {reject(err)}
-      if(typeof result.rows[0].accepted_rules !== 'undefined' && typeof result.rows[0].accepted_legal !== 'undefined'){
+      if (err) { reject(err) }
+      if (typeof result.rows[0].accepted_rules !== 'undefined' && typeof result.rows[0].accepted_legal !== 'undefined') {
         resolve(true);
-      }else{
+      } else {
         resolve(false);
       }
     });
@@ -261,17 +267,17 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {number} user_id
  * @returns {boolean}
  */
- let CheckIfAdminbyID = function(user_id) {
-  return new Promise(function(resolve, reject) {
+let CheckIfAdminbyID = function (user_id) {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT admin FROM guests WHERE userid = '${user_id}'`, (err, result) => {
-      if (err) {reject(err)}
-      if(result.rows.length === 1){
-        if(result.rows[0].admin === true){
+      if (err) { reject(err) }
+      if (result.rows.length === 1) {
+        if (result.rows[0].admin === true) {
           resolve(true);
-        }else{
+        } else {
           resolve(false);
         }
-      }else{
+      } else {
         resolve(false);
       }
     });
@@ -282,10 +288,10 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * This function will return a list of Admins
  * @returns {Object}
  */
- let ListAllAdmin = function() {
-  return new Promise(function(resolve, reject) {
+let ListAllAdmin = function () {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT * FROM guests WHERE admin = 'true'`, (err, result) => {
-      if (err) {reject(err)}
+      if (err) { reject(err) }
       resolve(result.rows);
     });
   });
@@ -298,16 +304,16 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {any} value
  * @returns {Promise}
  */
- let UpdateCollumByID = function(User_id, collum, value) {
-    return new Promise(function(resolve, reject) {
-      pool.query(`UPDATE guests SET ${collum} = $1 WHERE userid = $2`,[
+let UpdateCollumByID = function (User_id, collum, value) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`UPDATE guests SET ${collum} = $1 WHERE userid = $2`, [
       value, User_id
-      ], (err, result) => {
-        if (err) {reject(err)}
-        resolve(result);
-      });
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
     });
-  }
+  });
+}
 
 /**
  * This function will write new user to DB
@@ -316,12 +322,12 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {string} lang
  * @returns {Promise}
  */
- let WriteNewUser = function(User_id, username, lang) {
-  return new Promise(function(resolve, reject) {
-    pool.query('INSERT INTO guests (userid, username, lang) VALUES ($1,$2,$3) ON CONFLICT (userid) DO UPDATE SET username=$2',[
+let WriteNewUser = function (User_id, username, lang) {
+  return new Promise(function (resolve, reject) {
+    pool.query('INSERT INTO guests (userid, username, lang) VALUES ($1,$2,$3) ON CONFLICT (userid) DO UPDATE SET username=$2', [
       User_id, username, lang
     ], (err, result) => {
-      if (err) {reject(err)}
+      if (err) { reject(err) }
       resolve(result);
     });
   });
@@ -334,12 +340,12 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {String} token
  * @returns {Promise}
  */
- let WriteNewRegToken = function(User_id, username, token) {
-  return new Promise(function(resolve, reject) {
-    pool.query('INSERT INTO regtoken (userid, username, token) VALUES ($1,$2,$3)',[
+let WriteNewRegToken = function (User_id, username, token) {
+  return new Promise(function (resolve, reject) {
+    pool.query('INSERT INTO regtoken (userid, username, token) VALUES ($1,$2,$3)', [
       User_id, username, token
     ], (err, result) => {
-      if (err) {reject(err)}
+      if (err) { reject(err) }
       resolve(result);
     });
   });
@@ -350,11 +356,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {String} Token
  * @returns {Promise}
  */
- let GetRegTokenByToken = function(Token) {
-  return new Promise(function(resolve, reject) {
+let GetRegTokenByToken = function (Token) {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT * FROM regtoken WHERE token = '${Token}'`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -364,11 +370,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {String} Token
  * @returns {Promise}
  */
- let DelRegTokenByToken = function(Token) {
-  return new Promise(function(resolve, reject) {
+let DelRegTokenByToken = function (Token) {
+  return new Promise(function (resolve, reject) {
     pool.query(`DELETE FROM regtoken WHERE token = '${Token}'`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -380,12 +386,12 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {object} message
  * @returns {Promise}
  */
- let PostNewMessage = function(targetapp, id, message) {
-  return new Promise(function(resolve, reject) {
-    pool.query('INSERT INTO innersync (targetapp, id, message, chatid, type) VALUES ($1,$2,$3,$4,$5)',[
+let PostNewMessage = function (targetapp, id, message) {
+  return new Promise(function (resolve, reject) {
+    pool.query('INSERT INTO innersync (targetapp, id, message, chatid, type) VALUES ($1,$2,$3,$4,$5)', [
       targetapp, id, message.text, message.chatid, message.type
     ], (err, result) => {
-      if (err) {reject(err)}
+      if (err) { reject(err) }
       resolve(result);
     });
   });
@@ -396,11 +402,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {String} ID
  * @returns {Promise}
  */
- let DelNewMessage = function(ID) {
-  return new Promise(function(resolve, reject) {
+let DelNewMessage = function (ID) {
+  return new Promise(function (resolve, reject) {
     pool.query(`DELETE FROM innersync WHERE id = '${ID}'`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -409,11 +415,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * This function will get all messages to prosses
  * @returns {Promise}
  */
- let GetNewMessages = function() {
-  return new Promise(function(resolve, reject) {
+let GetNewMessages = function () {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT * FROM innersync`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -423,13 +429,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {object} Product
  * @returns {Promise}
  */
- let AddProduct = function(Product) {
-  return new Promise(function(resolve, reject) {
-    pool.query(`INSERT INTO products(produktname, produktcompany, price, amount) VALUES ($1,$2,$3,$4) ON CONFLICT (produktname) DO UPDATE SET produktcompany=$2, price=$3, amount=$4, time=now()`,[
+let AddProduct = function (Product) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`INSERT INTO products(produktname, produktcompany, price, amount) VALUES ($1,$2,$3,$4) ON CONFLICT (produktname) DO UPDATE SET produktcompany=$2, price=$3, amount=$4, time=now()`, [
       Product.Name, Product.Hersteller, Product.Preis, Product.Menge
     ], (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -439,11 +445,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {string} query
  * @returns {Promise}
  */
- let LookLikeProduct = function(query) {
-  return new Promise(function(resolve, reject) {
+let LookLikeProduct = function (query) {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT * FROM products WHERE LOWER(produktname) LIKE LOWER('%${query}%')`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -453,11 +459,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {string} produktname
  * @returns {Promise}
  */
- let GetProduct = function(produktname) {
-  return new Promise(function(resolve, reject) {
+let GetProduct = function (produktname) {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT * FROM products WHERE produktname = '${produktname}'`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -467,11 +473,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {string} cull
  * @returns {Promise}
  */
- let GetAllProduct = function(cull) {
-  return new Promise(function(resolve, reject) {
+let GetAllProduct = function (cull) {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT * FROM products ORDER BY ${cull}`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -483,12 +489,12 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {number} new_bought
  * @returns {Promise}
  */
- let UpdateProductByName = function(produktname, old_bought, new_bought) {
-  return new Promise(function(resolve, reject) {
-    pool.query(`UPDATE products SET bought = $1 WHERE produktname = $2 AND bought = $3`,[
+let UpdateProductByName = function (produktname, old_bought, new_bought) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`UPDATE products SET bought = $1 WHERE produktname = $2 AND bought = $3`, [
       new_bought, produktname, old_bought
     ], (err, result) => {
-      if (err) {reject(err)}
+      if (err) { reject(err) }
       resolve(result);
     });
   });
@@ -499,11 +505,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {number} userid
  * @returns {Promise}
  */
- let GetAllBoughItemsByUser = function(userid) {
-  return new Promise(function(resolve, reject) {
+let GetAllBoughItemsByUser = function (userid) {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT guests.username, shopinglist.userid, shopinglist.produktname, shopinglist.produktcompany, shopinglist.price, shopinglist.bought, shopinglist.byer_userid, shopinglist.transaction_id FROM shopinglist INNER JOIN guests ON shopinglist.userid = guests.userid WHERE shopinglist.userid = '${userid}' ORDER BY shopinglist.time DESC`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -518,13 +524,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {string} transaction_id
  * @returns {Promise}
  */
- let NewItemBought = function(userid, byer_userid, product, transaction_id) {
-  return new Promise(function(resolve, reject) {
-    pool.query(`INSERT INTO shopinglist(userid, byer_userid, produktname, produktcompany, price, bought, transaction_id) VALUES ($1,$2,$3,$4,$5,$6,$7)`,[
+let NewItemBought = function (userid, byer_userid, product, transaction_id) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`INSERT INTO shopinglist(userid, byer_userid, produktname, produktcompany, price, bought, transaction_id) VALUES ($1,$2,$3,$4,$5,$6,$7)`, [
       userid, byer_userid, product.produktname, product.produktcompany, product.price, product.bought, transaction_id
     ], (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -540,13 +546,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {string} lang
  * @returns {Promise}
  */
- let AddWebToken = function(userid, username, ip, browser, token, admin, lang) {
-  return new Promise(function(resolve, reject) {
-    pool.query(`INSERT INTO webtoken(userid, username, ip, browser, token, admin, lang) VALUES ($1,$2,$3,$4,$5,$6,$7)`,[
+let AddWebToken = function (userid, username, ip, browser, token, admin, lang) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`INSERT INTO webtoken(userid, username, ip, browser, token, admin, lang) VALUES ($1,$2,$3,$4,$5,$6,$7)`, [
       userid, username, ip, browser, token, admin, lang
     ], (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -556,11 +562,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {String} token
  * @returns {Promise}
  */
- let GetWebToken = function(token) {
-  return new Promise(function(resolve, reject) {
+let GetWebToken = function (token) {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT * FROM webtoken WHERE token = '${token}'`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -570,11 +576,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {String} token
  * @returns {Promise}
  */
- let DelWebToken = function(token) {
-  return new Promise(function(resolve, reject) {
+let DelWebToken = function (token) {
+  return new Promise(function (resolve, reject) {
     pool.query(`DELETE FROM webtoken WHERE token = '${token}'`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -584,11 +590,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {number} userid
  * @returns {Promise}
  */
- let PlugsToggleAllowedState = function(userid) {
-  return new Promise(function(resolve, reject) {
+let PlugsToggleAllowedState = function (userid) {
+  return new Promise(function (resolve, reject) {
     pool.query(`UPDATE plugs SET allowed_state = NOT allowed_state WHERE userid = '${userid}'`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -598,11 +604,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {number} userid
  * @returns {Promise}
  */
- let GetKWHbyUserID = function(userid) {
-  return new Promise(function(resolve, reject) {
+let GetKWHbyUserID = function (userid) {
+  return new Promise(function (resolve, reject) {
     pool.query(`SELECT Distinct plugid,(first_value(energy) over (partition by plugid order by time desc) - first_value(energy) over (partition by plugid order by time asc) ) as diff from plugs_history WHERE plugid = (SELECT plugid FROM plugs WHERE userid = '${userid}')`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -614,13 +620,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {string} timeuntil
  * @returns {Promise}
  */
- let AddOrder = function(url, orderid, timeuntil) {
-  return new Promise(function(resolve, reject) {
-    pool.query(`INSERT INTO bestellung(url, orderid, timeuntil) VALUES ($1,$2,$3)`,[
+let AddOrder = function (url, orderid, timeuntil) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`INSERT INTO bestellung(url, orderid, timeuntil) VALUES ($1,$2,$3)`, [
       url, orderid, timeuntil
     ], (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -635,13 +641,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {string} orderkey
  * @returns {Promise}
  */
- let AddOrderArticle = function(userid, artikel, amount, price, orderid, orderkey) {
-  return new Promise(function(resolve, reject) {
-    pool.query(`INSERT INTO bestellungen(userid, artikel, amount, price, orderid, key) VALUES ($1,$2,$3,$4,$5,$6)`,[
+let AddOrderArticle = function (userid, artikel, amount, price, orderid, orderkey) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`INSERT INTO bestellungen(userid, artikel, amount, price, orderid, key) VALUES ($1,$2,$3,$4,$5,$6)`, [
       userid, artikel, amount, price, orderid, orderkey
     ], (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -651,13 +657,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {string} OrderID
  * @returns {Promise}
  */
- let GetOrderByID = function(OrderID) {
-  return new Promise(function(resolve, reject) {
-    pool.query(`SELECT * FROM bestellung WHERE orderid = $1`,[
+let GetOrderByID = function (OrderID) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT * FROM bestellung WHERE orderid = $1`, [
       OrderID
     ], (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -668,13 +674,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {boolean} status
  * @returns {Promise}
  */
- let GetOrderByIDList = function(OrderID, status) {
-  return new Promise(function(resolve, reject) {
-    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.key, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE orderid = $1 AND status = $2`,[
+let GetOrderByIDList = function (OrderID, status) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.key, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE orderid = $1 AND status = $2`, [
       OrderID, status
     ], (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -687,13 +693,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {number} UserID
  * @returns {Promise}
  */
- let GetOrderByIDForUser = function(OrderID, UserID) {
-  return new Promise(function(resolve, reject) {
-    pool.query(`SELECT * FROM bestellung WHERE orderid = $1 AND userid = $2`,[
+let GetOrderByIDForUser = function (OrderID, UserID) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT * FROM bestellung WHERE orderid = $1 AND userid = $2`, [
       OrderID, UserID
     ], (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -704,13 +710,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {number} UserID
  * @returns {Promise}
  */
- let DelOrderByKey = function(Key, UserID) {
-  return new Promise(function(resolve, reject) {
-    pool.query(`DELETE FROM bestellungen WHERE Key = $1 AND userid = $2`,[
+let DelOrderByKey = function (Key, UserID) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`DELETE FROM bestellungen WHERE Key = $1 AND userid = $2`, [
       Key, UserID
     ], (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -720,13 +726,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {string} Key
  * @returns {Promise}
  */
- let GetOrderByKey = function(Key) {
-  return new Promise(function(resolve, reject) {
-    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.key, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE key = $1`,[
+let GetOrderByKey = function (Key) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.key, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE key = $1`, [
       Key
     ], (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -737,13 +743,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {number} UserID
  * @returns {Promise}
  */
- let GetOrderByOrderIDandUserID = function(OrderID, UserID) {
-  return new Promise(function(resolve, reject) {
-    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.key, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE bestellungen.orderid = $1 AND bestellungen.userid = $2`,[
+let GetOrderByOrderIDandUserID = function (OrderID, UserID) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.key, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE bestellungen.orderid = $1 AND bestellungen.userid = $2`, [
       OrderID, UserID
     ], (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -754,11 +760,11 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {string} Key
  * @returns {Promise}
  */
- let OrderToggleState = function(Key) {
-  return new Promise(function(resolve, reject) {
+let OrderToggleState = function (Key) {
+  return new Promise(function (resolve, reject) {
     pool.query(`UPDATE bestellungen SET status = NOT status WHERE key = '${Key}'`, (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -769,13 +775,13 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
  * @param {boolean} State
  * @returns {Promise}
  */
- let OrderSwitchState = function(Key, State) {
-  return new Promise(function(resolve, reject) {
+let OrderSwitchState = function (Key, State) {
+  return new Promise(function (resolve, reject) {
     pool.query(`UPDATE bestellungen SET status = $1 WHERE key = $2`, [
       State, Key
     ], (err, result) => {
-      if (err) {reject(err)}
-        resolve(result);
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -870,8 +876,8 @@ let message = {
 }
 
 module.exports = {
-    get,
-    write,
-    del,
-    message
+  get,
+  write,
+  del,
+  message
 };
