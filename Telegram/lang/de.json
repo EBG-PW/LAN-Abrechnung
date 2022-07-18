@@ -94,6 +94,7 @@
         "Text": "Du kannst gerne eine Kleinigkeit 'Spenden', wenn du zufrieden mit der Planung und Organisation bist.\n\nKlicke dazu einfach auf den Knopf unten und wähle die Spendenhöhe aus ;)",
         "Knöpfe": {
             "Spenden": "Jetzt Spenden",
+            "SpendeAlles": "Spenden dein gesamtes Guthaben",
             "Hauptmenu": "⏪ Hauptmenü"
         }
     },

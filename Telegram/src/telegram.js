@@ -26,34 +26,6 @@ if (fs.existsSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json'
     preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json')));
 }
 
-bot.on(/^\/loadprice/i, (msg) => {
-    var run_start = new Date().getTime();
-    if (fs.existsSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json'))) {
-        preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json')));
-    }
-    Promise.all([DB.get.Guests.Check.Admin(msg.from.id), DB.get.tglang.Get(msg.from.id)]).then(function (values) {
-        const [Admin_Check_response, tglang_response] = values;
-        log.error(tglang_response)
-        if (Admin_Check_response) {
-            let Restul_array = [];
-            for (const key in preisliste.SnackBar) {
-                Restul_array.push(DB.write.Products.Add(preisliste.SnackBar[key]))
-            }
-            Promise.all(Restul_array).then(function (Insert_Response) {
-                return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'loadprice.Text', { Amount: Insert_Response.length, duration: TimeConvert(new Date().getTime() - run_start) }));
-            }).catch(function (error) {
-                log.error(error)
-                return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Error.DBFehler'));
-            })
-        } else {
-            return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.MustBeAdmin'));
-        }
-    }).catch(function (error) {
-        log.error(error)
-        return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
-    })
-});
-
 bot.on(/^\/start/i, (msg) => {
     if (msg.chat.type === "private") {
         DB.get.Guests.ByID(msg.from.id).then(function (User_response) {
@@ -368,7 +340,8 @@ bot.on(/^\/donate/i, (msg) => {
     DB.get.tglang.Get(msg.from.id).then(function (tglang_response) {
         let replyMarkup = bot.inlineKeyboard([
             [
-                bot.inlineButton(newi18n.translate(tglang_response, 'Spenden.Knöpfe.Spenden'), { inlineCurrent: 'spende' })
+                bot.inlineButton(newi18n.translate(tglang_response, 'Spenden.Knöpfe.Spenden'), { inlineCurrent: 'spende' }),
+                bot.inlineButton(newi18n.translate(tglang_response, 'Spenden.Knöpfe.SpendeAlles'), { callback: 'donateall' })
             ],
             [
                 bot.inlineButton(newi18n.translate(tglang_response, 'Moreinfo.Knöpfe.Hauptmenu'), { callback: `/maincallback` })
@@ -519,6 +492,34 @@ bot.on(/^\/admin( .+)*/i, (msg, props) => {
             } else {
                 return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.MustHaveAtributes', { Atributes: AvaibleModes.join(", ") }));
             }
+        } else {
+            return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.MustBeAdmin'));
+        }
+    }).catch(function (error) {
+        log.error(error)
+        return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
+    })
+});
+
+bot.on(/^\/loadprice/i, (msg) => {
+    var run_start = new Date().getTime();
+    if (fs.existsSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json'))) {
+        preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json')));
+    }
+    Promise.all([DB.get.Guests.Check.Admin(msg.from.id), DB.get.tglang.Get(msg.from.id)]).then(function (values) {
+        const [Admin_Check_response, tglang_response] = values;
+        log.error(tglang_response)
+        if (Admin_Check_response) {
+            let Restul_array = [];
+            for (const key in preisliste.SnackBar) {
+                Restul_array.push(DB.write.Products.Add(preisliste.SnackBar[key]))
+            }
+            Promise.all(Restul_array).then(function (Insert_Response) {
+                return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'loadprice.Text', { Amount: Insert_Response.length, duration: TimeConvert(new Date().getTime() - run_start) }));
+            }).catch(function (error) {
+                log.error(error)
+                return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Error.DBFehler'));
+            })
         } else {
             return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.MustBeAdmin'));
         }

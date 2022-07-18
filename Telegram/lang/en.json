@@ -94,6 +94,7 @@
         "Text": "You can donate something if you are satisfied with the planning and organization.\n\nJust click on the button below and select the donation amount ;)",
         "Knöpfe": {
             "Spenden": "Donate now",
+            "SpendeAlles": "Donate your entire balance",
             "Hauptmenu": "⏪ Main menu"
         }
     },
