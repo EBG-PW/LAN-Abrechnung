@@ -1,5 +1,5 @@
 {
-    "WellcomeMSG": "Willkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.",
+    "WellcomeMSG": "Willkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.\n\nWähle deine Sprache:",
     "WellcomeMSGAR": "Willkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.\n\nDu bist bereits regestriert. Hier das Haumtmenü.",
     "WellcomeErr": "Bitte beende deine Regestrierung. Fals du dies bereits gemacht hast, hast du vermulich die Regeln nicht aktzeptiert und bist somit leider nicht willkommen!",
     "Fragen": {
@@ -97,11 +97,22 @@
             "Hauptmenu": "⏪ Hauptmenü"
         }
     },
+    "Preisliste": {
+        "PauschalKosten": {
+            "Wasserpauschale": "Wasserpauschale (Klo, Dusche, etc)",
+            "Strompauschale": "Strompauschale (Flur, Räume, Küche, etc)",
+            "Verbrauchsgüterpauschale": "Verbrauchsgüterpauschale (Seife, etc)",
+            "Netzwerkpauschale": "Netzwerkpauschale",
+            "KostenKWH": "Kosten pro kWh"
+        }
+    },
     "Sprachen": {
         "Text": "Hier kannst du deine Sprache ändern",
         "Knöpfe": {
-            "DE": "🇩🇪 German",
-            "EN": "🇬🇧 English",
+            "DE": "🇩🇪",
+            "EN": "🇬🇧",
+            "UA": "🇺🇦",
+            "IT": "🇮🇹",
             "Zurück": "⏪ Zurück"
         }
     },

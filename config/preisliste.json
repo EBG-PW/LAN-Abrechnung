@@ -3,23 +3,23 @@
     "PauschalKosten": {
         "Wasser": {
             "Preis": 100,
-            "Beschreibung": "Wasserpauschale (Klo, Dusche, etc)"
+            "Beschreibung": "Wasserpauschale"
         },
         "Strom": {
             "Preis": 500,
-            "Beschreibung": "Strom (Flur, Räume, Küche, etc)"
+            "Beschreibung": "Strompauschale"
         },
         "Verbrauchsgüter": {
             "Preis": 400,
-            "Beschreibung": "Verbrauchsgüter (Seife, etc)"
+            "Beschreibung": "Verbrauchsgüterpauschale"
         },
         "Netzwerk": {
             "Preis": 500,
-            "Beschreibung": "Netzwerk Infrastruktur"
+            "Beschreibung": "Netzwerkpauschale"
         },
         "StromKWH": {
             "Preis": 19,
-            "Beschreibung": "Preis pro kWh"
+            "Beschreibung": "KostenKWH"
         }
     },
     "SnackBar": {

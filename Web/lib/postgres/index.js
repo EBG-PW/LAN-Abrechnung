@@ -30,14 +30,14 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     admin boolean DEFAULT False,
     vaccinated text,
     time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
-  if (err) { console.log(err) }
+  if (err) { log.error(`DB Create guests: ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS tg_users (
     userid bigint PRIMARY KEY,
     language text,
     time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
-  if (err) { console.log(err) }
+  if (err) { log.error(`DB Create tg_users: ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS plugs (
@@ -57,7 +57,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS plugs (
   ON UPDATE CASCADE
   ON DELETE CASCADE
   NOT VALID)`, (err, result) => {
-  if (err) { console.log(err) }
+  if (err) { log.error(`DB Create plugs: ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS plugs_history (
@@ -66,7 +66,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS plugs_history (
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (plugid,time),
   CONSTRAINT plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid))`, (err, result) => {
-  if (err) { console.log(err) }
+  if (err) { log.error(`DB Create plugs_history: ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS power_history (
@@ -76,7 +76,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS power_history (
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (plugid,time),
   CONSTRAINT plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid))`, (err, result) => {
-  if (err) { console.log(err) }
+  if (err) { log.error(`DB Create power_history: ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS regtoken (
@@ -84,7 +84,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS regtoken (
   username text,
   token text PRIMARY KEY,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
-  if (err) { console.log(err) }
+  if (err) { log.error(`DB Create regtoken: ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS webtoken (
@@ -96,7 +96,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS webtoken (
   admin boolean DEFAULT False,
   lang text,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
-  if (err) { console.log(err) }
+  if (err) { log.error(`DB Create webtoken: ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS products (
@@ -106,7 +106,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
   amount integer,
   bought integer DEFAULT 0,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
-  if (err) { console.log(err) }
+  if (err) { log.error(`DB Create products: ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS shopinglist (
@@ -119,7 +119,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS shopinglist (
   transaction_id text,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (userid,time))`, (err, result) => {
-  if (err) { console.log(err) }
+  if (err) { log.error(`DB Create shopinglist: ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS bestellung (
@@ -128,7 +128,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS bestellung (
   timeuntil timestamp with time zone,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (url,time))`, (err, result) => {
-  if (err) { console.log(err) }
+  if (err) { log.error(`DB Create bestellung: ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS bestellungen (
@@ -141,7 +141,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS bestellungen (
   status boolean DEFAULT False,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (userid,time))`, (err, result) => {
-  if (err) { console.log(err) }
+  if (err) { log.error(`DB Create bestellungen: ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS innersync (
@@ -151,7 +151,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS innersync (
   chatid bigint,
   type text,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
-  if (err) { console.log(err) }
+  if (err) { log.error(`DB Create innersync: ${err}`) }
 });
 
 /**
@@ -786,6 +786,43 @@ let OrderSwitchState = function (Key, State) {
   });
 }
 
+/**
+ * This function is used to add a new user or edit an existing one to TG language DB
+ * @param {number} UserID
+ * @param {string} Language
+ * @returns {Promise}
+ */
+let SetTGLanguage = function (UserID, Language) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`INSERT INTO tg_users(userid, language) VALUES ($1,$2) ON CONFLICT (userid) DO UPDATE SET language = $2`, [
+      UserID, Language
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * This function is used to get the language of a user from TG language DB
+ * @param {number} UserID
+ * @returns {Promise}
+ */
+let GetTGLanguage = function (UserID) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT language FROM tg_users WHERE userid = $1`, [
+      UserID
+    ], (err, result) => {
+      if (err) { reject(err) }
+      if (result.rows.length > 0) {
+        resolve(result.rows[0].language);
+      } else {
+        resolve(process.env.Fallback_Language || 'en');
+      }
+    });
+  });
+}
+
 let get = {
   Guests: {
     All: GetGuests,
@@ -825,6 +862,9 @@ let get = {
     GetOderForUser: GetOrderByIDForUser,
     GetByKey: GetOrderByKey,
     GetOrderByOrderID: GetOrderByOrderIDandUserID
+  },
+  tglang: {
+    Get: GetTGLanguage,
   }
 }
 
@@ -854,6 +894,9 @@ let write = {
     AddOrderArticle: AddOrderArticle,
     ToggleState: OrderToggleState,
     SwitchState: OrderSwitchState
+  },
+  tglang: {
+    Set: SetTGLanguage
   }
 }
 

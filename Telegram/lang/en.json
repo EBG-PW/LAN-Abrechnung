@@ -1,5 +1,5 @@
 {
-    "WellcomeMSG": "Welcome to the Local Area Network Party {{LanName}} with this bot you can register.",
+    "WellcomeMSG": "Welcome to the Local Area Network Party {{LanName}} with this bot you can register.\n\nChoose your language:",
     "WellcomeMSGAR": "Welcome to the Local Area Network Party {{LanName}} with this bot you can register.\n\nYou are already regestred. This is the main menu.",
     "WellcomeErr": "Please finish your registration. f you have already done this, you have probably not accepted the rules and are therefore unfortunately not welcome!",
     "Fragen": {
@@ -21,7 +21,7 @@
     },
     "Knöpfe": {
         "Reg": "Registration",
-        "WebReg": "This",
+        "WebReg": "Here",
         "Hauptmenu": "Main menu"
     },
     "Error": {
@@ -97,11 +97,22 @@
             "Hauptmenu": "⏪ Main menu"
         }
     },
+    "Preisliste": {
+        "PauschalKosten": {
+            "Wasserpauschale": "Water flat rate (toilet, shower, etc)",
+            "Strompauschale": "Electricity flat rate (corridor, rooms, kitchen, etc.)",
+            "Verbrauchsgüterpauschale": "Consumables flat rate (soap, etc)",
+            "Netzwerkpauschale": "Network flat rate",
+            "KostenKWH": "Cost per kWh"
+        }
+    },
     "Sprachen": {
         "Text": "Change your language here",
         "Knöpfe": {
-            "DE": "🇩🇪 German",
-            "EN": "🇬🇧 English",
+            "DE": "🇩🇪",
+            "EN": "🇬🇧",
+            "UA": "🇺🇦",
+            "IT": "🇮🇹",
             "Zurück": "⏪ return"
         }
     },
