@@ -1289,16 +1289,30 @@ bot.on('inlineQuery', msg => {
                             ]
                         ]);
 
+                        if (rows[i].amount - rows[i].bought > 0) {
+
+                            answers.addArticle({
+                                id: `${newi18n.translate(tglang_response, `Inline.Found.ID`, { ID: idCount })}`,
+                                title: `${newi18n.translate(tglang_response, `Inline.Found.Text`, { Produkt: rows[i].produktname, Hersteller: rows[i].produktcompany })}`,
+                                description: `${newi18n.translate(tglang_response, `Inline.Found.Beschreibung`, { Preis: CentToEuro(rows[i].price), Verfügbar: rows[i].amount - rows[i].bought })}`,
+                                message_text: `${newi18n.translate(tglang_response, `Inline.Found.Message`, { price: CentToEuro(rows[i].price), storrage: rows[i].amount - rows[i].bought, produktname: rows[i].produktname, produktcompany: rows[i].produktcompany })}`,
+                                reply_markup: replyMarkup,
+                                parse_mode: 'html'
+                            });
+                            idCount++
+                        }
+                    }
+
+                    if (idCount === 0) {
                         answers.addArticle({
-                            id: `${newi18n.translate(tglang_response, `Inline.Found.ID`, { ID: idCount })}`,
-                            title: `${newi18n.translate(tglang_response, `Inline.Found.Text`, { Produkt: rows[i].produktname, Hersteller: rows[i].produktcompany })}`,
-                            description: `${newi18n.translate(tglang_response, `Inline.Found.Beschreibung`, { Preis: CentToEuro(rows[i].price), Verfügbar: rows[i].amount - rows[i].bought })}`,
-                            message_text: `${newi18n.translate(tglang_response, `Inline.Found.Message`, { price: CentToEuro(rows[i].price), storrage: rows[i].amount - rows[i].bought, produktname: rows[i].produktname, produktcompany: rows[i].produktcompany })}`,
-                            reply_markup: replyMarkup,
+                            id: `${newi18n.translate(tglang_response, `Inline.NotFound.ID`)}`,
+                            title: `${newi18n.translate(tglang_response, `Inline.NotFound.Text`)}`,
+                            description: msg.query,
+                            message_text: (`${newi18n.translate(tglang_response, `Inline.NotFound.Message`)}`),
                             parse_mode: 'html'
                         });
-                        idCount++
                     }
+
                     return bot.answerQuery(answers).catch(function (error) {
                         log.error(error)
                     })

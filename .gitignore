@@ -393,3 +393,4 @@ FodyWeavers.xsd
 *.sln.iml
 
 ecosystem.config.js
+Web/log
