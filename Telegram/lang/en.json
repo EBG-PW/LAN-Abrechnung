@@ -99,11 +99,14 @@
         }
     },
     "SpendenAll": {
-        "Text": "Would you like to donate your entire balance of {{money}}?",
+        "Text": "Would you like to donate your entire balance of {{current_balance}}?",
         "Knöpfe": {
             "Ja": "Yes",
             "Nein": "No",
             "Hauptmenu": "⏪ Main menu"
+        },
+        "Fehler": {
+            "NoMoney": "You do not have enough money to donate your entire balance."
         }
     },
     "Preisliste": {

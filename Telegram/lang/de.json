@@ -99,11 +99,14 @@
         }
     },
     "SpendenAll": {
-        "Text": "Möchtest du dein gesamtes restliches Guthaben in Höhe von {{money}} spenden?",
+        "Text": "Möchtest du dein gesamtes restliches Guthaben in Höhe von {{current_balance}} spenden?",
         "Knöpfe": {
             "Ja": "Ja",
             "Nein": "Nein",
             "Hauptmenu": "⏪ Hauptmenü"
+        },
+        "Fehler": {
+            "NoMoney": "Du hast nicht genug Guthaben um dein gesamtes Guthaben zu spenden."
         }
     },
     "Preisliste": {
