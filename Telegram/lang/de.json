@@ -98,6 +98,14 @@
             "Hauptmenu": "⏪ Hauptmenü"
         }
     },
+    "SpendenAll": {
+        "Text": "Möchtest du dein gesamtes restliches Guthaben in Höhe von {{money}} spenden?",
+        "Knöpfe": {
+            "Ja": "Ja",
+            "Nein": "Nein",
+            "Hauptmenu": "⏪ Hauptmenü"
+        }
+    },
     "Preisliste": {
         "PauschalKosten": {
             "Wasserpauschale": "Wasserpauschale (Klo, Dusche, etc)",

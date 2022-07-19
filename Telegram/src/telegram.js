@@ -366,6 +366,52 @@ bot.on(/^\/donate/i, (msg) => {
     });
 });
 
+bot.on(/^\/donateall/i, (msg) => {
+    //THIS WILL ONLY WORK WHEN CALLED BY INLINE FUNCTION
+    if ('inline_message_id' in msg) {
+        var inlineId = msg.inline_message_id;
+    } else {
+        var chatId = msg.message.chat.id;
+        var messageId = msg.message.message_id;
+    }
+
+    Promise.all(DB.get.Guests.ByID(msg.from.id), DB.get.plugs.power.kwh(msg.from.id), DB.get.shopinglist.Get(Check.Data.userid), DB.get.tglang.Get(msg.from.id)).then(function (response) {
+        const [Guest_response, plugs_response, shoppinglist_response, tglang_response] = response;
+        let total_shopping = 0;
+        let total_powercost = plugs_response.rows[0].diff.toFixed(2) * preisliste.PauschalKosten.StromKWH.Preis;
+        let total_payed = Guest_response[0].payed;
+    
+        shoppinglist_response.rows.map(row => {
+            total = total + row.price
+        })
+        
+        
+        let replyMarkup = bot.inlineKeyboard([
+            [
+                bot.inlineButton(newi18n.translate(tglang_response, 'SpendenAll.Knöpfe.Ja'), { inlineCurrent: 'spende' }),
+                bot.inlineButton(newi18n.translate(tglang_response, 'SpendenAll.Knöpfe.Nein'), { callback: 'donateall' })
+            ]
+        ]);
+        let Message = newi18n.translate(tglang_response, 'SpendenAll.Text')
+
+        if ('inline_message_id' in msg) {
+            bot.editMessageText(
+                { inlineMsgId: inlineId }, Message,
+                { parseMode: 'html', replyMarkup }
+            ).catch(error => log.error('Error:', error));
+        } else {
+            bot.editMessageText(
+                { chatId: chatId, messageId: messageId }, Message,
+                { parseMode: 'html', replyMarkup }
+            ).catch(error => log.error('Error:', error));
+        }
+    }).catch(function (error) {
+        log.error(error)
+        return bot.sendMessage(chatId, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
+    });
+});
+
+
 
 
 
