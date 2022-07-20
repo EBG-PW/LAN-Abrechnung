@@ -4,7 +4,8 @@ const fs = require('fs');
 const randomstring = require('randomstring');
 let reqPath = path.join(__dirname, '../');
 const { default: i18n } = require('new-i18n')
-const newi18n = new i18n(path.join(__dirname, '../', 'lang'), ['de', 'en'], process.env.Fallback_Language);
+const newi18n = new i18n(path.join(__dirname, '../', 'lang'), ['de', 'en', 'de-by'], process.env.Fallback_Language);
+const DE_SLANG = ["de-by"] //Used to store the diffrent slangs of german. 
 const { log } = require('../../Web/lib/logger');
 
 let mainconfig, preisliste;
@@ -30,17 +31,24 @@ bot.on(/^\/start/i, (msg) => {
     if (msg.chat.type === "private") {
         DB.get.Guests.ByID(msg.from.id).then(function (User_response) {
             if (User_response.length <= 0 || parseInt(mainconfig.SudoUser) === msg.from.id) {
-                let replyMarkup = bot.inlineKeyboard([
-                    [
-                        bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
-                        bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.EN'), { callback: `R_${msg.from.id}_setlang_en` }),
-                        bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.UA'), { callback: `R_${msg.from.id}_setlang_ua` }),
-                        bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.IT'), { callback: `R_${msg.from.id}_setlang_it` })
-                    ],
-                    [
-                        bot.inlineButton(newi18n.translate('de', 'Knöpfe.Reg'), { callback: `R_${msg.from.id}_rules` })
-                    ]
-                ]);
+                let inlineKeyboard = []
+                //Push Base Language Buttons
+                inlineKeyboard.push([
+                    bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
+                    bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.EN'), { callback: `R_${msg.from.id}_setlang_en` }),
+                    bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.UA'), { callback: `R_${msg.from.id}_setlang_ua` }),
+                    bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.IT'), { callback: `R_${msg.from.id}_setlang_it` }),
+                ])
+                //Push Slang Buttons for German
+                inlineKeyboard.push([
+                    bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.Full.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
+                    bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `R_${msg.from.id}_setlang_de-by` }),
+                ])
+                //Push Rules Button to enter registration
+                inlineKeyboard.push([
+                    bot.inlineButton(newi18n.translate('de', 'Knöpfe.Reg'), { callback: `R_${msg.from.id}_rules` })
+                ])
+                let replyMarkup = bot.inlineKeyboard(inlineKeyboard);
                 return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'WellcomeMSG', { LanName: mainconfig.LanName }), { replyMarkup });
             } else {
                 if (User_response[0].pyed_id !== null) {
@@ -476,7 +484,7 @@ bot.on(/^\/allyesdonate/i, (msg) => {
             });
 
             DB.write.shopinglist.Buy(msg.from.id, msg.from.id, SQLprodukt, transaction_id).then(function (Write_Shoppinglist) { //Here Stuff needs to be chanced when subusers will be added!!
-                Message = newi18n.translate(tglang_response, 'Inline.Donation', { price: CentToEuro(current_balance) , Company_Name: process.env.Company_Name, Company_Name_URL: process.env.Company_Name_URL});
+                Message = newi18n.translate(tglang_response, 'Inline.Donation', { price: CentToEuro(current_balance), Company_Name: process.env.Company_Name, Company_Name_URL: process.env.Company_Name_URL });
                 if ('inline_message_id' in msg) {
                     bot.editMessageText(
                         { inlineMsgId: inlineId }, Message,
@@ -692,17 +700,26 @@ bot.on('callbackQuery', (msg) => {
             if (data[0] === "lang") {
                 DB.write.tglang.Set(msg.from.id, data[1]).then(function (lang_edit_response) {
                     bot.answerCallbackQuery(msg.id)
-                    let replyMarkup = bot.inlineKeyboard([
-                        [
-                            bot.inlineButton(newi18n.translate(tglang_response, 'Sprachen.Knöpfe.DE'), { callback: `lang_de` }),
-                            bot.inlineButton(newi18n.translate('en', 'Sprachen.Knöpfe.EN'), { callback: 'lang_en' }),
-                            bot.inlineButton(newi18n.translate('en', 'Sprachen.Knöpfe.UA'), { callback: 'lang_ua' }),
-                            bot.inlineButton(newi18n.translate('en', 'Sprachen.Knöpfe.IT'), { callback: 'lang_it' }),
-                        ],
-                        [
-                            bot.inlineButton(newi18n.translate(data[1], 'Sprachen.Knöpfe.Zurück'), { callback: `/moreinfo` }),
-                        ]
-                    ]);
+                    let inlineKeyboard = []
+                    //Push Base Language Buttons
+                    inlineKeyboard.push([
+                        bot.inlineButton(newi18n.translate(data[1], 'Sprachen.Knöpfe.DE'), { callback: `lang_de` }),
+                        bot.inlineButton(newi18n.translate(data[1], 'Sprachen.Knöpfe.EN'), { callback: 'lang_en' }),
+                        bot.inlineButton(newi18n.translate(data[1], 'Sprachen.Knöpfe.UA'), { callback: 'lang_ua' }),
+                        bot.inlineButton(newi18n.translate(data[1], 'Sprachen.Knöpfe.IT'), { callback: 'lang_it' }),
+                    ])
+                    //Push Slang Buttons for German
+                    if (data[1] === 'de' || DE_SLANG.includes(data[1])) {
+                        inlineKeyboard.push([
+                            bot.inlineButton(newi18n.translate(data[1], 'Sprachen.Knöpfe.Full.DE'), { callback: `lang_de` }),
+                            bot.inlineButton(newi18n.translate(data[1], 'Sprachen.Knöpfe.Full.DE-BY'), { callback: 'lang_de-by' }),
+                        ])
+                    }
+                    //Push Rules Button to enter registration
+                    inlineKeyboard.push([
+                        bot.inlineButton(newi18n.translate(data[1], 'Knöpfe.Reg'), { callback: `R_${msg.from.id}_rules` })
+                    ])
+                    let replyMarkup = bot.inlineKeyboard(inlineKeyboard);
 
                     let username;
                     if ('username' in msg.from) {
@@ -1192,17 +1209,27 @@ bot.on('callbackQuery', (msg) => {
                 if (data[2] === 'setlang') {
                     DB.write.tglang.Set(msg.from.id, data[3]).then(function (response) {
                         bot.answerCallbackQuery(msg.id)
-                        let replyMarkup = bot.inlineKeyboard([
-                            [
-                                bot.inlineButton('🇩🇪', { callback: `R_${msg.from.id}_setlang_de` }),
-                                bot.inlineButton('🇬🇧', { callback: `R_${msg.from.id}_setlang_en` }),
-                                bot.inlineButton('🇺🇦', { callback: `R_${msg.from.id}_setlang_ua` }),
-                                bot.inlineButton('🇮🇹', { callback: `R_${msg.from.id}_setlang_it` })
-                            ],
-                            [
-                                bot.inlineButton(newi18n.translate(data[3], 'Knöpfe.Reg'), { callback: `R_${msg.from.id}_rules` })
-                            ]
-                        ]);
+                        let inlineKeyboard = []
+                        //Push Base Language Buttons
+                        inlineKeyboard.push([
+                            bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
+                            bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.EN'), { callback: `R_${msg.from.id}_setlang_en` }),
+                            bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.UA'), { callback: `R_${msg.from.id}_setlang_ua` }),
+                            bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.IT'), { callback: `R_${msg.from.id}_setlang_it` }),
+                        ])
+                        //Push Slang Buttons for German
+                        if (data[3] === 'de' || DE_SLANG.includes(data[3])) {
+                            inlineKeyboard.push([
+                                bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.Full.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
+                                bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `R_${msg.from.id}_setlang_de-by` }),
+                            ])
+                        }
+                        //Push Rules Button to enter registration
+                        inlineKeyboard.push([
+                            bot.inlineButton(newi18n.translate(data[3], 'Knöpfe.Reg'), { callback: `R_${msg.from.id}_rules` })
+                        ])
+                        let replyMarkup = bot.inlineKeyboard(inlineKeyboard);
+
 
                         if ('inline_message_id' in msg) {
                             bot.editMessageText(

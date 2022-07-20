@@ -125,7 +125,11 @@
             "EN": "🇬🇧",
             "UA": "🇺🇦",
             "IT": "🇮🇹",
-            "Zurück": "⏪ return"
+            "Zurück": "⏪ return",
+            "Full": {
+              "DE": "Normal German",
+              "DE-BY": "Bavarian"
+            }
         }
     },
     "Moreinfo":{

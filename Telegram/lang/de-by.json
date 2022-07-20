@@ -1,0 +1,233 @@
+{
+  "WellcomeMSG": "Wuikomma zua Local-Area-Network-Party {{LanName}} mid dem Bot kannst du di registriern.\n\nWähle dei Sprach:",
+  "WellcomeMSGAR": "Wuikomma zua Local-Area-Network-Party {{LanName}} mid dem Bot kannst du di registriern.\n\nDu bisd bereits regstriad. Do des Haumtmenü.",
+  "WellcomeErr": "Bitte beend dei Regstrierung. Fals du des bereits gmacht hosd, hosd du vamulich de Regln ned aktzeptiad und bisd somit leida ned wuikomma!",
+  "Fragen": {
+    "PC": "Hosd du oan Computa (PC) dabei?",
+    "Displays": "Wia vui Buidschirme bringst du mid?",
+    "LanKabel": "Nimmst du a LAN-Kabel fia deine Computa mid?",
+    "VR": "Nimmst du a VR Bruin mid?",
+    "Vaccinated": "Welchem Impfstatus wirst du zum Zeidpunkt doana Oreise hom?",
+    "Arrivale": "Wann is den gplanta Oreisedog?",
+    "Depature": "Wann is den gplanta Obreisedog?",
+    "WebReg": "Bitte klicke auf den Knopf um dei Webpanl Passwort zua setzn."
+  },
+  "Antworten": {
+    "Ja": "Jo",
+    "Nein": "Na",
+    "Vollständig": "Voiständig",
+    "Teil": "Teil-Gimpft",
+    "NichtSagen": "Mog i ned song"
+  },
+  "Knöpfe": {
+    "Reg": "Registriern",
+    "WebReg": "Do",
+    "Hauptmenu": "Habtmenü"
+  },
+  "Error": {
+    "NotPrivate": "Des is grod im Chod direkt mid am Bot möglich.",
+    "DBFehler": "A Fehla mid da Datenbank is aufgtredn."
+  },
+  "Vaccinated": {
+    "Voll": "Voiständig",
+    "Teil": "Eastgimpft",
+    "Nein": "Na",
+    "Secret": "Gheim"
+  },
+  "Arrivale": {
+    "1": "9.7.21",
+    "1_Voll": "FR: 09.07.2021",
+    "2": "10.7.21",
+    "2_Voll": "SA: 10.07.2021",
+    "3": "11.7.21",
+    "3_Voll": "SO: 11.07.2021",
+    "4": "12.7.21",
+    "4_Voll": "MO: 12.07.2021",
+    "5": "13.7.21",
+    "5_Voll": "DI: 13.07.2021",
+    "6": "14.7.21",
+    "6_Voll": "MI: 14.07.2021"
+  },
+  "Depature": {
+    "1": "14.7.21",
+    "1_Voll": "MI: 14.07.2021",
+    "2": "15.7.21",
+    "2_Voll": "DO: 15.07.2021",
+    "3": "16.7.21",
+    "3_Voll": "R: 16.07.2021",
+    "4": "17.7.21",
+    "4_Voll": "SA: 17.07.2021",
+    "5": "18.7.21",
+    "5_Voll": "SO: 18.07.2021",
+    "6": "19.7.21",
+    "6_Voll": "MO: 19.07.2021"
+  },
+  "Admin": {
+    "MustBeReply": "Dea Befehl konn grod ois Antwoad vawendt wern.",
+    "MustHaveAtributes": "Dea Befehl braucht Attribute wia: {{Atributes}}",
+    "MustBeAdmin": "Du musst seibsd a Admin sei um desn Befehl zua nutzn.",
+    "AddNoSuccsess": "Da Nutza war scho Admin oda is ned registriad.",
+    "AddSuccsess": "{{Username}}({{UserID}}) is jetz Admin.",
+    "RemNoSuccsess": "Da Nutza war koa Admin oda is ned registriad.",
+    "RemSuccsess": "{{Username}}({{UserID}}) is jetz koa Admin mehr.",
+    "list": "Foigende Gäste san Admin:{{AdminList}}"
+    },
+  "PaySystem": {
+    "Sucsess": "Du hosd de Registration eafolgreich obgschlossn\n\nBitte übaweise de Kosdn fia de LAN-Party jetz::\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Vawendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Hechn da Übaweisung beträgt:: <pre language='c++'>{{Kosten}}</pre>"
+  },
+  "Hauptmenu": {
+    "Text": "<b>Habtmenü:</b>\n{{Username}} do kannst du olle Funktiona des Bots seng.\n\nUnta 'Mehr Infos' findest du de Heislordnung und Konditiona dane du zuagstimmt hosd.",
+    "Knöpfe": {
+      "Zahlung": "Zoiung",
+      "Artikel": "Artikl kaffn",
+      "Spenden": "Spendn",
+      "Other": "Mehr Infos",
+      "Webpanel": "Webpanl"
+    }
+  },
+  "Payed": {
+    "Text": "{{Username}}, {{Status_String}}\n\nBetrag: {{money}}\nID: {{PayedID}}",
+    "True": "deine Zahlung wurde von unserem System <b>bestätigt</b>",
+    "False": "deine Zahlung wurde von unserem System noch <b>nicht bestätigt</b>, sollte das zu beginn der LAN-Party noch immer der Fall sein wende dich bitte an die Veranstalter!"
+  },
+  "Spenden": {
+    "Text": "Du kannst gerne eine Kleinigkeit 'Spenden', wenn du zufrieden mit der Planung und Organisation bist.\n\nKlicke dazu einfach auf den Knopf unten und wähle die Spendenhöhe aus ;)",
+    "Knöpfe": {
+      "Spenden": "Jetzt Spenden",
+      "SpendeAlles": "Spenden dein gesamtes Guthaben",
+      "Hauptmenu": "⏪ Hauptmenü"
+    }
+  },
+  "SpendenAll": {
+    "Text": "Möchtest du dein gesamtes restliches Guthaben in Höhe von {{current_balance}} spenden?",
+    "Knöpfe": {
+      "Ja": "Ja",
+      "Nein": "Nein",
+      "Hauptmenu": "⏪ Hauptmenü"
+    },
+    "Fehler": {
+      "NoMoney": "Du hast nicht genug Guthaben um dein gesamtes Guthaben zu spenden."
+    }
+  },
+  "Preisliste": {
+    "PauschalKosten": {
+      "Wasserpauschale": "Wasserpauschale (Klo, Dusche, etc)",
+      "Strompauschale": "Strompauschale (Flur, Räume, Küche, etc)",
+      "Verbrauchsgüterpauschale": "Verbrauchsgüterpauschale (Seife, etc)",
+      "Netzwerkpauschale": "Netzwerkpauschale",
+      "KostenKWH": "Kosten pro kWh"
+    }
+  },
+  "Sprachen": {
+    "Text": "Do kannst du dei Sprach ändern",
+    "Knöpfe": {
+      "DE": "🇩🇪",
+      "EN": "🇬🇧",
+      "UA": "🇺🇦",
+      "IT": "🇮🇹",
+      "Zurück": "⏪ Zurück",
+      "Full": {
+        "DE": "Hochdeutsch",
+        "DE-BY": "Bayerisch"
+      }
+    }
+  },
+  "Moreinfo": {
+    "Text": "<b>Mehr Infos:</b>\n{{Username}} hier findest du weitere nützliche Informationen.",
+    "Knöpfe": {
+      "Rules": "Regeln",
+      "Legal": "Legal",
+      "Sprache": "Sprache",
+      "Hauptmenu": "⏪ Hauptmenü"
+    },
+    "Regeln": {
+      "Exit": "❌ Schließen",
+      "AcceptedDate": "\nDu hast die Regeln am {{akteptiert}} akteptiert"
+    },
+    "Legal": {
+      "Exit": "❌ Schließen",
+      "AcceptedDate": "\nDu hast die Hinweise und Bestimmungen am {{akteptiert}} akteptiert"
+    }
+  },
+  "Regeln": {
+    "Text": "<b>Bitte lies die Hausordnung aufmerksam durch!</b>\n\n <i>Die folgenden Regeln sind strikt für die Dauer der LAN einzuhalten. Ein Verstoß dieser kann im Ermessen bis zum Ausschluss von der LAN führen.</i>",
+    "RegelnAnzahl": "7",
+    "Regeln": {
+      "0": "1: Im Gebäude gilt striktes Rauchverbot keine Ausnahme. Es entstehen Aerosole -> es ist <b>Verboten!</b> Für Raucher gibt es die Möglichkeit wie auch vergangenes Jahr im Innenhof bei <u>geschlossener Gebäude Türe</u> zu Rauchen.",
+      "1": "2: Nach aktuellen Bestimmungen gilt im Erdgeschoss während der Bürozeiten (7-17 Uhr Werktags) eine FFP2-Maskenpflicht!",
+      "2": "3: <b>JEDER</b> räumt sein Geschirr und seinen Müll <b>SELBSTSTÄNDIG</b> weg. (Für eine Gebühr von 150€ bekommt ihr eigenes VIP Geschirr und GEOs Dad räumt euren Müll und euer Geschirr ab.)",
+      "3": "4: Verbleibendes nicht verzehrtes Essen in den Restmüll. Pizzas haben in ihren Schachteln in den Kartonagen nichts zu suchen. Ein Verstoß gegen diese Regel hat eine Strafgebühr von 150€ zur Folge. (PS: Ja diese Regel existiert aus gutem Grund.)",
+      "4": "5: Während der Bürozeiten nur in entsprechender Kleidung durchs Gebäude gehen.",
+      "5": "6: Während der Bürozeiten den Lärmpegel auf einem angemessenen Niveau halten.",
+      "6": "7: Bei Alkoholkonsum ist trotzdem ein entsprechendes Verhalten zu erwarten. (GEOs Einstellung gegenüber exzessivem Alkoholkonsum und dessen Auswirkungen sollte jedem bekannt sein)"
+    },
+    "Knöpfe": {
+      "Zustimmen": "Zustimmen",
+      "Ablehnen": "Ablehnen"
+    },
+    "Antworten": {
+      "Zustimmen": "Zugestimmt",
+      "Ablehnen": "Abgelehnt"
+    }
+  },
+  "Legal": {
+    "Text": "<b>Bitte lies die Bestimmungen aufmerksam durch und stimme ihnen zu!</b>",
+    "Preisliste": "Die folgenden Abgaben sind verpflichtend von jedem Gast zu zahlen und werden automatisch berechnet.",
+    "LegalAnzahl": "3",
+    "Legal": {
+      "0": "Zur Abrechnung der Stromkosten wird dir ein Stromzähler zur Verfügung gestellt. Die Benutzung des Zählers ist verpflichtend. Der Zähler ist nicht amtlich geeicht und hat eine Toleranz von 1%",
+      "1": "Es gibt einige allgemeine Abgaben für die LAN diese sind unten aufgeführt und dienen dazu um dieses Event ohne verlust für GEO und seinen Dad durchführen zu können.",
+      "2": "Du hast kein Problem damit spontan kein Netzwerk mehr zu haben oder einen freundlichen RubberDucky in deinen PC zu bekommen. :D"
+    },
+    "Knöpfe": {
+      "Zustimmen": "Zustimmen",
+      "Ablehnen": "Ablehnen"
+    },
+    "Antworten": {
+      "Zustimmen": "Zugestimmt",
+      "Ablehnen": "Abgelehnt"
+    }
+  },
+  "loadprice": {
+    "Text": "Es wurden {{Amount}} Artikel eingelesen oder geupdatet und das hat {{duration}} gedauert."
+  },
+  "Inline": {
+    "NoQuery": {
+      "ID": "NoQuery",
+      "Text": "Bitte gib einen Artikel in die Leiste ein",
+      "Message": "Um einen Artikel zu kaufen, musst du den Namen in der Chat Leiste eingeben und dann das passende Feld auswählen.\n\n<b>Hier eine Liste aller Artikel:</b>\n"
+    },
+    "NotFound": {
+      "ID": "NotFound",
+      "Text": "Artikel konnte nicht gefunden werden",
+      "Message": "Der Artikel {{}} konnte leider nicht gefunden werden."
+    },
+    "Found": {
+      "ID": "N{{ID}}",
+      "Text": "{{Produkt}} von {{Hersteller}}",
+      "Beschreibung": "Preis pro Stück: {{Preis}} - Es sind {{Verfügbar}} auf Lager",
+      "Message": "<b>Ausgewählter Artikel:</b> {{produktname}} von {{produktcompany}}\nPreis pro Stück: {{price}}\nAuf Lager: {{storrage}}\n\nUm den Artikel zu kaufen klick unten auf den Knopf."
+    },
+    "Knöpfe": {
+      "Add": "+1",
+      "Remove": "-1",
+      "Abbrechen": "Abbrechen",
+      "Bestätigen": "Bestätigen",
+      "Kaufen": "Buchen"
+    },
+    "Confirm": {
+      "NotPayed": "Du hast noch nicht gezahlt oder deine Zahlung wurde noch nicht verarbeitet.",
+      "DoesNotExist": "Das ausgewählte Produkt {{produktname}} von {{produktcompany}} wurde leider aus dem Angebot entfernt.",
+      "NotEnoth": "Das Produkt {{produktname}} von {{produktcompany}} ist leider nicht mehr in ausrechender Menge verfügbar!",
+      "OtherBuy": "Das gewählte Produkt wurde zeitgleich von jemand anderem gekauft, versuche es bitte nochmals!"
+    },
+    "MainMessage": "<b>Ausgewählter Artikel:</b> {{produktname}} von {{produktcompany}}\nPreis pro Stück: {{price}}\nAuf Lager: {{storrage}}\n\nBitte wähle unten die Menge aus und bestetige deinen Kauf. Warte bitte auf die Bestätigung durch den Bot.",
+    "MainProgress": "Buchungsmenü wird aufgerufen...",
+    "Escape": "Buchungsmenü wurde geschlossen...",
+    "TooMutch": "Du kannst nicht mehr kaufen als auf Lager ist.",
+    "TooLitle": "Du kannst nicht weniger als eins kaufen.",
+    "Donation": "Vielen dank für deine Spende von {{price}} an <a href='{{Company_Name_URL}}'>{{Company_Name}}</a> ❤️",
+    "ItemBought": "Du hast erfolgreich {{amount}} mal das Produkt {{produktname}} von {{produktcompany}} für {{price}} gekauft.\n\nDu kannst den Artikel nun entnehmen.",
+    "ItemsBought": "Du hast erfolgreich {{amount}} mal die Produkte {{produktname}} von {{produktcompany}} für {{price}} gekauft.\n\nDu kannst die Artikel nun entnehmen."
+  }
+}
