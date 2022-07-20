@@ -222,7 +222,7 @@
         "Escape": "Buchungsmenü wurde geschlossen...",
         "TooMutch": "Du kannst nicht mehr kaufen als auf Lager ist.",
         "TooLitle": "Du kannst nicht weniger als eins kaufen.",
-        "Donation": "Vielen dank für deine Spende von {{price}} an EBG.PW ❤️",
+        "Donation": "Vielen dank für deine Spende von {{price}} an <a href='{{Company_Name_URL}}'>{{Company_Name}}</a> ❤️",
         "ItemBought": "Du hast erfolgreich {{amount}} mal das Produkt {{produktname}} von {{produktcompany}} für {{price}} gekauft.\n\nDu kannst den Artikel nun entnehmen.",
         "ItemsBought": "Du hast erfolgreich {{amount}} mal die Produkte {{produktname}} von {{produktcompany}} für {{price}} gekauft.\n\nDu kannst die Artikel nun entnehmen."
     }

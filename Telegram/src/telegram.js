@@ -476,7 +476,7 @@ bot.on(/^\/allyesdonate/i, (msg) => {
             });
 
             DB.write.shopinglist.Buy(msg.from.id, msg.from.id, SQLprodukt, transaction_id).then(function (Write_Shoppinglist) { //Here Stuff needs to be chanced when subusers will be added!!
-                Message = newi18n.translate(tglang_response, 'Inline.Donation', { price: CentToEuro(current_balance) });
+                Message = newi18n.translate(tglang_response, 'Inline.Donation', { price: CentToEuro(current_balance) , Company_Name: process.env.Company_Name, Company_Name_URL: process.env.Company_Name_URL});
                 if ('inline_message_id' in msg) {
                     bot.editMessageText(
                         { inlineMsgId: inlineId }, Message,

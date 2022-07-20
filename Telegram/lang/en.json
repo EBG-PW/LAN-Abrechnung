@@ -222,7 +222,7 @@
         "Escape": "Booking menu has been closed...",
         "TooMutch": "You can’t buy more than we have in stock.",
         "TooLitle": "You can’t buy less than one",
-        "Donation": "Thank you for your donation of {{price}} to EBG. PW ❤️",
+        "Donation": "Thank you for your donation of {{price}} to <a href='{{Company_Name_URL}}'>{{Company_Name}}</a> ❤️",
         "ItemBought": "You have successfully bought {{amount}} times the product {{produktname}} by {{produktcompany}} for {{price}}.\n\nYou can now view the item.",
         "ItemsBought": "You have successfully bought {{amount}} times the products {{produktname}} from {{produktcompany}} for {{price}}\n\nYou can now view the items."
     }
