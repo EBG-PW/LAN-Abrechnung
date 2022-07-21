@@ -356,7 +356,7 @@
         Token: localStorage.getItem("Token")
       });
       posting.done(function(result) {
-        window.location.replace(`${baseUrl}/`);
+        window.location.replace(`${baseUrl}`);
       })
     }
   }
@@ -371,7 +371,7 @@
     });
     posting.done(function(result) {
       localStorage.setItem('Token', result.Token);
-      window.location.replace(`${baseUrl}public/`);
+      window.location.replace(`${baseUrl}`);
       $("#c-welcome-info").html(`Login Erfolgreich...`);
     })
 

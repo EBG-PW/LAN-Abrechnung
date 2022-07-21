@@ -32,8 +32,8 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'www-public', 'index.html'));
 });
 
-app.get('/Bestellung', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'www-public', 'Bestellung.html'));
+app.get('/Bestellungen', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'www-public', 'Bestellungen.html'));
 });
 
 app.get('/Shopping', (req, res) => {
