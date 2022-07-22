@@ -33,6 +33,16 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
   if (err) { log.error(`DB Create guests: ${err}`) }
 });
 
+pool.query(`CREATE TABLE IF NOT EXISTS guests_permissions (
+  userid bigint,
+  permission text,
+  read boolean,
+  write boolean,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (userid, permission))`, (err, result) => {
+  if (err) { logger('error', `Table-gen: Error mshc_config ${err}`) }
+});
+
 pool.query(`CREATE TABLE IF NOT EXISTS tg_users (
     userid bigint PRIMARY KEY,
     language text,
@@ -142,16 +152,6 @@ pool.query(`CREATE TABLE IF NOT EXISTS bestellungen (
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (userid,time))`, (err, result) => {
   if (err) { log.error(`DB Create bestellungen: ${err}`) }
-});
-
-pool.query(`CREATE TABLE IF NOT EXISTS innersync (
-  targetapp text,
-  id text PRIMARY KEY,
-  message text,
-  chatid bigint,
-  type text,
-  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
-  if (err) { log.error(`DB Create innersync: ${err}`) }
 });
 
 /**
@@ -786,6 +786,14 @@ let OrderSwitchState = function (Key, State) {
   });
 }
 
+/*
+    |-------------------------------------------------------------------------------|
+    |                                                                               |
+    |                            TG_Language - Managment                            |
+    |                                                                               |
+    |-------------------------------------------------------------------------------|
+*/
+
 /**
  * This function is used to add a new user or edit an existing one to TG language DB
  * @param {number} UserID
@@ -823,6 +831,85 @@ let GetTGLanguage = function (UserID) {
   });
 }
 
+/*
+    |-------------------------------------------------------------------------------|
+    |                                                                               |
+    |                            Permissions - Managment                            |
+    |                                                                               |
+    |-------------------------------------------------------------------------------|
+*/
+
+/**
+ * This function will add a given permission to a user
+ * @param {Number} userid
+ * @param {string} permission
+ * @param {boolean} read
+ * @param {boolean} write
+ * @returns {Promise}
+ */
+ const AddPermissionToUser = function (userid, permission, read, write) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`INSERT INTO guests_permissions(userid, permission, read, write) VALUES ($1,$2,$3,$4)`, [
+      userid, permission, read, write
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * This function is used to get a list of permissions of a user
+ * @param {Number} userid
+ * @returns {Promise}
+ */
+const GetPermissionFromUser = function (userid) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT permission, read, write FROM guests_permissions WHERE userid = $1`, [
+      userid
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * This function is used to remove a permission from a user
+ * @param {Number} userid
+ * @param {String} permission
+ * @returns {Promise}
+ */
+const DelPermissionFromUser = function (userid, permission) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`DELETE FROM guests_permissions WHERE userid = $1 AND permission = $2`, [
+      userid, permission
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * This function is used to update r/w of a permission of a user
+ * @param {Number} userid
+ * @param {String} permission
+ * @param {boolean} read
+ * @param {boolean} write
+ * @returns {Promise}
+ */
+const UpdatePermissionFromUser = function (userid, permission, read, write) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`UPDATE mshc_user_permissions SET read = $3, write = $4 WHERE userid = $1 AND permission = $2`, [
+      userid, permission, read, write
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
 let get = {
   Guests: {
     All: GetGuests,
@@ -836,6 +923,9 @@ let get = {
       Reg: RegCheckGuestByID,
       Payed: PayedCheckGuestByID
     }
+  },
+  Permissions: {
+    Get: GetPermissionFromUser,
   },
   RegToken: {
     ByToken: GetRegTokenByToken
@@ -873,6 +963,10 @@ let write = {
     UpdateCollumByID: UpdateCollumByID,
     NewUser: WriteNewUser
   },
+  Permissions: {
+    Add: AddPermissionToUser,
+    Update: UpdatePermissionFromUser,
+  },
   RegToken: {
     NewToken: WriteNewRegToken
   },
@@ -901,6 +995,9 @@ let write = {
 }
 
 let del = {
+  Permissions: {
+    FromUser: DelPermissionFromUser
+  },
   RegToken: {
     DeleteToken: DelRegTokenByToken
   },

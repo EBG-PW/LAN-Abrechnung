@@ -1,6 +1,6 @@
-const DB = require('../../lib/db/pg_sql');
-const { logger } = require('../../lib/logger');
-const TV = require('../../lib/webtokenverification');
+const DB = require('../../lib/postgres');
+const { log } = require('../../lib/logger');
+const TV = require('../../lib/TokenVerification');
 const useragent = require('express-useragent');
 
 /**
@@ -43,10 +43,9 @@ const tokenpermissions = (skip = false) => {
             }
         }
 
-
         TV.check(UserToken, para).then(function (Check) {
             if (Check.State) {
-                DB.permission.read.permission(Check.Data.username).then(function (Permissions) {
+                DB.get.Permissions.Get(Check.Data.userid).then(function (Permissions) {
                     const PermissionsObject = {
                         read: [],
                         write: []
