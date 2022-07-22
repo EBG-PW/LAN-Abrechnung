@@ -5,6 +5,11 @@ function errorHandler(err, req, res, next) {
     if (err.name === "ValidationError") {
         statusCode = 400
     }
+    
+    /* Returns 403 if the clients token doesn´t have the permissions required */
+    if (err.message === "NoPermissions") {
+        statusCode = 403
+    }
 
     res.status(statusCode);
     res.json({

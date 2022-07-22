@@ -6,6 +6,7 @@ const Joi = require('joi');
 var path = require('path');
 const DB = require('../../lib/postgres');
 const TV = require('../../lib/TokenVerification');
+const { tokenpermissions } = require('../middleware/tokenVerify')
 
 
 const PluginConfig = {
@@ -29,32 +30,18 @@ const UserList = Joi.object({
 
 const router = express.Router();
 
-router.get("/user", limiter, async (reg, res, next) => {
+router.get("/user", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
-        const value = await UserList.validateAsync(reg.query);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
-        }
-        TV.check(value.Token, para, false).then(function (Check) {
-            if (Check.State === true) {
-                DB.get.Guests.ByID(Check.Data.userid).then(function (Guest_response) {
-                    res.status(200);
-                    res.json({
-                        me: Guest_response[0]
-                    });
-                });
-            } else {
-                res.status(401);
+        if (reg.permissions.read.includes('user_user')) {
+            DB.get.Guests.ByID(reg.check.Data.userid).then(function (Guest_response) {
+                res.status(200);
                 res.json({
-                    Message: "Token invalid"
+                    me: Guest_response[0]
                 });
-            }
-        }).catch(function (error) {
-            res.status(500);
-            console.log(error)
-        })
+            });
+        } else {
+            throw new Error("NoPermissions");
+        }
     } catch (error) {
         next(error);
     }

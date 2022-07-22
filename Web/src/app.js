@@ -6,7 +6,7 @@ const cors = require('cors');
 var path = require('path');
 const bodyParser = require('body-parser');
 
-const middlewares = require('./middlewares');
+const middleware = require('./middleware');
 const api = require('./api');
 
 const app = express();
@@ -57,7 +57,7 @@ app.use('/assets', express.static(path.join(__dirname, '..', 'www-public', 'asse
 
 app.use('/api/v1', api);
 
-app.use(middlewares.notFound);
-app.use(middlewares.errorHandler);
+app.use(middleware.notFound);
+app.use(middleware.errorHandler);
 
 module.exports = app;
