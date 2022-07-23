@@ -98,7 +98,7 @@ function Table_UserBestellungList(orderid) {
                 text: translate('Tabeles.UserUserOrderTabelle.button_delete_text'),
                 style: 'color: #ff0000 !important;',
                 function: "delete_user_order_by_key",
-                functionVar: getUserUserOrderData.GetOrder_response[i].key,
+                functionVar: getUserUserOrderData.GetOrder_response[i].orderkey,
                 Convert: false
             }
         } 

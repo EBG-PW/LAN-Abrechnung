@@ -5,7 +5,8 @@ useragent = require('express-useragent');
 const Joi = require('joi');
 var path = require('path');
 const DB = require('../../lib/postgres');
-const TV = require('../../lib/TokenVerification');
+const { tokenpermissions } = require('../middleware/tokenVerify')
+const { log } = require('../../lib/logger');
 
 
 const PluginConfig = {
@@ -23,69 +24,49 @@ const limiter = rateLimit({
     max: 150
 });
 
-const ShoppingList = Joi.object({
-    Token: Joi.string().required()
-});
-
 const router = express.Router();
 
-router.get("/shoppinglist", limiter, async (reg, res, next) => {
+router.get("/shoppinglist", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
-        const value = await ShoppingList.validateAsync(reg.query);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
-        }
-        TV.check(value.Token, para, false).then(function (Check) {
-            if (Check.State === true) {
-                DB.get.shopinglist.Get(Check.Data.userid).then(function (ShoppingList_response) {
-                    res.status(200);
-                    res.json({
-                        ShoppingList_response: ShoppingList_response.rows
-                    });
-
-                });
-            } else {
-                res.status(401);
+        if (reg.permissions.read.includes('user_finanzen') || reg.permissions.read.includes('admin_finanzen') || reg.permissions.read.includes('admin_all')) {
+            DB.get.shopinglist.Get(reg.check.Data.userid).then(function (ShoppingList_response) {
+                res.status(200);
                 res.json({
-                    Message: "Token invalid"
+                    ShoppingList_response: ShoppingList_response.rows
                 });
-            }
-        });
+
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
+        }
     } catch (error) {
         next(error);
     }
 });
 
-router.get("/gettotalspend", limiter, async (reg, res, next) => {
+router.get("/gettotalspend", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
-        const value = await ShoppingList.validateAsync(reg.query);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
-        }
-        TV.check(value.Token, para, false).then(function (Check) {
-            if (Check.State === true) {
-                DB.get.shopinglist.Get(Check.Data.userid).then(function (ShoppingList_response) {
-                    let total = 0;
-                    ShoppingList_response.rows.map(row => {
-                        total = total + row.price
-                    })
-                    res.status(200);
-                    res.json({
-                        total
-                    });
-
-                });
-            } else {
-                res.status(401);
+        if (reg.permissions.read.includes('user_finanzen') || reg.permissions.read.includes('admin_finanzen') || reg.permissions.read.includes('admin_all')) {
+            DB.get.shopinglist.Get(reg.check.Data.userid).then(function (ShoppingList_response) {
+                let total = 0;
+                ShoppingList_response.rows.map(row => {
+                    total = total + row.price
+                })
+                res.status(200);
                 res.json({
-                    Message: "Token invalid"
+                    total
                 });
-            }
-        });
+
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
+        }
     } catch (error) {
         next(error);
     }

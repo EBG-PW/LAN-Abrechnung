@@ -8,8 +8,11 @@ function CheckTokenValidity(){
     const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
     if (localStorage.getItem("Token") !== null) {
       //Token was found, now validate it and if valid forward to /public
-      var posting = $.post(`${baseUrl}api/v1/check`,{
-        Token: localStorage.getItem("Token")
+      const posting = $.ajax({
+        url: `${baseUrl}api/v1/check`,
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        headers: { Authorization: "Bearer " + localStorage.getItem("Token") }
       });
       posting.done(function(result) {
         resolve(result.TokenData)

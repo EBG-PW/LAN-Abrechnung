@@ -36,8 +36,11 @@ function getUserData() {
     const getUrl = window.location;
     const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
     if (localStorage.getItem("Token") !== null) {
-      var posting = $.get(`${baseUrl}api/v1/user/userlist`, {
-        Token: localStorage.getItem("Token")
+      const posting = $.ajax({
+        url: `${baseUrl}api/v1/user/userlist`,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        headers: { Authorization: "Bearer " + localStorage.getItem("Token") }
       });
       posting.done(function (result) {
         resolve(result)
@@ -62,8 +65,11 @@ function getAdminUserData() {
     const getUrl = window.location;
     const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
     if (localStorage.getItem("Token") !== null) {
-      var posting = $.get(`${baseUrl}api/v1/user/adminuserlist`, {
-        Token: localStorage.getItem("Token")
+      const posting = $.ajax({
+        url: `${baseUrl}api/v1/user/adminuserlist`,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        headers: { Authorization: "Bearer " + localStorage.getItem("Token") }
       });
       posting.done(function (result) {
         resolve(result)
@@ -89,9 +95,12 @@ function getAdminUserOrderData(OrderID) {
     const getUrl = window.location;
     const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
     if (localStorage.getItem("Token") !== null) {
-      var posting = $.get(`${baseUrl}api/v1/bestellungen/getUserOrders`, {
-        Token: localStorage.getItem("Token"),
-        orderid: OrderID
+      const posting = $.ajax({
+        url: `${baseUrl}api/v1/bestellungen/getUserOrders`,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
+        data: { orderid: OrderID }
       });
       posting.done(function (result) {
         resolve(result)
@@ -117,9 +126,12 @@ function getUserOrderData(OrderID) {
     const getUrl = window.location;
     const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
     if (localStorage.getItem("Token") !== null) {
-      var posting = $.get(`${baseUrl}api/v1/bestellungen/getUserOrdersForToken`, {
-        Token: localStorage.getItem("Token"),
-        orderid: OrderID
+      const posting = $.ajax({
+        url: `${baseUrl}api/v1/bestellungen/getUserOrdersForToken`,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
+        data: { orderid: OrderID }
       });
       posting.done(function (result) {
         resolve(result)
@@ -144,8 +156,11 @@ function GetShoppingList() {
     const getUrl = window.location;
     const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
     if (localStorage.getItem("Token") !== null) {
-      var posting = $.get(`${baseUrl}api/v1/finanzen/shoppinglist`, {
-        Token: localStorage.getItem("Token")
+      const posting = $.ajax({
+        url: `${baseUrl}api/v1/finanzen/shoppinglist`,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        headers: { Authorization: "Bearer " + localStorage.getItem("Token") }
       });
       posting.done(function (result) {
         resolve(result)
@@ -170,8 +185,11 @@ function GetTotalSpend() {
     const getUrl = window.location;
     const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
     if (localStorage.getItem("Token") !== null) {
-      var posting = $.get(`${baseUrl}api/v1/finanzen/gettotalspend`, {
-        Token: localStorage.getItem("Token")
+      const posting = $.ajax({
+        url: `${baseUrl}api/v1/finanzen/gettotalspend`,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        headers: { Authorization: "Bearer " + localStorage.getItem("Token") }
       });
       posting.done(function (result) {
         resolve(result)
@@ -196,8 +214,11 @@ function GeTotalKWH() {
     const getUrl = window.location;
     const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
     if (localStorage.getItem("Token") !== null) {
-      var posting = $.get(`${baseUrl}api/v1/strom/UserKWH`, {
-        Token: localStorage.getItem("Token")
+      const posting = $.ajax({
+        url: `${baseUrl}api/v1/strom/UserKWH`,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        headers: { Authorization: "Bearer " + localStorage.getItem("Token") }
       });
       posting.done(function (result) {
         resolve(result)

@@ -129,10 +129,13 @@
 						var $form = $(this)
 						const getUrl = window.location;
         				const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
-						var posting = $.post(`${baseUrl}api/v1/bestellungen/new`,{
-							Token: localStorage.getItem("Token"),
-							EssenListe: $('#EssenListe').val(),
-							Zeit: $('#Zeit').val()
+
+						const posting = $.ajax({
+							url: `${baseUrl}api/v1/bestellungen/new`,
+							type: "POST",
+							contentType: "application/json; charset=utf-8",
+							headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
+							data: JSON.stringify({EssenListe: $('#EssenListe').val(), Zeit: $('#Zeit').val()})
 						});
 
 						posting.done(function(data) {

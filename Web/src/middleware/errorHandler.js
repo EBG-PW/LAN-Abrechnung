@@ -11,6 +11,11 @@ function errorHandler(err, req, res, next) {
         statusCode = 403
     }
 
+    /* Returns 500 if some DB Query failed catastrophical */
+    if(err.message === "DBError") {
+        statusCode = 500
+    }
+
     res.status(statusCode);
     res.json({
         message: err.message

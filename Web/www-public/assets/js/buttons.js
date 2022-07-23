@@ -8,9 +8,12 @@ const { func } = require("joi");
         const getUrl = window.location;
         const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
         if (localStorage.getItem("Token") !== null) {
-            var posting = $.post(`${baseUrl}api/v1/login/logout`,{
-              Token: localStorage.getItem("Token")
-            });
+          const posting = $.ajax({
+            url: `${baseUrl}api/v1/login/logout`,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            headers: { Authorization: "Bearer " + localStorage.getItem("Token") }
+          });
             posting.done(function(result) {
                 setTimeout(function(){ window.location.replace(`${baseUrl}api/v1/login/login`); }, 100);
                 localStorage.removeItem('Admin');
@@ -40,9 +43,12 @@ function toggle_allowed_state(userid){
     const getUrl = window.location;
     const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
     if (localStorage.getItem("Token") !== null) {
-      var posting = $.get(`${baseUrl}api/v1/strom/PlugsToggleAllowedState`,{
-        Token: localStorage.getItem("Token"),
-        UserID: userid
+      const posting = $.ajax({
+        url: `${baseUrl}api/v1/strom/PlugsToggleAllowedState`,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
+        data: {UserID: userid}
       });
       posting.done(function(result) {
        Table_AdminUserDataList()
@@ -66,9 +72,12 @@ function switch_order_to_shopinglist(order_key){
   const getUrl = window.location;
     const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
     if (localStorage.getItem("Token") !== null) {
-      var posting = $.get(`${baseUrl}api/v1/bestellungen/switchOrderStateByKey`,{
-        Token: localStorage.getItem("Token"),
-        key: order_key
+      const posting = $.ajax({
+        url: `${baseUrl}api/v1/bestellungen/switchOrderStateByKey`,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
+        data: {key: order_key}
       });
       posting.done(function(result) {
         Table_BestellungList(result.orderid)
@@ -93,9 +102,12 @@ function delete_user_order_by_key(key){
   const getUrl = window.location;
   const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
   if (localStorage.getItem("Token") !== null) {
-    var posting = $.post(`${baseUrl}api/v1/bestellungen/delUserOrder`,{
-      Token: localStorage.getItem("Token"),
-      key: key
+    const posting = $.ajax({
+      url: `${baseUrl}api/v1/bestellungen/delUserOrder`,
+      type: "POST",
+      contentType: "application/json; charset=utf-8",
+      headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
+      data: JSON.stringify({key: key})
     });
     posting.done(function(result) {
       Table_UserBestellungList(result.orderid)

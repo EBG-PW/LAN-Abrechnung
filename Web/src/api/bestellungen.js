@@ -7,7 +7,8 @@ const SanitizeHtml = require('sanitize-html');
 const Joi = require('joi');
 var path = require('path');
 const DB = require('../../lib/postgres');
-const TV = require('../../lib/TokenVerification');
+const { tokenpermissions } = require('../middleware/tokenVerify')
+const { log } = require('../../lib/logger');
 const randomstring = require('randomstring');
 
 const PluginConfig = {
@@ -39,24 +40,31 @@ const customJoi = Joi.extend((joi) => {
     };
 });
 
+let mainconfig, preisliste;
+
+/* Import Config */
+if (fs.existsSync(path.join(__dirname, '../', '../', 'config', 'mainconfig.json'))) {
+    mainconfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'mainconfig.json')));
+}
+if (fs.existsSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json'))) {
+    preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json')));
+}
+
 const limiter = rateLimit({
     windowMs: 60 * 1000,
     max: 150
 });
 
-const TokenCheck = Joi.object({
-    Token: Joi.string().required(),
+const NewOderCheck = Joi.object({
     EssenListe: Joi.string().required(),
     Zeit: Joi.string().required()
 });
 
 const GetUserOrderCheck = Joi.object({
-    Token: Joi.string().required(),
     orderid: customJoi.string().required()
 });
 
 const UserOrderCheck = Joi.object({
-    Token: Joi.string().required(),
     orderid: customJoi.string().required(),
     article: customJoi.string().required(),
     price: Joi.number().required(),
@@ -64,257 +72,220 @@ const UserOrderCheck = Joi.object({
 });
 
 const switchOrderStateByKeyCheck = Joi.object({
-    Token: Joi.string().required(),
     key: customJoi.string().required()
 });
 
 const router = express.Router();
 
-router.post("/new", limiter, async (reg, res, next) => {
+router.post("/new", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
-        const value = await TokenCheck.validateAsync(reg.body);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
-        }
-        TV.check(value.Token, para, true).then(function (Check) {
-            if (Check.State === true) {
-                let ID = randomstring.generate({
+        const value = await NewOderCheck.validateAsync(reg.body);
+        if (reg.permissions.read.includes('admin_bestellungen') || reg.permissions.read.includes('admin_all')) {
+            let ID = randomstring.generate({
+                length: 32,
+                charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+            });
+            let Zeit = new Date().getTime() + (value.Zeit * 60 * 1000)
+            let ZeitString = new Date(Zeit);
+            DB.write.order.AddOrder(value.EssenListe, ID, ZeitString).then(function (response) {
+                let TaskID = randomstring.generate({
                     length: 32,
                     charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
                 });
-                let Zeit = new Date().getTime() + (value.Zeit * 60 * 1000)
-                let ZeitString = new Date(Zeit);
-                DB.write.order.AddOrder(value.EssenListe, ID, ZeitString).then(function (response) {
-                    let TaskID = randomstring.generate({
-                        length: 32,
-                        charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
-                    });
-                    DB.message.PostNew('Telegram', TaskID, { text: `Es wird Essen bestellt!<nl><nl>Bitte auf ${value.EssenListe} eins oder mehrere Gerichte raussuchen.<nl>Bitte bis <b>${new Date(Zeit).toLocaleString('de-DE')}:${new Date(Zeit).getMilliseconds()}</b> bestellen.<nl>Bestellen im Webpanel mit der ID: <pre language="c++">${ID}</pre><nl><nl>${process.env.WebPanelURL}/public/UserBestellungen.html?${ID}`, chatid: mainconfig.LanChat, type: 'Message' }).then(function (New_Message) {
-                        console.log(`New Task for Telegram, with ID ${TaskID} was made.`)
 
-                        res.status(200);
-                        res.json({
-                            message: "Success",
-                        });
-
-                    });
-                });
-
-            } else {
-                res.status(401);
+                res.status(200);
                 res.json({
-                    Message: "Token invalid"
+                    message: "Success",
                 });
-            }
-        }).catch(function (error) {
-            res.status(500);
-            console.log(error)
-        })
+
+                // THIS WILL NOT WORK ANYMORE BECAUSE NOT PART OF THE DB
+                /*
+                DB.message.PostNew('Telegram', TaskID, { text: `Es wird Essen bestellt!<nl><nl>Bitte auf ${value.EssenListe} eins oder mehrere Gerichte raussuchen.<nl>Bitte bis <b>${new Date(Zeit).toLocaleString('de-DE')}:${new Date(Zeit).getMilliseconds()}</b> bestellen.<nl>Bestellen im Webpanel mit der ID: <pre language="c++">${ID}</pre><nl><nl>${process.env.WebPanelURL}/public/UserBestellungen.html?${ID}`, chatid: mainconfig.LanChat, type: 'Message' }).then(function (New_Message) {
+                    console.log(`New Task for Telegram, with ID ${TaskID} was made.`)
+
+                    res.status(200);
+                    res.json({
+                        message: "Success",
+                    });
+
+                }).catch(function (error) {
+                    log.error(error);
+                    throw new Error("DBError");
+                })
+                */
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
+        }
     } catch (error) {
         next(error);
     }
 });
 
-router.post("/newUserOrder", limiter, async (reg, res, next) => {
+router.post("/newUserOrder", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         const value = await UserOrderCheck.validateAsync(reg.body);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
-        }
-        TV.check(value.Token, para, false).then(function (Check) {
-            if (Check.State === true) {
-                DB.get.order.GetOrder(value.orderid).then(function (Order_Response) {
-                    //Handle if the OrderID was not found
-                    if (Order_Response.rows.length === 0) {
-                        res.status(404);
-                        res.json({
-                            Message: "Order not found"
+        if (reg.permissions.read.includes('user_bestellungen') || reg.permissions.read.includes('admin_bestellungen') || reg.permissions.read.includes('admin_all')) {
+            DB.get.order.GetOrder(value.orderid).then(function (Order_Response) {
+                //Handle if the OrderID was not found
+                if (Order_Response.rows.length === 0) {
+                    res.status(404);
+                    res.json({
+                        Message: "Order not found"
+                    });
+                } else {
+                    if (Order_Response.rows[0].timeuntil > new Date().getTime()) {
+                        let OrderKey = randomstring.generate({
+                            length: 32,
+                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
                         });
-                    } else {
-                        if (Order_Response.rows[0].timeuntil > new Date().getTime()) {
-                            let OrderKey = randomstring.generate({
-                                length: 32,
-                                charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
-                            });
-                            DB.write.order.AddOrderArticle(Check.Data.userid, value.article, value.Amount, Number(value.price) * Number(value.Amount), value.orderid, OrderKey).then(function (AddOrderArticle_Response) {
-                                res.status(200);
-                                res.json({
-                                    Message: "Succsess"
-                                });
-                            });
-                        } else {
-                            res.status(410);
+                        DB.write.order.AddOrderArticle(reg.check.Data.userid, value.article, value.Amount, Number(value.price) * Number(value.Amount), value.orderid, OrderKey).then(function (AddOrderArticle_Response) {
+                            res.status(200);
                             res.json({
-                                Message: "Time not valid anymore"
+                                Message: "Succsess"
                             });
-                        }
+                        }).catch(function (error) {
+                            log.error(error);
+                            throw new Error("DBError");
+                        })
+                    } else {
+                        res.status(410);
+                        res.json({
+                            Message: "Time not valid anymore"
+                        });
                     }
-                });
-            } else {
-                res.status(401);
-                res.json({
-                    Message: "Token invalid"
-                });
-            }
-        }).catch(function (error) {
-            res.status(500);
-            console.log(error)
-        })
+                }
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
+        }
     } catch (error) {
         next(error);
     }
 });
 
-router.get("/getUserOrders", limiter, async (reg, res, next) => {
+router.get("/getUserOrders", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         const value = await GetUserOrderCheck.validateAsync(reg.query);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
-        }
-        TV.check(value.Token, para, true).then(function (Check) {
-            if (Check.State === true) {
-                DB.get.order.GetOrderList(value.orderid, false).then(function (GetOrder_response) {
-                    res.status(200);
-                    res.json({
-                        GetOrder_response: GetOrder_response.rows
-                    });
-                });
-            } else {
-                res.status(401);
+        console.log(value);
+        if (reg.permissions.read.includes('admin_bestellungen') || reg.permissions.read.includes('admin_all')) {
+            DB.get.order.GetOrderList(value.orderid, false).then(function (GetOrder_response) {
+                res.status(200);
                 res.json({
-                    Message: "Token invalid"
+                    GetOrder_response: GetOrder_response.rows
                 });
-            }
-        }).catch(function (error) {
-            res.status(500);
-            console.log(error)
-        })
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
+        }
     } catch (error) {
         next(error);
     }
 });
 
-router.get("/getUserOrdersForToken", limiter, async (reg, res, next) => {
+router.get("/getUserOrdersForToken", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         const value = await GetUserOrderCheck.validateAsync(reg.query);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
-        }
-        TV.check(value.Token, para, false).then(function (Check) {
-            if (Check.State === true) {
-                DB.get.order.GetOrderByOrderID(value.orderid, Check.Data.userid).then(function (GetOrder_response) {
-                    res.status(200);
-                    res.json({
-                        GetOrder_response: GetOrder_response.rows
-                    });
-                });
-            } else {
-                res.status(401);
+        if (reg.permissions.read.includes('user_bestellungen') || reg.permissions.read.includes('admin_bestellungen') || reg.permissions.read.includes('admin_all')) {
+            DB.get.order.GetOrderByOrderID(value.orderid, reg.check.Data.userid).then(function (GetOrder_response) {
+                res.status(200);
                 res.json({
-                    Message: "Token invalid"
+                    GetOrder_response: GetOrder_response.rows
                 });
-            }
-        }).catch(function (error) {
-            res.status(500);
-            console.log(error)
-        })
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
+        }
     } catch (error) {
         next(error);
     }
 });
 
-router.get("/switchOrderStateByKey", limiter, async (reg, res, next) => {
+router.get("/switchOrderStateByKey", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         const value = await switchOrderStateByKeyCheck.validateAsync(reg.query);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
-        }
-        TV.check(value.Token, para, true).then(function (Check) {
-            if (Check.State === true) {
-                DB.get.order.GetByKey(value.key).then(function (GetOrder_response) {
-                    let T_ID = randomstring.generate({
-                        length: 32,
-                        charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+        if (reg.permissions.read.includes('admin_bestellungen') || reg.permissions.read.includes('admin_all')) {
+            DB.get.order.GetByKey(value.key).then(function (GetOrder_response) {
+                let T_ID = randomstring.generate({
+                    length: 32,
+                    charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                });
+                let Product = {
+                    produktname: GetOrder_response.rows[0].artikel,
+                    produktcompany: "Order",
+                    price: GetOrder_response.rows[0].price,
+                    bought: GetOrder_response.rows[0].amount
+                }
+                DB.write.shopinglist.Buy(GetOrder_response.rows[0].userid, GetOrder_response.rows[0].userid, Product, T_ID).then(function (Buy_response) {
+                    DB.write.order.SwitchState(value.key, true).then(function (Switch_response) {
+                        res.status(200);
+                        res.json({
+                            Message: "Succsess",
+                            orderid: GetOrder_response.rows[0].orderid
+                        });
                     });
-                    let Product = {
-                        produktname: GetOrder_response.rows[0].artikel,
-                        produktcompany: "Order",
-                        price: GetOrder_response.rows[0].price,
-                        bought: GetOrder_response.rows[0].amount
-                    }
-                    DB.write.shopinglist.Buy(GetOrder_response.rows[0].userid, GetOrder_response.rows[0].userid, Product, T_ID).then(function (Buy_response) {
-                        DB.write.order.SwitchState(value.key, true).then(function (Switch_response) {
+                }).catch(function (error) {
+                    log.error(error);
+                    throw new Error("DBError");
+                })
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.post("/delUserOrder", limiter, tokenpermissions(), async (reg, res, next) => {
+    try {
+        const value = await switchOrderStateByKeyCheck.validateAsync(reg.body);
+        if (reg.permissions.read.includes('user_bestellungen') || reg.permissions.read.includes('admin_bestellungen') || reg.permissions.read.includes('admin_all')) {
+            DB.get.order.GetByKey(value.key).then(function (Order_key_Response) {
+                DB.get.order.GetOrder(Order_key_Response.rows[0].orderid).then(function (Order_Response) {
+                    if (Order_Response.rows[0].timeuntil > new Date().getTime()) {
+                        DB.del.order.ByKey(value.key, reg.check.Data.userid).then(function (Del_Response) {
                             res.status(200);
                             res.json({
                                 Message: "Succsess",
-                                orderid: GetOrder_response.rows[0].orderid
+                                orderid: Order_key_Response.rows[0].orderid
                             });
+                        }).catch(function (error) {
+                            log.error(error);
+                            throw new Error("DBError");
+                        })
+                    } else {
+                        res.status(410);
+                        res.json({
+                            Message: "Time not valid anymore"
                         });
-                    })
-                });
-            } else {
-                res.status(401);
-                res.json({
-                    Message: "Token invalid"
-                });
-            }
-        }).catch(function (error) {
-            res.status(500);
-            console.log(error)
-        })
-    } catch (error) {
-        next(error);
-    }
-});
-
-router.post("/delUserOrder", limiter, async (reg, res, next) => {
-    try {
-        const value = await switchOrderStateByKeyCheck.validateAsync(reg.body);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
+                    }
+                }).catch(function (error) {
+                    log.error(error);
+                    throw new Error("DBError");
+                })
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
         }
-        TV.check(value.Token, para, false).then(function (Check) {
-            if (Check.State === true) {
-                DB.get.order.GetByKey(value.key).then(function (Order_key_Response) {
-                    DB.get.order.GetOrder(Order_key_Response.rows[0].orderid).then(function (Order_Response) {
-                        if (Order_Response.rows[0].timeuntil > new Date().getTime()) {
-                            DB.del.order.ByKey(value.key, Check.Data.userid).then(function (Del_Response) {
-                                res.status(200);
-                                res.json({
-                                    Message: "Succsess",
-                                    orderid: Order_key_Response.rows[0].orderid
-                                });
-                            });
-                        } else {
-                            res.status(410);
-                            res.json({
-                                Message: "Time not valid anymore"
-                            });
-                        }
-                    });
-                });
-            } else {
-                res.status(401);
-                res.json({
-                    Message: "Token invalid"
-                });
-            }
-        }).catch(function (error) {
-            res.status(500);
-            console.log(error)
-        })
     } catch (error) {
         next(error);
     }

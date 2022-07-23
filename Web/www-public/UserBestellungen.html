@@ -127,12 +127,12 @@
 						price = price.replace("€","");
 						price = Number(price)*100;
 
-						var posting = $.post(`${baseUrl}api/v1/bestellungen/newUserOrder`,{
-							Token: localStorage.getItem("Token"),
-							orderid: $('#orderid').val(),
-							article: $('#article').val(),
-							price: price,
-							Amount: $('#ammount').val()
+						const posting = $.ajax({
+							url: `${baseUrl}api/v1/bestellungen/newUserOrder`,
+							type: "POST",
+							contentType: "application/json; charset=utf-8",
+							headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
+							data: JSON.stringify({orderid: $('#orderid').val(),article: $('#article').val(),price: price,Amount: $('#ammount').val()})
 						});
 
 						posting.done(function(data) {

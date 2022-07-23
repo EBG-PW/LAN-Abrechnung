@@ -7,6 +7,7 @@ var path = require('path');
 const DB = require('../../lib/postgres');
 const TV = require('../../lib/TokenVerification');
 const { tokenpermissions } = require('../middleware/tokenVerify')
+const { log } = require('../../lib/logger');
 
 
 const PluginConfig = {
@@ -24,21 +25,20 @@ const limiter = rateLimit({
     max: 150
 });
 
-const UserList = Joi.object({
-    Token: Joi.string().required()
-});
-
 const router = express.Router();
 
 router.get("/user", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
-        if (reg.permissions.read.includes('user_user')) {
+        if (reg.permissions.read.includes('user_user') || reg.permissions.read.includes('admin_user') || reg.permissions.read.includes('admin_all')) {
             DB.get.Guests.ByID(reg.check.Data.userid).then(function (Guest_response) {
                 res.status(200);
                 res.json({
                     me: Guest_response[0]
                 });
-            });
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
         } else {
             throw new Error("NoPermissions");
         }
@@ -47,63 +47,41 @@ router.get("/user", limiter, tokenpermissions(), async (reg, res, next) => {
     }
 });
 
-router.get("/userlist", limiter, async (reg, res, next) => {
+router.get("/userlist", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
-        const value = await UserList.validateAsync(reg.query);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
-        }
-        TV.check(value.Token, para, false).then(function (Check) {
-            if (Check.State === true) {
-                DB.get.Guests.AllSave().then(function (GuestsList_response) {
-                    res.status(200);
-                    res.json({
-                        GuestsList_response
-                    });
-                });
-            } else {
-                res.status(401);
+        if (reg.permissions.read.includes('user_user') || reg.permissions.read.includes('admin_user') || reg.permissions.read.includes('admin_all')) {
+            DB.get.Guests.AllSave().then(function (GuestsList_response) {
+                res.status(200);
                 res.json({
-                    Message: "Token invalid"
+                    GuestsList_response
                 });
-            }
-        }).catch(function (error) {
-            res.status(500);
-            console.log(error)
-        })
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
+        }
     } catch (error) {
         next(error);
     }
 });
 
-router.get("/adminuserlist", limiter, async (reg, res, next) => {
+router.get("/adminuserlist", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
-        const value = await UserList.validateAsync(reg.query);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
-        }
-        TV.check(value.Token, para, true).then(function (Check) {
-            if (Check.State === true) {
-                DB.get.Guests.All().then(function (GuestsList_response) {
-                    res.status(200);
-                    res.json({
-                        GuestsList_response
-                    });
-                });
-            } else {
-                res.status(401);
+        if (reg.permissions.read.includes('admin_user') || reg.permissions.read.includes('admin_all')) {
+            DB.get.Guests.All().then(function (GuestsList_response) {
+                res.status(200);
                 res.json({
-                    Message: "Token invalid"
+                    GuestsList_response
                 });
-            }
-        }).catch(function (error) {
-            res.status(500);
-            console.log(error)
-        })
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
+        }
     } catch (error) {
         next(error);
     }

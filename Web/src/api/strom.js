@@ -7,7 +7,8 @@ const Joi = require('joi');
 var path = require('path');
 let reqPath = path.join(__dirname, '../../');
 const DB = require('../../lib/postgres');
-const TV = require('../../lib/TokenVerification');
+const { tokenpermissions } = require('../middleware/tokenVerify')
+const { log } = require('../../lib/logger');
 
 let mainconfig, preisliste;
 
@@ -35,94 +36,62 @@ const limiter = rateLimit({
 });
 
 const PlugsToggleAllowedStateCheck = Joi.object({
-    Token: Joi.string().required(),
     UserID: Joi.number().required()
-});
-
-const UserKWHCheck = Joi.object({
-    Token: Joi.string().required()
 });
 
 const router = express.Router();
 
-router.get("/PlugsToggleAllowedState", limiter, async (reg, res, next) => {
+router.get("/PlugsToggleAllowedState", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         const value = await PlugsToggleAllowedStateCheck.validateAsync(reg.query);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
+        if (reg.permissions.read.includes('admin_strom') || reg.permissions.read.includes('admin_all')) {
+            DB.write.plugs.toggle_allowed_state(value.UserID).then(function (toggle_response) {
+                if (toggle_response.rowCount === 1) {
+                    res.status(200);
+                    res.json({
+                        Message: "Sucsess"
+                    });
+                } else {
+                    res.status(501);
+                    res.json({
+                        Message: "Nothing chanced. This either means the UserID isn´t known, or the user has no plug yet"
+                    });
+                }
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
         }
-        TV.check(value.Token, para, true).then(function (Check) {
-            if (Check.State === true) {
-                DB.write.plugs.toggle_allowed_state(value.UserID).then(function (toggle_response) {
-                    if (toggle_response.rowCount === 1) {
-                        res.status(200);
-                        res.json({
-                            Message: "Sucsess"
-                        });
-                    } else {
-                        res.status(500);
-                        res.json({
-                            Message: "Nothing chanced. This either means the UserID isn´t known, or the user has no plug yet"
-                        });
-                    }
-                }).catch(function (error) {
-                    res.status(500);
-                    console.log(error)
-                })
-            } else {
-                res.status(401);
-                res.json({
-                    Message: "Token invalid"
-                });
-            }
-        }).catch(function (error) {
-            res.status(500);
-            console.log(error)
-        })
     } catch (error) {
         next(error);
     }
 });
 
-router.get("/UserKWH", limiter, async (reg, res, next) => {
+router.get("/UserKWH", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
-        const value = await UserKWHCheck.validateAsync(reg.query);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
-        }
-        TV.check(value.Token, para, false).then(function (Check) {
-            if (Check.State === true) {
-                DB.get.plugs.power.kwh(Check.Data.userid).then(function (kwh) {
-                    if (kwh.rowCount === 1) {
-                        res.status(200);
-                        res.json({
-                            kwh: kwh.rows[0].diff.toFixed(2),
-                            price: preisliste.PauschalKosten.StromKWH.Preis
-                        });
-                    } else {
-                        res.status(500);
-                        res.json({
-                            error: "Keine Ergebnisse"
-                        });
-                    }
-                }).catch(function (error) {
+        if (reg.permissions.read.includes('user_strom') || reg.permissions.read.includes('admin_strom') || reg.permissions.read.includes('admin_all')) {
+            DB.get.plugs.power.kwh(reg.check.Data.userid).then(function (kwh) {
+                if (kwh.rowCount === 1) {
+                    res.status(200);
+                    res.json({
+                        kwh: kwh.rows[0].diff.toFixed(2),
+                        price: preisliste.PauschalKosten.StromKWH.Preis
+                    });
+                } else {
                     res.status(500);
-                    console.log(error)
-                })
-            } else {
-                res.status(401);
-                res.json({
-                    Message: "Token invalid"
-                });
-            }
-        }).catch(function (error) {
-            res.status(500);
-            console.log(error)
-        })
+                    res.json({
+                        error: "Keine Ergebnisse"
+                    });
+                }
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
+        }
     } catch (error) {
         next(error);
     }

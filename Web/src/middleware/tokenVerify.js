@@ -31,8 +31,8 @@ const tokenpermissions = (skip = false) => {
         if (reg.headers['authorization'] != undefined) {
             UserToken = reg.headers['authorization'].replace('Bearer ', '');
         } else {
-            if(!skip) {
-                return next(new Error ('No token in request found'));
+            if (!skip) {
+                return next(new Error('No token in request found'));
             } else {
                 const PermissionsObject = {
                     read: [],
@@ -65,16 +65,20 @@ const tokenpermissions = (skip = false) => {
                     return next();
                 });
             } else {
-                if(skip) { return next(); }
-                
+                if (skip) { return next(); }
+
                 res.status(401);
                 res.json({
                     Message: 'Token Invalid'
                 });
             }
         }).catch(function (error) {
-            logger('error', 'Token could not be verifyed');
-            next(error);
+            //Lets just try to delete the token when its not valid, this was done in the logout check before
+            DB.del.webtoken.Del(UserToken).then(function (Check) {
+                logger('error', 'Token could not be verifyed');
+                next(error);
+            })
+
         });
     }
 }

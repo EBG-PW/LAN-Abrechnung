@@ -6,7 +6,8 @@ const Joi = require('joi');
 var path = require('path');
 const randomstring = require('randomstring');
 const DB = require('../../lib/postgres');
-const TV = require('../../lib/TokenVerification');
+const { tokenpermissions } = require('../middleware/tokenVerify')
+const { log } = require('../../lib/logger');
 const bcrypt = require('bcrypt');
 
 
@@ -28,10 +29,6 @@ const limiter = rateLimit({
 const LoginCheck = Joi.object({
     userid: Joi.number().required(),
     password: Joi.string().required()
-});
-
-const LogoutCheck = Joi.object({
-    Token: Joi.string().required()
 });
 
 const router = express.Router();
@@ -73,7 +70,7 @@ router.post("/check", limiter, async (reg, res, next) => {
                                 Token: WebToken,
                             });
                         }).catch(function (error) {
-                            console.log(error)
+                            log.error(error)
                             res.status(500);
                             res.json({
                                 message: "Kritischer Fehler!",
@@ -93,7 +90,7 @@ router.post("/check", limiter, async (reg, res, next) => {
                 });
             }
         }).catch(function (error) {
-            console.log(error)
+            log.error(error)
             res.status(500);
             res.json({
                 message: "Kritischer Fehler!",
@@ -104,30 +101,16 @@ router.post("/check", limiter, async (reg, res, next) => {
     }
 });
 
-router.post("/logout", limiter, async (reg, res, next) => {
+router.post("/logout", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
-        const value = await LogoutCheck.validateAsync(reg.body);
-        let source = reg.headers['user-agent']
-        let para = {
-            Browser: useragent.parse(source),
-            IP: reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
-        }
-        TV.check(value.Token, para, false).then(function (Check) {
-            if (Check.State) {
-                DB.del.webtoken.Del(value.Token).then(function (Check) {
-                    res.status(200);
-                    res.json({
-                        Message: "Sucsess"
-                    });
-                })
-            } else {
-                DB.del.webtoken.Del(value.Token).then(function (Check) {
-                    res.status(401);
-                    res.json({
-                        Message: "Token invalid"
-                    });
-                })
-            }
+        DB.del.webtoken.Del(reg.headers['authorization'].replace('Bearer ', '')).then(function (Check) {
+            res.status(200);
+            res.json({
+                Message: "Sucsess"
+            });
+        }).catch(function (error) {
+            log.error(error)
+            throw new Error("DBError")
         });
     } catch (error) {
         next(error);

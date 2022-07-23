@@ -643,7 +643,7 @@ let AddOrder = function (url, orderid, timeuntil) {
  */
 let AddOrderArticle = function (userid, artikel, amount, price, orderid, orderkey) {
   return new Promise(function (resolve, reject) {
-    pool.query(`INSERT INTO bestellungen(userid, artikel, amount, price, orderid, key) VALUES ($1,$2,$3,$4,$5,$6)`, [
+    pool.query(`INSERT INTO bestellungen(userid, artikel, amount, price, orderid, orderkey) VALUES ($1,$2,$3,$4,$5,$6)`, [
       userid, artikel, amount, price, orderid, orderkey
     ], (err, result) => {
       if (err) { reject(err) }
@@ -676,7 +676,7 @@ let GetOrderByID = function (OrderID) {
  */
 let GetOrderByIDList = function (OrderID, status) {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.key, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE orderid = $1 AND status = $2`, [
+    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.orderkey, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE orderid = $1 AND status = $2`, [
       OrderID, status
     ], (err, result) => {
       if (err) { reject(err) }
@@ -712,7 +712,7 @@ let GetOrderByIDForUser = function (OrderID, UserID) {
  */
 let DelOrderByKey = function (Key, UserID) {
   return new Promise(function (resolve, reject) {
-    pool.query(`DELETE FROM bestellungen WHERE Key = $1 AND userid = $2`, [
+    pool.query(`DELETE FROM bestellungen WHERE orderkey = $1 AND userid = $2`, [
       Key, UserID
     ], (err, result) => {
       if (err) { reject(err) }
@@ -728,7 +728,7 @@ let DelOrderByKey = function (Key, UserID) {
  */
 let GetOrderByKey = function (Key) {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.key, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE key = $1`, [
+    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.orderkey, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE orderkey = $1`, [
       Key
     ], (err, result) => {
       if (err) { reject(err) }
@@ -745,7 +745,7 @@ let GetOrderByKey = function (Key) {
  */
 let GetOrderByOrderIDandUserID = function (OrderID, UserID) {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.key, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE bestellungen.orderid = $1 AND bestellungen.userid = $2`, [
+    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.orderkey, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE bestellungen.orderid = $1 AND bestellungen.userid = $2`, [
       OrderID, UserID
     ], (err, result) => {
       if (err) { reject(err) }
@@ -762,7 +762,7 @@ let GetOrderByOrderIDandUserID = function (OrderID, UserID) {
  */
 let OrderToggleState = function (Key) {
   return new Promise(function (resolve, reject) {
-    pool.query(`UPDATE bestellungen SET status = NOT status WHERE key = '${Key}'`, (err, result) => {
+    pool.query(`UPDATE bestellungen SET status = NOT status WHERE orderkey = '${Key}'`, (err, result) => {
       if (err) { reject(err) }
       resolve(result);
     });
@@ -777,7 +777,7 @@ let OrderToggleState = function (Key) {
  */
 let OrderSwitchState = function (Key, State) {
   return new Promise(function (resolve, reject) {
-    pool.query(`UPDATE bestellungen SET status = $1 WHERE key = $2`, [
+    pool.query(`UPDATE bestellungen SET status = $1 WHERE orderkey = $2`, [
       State, Key
     ], (err, result) => {
       if (err) { reject(err) }
