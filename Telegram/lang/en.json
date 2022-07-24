@@ -127,12 +127,12 @@
             "IT": "🇮🇹",
             "Zurück": "⏪ return",
             "Full": {
-              "DE": "Normal German",
-              "DE-BY": "Bavarian"
+                "DE": "Normal German",
+                "DE-BY": "Bavarian"
             }
         }
     },
-    "Moreinfo":{
+    "Moreinfo": {
         "Text": "<b>More information:</b>\n{{Username}} here you will find more useful information.",
         "Knöpfe": {
             "Rules": "Rules",
@@ -147,6 +147,12 @@
         "Legal": {
             "Exit": "❌ Exit",
             "AcceptedDate": "\nYou have accepted the notices and regulations on {{akteptiert}} "
+        }
+    },
+    "PushNotification": {
+        "NewOrder": "We are ordering food soon!\n\nPlease choose what food you would like from that list {{EssenListe}}.\nPlease order until <b>{{Zeit}}</b>.\n\n<a href='{{WebPanelURL}}/UserBestellungen?{{ID}}'>Webpanel Link</a>",
+        "Buttons": {
+            "Webpanel": "Webpanel"
         }
     },
     "Regeln": {

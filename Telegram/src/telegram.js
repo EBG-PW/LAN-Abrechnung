@@ -34,41 +34,41 @@ bot.on(/^\/start/i, (msg) => {
                 let inlineKeyboard = []
                 //Push Base Language Buttons
                 inlineKeyboard.push([
-                    bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
-                    bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.EN'), { callback: `R_${msg.from.id}_setlang_en` }),
-                    bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.UA'), { callback: `R_${msg.from.id}_setlang_ua` }),
-                    bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.IT'), { callback: `R_${msg.from.id}_setlang_it` }),
+                    bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
+                    bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.EN'), { callback: `R_${msg.from.id}_setlang_en` }),
+                    bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.UA'), { callback: `R_${msg.from.id}_setlang_ua` }),
+                    bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.IT'), { callback: `R_${msg.from.id}_setlang_it` }),
                 ])
                 //Push Slang Buttons for German
                 inlineKeyboard.push([
-                    bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.Full.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
-                    bot.inlineButton(newi18n.translate('de', 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `R_${msg.from.id}_setlang_de-by` }),
+                    bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
+                    bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `R_${msg.from.id}_setlang_de-by` }),
                 ])
                 //Push Rules Button to enter registration
                 inlineKeyboard.push([
-                    bot.inlineButton(newi18n.translate('de', 'Knöpfe.Reg'), { callback: `R_${msg.from.id}_rules` })
+                    bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Knöpfe.Reg'), { callback: `R_${msg.from.id}_rules` })
                 ])
                 let replyMarkup = bot.inlineKeyboard(inlineKeyboard);
-                return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'WellcomeMSG', { LanName: mainconfig.LanName }), { replyMarkup });
+                return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language, 'WellcomeMSG', { LanName: mainconfig.LanName }), { replyMarkup });
             } else {
                 if (User_response[0].pyed_id !== null) {
                     let replyMarkup = bot.inlineKeyboard([
                         [
-                            bot.inlineButton(newi18n.translate('de', 'Knöpfe.Hauptmenu'), { callback: `/hauptmenu` })
+                            bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Knöpfe.Hauptmenu'), { callback: `/hauptmenu` })
                         ]
                     ]);
-                    return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'WellcomeMSGAR', { LanName: mainconfig.LanName }), { replyMarkup });
+                    return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language, 'WellcomeMSGAR', { LanName: mainconfig.LanName }), { replyMarkup });
                 } else {
-                    return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'WellcomeErr'));
+                    return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language, 'WellcomeErr'));
 
                 }
             }
         }).catch(function (error) {
             log.error(error)
-            return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Error.DBFehler'));
+            return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language, 'Error.DBFehler'));
         })
     } else {
-        return bot.sendMessage(msg.chat.id, newi18n.translate('de', 'Error.NotPrivate'));
+        return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language, 'Error.NotPrivate'));
     }
 });
 
@@ -1492,7 +1492,7 @@ bot.start();
  * @param {number} ChatID
  * @returns Object
  */
-let WebRegSendConfim = function (ChatID) {
+const WebRegSendConfim = (ChatID) => {
     return new Promise(function (resolve, reject) {
 
         let replyMarkup = bot.inlineKeyboard([
@@ -1518,6 +1518,32 @@ let WebRegSendConfim = function (ChatID) {
             }).catch(function (error) {
                 reject(error)
             })
+        });
+    });
+}
+
+/**
+ * Send notification to Telegram Chanel
+ * @param {String} EssenListe 
+ * @param {String} Zeit 
+ * @param {String} ID 
+ * @param {String} WebPanelURL 
+ * @returns 
+ */
+const SendNewOrderMessage = (EssenListe, Zeit, ID, WebPanelURL) => {
+    return new Promise(function (resolve, reject) {
+        let replyMarkup = bot.inlineKeyboard([
+            [
+                bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'PushNotification.Buttons.Webpanel'), { url: `${WebPanelURL}/UserBestellungen?${ID}` })
+            ]
+        ]);
+
+        const Message = newi18n.translate(process.env.Fallback_Language, 'PushNotification.NewOrder', {EssenListe: EssenListe, Zeit: Zeit, ID: ID, WebPanelURL: WebPanelURL});
+
+        bot.sendMessage(mainconfig.LanChat, Message, { parseMode: 'html', replyMarkup }).then(function (msg_send) {
+            resolve(msg_send)
+        }).catch(function (error) {
+            reject(error)
         });
     });
 }
@@ -1604,38 +1630,15 @@ function TimeConvert(timediff) {
     }
 }
 
-/* - - - - Database Event Checker - - - - */
+/* Events */
 
-/*
-
-setInterval(function () {
-    DB.message.GetAll().then(function (list) {
-        if (list.rows.length >= 1) {
-            list.rows.map(row => {
-                if (row.type === "Function") { //Run all Funktions from here
-                    if (row.message === "Web_Register") {
-                        WebRegSendConfim(row.chatid).then(function (msg_send) {
-                            DB.message.Delete(row.id).then(function (del_message) {
-                                log.error(`Task for Telegram, with ID ${row.id} was prossesed.`)
-                            });
-                        }).catch(function (error) {
-                            log.error(`Error while prossesing Task for Telegram, with ID ${row.id}:`)
-                            log.error(error)
-                        })
-                    }
-                } else if (row.type === "Message") {
-                    bot.sendMessage(row.chatid, NLtoJSNL(row.message), { parseMode: 'html' }).then(function (sendMessage) {
-                        DB.message.Delete(row.id).then(function (del_message) {
-                            log.error(`Task for Telegram, with ID ${row.id} was prossesed.`)
-                        });
-                    }).catch(function (error) {
-                        log.error(`Error while prossesing Task for Telegram, with ID ${row.id}:`)
-                        log.error(error)
-                    })
-                }
-            });
-        }
-    });
-}, 5000);
-
-*/
+process.on('message', function (packet) {
+    const { data } = packet;
+    const {event, message} = data;
+    if(event === 'NewOrder'){
+        console.log(message)
+        SendNewOrderMessage(message.EssenListe, message.Zeit, message.ID, message.WebPanelURL).catch(function (error) {
+            log.error(error)
+        });
+    }
+})

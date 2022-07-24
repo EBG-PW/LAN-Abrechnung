@@ -127,12 +127,12 @@
             "IT": "🇮🇹",
             "Zurück": "⏪ Zurück",
             "Full": {
-              "DE": "Hochdeutsch",
-              "DE-BY": "Bayerisch"
+                "DE": "Hochdeutsch",
+                "DE-BY": "Bayerisch"
             }
         }
     },
-    "Moreinfo":{
+    "Moreinfo": {
         "Text": "<b>Mehr Infos:</b>\n{{Username}} hier findest du weitere nützliche Informationen.",
         "Knöpfe": {
             "Rules": "Regeln",
@@ -147,6 +147,12 @@
         "Legal": {
             "Exit": "❌ Schließen",
             "AcceptedDate": "\nDu hast die Hinweise und Bestimmungen am {{akteptiert}} akteptiert"
+        }
+    },
+    "PushNotification": {
+        "NewOrder": "Es wird Essen bestellt!\n\nBitte auf {{EssenListe}} eins oder mehrere Gerichte raussuchen.\nBitte bis <b>{{Zeit}}</b> bestellen.\n\n<a href='{{WebPanelURL}}/UserBestellungen?{{ID}}'>Webpanel Link</a>",
+        "Buttons": {
+            "Webpanel": "Webseite"
         }
     },
     "Regeln": {

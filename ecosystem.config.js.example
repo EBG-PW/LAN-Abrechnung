@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    name: "LanManager - Web",
+    name: "LanManager_Web",
     instances: 1,
     max_restarts: 2,
     env: {
@@ -19,7 +19,7 @@ module.exports = {
     },
     script: "./Web/index.js"
   }, {
-    name: "LanManager - TelegramBot",
+    name: "LanManager_TGBot",
     instances: 1,
     max_restarts: 2,
     env: {

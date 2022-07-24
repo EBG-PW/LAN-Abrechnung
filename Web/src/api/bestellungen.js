@@ -7,9 +7,13 @@ const SanitizeHtml = require('sanitize-html');
 const Joi = require('joi');
 var path = require('path');
 const DB = require('../../lib/postgres');
-const { tokenpermissions } = require('../middleware/tokenVerify')
+const { tokenpermissions } = require('../middleware/tokenVerify');
+const { SendEvent } = require('pm2-ctl');
 const { log } = require('../../lib/logger');
 const randomstring = require('randomstring');
+const ecosystem = require('../../../ecosystem.config.js');
+//const Web_Process_Name = ecosystem.apps[0].name;
+const Telegram_Process_Name = ecosystem.apps[1].name;
 
 const PluginConfig = {
 };
@@ -88,31 +92,23 @@ router.post("/new", limiter, tokenpermissions(), async (reg, res, next) => {
             let Zeit = new Date().getTime() + (value.Zeit * 60 * 1000)
             let ZeitString = new Date(Zeit);
             DB.write.order.AddOrder(value.EssenListe, ID, ZeitString).then(function (response) {
-                let TaskID = randomstring.generate({
-                    length: 32,
-                    charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
-                });
 
-                res.status(200);
-                res.json({
-                    message: "Success",
-                });
+                const SendToTelegramData = {
+                    EssenListe: value.EssenListe,
+                    Zeit: new Date(Zeit).toLocaleString('de-DE') + ':' + new Date(Zeit).getMilliseconds(),
+                    ID: ID,
+                    WebPanelURL: process.env.WebPanelURL
+                }
 
-                // THIS WILL NOT WORK ANYMORE BECAUSE NOT PART OF THE DB
-                /*
-                DB.message.PostNew('Telegram', TaskID, { text: `Es wird Essen bestellt!<nl><nl>Bitte auf ${value.EssenListe} eins oder mehrere Gerichte raussuchen.<nl>Bitte bis <b>${new Date(Zeit).toLocaleString('de-DE')}:${new Date(Zeit).getMilliseconds()}</b> bestellen.<nl>Bestellen im Webpanel mit der ID: <pre language="c++">${ID}</pre><nl><nl>${process.env.WebPanelURL}/public/UserBestellungen.html?${ID}`, chatid: mainconfig.LanChat, type: 'Message' }).then(function (New_Message) {
-                    console.log(`New Task for Telegram, with ID ${TaskID} was made.`)
-
+                SendEvent.ToProcess(Telegram_Process_Name, {event: 'NewOrder', message: SendToTelegramData}).then(function (response) {
+                    log.info(`[${PluginName}] Sent Event to Telegram Process`);
                     res.status(200);
                     res.json({
                         message: "Success",
                     });
-
-                }).catch(function (error) {
-                    log.error(error);
-                    throw new Error("DBError");
-                })
-                */
+                }).catch(function (err) {
+                    log.error(err)
+                });
             }).catch(function (error) {
                 log.error(error);
                 throw new Error("DBError");

@@ -71,7 +71,7 @@
     "RemNoSuccsess": "Da Nutza war koa Admin oda is ned registriad.",
     "RemSuccsess": "{{Username}}({{UserID}}) is jetz koa Admin mehr.",
     "list": "Foigende Gäste san Admin:{{AdminList}}"
-    },
+  },
   "PaySystem": {
     "Sucsess": "Du hosd de Registration eafolgreich obgschlossn\n\nBitte übaweise de Kosdn fia de LAN-Party jetz::\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Vawendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Hechn da Übaweisung beträgt:: <pre language='c++'>{{Kosten}}</pre>"
   },
@@ -147,6 +147,12 @@
     "Legal": {
       "Exit": "❌ Schließen",
       "AcceptedDate": "\nDu hast die Hinweise und Bestimmungen am {{akteptiert}} akteptiert"
+    }
+  },
+  "PushNotification": {
+    "NewOrder": "Es wird Essen bestellt!\n\nBitte auf {{EssenListe}} eins oder mehrere Gerichte raussuchen.\nBitte bis <b>{{Zeit}}</b> bestellen.\n\n<a href='{{WebPanelURL}}/UserBestellungen?{{ID}}'>Webpanel Link</a>",
+    "Buttons": {
+      "Webpanel": "Webseite"
     }
   },
   "Regeln": {
