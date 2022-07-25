@@ -108,6 +108,7 @@ router.post("/new", limiter, tokenpermissions(), async (reg, res, next) => {
                     });
                 }).catch(function (err) {
                     log.error(err)
+                    throw new Error("SendEvent");
                 });
             }).catch(function (error) {
                 log.error(error);

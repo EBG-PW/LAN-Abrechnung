@@ -12,7 +12,7 @@ function errorHandler(err, req, res, next) {
     }
 
     /* Returns 500 if some DB Query failed catastrophical */
-    if(err.message === "DBError") {
+    if(err.message === "DBError" || err.message === "SendEvent") {
         statusCode = 500
     }
 
