@@ -6,6 +6,11 @@ var path = require('path');
 const randomstring = require('randomstring');
 const DB = require('../../lib/postgres');
 const bcrypt = require('bcrypt');
+const { SendEvent } = require('pm2-ctl');
+const { log } = require('../../lib/logger');
+const ecosystem = require('../../../ecosystem.config.js');
+//const Web_Process_Name = ecosystem.apps[0].name;
+const Telegram_Process_Name = ecosystem.apps[1].name;
 
 
 const PluginConfig = {
@@ -93,17 +98,16 @@ router.post("/register", limiter, async (reg, res, next) => {
                     if (del_response.rowCount === 1) {
                         bcrypt.hash(value.Password, parseInt(process.env.saltRounds), function (err, hash) {
                             DB.write.Guests.UpdateCollumByID(response.rows[0].userid, 'passwort', hash).then(function (update_response) {
-                                let ID = randomstring.generate({
-                                    length: 32,
-                                    charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
-                                });
-                                DB.message.PostNew('Telegram', ID, { text: 'Web_Register', chatid: response.rows[0].userid, type: 'Function' }).then(function (New_Message) {
-                                    console.log(`New Task for Telegram, with ID ${ID} was made.`)
-                                });
-                                res.status(200);
-                                res.json({
-                                    message: "Success - Password was set",
-                                    userid: response.rows[0].userid
+                                SendEvent.ToProcess(Telegram_Process_Name, { event: 'NewRegestration', message: { chatid: response.rows[0].userid } }).then(function (response) {
+                                    log.info(`[${PluginName}] Sent Event to Telegram Process`);
+                                    res.status(200);
+                                    res.json({
+                                        message: "Success - Password was set",
+                                        userid: response.rows[0].userid
+                                    });
+                                }).catch(function (err) {
+                                    log.error(err)
+                                    throw new Error("SendEvent");
                                 });
                             });
                         });

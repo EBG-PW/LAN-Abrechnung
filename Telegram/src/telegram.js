@@ -1494,30 +1494,34 @@ bot.start();
  */
 const WebRegSendConfim = (ChatID) => {
     return new Promise(function (resolve, reject) {
+        DB.get.tglang.Get(ChatID).then(function (tglang_response) {
+            let replyMarkup = bot.inlineKeyboard([
+                [
+                    bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.Hauptmenu'), { callback: '/hauptmenu' })
+                ]
+            ]);
 
-        let replyMarkup = bot.inlineKeyboard([
-            [
-                bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.Hauptmenu'), { callback: '/hauptmenu' })
-            ]
-        ]);
+            let Kosten = CentToEuro(parseInt(mainconfig.LanDauer) * parseInt(preisliste.FixKostenProTag));
+            let PayCode = randomstring.generate({
+                length: 8,
+                charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+            });
 
-        let Kosten = CentToEuro(parseInt(mainconfig.LanDauer) * parseInt(preisliste.FixKostenProTag));
-        let PayCode = randomstring.generate({
-            length: 8,
-            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
-        });
-
-        let Money_Amount = parseInt(mainconfig.LanDauer) * parseInt(preisliste.FixKostenProTag);
-        DB.write.Guests.UpdateCollumByID(ChatID, 'payed_ammount', Money_Amount).then(function (money_edit_response) {
-            DB.write.Guests.UpdateCollumByID(ChatID, 'pyed_id', PayCode).then(function (guest_edit_response) {
-                bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.Sucsess', { Bank: mainconfig.KontoBank, IBAN: mainconfig.KontoIban, Kontoinhaber: mainconfig.KontoInhaber, Verwendungszweg: mainconfig.Verwendungszweg, PayCode: PayCode, Kosten: Kosten }), { parseMode: 'html', replyMarkup }).then(function (msg_send) {
-                    resolve(msg_send)
+            let Money_Amount = parseInt(mainconfig.LanDauer) * parseInt(preisliste.FixKostenProTag);
+            DB.write.Guests.UpdateCollumByID(ChatID, 'payed_ammount', Money_Amount).then(function (money_edit_response) {
+                DB.write.Guests.UpdateCollumByID(ChatID, 'pyed_id', PayCode).then(function (guest_edit_response) {
+                    bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.Sucsess', { Bank: mainconfig.KontoBank, IBAN: mainconfig.KontoIban, Kontoinhaber: mainconfig.KontoInhaber, Verwendungszweg: mainconfig.Verwendungszweg, PayCode: PayCode, Kosten: Kosten }), { parseMode: 'html', replyMarkup }).then(function (msg_send) {
+                        resolve(msg_send)
+                    }).catch(function (error) {
+                        reject(error)
+                    })
                 }).catch(function (error) {
                     reject(error)
                 })
-            }).catch(function (error) {
-                reject(error)
-            })
+            });
+        }).catch(function (error) {
+            log.error(error)
+            return bot.sendMessage(ChatID, newi18n.translate(process.env.Fallback_Language, 'Error.DBFehler'));
         });
     });
 }
@@ -1538,7 +1542,7 @@ const SendNewOrderMessage = (EssenListe, Zeit, ID, WebPanelURL) => {
             ]
         ]);
 
-        const Message = newi18n.translate(process.env.Fallback_Language, 'PushNotification.NewOrder', {EssenListe: EssenListe, Zeit: Zeit, ID: ID, WebPanelURL: WebPanelURL});
+        const Message = newi18n.translate(process.env.Fallback_Language, 'PushNotification.NewOrder', { EssenListe: EssenListe, Zeit: Zeit, ID: ID, WebPanelURL: WebPanelURL });
 
         bot.sendMessage(mainconfig.LanChat, Message, { parseMode: 'html', replyMarkup }).then(function (msg_send) {
             resolve(msg_send)
@@ -1634,10 +1638,13 @@ function TimeConvert(timediff) {
 
 process.on('message', function (packet) {
     const { data } = packet;
-    const {event, message} = data;
-    if(event === 'NewOrder'){
-        console.log(message)
+    const { event, message } = data;
+    if (event === 'NewOrder') {
         SendNewOrderMessage(message.EssenListe, message.Zeit, message.ID, message.WebPanelURL).catch(function (error) {
+            log.error(error)
+        });
+    } else if (event === 'NewRegestration') {
+        WebRegSendConfim(message.chatid).catch(function (error) {
             log.error(error)
         });
     }
