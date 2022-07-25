@@ -44,7 +44,7 @@ const router = express.Router();
 router.get("/PlugsToggleAllowedState", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         const value = await PlugsToggleAllowedStateCheck.validateAsync(reg.query);
-        if (reg.permissions.read.includes('admin_strom') || reg.permissions.read.includes('admin_all')) {
+        if (reg.permissions.write.includes('admin_strom') || reg.permissions.write.includes('admin_all')) {
             DB.write.plugs.toggle_allowed_state(value.UserID).then(function (toggle_response) {
                 if (toggle_response.rowCount === 1) {
                     res.status(200);

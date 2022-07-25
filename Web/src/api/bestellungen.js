@@ -84,7 +84,7 @@ const router = express.Router();
 router.post("/new", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         const value = await NewOderCheck.validateAsync(reg.body);
-        if (reg.permissions.read.includes('admin_bestellungen') || reg.permissions.read.includes('admin_all')) {
+        if (reg.permissions.write.includes('admin_bestellungen') || reg.permissions.write.includes('admin_all')) {
             let ID = randomstring.generate({
                 length: 32,
                 charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
@@ -125,7 +125,7 @@ router.post("/new", limiter, tokenpermissions(), async (reg, res, next) => {
 router.post("/newUserOrder", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         const value = await UserOrderCheck.validateAsync(reg.body);
-        if (reg.permissions.read.includes('user_bestellungen') || reg.permissions.read.includes('admin_bestellungen') || reg.permissions.read.includes('admin_all')) {
+        if (reg.permissions.write.includes('user_bestellungen') || reg.permissions.write.includes('admin_bestellungen') || reg.permissions.write.includes('admin_all')) {
             DB.get.order.GetOrder(value.orderid).then(function (Order_Response) {
                 //Handle if the OrderID was not found
                 if (Order_Response.rows.length === 0) {
@@ -213,7 +213,7 @@ router.get("/getUserOrdersForToken", limiter, tokenpermissions(), async (reg, re
 router.get("/switchOrderStateByKey", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         const value = await switchOrderStateByKeyCheck.validateAsync(reg.query);
-        if (reg.permissions.read.includes('admin_bestellungen') || reg.permissions.read.includes('admin_all')) {
+        if (reg.permissions.write.includes('admin_bestellungen') || reg.permissions.write.includes('admin_all')) {
             DB.get.order.GetByKey(value.key).then(function (GetOrder_response) {
                 let T_ID = randomstring.generate({
                     length: 32,
@@ -252,7 +252,7 @@ router.get("/switchOrderStateByKey", limiter, tokenpermissions(), async (reg, re
 router.post("/delUserOrder", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         const value = await switchOrderStateByKeyCheck.validateAsync(reg.body);
-        if (reg.permissions.read.includes('user_bestellungen') || reg.permissions.read.includes('admin_bestellungen') || reg.permissions.read.includes('admin_all')) {
+        if (reg.permissions.write.includes('user_bestellungen') || reg.permissions.write.includes('admin_bestellungen') || reg.permissions.write.includes('admin_all')) {
             DB.get.order.GetByKey(value.key).then(function (Order_key_Response) {
                 DB.get.order.GetOrder(Order_key_Response.rows[0].orderid).then(function (Order_Response) {
                     if (Order_Response.rows[0].timeuntil > new Date().getTime()) {
