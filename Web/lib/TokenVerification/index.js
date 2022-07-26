@@ -17,7 +17,7 @@ let check = function(Token, Para, Permissions){
                 let DBTime = new Date(Token_response.rows[0].time).getTime()+parseInt(process.env.WebTokenDurationH)*60*60*1000
                 if(DBTime > new Date().getTime()){
                     //Check if Token isn´t too old
-                    if(Para.Browser.source === Token_response.rows[0].browser && Para.IP === Token_response.rows[0].ip){
+                    if(Para.Browser.source === Token_response.rows[0].browser || Para.IP === Token_response.rows[0].ip){
                         //Check if Browser and IP are the same
                         if(Permissions === Token_response.rows[0].admin || Token_response.rows[0].admin === true){
                             //Check if Permissions are the same.

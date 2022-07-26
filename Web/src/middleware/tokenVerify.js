@@ -12,6 +12,7 @@ const useragent = require('express-useragent');
 const tokenpermissions = (skip = false) => {
     return (reg, res, next) => {
         let IP;
+
         const source = reg.headers['user-agent']
 
         //Get Users IP
@@ -23,7 +24,7 @@ const tokenpermissions = (skip = false) => {
 
         const para = {
             Browser: useragent.parse(source),
-            IP: IP
+            IP: IP || reg.ip
         }
 
         let UserToken;
