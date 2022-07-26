@@ -316,6 +316,23 @@ let UpdateCollumByID = function (User_id, collum, value) {
 }
 
 /**
+ * This function will update a users language
+ * @param {String} lang
+ * @param {Number} userid
+ * @returns {Promise}
+ */
+ let UpdateUserLang = function (lang, userid) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`UPDATE guests SET lang = $1 WHERE userid = $2`, [
+      lang, userid
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result)
+    });
+  });
+}
+
+/**
  * This function will write new user to DB
  * @param {number} User_id
  * @param {String} username
@@ -581,6 +598,23 @@ let DelWebToken = function (token) {
     pool.query(`DELETE FROM webtoken WHERE token = '${token}'`, (err, result) => {
       if (err) { reject(err) }
       resolve(result);
+    });
+  });
+}
+
+/**
+ * This function will update a users language in webtokens
+ * @param {String} lang
+ * @param {Number} userid
+ * @returns {Promise}
+ */
+ let UpdateUserLangWebToken = function (lang, userid) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`UPDATE webtoken SET lang = $1 WHERE userid = $2`, [
+      lang, userid
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result)
     });
   });
 }
@@ -961,7 +995,8 @@ let get = {
 let write = {
   Guests: {
     UpdateCollumByID: UpdateCollumByID,
-    NewUser: WriteNewUser
+    NewUser: WriteNewUser,
+    updatelang: UpdateUserLang
   },
   Permissions: {
     Add: AddPermissionToUser,
@@ -978,7 +1013,8 @@ let write = {
     Buy: NewItemBought
   },
   webtoken: {
-    Add: AddWebToken
+    Add: AddWebToken,
+    UpdateLang: UpdateUserLangWebToken
   },
   plugs: {
     toggle_allowed_state: PlugsToggleAllowedState

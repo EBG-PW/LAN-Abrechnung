@@ -25,6 +25,11 @@ const limiter = rateLimit({
     max: 150
 });
 
+const SetLang = Joi.object({
+    lang: Joi.string().required()
+});
+
+
 const router = express.Router();
 
 router.get("/user", limiter, tokenpermissions(), async (reg, res, next) => {
@@ -79,6 +84,28 @@ router.get("/adminuserlist", limiter, tokenpermissions(), async (reg, res, next)
                 log.error(error);
                 throw new Error("DBError");
             })
+        } else {
+            throw new Error("NoPermissions");
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.post("/setLang", tokenpermissions(), limiter, async (reg, res, next) => {
+    try {
+        if (reg.permissions.read.includes('user_user') || reg.permissions.read.includes('admin_user') || reg.permissions.read.includes('admin_all')) {
+            const value = await SetLang.validateAsync(reg.body);
+            Promise.all([DB.write.Guests.updatelang(value.lang, reg.check.Data.userid), DB.write.webtoken.UpdateLang(value.lang, reg.check.Data.userid)])
+                .then(function (Check) {
+                    res.status(200);
+                    res.json({
+                        Message: `Language chanced to ${value.Lang}`
+                    });
+                }).catch(function (error) {
+                    log.error(error);
+                    throw new Error("DBError");
+                })
         } else {
             throw new Error("NoPermissions");
         }
