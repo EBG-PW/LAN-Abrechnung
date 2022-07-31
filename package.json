@@ -1,6 +1,6 @@
 {
   "name": "lan-abrechnung",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Manage your Lanparty",
   "main": "index.js",
   "scripts": {
@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/EBG-PW/LAN-Abrechnung/issues"
   },
-  "homepage": "https://github.com/EBG-PW/LAN-Abrechnung#readme"
+  "homepage": "https://github.com/EBG-PW/LAN-Abrechnung#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "pg": "^8.7.3",
+    "pm2-ctl": "^0.0.2",
+    "rotating-file-stream": "^3.0.4",
+    "uWebSockets.js": "uNetworking/uWebSockets.js#v20.10.0"
+  }
 }

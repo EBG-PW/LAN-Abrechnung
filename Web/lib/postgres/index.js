@@ -52,41 +52,25 @@ pool.query(`CREATE TABLE IF NOT EXISTS tg_users (
 
 pool.query(`CREATE TABLE IF NOT EXISTS plugs (
   plugid serial,
+  plugs_controlerid serial,
   ipaddr inet,
   userid bigint,
   state boolean DEFAULT False,
   allowed_state boolean DEFAULT False,
-  energy_now double precision,
-  voltage_now double precision,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (plugid),
   CONSTRAINT userid_unique UNIQUE (userid),
-  CONSTRAINT ipaddr_unique UNIQUE (ipaddr),
-  CONSTRAINT plugid_fk FOREIGN KEY(userid)
-  REFERENCES guests(userid)
-  ON UPDATE CASCADE
-  ON DELETE CASCADE
-  NOT VALID)`, (err, result) => {
+  CONSTRAINT ipaddr_unique UNIQUE (ipaddr))`, (err, result) => {
   if (err) { log.error(`DB Create plugs: ${err}`) }
 });
 
-pool.query(`CREATE TABLE IF NOT EXISTS plugs_history (
-  plugid smallint,
-  energy double precision,
+pool.query(`CREATE TABLE IF NOT EXISTS plugs_controler (
+  controlerid serial,
+  controlername text,
+  token text,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (plugid,time),
-  CONSTRAINT plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid))`, (err, result) => {
-  if (err) { log.error(`DB Create plugs_history: ${err}`) }
-});
-
-pool.query(`CREATE TABLE IF NOT EXISTS power_history (
-  plugid smallint,
-  energy_now double precision,
-  voltage_now double precision,
-  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (plugid,time),
-  CONSTRAINT plugid_fk FOREIGN KEY(plugid) REFERENCES plugs(plugid))`, (err, result) => {
-  if (err) { log.error(`DB Create power_history: ${err}`) }
+  PRIMARY KEY (controlerid, controlername))`, (err, result) => {
+  if (err) { log.error(`DB Create plugs_controler: ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS regtoken (
