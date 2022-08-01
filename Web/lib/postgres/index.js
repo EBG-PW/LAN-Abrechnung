@@ -69,7 +69,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS plugs_controler (
   controlername text,
   token text,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (controlerid, controlername))`, (err, result) => {
+  PRIMARY KEY (controlername))`, (err, result) => {
   if (err) { log.error(`DB Create plugs_controler: ${err}`) }
 });
 
@@ -807,6 +807,48 @@ let OrderSwitchState = function (Key, State) {
 /*
     |-------------------------------------------------------------------------------|
     |                                                                               |
+    |                              Plugs - Managment                                |
+    |                                                                               |
+    |-------------------------------------------------------------------------------|
+*/
+
+/**
+ * This function will add or update a plugcontroler
+ * @param {String} controlername
+ * @param {String} token
+ * @returns {Promise}
+ */
+ let AddPlugControler = function (controlername, token) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`INSERT INTO plugs_controler(controlername, token) VALUES ($1,$2) ON CONFLICT (controlername) DO UPDATE SET token=$2, time=now()`, [
+      controlername, token
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * This function will add or update a plug
+ * @param {String} IP
+ * @param {String} plugs_controler
+ * @returns {Promise}
+ */
+ let AddPlug = function (IP, plugs_controler) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`INSERT INTO plugs(ipaddr, plugs_controlerid) VALUES ($1, $2) ON CONFLICT (ipaddr) DO UPDATE SET ipaddr=$1, time=now()`, [
+      IP, plugs_controler
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+/*
+    |-------------------------------------------------------------------------------|
+    |                                                                               |
     |                            TG_Language - Managment                            |
     |                                                                               |
     |-------------------------------------------------------------------------------|
@@ -1001,7 +1043,9 @@ let write = {
     UpdateLang: UpdateUserLangWebToken
   },
   plugs: {
-    toggle_allowed_state: PlugsToggleAllowedState
+    toggle_allowed_state: PlugsToggleAllowedState,
+    addControler: AddPlugControler,
+    addPlug: AddPlug
   },
   order: {
     AddOrder: AddOrder,

@@ -4,7 +4,7 @@ const app = require('uWebSockets.js').App();
 
 /* You can do app.publish('sensors/home/temperature', '22C') kind of pub/sub as well */
 setInterval(() => {
-  console.log('publishing');
+  //console.log('publishing');
   app.publish('client', '22C');
 }, 100);
 

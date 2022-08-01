@@ -197,6 +197,9 @@
     "loadprice": {
         "Text": "{{Amount}} item were read or updated and this took {{duration}}"
     },
+    "loadplugs": {
+        "Text": "{{Amount}} item were read or updated, they are managed by {{ControlerAmount}} Clients and this took {{duration}}."
+    },
     "Inline": {
         "NoQuery": {
             "ID": "NoQuery",

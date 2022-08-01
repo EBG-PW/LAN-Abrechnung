@@ -647,7 +647,6 @@ bot.on(/^\/loadprice/i, (msg) => {
     }
     Promise.all([DB.get.Guests.Check.Admin(msg.from.id), DB.get.tglang.Get(msg.from.id)]).then(function (values) {
         const [Admin_Check_response, tglang_response] = values;
-        log.error(tglang_response)
         if (Admin_Check_response) {
             let Restul_array = [];
             for (const key in preisliste.SnackBar) {
@@ -668,6 +667,39 @@ bot.on(/^\/loadprice/i, (msg) => {
     })
 });
 
+bot.on(/^\/loadplugs/i, (msg) => {
+    var run_start = new Date().getTime();
+    if (fs.existsSync(path.join(__dirname, '../', '../', 'config', 'plugsconfig.json'))) {
+        preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'plugsconfig.json')));
+    }
+    Promise.all([DB.get.Guests.Check.Admin(msg.from.id), DB.get.tglang.Get(msg.from.id)]).then(function (values) {
+        const [Admin_Check_response, tglang_response] = values;
+        if (Admin_Check_response) {
+            let Restult_array = [];
+            for (let i = 0; i < preisliste.conrolpers.length; i++) {
+                DB.write.plugs.addControler(preisliste.conrolpers[i].ControlerName, preisliste.conrolpers[i].token).then(function (response) {
+                    for (let j = 0; j < preisliste.conrolpers[i].Plugs.length; j++) {
+                        Restult_array.push(DB.write.plugs.addPlug(preisliste.conrolpers[i].Plugs[j].IP, i + 1))
+                    }
+                    Promise.all(Restult_array).then(function (response) {
+                        return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'loadplugs.Text', { Amount: Restult_array.length, ControlerAmount: preisliste.conrolpers.length, duration: TimeConvert(new Date().getTime() - run_start) }));
+                    }).catch(function (error) {
+                        log.error(error)
+                        return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
+                    })
+                }).catch(function (error) {
+                    log.error(error)
+                    return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
+                })
+            }
+        } else {
+            return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.MustBeAdmin'));
+        }
+    }).catch(function (error) {
+        log.error(error)
+        return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
+    })
+});
 
 
 
