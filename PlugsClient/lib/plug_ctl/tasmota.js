@@ -1,6 +1,5 @@
 const request = require("request");
 const ping = require('ping');
-const DB = require('../db/postgres');
 
 function getAllIndexes(arr, val) {
     var indexes = [], i = -1;

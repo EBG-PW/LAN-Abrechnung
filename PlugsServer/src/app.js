@@ -2,6 +2,21 @@ const db = require('../lib/postgres');
 const { log } = require('../../Web/lib/logger');
 const app = require('uWebSockets.js').App();
 
+const ControlerCache = require('js-object-cache');
+
+const ReBuildControlerCache = () => {
+  return new Promise((resolve, reject) => {
+    db.Controler.GetAll().then(function (Controler) {
+      ControlerCache.set_object('token', Controler.rows);
+      resolve(Controler);
+    }
+    ).catch(function (err) {
+      reject(err);
+    }
+    );
+  });
+}
+
 /* You can do app.publish('sensors/home/temperature', '22C') kind of pub/sub as well */
 setInterval(() => {
   //console.log('publishing');
@@ -19,7 +34,7 @@ app.ws('/client', {
 
   open: (ws) => {
     log.info(`Opened connection by a plug_client`);
-    ws.subscribe('client');
+    //ws.subscribe('client');
   },
 
   pong: (ws, message) => {
@@ -32,13 +47,28 @@ app.ws('/client', {
     log.info(`Received message: ${Buffer.from(message).toString()}`);
 
     const message_data = JSON.parse(Buffer.from(message).toString());
-    if (message_data.event === 'settings_controler') {
+    const { event, data_payload } = message_data;
 
-    } else if (message_data.event === 'settings_plugs') {
+    if (event === 'settings_controler') {
+      if (ControlerCache.has(data_payload.token)) {
+        ws.send(JSON.stringify({ event: 'settings_controler', data_payload: ControlerCache.get_object(data_payload.token) }));
+      } else {
+        ReBuildControlerCache().then(function (Controler) {
+          if (ControlerCache.has(data_payload.token)) {
+            ws.send(JSON.stringify({ event: 'settings_controler', data_payload: ControlerCache.get_object(data_payload.token) }));
+          } else {
+            ws.send(JSON.stringify({ event: 'failed', data_payload: { error: 'No Controler found' } }));
+          }
+        }).catch(function (err) {
+          console.log(err);
+        });
 
-    } else if (message_data.event === 'plug_power') {
+      }
+    } else if (event === 'settings_plugs') {
 
-    } else if (message_data.event === 'plug_status') {
+    } else if (event === 'plug_power') {
+
+    } else if (event === 'plug_status') {
 
     }
 
@@ -74,7 +104,6 @@ app.ws('/webuser', {
 });
 
 app.get('/*', (res, req) => {
-
   /* It does Http as well */
   res.writeStatus('200 OK').writeHeader('IsExample', 'Yes').end('Hello there!');
 

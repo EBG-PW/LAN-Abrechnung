@@ -1,0 +1,21 @@
+{
+  "name": "plugsclient",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "BolverBlitz",
+  "license": "MIT",
+  "dependencies": {
+    "js-object-cache": "^0.0.2",
+    "minimist": "^1.2.6",
+    "ping": "^0.4.2",
+    "request": "^2.88.2",
+    "ws": "^8.8.1"
+  }
+}

@@ -1,5 +1,5 @@
 const pg = require('pg');
-const { log } = require('../../../Web/lib/logger');
+//const { log } = require('../../../Web/lib/logger');
 
 const pool = new pg.Pool({
   user: process.env.DB_USER,
@@ -12,8 +12,28 @@ const pool = new pg.Pool({
 /*
     |-------------------------------------------------------------------------------|
     |                                                                               |
-    |                                Plugs - Managment                              |
+    |                            PlugsControler - Managment                         |
     |                                                                               |
     |-------------------------------------------------------------------------------|
 */
 
+/**
+ * This function will return all plug controlers from the database.
+ * @returns {Promise}
+ */
+const GetControlers = function (controlername, token) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT * FROM public.plugs_controler ORDER BY controlername ASC `, (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+const Controler = {
+  GetAll: GetControlers,
+}
+
+module.exports = {
+  Controler,
+}
