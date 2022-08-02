@@ -12,7 +12,7 @@
   "author": "BolverBlitz",
   "license": "MIT",
   "dependencies": {
-    "js-object-cache": "^0.0.2",
+    "js-object-cache": "^0.0.3",
     "minimist": "^1.2.6",
     "ping": "^0.4.2",
     "request": "^2.88.2",

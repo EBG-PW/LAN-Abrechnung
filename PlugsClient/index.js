@@ -3,6 +3,8 @@ const ping = require('ping');
 const WebSocket = require('ws');
 const args = require('minimist')(process.argv.slice(2));
 
+const PlugCache = require('js-object-cache');
+
 let debug = false;
 const urlR = /^wss?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
 const command = {
@@ -56,6 +58,60 @@ if (args.h || args.help) {
     process.exit(0);
 }
 
+/* Generic funktions */
+
+function getAllIndexes(arr, val) {
+    var indexes = [], i = -1;
+    while ((i = arr.indexOf(val, i + 1)) != -1) {
+        indexes.push(i);
+    }
+    return indexes;
+}
+
+/* PowerPlug Tasmota Functions */
+
+/**
+ * This function will get the power data and status of a plug by IP
+ * @param {string} IPAdress
+ * @returns Array
+ */
+const GetPlugPower = (IPAdress) => {
+    return new Promise(function (resolve, reject) {
+        ping.sys.probe(IPAdress, function (isAlive) {
+            if (isAlive) {
+                try {
+                    request(`http://${IPAdress}/?m=1`, { json: true }, (err, res, body) => {
+                        let out_arr = [];
+                        if (body) {
+                            let start_arr = getAllIndexes(body, '{m}');
+                            let stop_arr = getAllIndexes(body, '{e}');
+                            //Get ON / OFF State
+                            if(body.includes('ON')) {
+                                out_arr.push(true);
+                            } else if(body.includes('OFF')) {
+                                out_arr.push(false);
+                            } else {
+                                out_arr.push(null);
+                            }
+                            //Get all data 
+                            for (i = 0; i < start_arr.length; i++) {
+                                out_arr.push(body.substr(start_arr[i] + 3, stop_arr[i] - start_arr[i] - 3,));
+                            }
+                            resolve(out_arr);
+                        } else {
+                            reject("Offline: No Body" + IPAdress);
+                        }
+                    });
+                } catch (error) {
+                    reject("Offline: Request Failed" + IPAdress)
+                }
+            } else {
+                reject("Offline: No Ping Response" + IPAdress)
+            }
+        });
+    });
+}
+
 /* Logging Function */
 
 function getTimestamp() {
@@ -107,6 +163,25 @@ const log = {
     system: logSystem,
 }
 
+/* IntervalFunction */
+
+const check = () => {
+    const PlugCacheIPs = PlugCache.keys()
+    let CheckedIPs = [];
+    for(let i = 0; i < PlugCacheIPs.length; i++) {
+        CheckedIPs.push(GetPlugPower(PlugCacheIPs[i]));
+    }
+
+    Promise.allSettled(CheckedIPs).then(function(results) {
+        for(let i=0; i < results.length; i++) {
+            if(results[i].status === 'fulfilled') {
+                console.log(results[i].value);
+            } else {
+                log.error(`${results[i].reason}`);
+            }
+        }
+    });
+}
 
 /* Websocket Logic */
 /* Date Protocol: {event: String, data_payload: {}} */
@@ -116,6 +191,7 @@ const ws = new WebSocket(url || 'ws://localhost:10027/client', {
 });
 
 ws.on('open', function open() {
+    log.system(`Connected to server: ${url || 'ws://localhost:10027/client'}`);
     ws.send(JSON.stringify({ event: command.setting.controler, data_payload: { token: token } }));
 });
 
@@ -130,5 +206,11 @@ ws.on('message', function message(data) {
             log.error(data_payload.error);
             process.exit(1);
         }
+    } else if (event === 'settings_plug_info') {
+        PlugCache.set_object('ipaddr', data_payload.plugs);
+        log.system(`Resived data to monitor ${PlugCache.keys().length} plugs`);
+        setInterval(() => {
+            check();
+        }, 1000);
     }
 });

@@ -7,7 +7,7 @@ const ControlerCache = require('js-object-cache');
 const ReBuildControlerCache = () => {
   return new Promise((resolve, reject) => {
     db.Controler.GetAll().then(function (Controler) {
-      ControlerCache.set_object('token', Controler.rows);
+      ControlerCache.set_object('token', Controler);
       resolve(Controler);
     }
     ).catch(function (err) {
@@ -51,11 +51,15 @@ app.ws('/client', {
 
     if (event === 'settings_controler') {
       if (ControlerCache.has(data_payload.token)) {
-        ws.send(JSON.stringify({ event: 'settings_controler', data_payload: ControlerCache.get_object(data_payload.token) }));
+        db.Plugs.GetByControlerID(ControlerCache.get(data_payload.token).controlerid).then(function (Plugs) {
+          ws.send(JSON.stringify({ event: 'settings_plug_info', data_payload: { plugs: Plugs } }));
+        });
       } else {
         ReBuildControlerCache().then(function (Controler) {
           if (ControlerCache.has(data_payload.token)) {
-            ws.send(JSON.stringify({ event: 'settings_controler', data_payload: ControlerCache.get_object(data_payload.token) }));
+            db.Plugs.GetByControlerID(ControlerCache.get(data_payload.token).controlerid).then(function (Plugs) {
+              ws.send(JSON.stringify({ event: 'settings_plug_info', data_payload: { plugs: Plugs } }));
+            });
           } else {
             ws.send(JSON.stringify({ event: 'failed', data_payload: { error: 'No Controler found' } }));
           }

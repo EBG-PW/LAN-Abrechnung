@@ -21,11 +21,35 @@ const pool = new pg.Pool({
  * This function will return all plug controlers from the database.
  * @returns {Promise}
  */
-const GetControlers = function (controlername, token) {
+const GetControlers = function () {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT * FROM public.plugs_controler ORDER BY controlername ASC `, (err, result) => {
+    pool.query(`SELECT * FROM plugs_controler ORDER BY controlername ASC `, (err, result) => {
       if (err) { reject(err) }
-      resolve(result);
+      resolve(result.rows);
+    });
+  });
+}
+
+/*
+    |-------------------------------------------------------------------------------|
+    |                                                                               |
+    |                                 Plugs - Managment                             |
+    |                                                                               |
+    |-------------------------------------------------------------------------------|
+*/
+
+/**
+ * This function will return all plugs of a controler from the database.
+ * @param {Number} controler_id
+ * @returns {Promise}
+ */
+ const GetPlugsByControlerID = function (controlerid) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT plugid, ipaddr, allowed_state FROM plugs WHERE plugs_controlerid = $1`,[
+      controlerid
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result.rows);
     });
   });
 }
@@ -34,6 +58,11 @@ const Controler = {
   GetAll: GetControlers,
 }
 
+const Plugs = {
+  GetByControlerID: GetPlugsByControlerID,
+}
+
 module.exports = {
   Controler,
+  Plugs
 }
