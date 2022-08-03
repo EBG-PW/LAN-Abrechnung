@@ -68,6 +68,14 @@ function getAllIndexes(arr, val) {
     return indexes;
 }
 
+function convertBool(bool) {
+    if (bool) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 /* PowerPlug Tasmota Functions */
 
 /**
@@ -82,13 +90,14 @@ const GetPlugPower = (IPAdress) => {
                 try {
                     request(`http://${IPAdress}/?m=1`, { json: true }, (err, res, body) => {
                         let out_arr = [];
+                        out_arr.push(IPAdress);
                         if (body) {
                             let start_arr = getAllIndexes(body, '{m}');
                             let stop_arr = getAllIndexes(body, '{e}');
                             //Get ON / OFF State
-                            if(body.includes('ON')) {
+                            if (body.includes('ON')) {
                                 out_arr.push(true);
-                            } else if(body.includes('OFF')) {
+                            } else if (body.includes('OFF')) {
                                 out_arr.push(false);
                             } else {
                                 out_arr.push(null);
@@ -107,6 +116,46 @@ const GetPlugPower = (IPAdress) => {
                 }
             } else {
                 reject("Offline: No Ping Response" + IPAdress)
+            }
+        });
+    });
+}
+
+/**
+ * This function will set the state of a plug by IP
+ * @param {string} IPAdress
+ * @param {boolean} state
+ * @returns Array
+ */
+const SwitchPlugPower = (IPAdress, state) => {
+    return new Promise(function (resolve, reject) {
+        ping.sys.probe(IPAdress, function (isAlive) {
+            if (isAlive) {
+                let NewToggle;
+                if (state === "true" || state === true) {
+                    NewToggle = "On"
+                } else {
+                    NewToggle = "off"
+                }
+                request(`http://${IPAdress}/cm?cmnd=Power%20${NewToggle}`, { json: true }, (err, res, body) => {
+                    if (body) {
+                        let NewState;
+                        if (body.POWER === "OFF") {
+                            NewState = false
+                        } else {
+                            NewState = true
+                        }
+                        resolve(NewState)
+                    } else {
+                        resolve("Offline: No Body")
+                    }
+                });
+                try {
+                } catch (error) {
+                    resolve("Offline: Request Failed")
+                }
+            } else {
+                resolve("Offline: No Ping Response")
             }
         });
     });
@@ -168,18 +217,39 @@ const log = {
 const check = () => {
     const PlugCacheIPs = PlugCache.keys()
     let CheckedIPs = [];
-    for(let i = 0; i < PlugCacheIPs.length; i++) {
+    for (let i = 0; i < PlugCacheIPs.length; i++) {
         CheckedIPs.push(GetPlugPower(PlugCacheIPs[i]));
     }
 
-    Promise.allSettled(CheckedIPs).then(function(results) {
-        for(let i=0; i < results.length; i++) {
-            if(results[i].status === 'fulfilled') {
-                console.log(results[i].value);
+    Promise.allSettled(CheckedIPs).then(function (results) {
+        let Success = 0;
+        for (let i = 0; i < results.length; i++) {
+            if (results[i].status === 'fulfilled') {
+                Success++; //Count successful requests
+                const CacheState = PlugCache.get(results[i].value[0]);
+                const data = {
+                    ID: CacheState.plugid,
+                    IP: results[i].value[0],
+                    ON: convertBool(results[i].value[1]),
+                    Voltage: parseInt(results[i].value[2].replace(/\D/g, '')),
+                    Current: parseFloat(results[i].value[3].replace(/\D/g, '')),
+                    Power: parseInt(results[i].value[4].replace(/\D/g, '')),
+                    TodayEnergy: parseFloat(results[i].value[8].replace(/\D/g, '')),
+                    YesterdayEnergy: parseFloat(results[i].value[9].replace(/\D/g, '')),
+                    TotalEnergy: parseFloat(results[i].value[10].replace(/\D/g, '')),
+                    PowerFactor: parseFloat(results[i].value[7].replace(/\D/g, '')),
+                }
+                //Ensure Plugs are off if they are not allowed to be on
+                if ((CacheState.allowed_state === false || CacheState.allowed_state === 'false') && (data.ON === true || data.ON === 'true')) { //Run if allowed_state is false
+                    log.info(`${data.IP} is not allowed to be ON`);
+                    SwitchPlugPower(data.IP, false).catch(error => log.error(error));
+                }
+                ws.send(JSON.stringify({event: command.plug.power, data_payload: {data}}));
             } else {
                 log.error(`${results[i].reason}`);
             }
         }
+        log.info(`${Success}/${results.length} Plugs checked`);
     });
 }
 
@@ -213,4 +283,8 @@ ws.on('message', function message(data) {
             check();
         }, 1000);
     }
+});
+
+ws.on('close', function close() {
+    log.system(`Disconnected from server: ${url || 'ws://localhost:10027/client'}`);
 });
