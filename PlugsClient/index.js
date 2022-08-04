@@ -3,6 +3,13 @@ const ping = require('ping');
 const WebSocket = require('ws');
 const args = require('minimist')(process.argv.slice(2));
 
+let ws; //Websocket Variable
+const ws_connectiontime = 10 * 1000; //The time that a reconnect should take max.
+let ws_connected = false;
+let ws_connecting = false;
+let ws_connection_error_counter = 1;
+let ws_connection_error_max = 1;
+
 const PlugCache = require('js-object-cache');
 
 let debug = false;
@@ -18,7 +25,7 @@ const command = {
         status: 'plug_status'
     },
     failed: 'failed'
-  }
+}
 
 let token, url;
 
@@ -50,12 +57,17 @@ if ('d' in args || 'debug' in args) {
     debug = true;
 }
 
+if ('r' in args || 'retrys' in args) {
+    ws_connection_error_max = args.r || args.retrys;
+}
+
 if (args.h || args.help) {
     console.log("\n\nRequired arguments:")
     console.log("-t, --token: Application Token to access the API")
     console.log("\nOptional arguments:")
     console.log("-h, --help: Show this help");
     console.log("-d, --debug: Enable debug mode");
+    console.log("-r, --retrys: Retrys to connect to the websocket");
     console.log("-u, --url: Set the websocket url to connect to\n\n");
     process.exit(0);
 }
@@ -246,7 +258,7 @@ const check = () => {
                     log.info(`${data.IP} is not allowed to be ON`);
                     SwitchPlugPower(data.IP, false).catch(error => log.error(error));
                 }
-                ws.send(JSON.stringify({event: command.plug.power, data_payload: {data}}));
+                ws.send(JSON.stringify({ event: command.plug.power, data_payload: { data } }));
             } else {
                 log.error(`${results[i].reason}`);
             }
@@ -257,36 +269,66 @@ const check = () => {
 
 /* Websocket Logic */
 /* Date Protocol: {event: String, data_payload: {}} */
+const ConnectWS = () => {
+    ws = null;
+    ws = new WebSocket(url || 'ws://localhost:10027/client', {
+        perMessageDeflate: false
+    });
 
-const ws = new WebSocket(url || 'ws://localhost:10027/client', {
-    perMessageDeflate: false
-});
+    ws.on('open', function open() {
+        log.system(`Connected to server: ${url || 'ws://localhost:10027/client'}`);
+        ws_connected = true;
+        ws.send(JSON.stringify({ event: command.setting.controler, data_payload: { token: token } }));
+    });
 
-ws.on('open', function open() {
-    log.system(`Connected to server: ${url || 'ws://localhost:10027/client'}`);
-    ws.send(JSON.stringify({ event: command.setting.controler, data_payload: { token: token } }));
-});
+    ws.on('message', function message(data) {
+        log.info(`Received message: ${data}`);
 
-ws.on('message', function message(data) {
-    log.info(`Received message: ${data}`);
+        const message_data = JSON.parse(data);
+        const { event, data_payload } = message_data;
 
-    const message_data = JSON.parse(data);
-    const { event, data_payload } = message_data;
-
-    if (event === command.failed) {
-        if ('error' in data_payload) {
-            log.error(data_payload.error);
-            process.exit(1);
+        if (event === command.failed) {
+            if ('error' in data_payload) {
+                log.error(data_payload.error);
+                process.exit(1);
+            }
+        } else if (event === command.setting.plugsinfo) {
+            PlugCache.set_object('ipaddr', data_payload.plugs);
+            log.system(`Resived data to monitor ${PlugCache.keys().length} plugs`);
         }
-    } else if (event === command.setting.plugsinfo) {
-        PlugCache.set_object('ipaddr', data_payload.plugs);
-        log.system(`Resived data to monitor ${PlugCache.keys().length} plugs`);
-        setInterval(() => {
-            check();
-        }, 1000);
-    }
-});
+    });
 
-ws.on('close', function close() {
-    log.system(`Disconnected from server: ${url || 'ws://localhost:10027/client'}`);
-});
+    ws.on('close', function close() {
+        if (ws_connected) {
+            log.system(`Disconnected from server: ${url || 'ws://localhost:10027/client'}`);
+        }
+        ws_connected = false;
+    });
+
+    ws.on('error', function error(error) {
+        if (error.code === 'ECONNREFUSED') {
+            if (ws_connection_error_counter < ws_connection_error_max) {
+                ws_connection_error_counter++;
+            } else {
+                log.error(`Connection to server failed ${ws_connection_error_counter}/${ws_connection_error_max} times: ${url || 'ws://localhost:10027/client'}`);
+                process.exit(1);
+            }
+        } else {
+            log.error(error);
+        }
+    });
+}
+
+setInterval(() => {
+    if (ws_connected) {
+        check();
+    } else {
+        if (!ws_connecting) {
+            log.system(`Connecting to server: ${url || 'ws://localhost:10027/client'}`);
+            setTimeout(() => {
+                ws_connecting = true;
+            }, ws_connectiontime);
+            ConnectWS();
+        }
+    }
+}, 1000);
