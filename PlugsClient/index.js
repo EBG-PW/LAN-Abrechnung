@@ -10,13 +10,15 @@ const urlR = /^wss?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1
 const command = {
     setting: {
         controler: 'settings_controler',
-        plugs: 'settings_plugs'
+        plugs: 'settings_plugs',
+        plugsinfo: 'settings_plug_info'
     },
     plug: {
         power: 'plug_power',
         status: 'plug_status'
-    }
-}
+    },
+    failed: 'failed'
+  }
 
 let token, url;
 
@@ -271,12 +273,12 @@ ws.on('message', function message(data) {
     const message_data = JSON.parse(data);
     const { event, data_payload } = message_data;
 
-    if (event === 'failed') {
+    if (event === command.failed) {
         if ('error' in data_payload) {
             log.error(data_payload.error);
             process.exit(1);
         }
-    } else if (event === 'settings_plug_info') {
+    } else if (event === command.setting.plugsinfo) {
         PlugCache.set_object('ipaddr', data_payload.plugs);
         log.system(`Resived data to monitor ${PlugCache.keys().length} plugs`);
         setInterval(() => {

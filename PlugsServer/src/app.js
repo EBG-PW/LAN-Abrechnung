@@ -4,6 +4,19 @@ const app = require('uWebSockets.js').App();
 
 const ControlerCache = require('js-object-cache');
 
+const command = {
+  setting: {
+      controler: 'settings_controler',
+      plugs: 'settings_plugs',
+      plugsinfo: 'settings_plug_info'
+  },
+  plug: {
+      power: 'plug_power',
+      status: 'plug_status'
+  },
+  failed: 'failed'
+}
+
 const ReBuildControlerCache = () => {
   return new Promise((resolve, reject) => {
     db.Controler.GetAll().then(function (Controler) {
@@ -49,19 +62,25 @@ app.ws('/client', {
     const message_data = JSON.parse(Buffer.from(message).toString());
     const { event, data_payload } = message_data;
 
-    if (event === 'settings_controler') {
+    //If Event is requesting settings of a controler
+    if (event === command.setting.controler) {
+      //Check if the controler is in the cache
       if (ControlerCache.has(data_payload.token)) {
         db.Plugs.GetByControlerID(ControlerCache.get(data_payload.token).controlerid).then(function (Plugs) {
-          ws.send(JSON.stringify({ event: 'settings_plug_info', data_payload: { plugs: Plugs } }));
+          //Send plugs to the client
+          ws.send(JSON.stringify({ event: command.setting.plugsinfo, data_payload: { plugs: Plugs } }));
         });
       } else {
+        //Wasn´t in cache, so update it and try again
         ReBuildControlerCache().then(function (Controler) {
           if (ControlerCache.has(data_payload.token)) {
             db.Plugs.GetByControlerID(ControlerCache.get(data_payload.token).controlerid).then(function (Plugs) {
-              ws.send(JSON.stringify({ event: 'settings_plug_info', data_payload: { plugs: Plugs } }));
+              //Send plugs to the client
+              ws.send(JSON.stringify({ event: command.setting.plugsinfo, data_payload: { plugs: Plugs } }));
             });
           } else {
-            ws.send(JSON.stringify({ event: 'failed', data_payload: { error: 'No Controler found' } }));
+            //The requested controler dosn´t exist...
+            ws.send(JSON.stringify({ event: command.failed, data_payload: { error: 'No Controler found' } }));
           }
         }).catch(function (err) {
           console.log(err);
