@@ -8,7 +8,7 @@ const ws_connectiontime = 10 * 1000; //The time that a reconnect should take max
 let ws_connected = false;
 let ws_connecting = false;
 let ws_connection_error_counter = 1;
-let ws_connection_error_max = 1;
+let ws_connection_error_max = 3;
 
 const PlugCache = require('js-object-cache');
 
@@ -278,6 +278,7 @@ const ConnectWS = () => {
     ws.on('open', function open() {
         log.system(`Connected to server: ${url || 'ws://localhost:10027/client'}`);
         ws_connected = true;
+        ws_connecting = false;
         ws.send(JSON.stringify({ event: command.setting.controler, data_payload: { token: token } }));
     });
 

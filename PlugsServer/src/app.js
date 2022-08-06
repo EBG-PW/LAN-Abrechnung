@@ -3,6 +3,7 @@ const { log } = require('../../Web/lib/logger');
 const app = require('uWebSockets.js').App();
 
 const ControlerCache = require('js-object-cache');
+const PlugHistoryCache = require('js-object-cache');
 
 const commandClient = {
   setting: {
@@ -20,6 +21,8 @@ const commandWebuser = {
   plug: {
     subscribe: 'subscribe_plugid',
     power: 'plug_power',
+    gethistory: 'plug_gethistory',
+    history: 'plug_history',
   }
 }
 
@@ -35,12 +38,6 @@ const ReBuildControlerCache = () => {
     );
   });
 }
-
-/* You can do app.publish('sensors/home/temperature', '22C') kind of pub/sub as well */
-setInterval(() => {
-  //console.log('publishing');
-  app.publish('client', '22C');
-}, 100);
 
 /* Clients route is used for the PlugClients connecting, the PlugsClient will establish a connection to this appliaction. */
 /* It will then recive the Plug IPs that are assinged to him and starts sending all avaible data of those Plugs */
@@ -106,7 +103,12 @@ app.ws('/client', {
       if (process.env.enable_influx === 'true' || process.env.enable_influx === true) {
         //Run InfluxDB request
       }
-      app.publish(`/plug/id/${data_payload.data.ID}`, JSON.stringify({ event: commandWebuser.plug, data_payload: data_payload.data }));
+      //Create the flow cache in case it doesn't exist
+      if (!PlugHistoryCache.has(data_payload.data.ID)) {
+        PlugHistoryCache.create_flow(data_payload.data.ID, process.env.plug_power_cache);
+      }
+      PlugHistoryCache.set_flow(data_payload.data.ID, data_payload.data);
+      app.publish(`/plug/id/${data_payload.data.ID}`, JSON.stringify({ event: commandWebuser.plug.power, data_payload: data_payload.data }));
     }
 
     //ws.send(message, isBinary, true);
@@ -134,6 +136,9 @@ app.ws('/webuser', {
       //{"event": "subscribe_plugid", "data_payload": {"plugid": "1"}}
       log.info(`Subscribing to plug: ${data_payload.plugid}`);
       ws.subscribe(`/plug/id/${data_payload.plugid}`);
+    } else if (event === commandWebuser.plug.gethistory) {
+      //{"event": "plug_gethistory", "data_payload": {"plugid": "1"}}
+      ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
     }
   }
 
@@ -141,7 +146,7 @@ app.ws('/webuser', {
 
 app.get('/*', (res, req) => {
   /* It does Http as well */
-  res.writeStatus('200 OK').writeHeader('IsExample', 'Yes').end('Hello there!');
+  res.writeStatus('200 OK').end('This is a websocket relay for powerplugs!');
 
 })
 
