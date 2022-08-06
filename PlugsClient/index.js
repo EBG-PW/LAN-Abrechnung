@@ -229,43 +229,45 @@ const log = {
 /* IntervalFunction */
 
 const check = () => {
-    const PlugCacheIPs = PlugCache.keys()
-    let CheckedIPs = [];
-    for (let i = 0; i < PlugCacheIPs.length; i++) {
-        CheckedIPs.push(GetPlugPower(PlugCacheIPs[i]));
-    }
-
-    Promise.allSettled(CheckedIPs).then(function (results) {
-        let Success = 0;
-        for (let i = 0; i < results.length; i++) {
-            if (results[i].status === 'fulfilled') {
-                Success++; //Count successful requests
-                const CacheState = PlugCache.get(results[i].value[0]);
-                const data = {
-                    ControlerToken: token,
-                    ID: CacheState.plugid,
-                    IP: results[i].value[0],
-                    ON: convertBool(results[i].value[1]),
-                    Voltage: parseInt(results[i].value[2].replace(/\D/g, '')),
-                    Current: parseFloat(results[i].value[3].replace(/\D/g, '')),
-                    Power: parseInt(results[i].value[4].replace(/\D/g, '')),
-                    TodayEnergy: parseFloat(results[i].value[8].replace(/\D/g, '')),
-                    YesterdayEnergy: parseFloat(results[i].value[9].replace(/\D/g, '')),
-                    TotalEnergy: parseFloat(results[i].value[10].replace(/\D/g, '')),
-                    PowerFactor: parseFloat(results[i].value[7].replace(/\D/g, '')),
-                }
-                //Ensure Plugs are off if they are not allowed to be on
-                if ((CacheState.allowed_state === false || CacheState.allowed_state === 'false') && (data.ON === true || data.ON === 'true')) { //Run if allowed_state is false
-                    log.info(`${data.IP} is not allowed to be ON`);
-                    SwitchPlugPower(data.IP, false).catch(error => log.error(data.IP + error));
-                }
-                ws.send(JSON.stringify({ event: command.plug.power, data_payload: { data } }));
-            } else {
-                log.error(`${results[i].reason}`);
-            }
+    if (ws_connected) { //Verify client is still connected to websocket relay
+        const PlugCacheIPs = PlugCache.keys()
+        let CheckedIPs = [];
+        for (let i = 0; i < PlugCacheIPs.length; i++) {
+            CheckedIPs.push(GetPlugPower(PlugCacheIPs[i]));
         }
-        log.info(`${Success}/${results.length} Plugs checked`);
-    });
+
+        Promise.allSettled(CheckedIPs).then(function (results) {
+            let Success = 0;
+            for (let i = 0; i < results.length; i++) {
+                if (results[i].status === 'fulfilled') {
+                    Success++; //Count successful requests
+                    const CacheState = PlugCache.get(results[i].value[0]);
+                    const data = {
+                        ControlerToken: token,
+                        ID: CacheState.plugid,
+                        IP: results[i].value[0],
+                        ON: convertBool(results[i].value[1]),
+                        Voltage: parseInt(results[i].value[2].replace(/\D/g, '')),
+                        Current: parseFloat(results[i].value[3].replace(/\D/g, '')),
+                        Power: parseInt(results[i].value[4].replace(/\D/g, '')),
+                        TodayEnergy: parseFloat(results[i].value[8].replace(/\D/g, '')),
+                        YesterdayEnergy: parseFloat(results[i].value[9].replace(/\D/g, '')),
+                        TotalEnergy: parseFloat(results[i].value[10].replace(/\D/g, '')),
+                        PowerFactor: parseFloat(results[i].value[7].replace(/\D/g, '')),
+                    }
+                    //Ensure Plugs are off if they are not allowed to be on
+                    if ((CacheState.allowed_state === false || CacheState.allowed_state === 'false') && (data.ON === true || data.ON === 'true')) { //Run if allowed_state is false
+                        log.info(`${data.IP} is not allowed to be ON`);
+                        SwitchPlugPower(data.IP, false).catch(error => log.error(data.IP + ": " + error));
+                    }
+                    ws.send(JSON.stringify({ event: command.plug.power, data_payload: { data } }));
+                } else {
+                    log.error(`${results[i].reason}`);
+                }
+            }
+            log.info(`${Success}/${results.length} Plugs checked`);
+        });
+    }
 }
 
 /* Websocket Logic */
@@ -278,6 +280,7 @@ const ConnectWS = () => {
 
     ws.on('open', function open() {
         log.system(`Connected to server: ${url || 'ws://localhost:10027/client'}`);
+        ws_connection_error_counter = 1;
         ws_connected = true;
         ws_connecting = false;
         ws.send(JSON.stringify({ event: command.setting.controler, data_payload: { token: token } }));
@@ -328,7 +331,7 @@ setInterval(() => {
         if (!ws_connecting) {
             log.system(`Connecting to server: ${url || 'ws://localhost:10027/client'}`);
             setTimeout(() => {
-                ws_connecting = true;
+                ws_connecting = false;
             }, ws_connectiontime);
             ConnectWS();
         }
