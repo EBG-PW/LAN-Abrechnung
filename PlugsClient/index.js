@@ -256,7 +256,7 @@ const check = () => {
                 //Ensure Plugs are off if they are not allowed to be on
                 if ((CacheState.allowed_state === false || CacheState.allowed_state === 'false') && (data.ON === true || data.ON === 'true')) { //Run if allowed_state is false
                     log.info(`${data.IP} is not allowed to be ON`);
-                    SwitchPlugPower(data.IP, false).catch(error => log.error(error));
+                    SwitchPlugPower(data.IP, false).catch(error => log.error(data.IP + error));
                 }
                 ws.send(JSON.stringify({ event: command.plug.power, data_payload: { data } }));
             } else {
