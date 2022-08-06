@@ -651,10 +651,10 @@ js-git@^0.7.8:
     git-sha1 "^0.1.2"
     pako "^0.2.5"
 
-js-object-cache@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/js-object-cache/-/js-object-cache-0.0.3.tgz#0a912c4d06e9157f15cc5fe35054394fd9f80d7f"
-  integrity sha512-BGkWriJzOsdtHyvp4Mx5Sg7rfT+Will1f58nQdgo4EX10oipoMZbrm4o7PF9lAPujaL1S7NE0KvDTeO28PlyWw==
+js-object-cache@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/js-object-cache/-/js-object-cache-0.0.4.tgz#3b38fc92dc26881f1de77130d95e9501c8fd45ba"
+  integrity sha512-Iff8Y0qbgpv/RTDM2vVJuMAjZ/aOoruiaVyttahXptlNufXuUZqKi6u5UN3X+HCf7g9mp2yN3GCFKCGE0eIARw==
 
 json-stringify-safe@^5.0.1:
   version "5.0.1"
