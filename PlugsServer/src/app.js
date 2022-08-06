@@ -99,16 +99,23 @@ app.ws('/client', {
     } else if (event === commandClient.plug.status) {
 
     } else if (event === commandClient.plug.power) {
-      //Runs when the client sends status of one plug
-      if (process.env.enable_influx === 'true' || process.env.enable_influx === true) {
-        //Run InfluxDB request
+      if (ControlerCache.has(data_payload.data.ControlerToken)) {
+        //Runs when the client sends status of one plug
+        if (process.env.enable_influx === 'true' || process.env.enable_influx === true) {
+          //Run InfluxDB request
+        }
+        //Create the flow cache in case it doesn't exist
+        if (!PlugHistoryCache.has(data_payload.data.ID)) {
+          PlugHistoryCache.create_flow(data_payload.data.ID, process.env.plug_power_cache);
+        }
+        PlugHistoryCache.set_flow(data_payload.data.ID, data_payload.data);
+        app.publish(`/plug/id/${data_payload.data.ID}`, JSON.stringify({ event: commandWebuser.plug.power, data_payload: data_payload.data }));
+        //Subscribe this websocket to the client ID, so user Websockets can send data to the correct client
+        ws.subscribe(`/client/id/${ControlerCache.get(data_payload.data.ControlerToken).controlerid}`);
+      } else {
+        //The requested controler dosn´t exist...
+        ws.send(JSON.stringify({ event: commandClient.failed, data_payload: { error: 'Not permitted' } }));
       }
-      //Create the flow cache in case it doesn't exist
-      if (!PlugHistoryCache.has(data_payload.data.ID)) {
-        PlugHistoryCache.create_flow(data_payload.data.ID, process.env.plug_power_cache);
-      }
-      PlugHistoryCache.set_flow(data_payload.data.ID, data_payload.data);
-      app.publish(`/plug/id/${data_payload.data.ID}`, JSON.stringify({ event: commandWebuser.plug.power, data_payload: data_payload.data }));
     }
 
     //ws.send(message, isBinary, true);

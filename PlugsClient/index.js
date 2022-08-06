@@ -242,6 +242,7 @@ const check = () => {
                 Success++; //Count successful requests
                 const CacheState = PlugCache.get(results[i].value[0]);
                 const data = {
+                    ControlerToken: token,
                     ID: CacheState.plugid,
                     IP: results[i].value[0],
                     ON: convertBool(results[i].value[1]),
