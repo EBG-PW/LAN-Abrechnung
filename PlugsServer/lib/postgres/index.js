@@ -39,6 +39,19 @@ const GetControlers = function () {
 */
 
 /**
+ * This function will return all plugs of the database.
+ * @returns {Promise}
+ */
+const GetPlugs = function () {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT plugid, userid FROM plugs `, (err, result) => {
+      if (err) { reject(err) }
+      resolve(result.rows);
+    });
+  });
+}
+
+/**
  * This function will return all plugs of a controler from the database.
  * @param {Number} controler_id
  * @returns {Promise}
@@ -60,6 +73,7 @@ const Controler = {
 
 const Plugs = {
   GetByControlerID: GetPlugsByControlerID,
+  GetAll: GetPlugs,
 }
 
 module.exports = {

@@ -2,8 +2,12 @@ const db = require('../lib/postgres');
 const { log } = require('../../Web/lib/logger');
 const app = require('uWebSockets.js').App();
 
+// This cache has the controler token as key and stores the controler object as value
 const ControlerCache = require('js-object-cache');
+// This cache has the plugID as key and is used to store flows for each plug
 const PlugHistoryCache = require('js-object-cache');
+//This cache has the userid as key and stores the allowed plugs for each user
+const UserCache = require('js-object-cache');
 
 const commandClient = {
   setting: {
@@ -31,6 +35,28 @@ const ReBuildControlerCache = () => {
     db.Controler.GetAll().then(function (Controler) {
       ControlerCache.set_object('token', Controler);
       resolve(Controler);
+    }
+    ).catch(function (err) {
+      reject(err);
+    }
+    );
+  });
+}
+
+const ReBuildUserCache = () => {
+  return new Promise((resolve, reject) => {
+    db.Plugs.GetAll().then(function (Plugs) {
+      for (let i = 0; i < Plugs.length; i++) {
+        if (!UserCache.has(Plugs[i].userid)) {
+          if (Plugs[i].userid != null) {
+            UserCache.set(Plugs[i].userid, []);
+            UserCache.get(Plugs[i].userid).push(Plugs[i].plugid);
+          }
+        } else {
+          UserCache.get(Plugs[i].userid).push(Plugs[i].plugid);
+        }
+      }
+      resolve(Plugs);
     }
     ).catch(function (err) {
       reject(err);
@@ -139,13 +165,40 @@ app.ws('/webuser', {
     const message_data = JSON.parse(Buffer.from(message).toString());
     const { event, data_payload } = message_data;
 
-    if (event === commandWebuser.plug.subscribe) {
-      //{"event": "subscribe_plugid", "data_payload": {"plugid": "1"}}
-      log.info(`Subscribing to plug: ${data_payload.plugid}`);
-      ws.subscribe(`/plug/id/${data_payload.plugid}`);
-    } else if (event === commandWebuser.plug.gethistory) {
-      //{"event": "plug_gethistory", "data_payload": {"plugid": "1"}}
-      ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
+    if (UserCache.has(data_payload.userid)) {
+      if (UserCache.get(data_payload.userid).includes(parseInt(data_payload.plugid, 10))) {
+        if (event === commandWebuser.plug.subscribe) {
+          //{"event": "subscribe_plugid", "data_payload": {"plugid": "1", "userid": "206921999"}}
+          log.info(`Subscribing to plug: ${data_payload.plugid}`);
+          ws.subscribe(`/plug/id/${data_payload.plugid}`);
+        } else if (event === commandWebuser.plug.gethistory) {
+          //{"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}
+          ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
+        }
+      } else {
+        ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
+      }
+    } else {
+      ReBuildUserCache().then(function (User) {
+        if (UserCache.has(data_payload.userid)) {
+          if (UserCache.get(data_payload.userid).includes(parseInt(data_payload.plugid, 10))) {
+            if (event === commandWebuser.plug.subscribe) {
+              //{"event": "subscribe_plugid", "data_payload": {"plugid": "1", "userid": "206921999"}}
+              log.info(`Subscribing to plug: ${data_payload.plugid}`);
+              ws.subscribe(`/plug/id/${data_payload.plugid}`);
+            } else if (event === commandWebuser.plug.gethistory) {
+              //{"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}
+              ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
+            }
+          } else {
+            ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
+          }
+        } else {
+          ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
+        }
+      }).catch(function (err) {
+        log.error(err);
+      });
     }
   }
 
