@@ -64,6 +64,15 @@ pool.query(`CREATE TABLE IF NOT EXISTS plugs (
   if (err) { log.error(`DB Create plugs: ${err}`) }
 });
 
+pool.query(`CREATE TABLE IF NOT EXISTS plugs_power (
+  plugid serial,
+  power_start real,
+  power_end real,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (plugid))`, (err, result) => {
+  if (err) { log.error(`DB Create plugs_power: ${err}`) }
+});
+
 pool.query(`CREATE TABLE IF NOT EXISTS plugs_controler (
   controlerid serial,
   controlername text,

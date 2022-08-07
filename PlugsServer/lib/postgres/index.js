@@ -33,6 +33,25 @@ const GetControlers = function () {
 /*
     |-------------------------------------------------------------------------------|
     |                                                                               |
+    |                                  Power - Managment                            |
+    |                                                                               |
+    |-------------------------------------------------------------------------------|
+*/
+
+const SetPlugPower = (plugid, power) => {
+  return new Promise(function (resolve, reject) {
+    pool.query(`INSERT INTO plugs_power(plugid, power_start, power_end) VALUES ($2,$1$1) ON CONFLICT (plugid) DO update SET power_end = $1`, [
+      power, plugid
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result.rows);
+    });
+  });
+}
+
+/*
+    |-------------------------------------------------------------------------------|
+    |                                                                               |
     |                                 Plugs - Managment                             |
     |                                                                               |
     |-------------------------------------------------------------------------------|
@@ -74,6 +93,7 @@ const Controler = {
 const Plugs = {
   GetByControlerID: GetPlugsByControlerID,
   GetAll: GetPlugs,
+  SetPower: SetPlugPower,
 }
 
 module.exports = {
