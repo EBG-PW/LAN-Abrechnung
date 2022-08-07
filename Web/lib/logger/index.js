@@ -1,11 +1,12 @@
 const rfs = require("rotating-file-stream");
 const path = require('path');
 
-const LogPath = path.join(__dirname, '..', '..', 'log');
+const LogPath = path.join(__dirname, '..', '..');
 const loglevel = Number(process.env.LOG_LEVEL) || 3;
 const Levels = ['error', 'warning', 'info', 'system'];
 
-const stream = rfs.createStream(LogPath, {
+const stream = rfs.createStream("log.log", {
+    path: LogPath,
     size: "10M",
     interval: "30d",
     compress: "gzip"
