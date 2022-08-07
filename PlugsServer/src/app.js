@@ -1,6 +1,20 @@
+
+const util = require('util')
 const db = require('../lib/postgres');
 const { log } = require('../../Web/lib/logger');
 const app = require('uWebSockets.js').App();
+
+//Some variables to keep track of metrics
+const StatsCounters = {
+  OpenWebSockets: 0,
+  InMessagesCounter: 0n,
+  OutMessagesCounter: 0n,
+  LastInMessagesCounter: 0n,
+  LastOutMessagesCounter: 0n,
+  InMessagesPerSecond: 0,
+  OutMessagesPerSecond: 0,
+  CalculatedMessagesCounterinS: 10,
+}
 
 // This cache has the controler token as key and stores the controler object as value
 const ControlerCache = require('js-object-cache');
@@ -76,17 +90,24 @@ app.ws('/client', {
 
   open: (ws) => {
     log.info(`Opened connection by a plug_client`);
-    //ws.subscribe('client');
+    StatsCounters.OpenWebSockets++;
+  },
+
+  close: (ws, code, reason) => {
+    log.info(`Closed connection by a plug_client`);
+    StatsCounters.OpenWebSockets--;
   },
 
   pong: (ws, message) => {
     ws.ping(message)
+    OutMessagesCounterOutMessagesCounter++;
   },
 
   message: (ws, message, isBinary) => {
+    StatsCounters.InMessagesCounter++;
     /* Date Protocol: {event: String, data_payload: {}} */
 
-    log.info(`Received message: ${Buffer.from(message).toString()}`);
+    log.info(`Received client_message: ${Buffer.from(message).toString()}`);
 
     const message_data = JSON.parse(Buffer.from(message).toString());
     const { event, data_payload } = message_data;
@@ -98,6 +119,7 @@ app.ws('/client', {
         db.Plugs.GetByControlerID(ControlerCache.get(data_payload.token).controlerid).then(function (Plugs) {
           //Send plugs to the client
           ws.send(JSON.stringify({ event: commandClient.setting.plugsinfo, data_payload: { plugs: Plugs } }));
+          StatsCounters.OutMessagesCounter++;
           //Subscribe this websocket to the client ID, so user Websockets can send data to the correct client
           ws.subscribe(`/client/id/${ControlerCache.get(data_payload.token).controlerid}`);
         });
@@ -108,12 +130,14 @@ app.ws('/client', {
             db.Plugs.GetByControlerID(ControlerCache.get(data_payload.token).controlerid).then(function (Plugs) {
               //Send plugs to the client
               ws.send(JSON.stringify({ event: commandClient.setting.plugsinfo, data_payload: { plugs: Plugs } }));
+              StatsCounters.OutMessagesCounter++;
               //Subscribe this websocket to the client ID, so user Websockets can send data to the correct client
               ws.subscribe(`/client/id/${ControlerCache.get(data_payload.token).controlerid}`);
             });
           } else {
             //The requested controler dosn´t exist...
             ws.send(JSON.stringify({ event: commandClient.failed, data_payload: { error: 'No Controler found' } }));
+            StatsCounters.OutMessagesCounter++;
           }
         }).catch(function (err) {
           console.log(err);
@@ -123,7 +147,8 @@ app.ws('/client', {
     } else if (event === commandClient.setting.plugs) {
 
     } else if (event === commandClient.plug.status) {
-
+      //Subscribe this websocket to the client ID, so user Websockets can send data to the correct client
+      //ws.subscribe(`/client/id/${ControlerCache.get(data_payload.data.ControlerToken).controlerid}`);
     } else if (event === commandClient.plug.power) {
       if (ControlerCache.has(data_payload.data.ControlerToken)) {
         //Runs when the client sends status of one plug
@@ -135,12 +160,12 @@ app.ws('/client', {
           PlugHistoryCache.create_flow(data_payload.data.ID, process.env.plug_power_cache);
         }
         PlugHistoryCache.set_flow(data_payload.data.ID, data_payload.data);
+        StatsCounters.OutMessagesCounter++;
         app.publish(`/plug/id/${data_payload.data.ID}`, JSON.stringify({ event: commandWebuser.plug.power, data_payload: data_payload.data }));
-        //Subscribe this websocket to the client ID, so user Websockets can send data to the correct client
-        ws.subscribe(`/client/id/${ControlerCache.get(data_payload.data.ControlerToken).controlerid}`);
       } else {
         //The requested controler dosn´t exist...
         ws.send(JSON.stringify({ event: commandClient.failed, data_payload: { error: 'Not permitted' } }));
+        StatsCounters.OutMessagesCounter++;
       }
     }
 
@@ -157,11 +182,18 @@ app.ws('/webuser', {
   compression: app.DEDICATED_COMPRESSOR_8KB,
 
   open: (ws) => {
+    StatsCounters.OpenWebSockets++;
     log.info(`Opened connection by a webuser`);
   },
 
-  message: (ws, message, isBinary) => {
+  close: (ws, code, reason) => {
+    StatsCounters.OpenWebSockets--;
+    log.info(`Closed connection by a webuser`);
+  },
 
+  message: (ws, message, isBinary) => {
+    StatsCounters.InMessagesCounter++;
+    log.info(`Received webuser_message: ${Buffer.from(message).toString()}`);
     const message_data = JSON.parse(Buffer.from(message).toString());
     const { event, data_payload } = message_data;
 
@@ -174,9 +206,11 @@ app.ws('/webuser', {
         } else if (event === commandWebuser.plug.gethistory) {
           //{"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}
           ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
+          StatsCounters.OutMessagesCounter++;
         }
       } else {
         ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
+        OutMessagesCounterOutMessagesCounter++;
       }
     } else {
       ReBuildUserCache().then(function (User) {
@@ -189,12 +223,15 @@ app.ws('/webuser', {
             } else if (event === commandWebuser.plug.gethistory) {
               //{"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}
               ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
+              OutMessagesCounterOutMessagesCounter++;
             }
           } else {
             ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
+            OutMessagesCounterOutMessagesCounter++;
           }
         } else {
           ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
+          OutMessagesCounterOutMessagesCounter++;
         }
       }).catch(function (err) {
         log.error(err);
@@ -204,9 +241,23 @@ app.ws('/webuser', {
 
 });
 
+//Calculate the avrage messages per second
+setInterval(function () {
+  //calculate diffrence
+  const IntMessageDiff = StatsCounters.InMessagesCounter-StatsCounters.LastInMessagesCounter
+  const OutMessageDiff = StatsCounters.OutMessagesCounter-StatsCounters.LastOutMessagesCounter
+
+  //Set last value
+  StatsCounters.LastInMessagesCounter = StatsCounters.InMessagesCounter;
+  StatsCounters.LastOutMessagesCounter = StatsCounters.OutMessagesCounter;
+
+  //Calculate avrage per second
+  StatsCounters.InMessagesPerSecond = Number(BigInt(IntMessageDiff) * 100n / BigInt(StatsCounters.CalculatedMessagesCounterinS)) / 100;
+  StatsCounters.OutMessagesPerSecond = Number(BigInt(OutMessageDiff) * 100n / BigInt(StatsCounters.CalculatedMessagesCounterinS)) / 100;
+}, StatsCounters.CalculatedMessagesCounterinS*1000);
+
 app.get('/*', (res, req) => {
-  /* It does Http as well */
-  res.writeStatus('200 OK').end('This is a websocket relay for powerplugs!');
+  res.writeStatus('200 OK').end(`This is a websocket relay for powerplugs!\n\nStats:\nCurrent open sockets ${StatsCounters.OpenWebSockets}\nTotal messages received: ${StatsCounters.InMessagesCounter} Currently: ${StatsCounters.InMessagesPerSecond}/s\nTotal messages send: ${StatsCounters.OutMessagesCounter} Currently: ${StatsCounters.OutMessagesPerSecond}/s\n\nRaw: ${util.inspect(StatsCounters, {showHidden: true, depth: null, colors: false})}`);
 
 })
 
