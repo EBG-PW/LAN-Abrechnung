@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "dotenv": "^16.0.1",
-    "js-object-cache": "^0.0.5",
+    "js-object-cache": "^0.1.2",
     "pg": "^8.7.3",
     "pm2-ctl": "^0.0.2",
     "rotating-file-stream": "^3.0.4",

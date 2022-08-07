@@ -40,11 +40,11 @@ const GetControlers = function () {
 
 const SetPlugPower = (plugid, power) => {
   return new Promise(function (resolve, reject) {
-    pool.query(`INSERT INTO plugs_power(plugid, power_start, power_end) VALUES ($2,$1$1) ON CONFLICT (plugid) DO update SET power_end = $1`, [
+    pool.query(`INSERT INTO plugs_power(plugid, power_start, power_end) VALUES ($2,$1,$1) ON CONFLICT (plugid) DO update SET power_end = $1`, [
       power, plugid
     ], (err, result) => {
       if (err) { reject(err) }
-      resolve(result.rows);
+      resolve(result);
     });
   });
 }

@@ -3,6 +3,7 @@ const util = require('util')
 const db = require('../lib/postgres');
 const { log } = require('../../Web/lib/logger');
 const app = require('uWebSockets.js').App();
+const Cache = require('js-object-cache');
 
 //Some variables to keep track of metrics
 const StatsCounters = {
@@ -17,11 +18,11 @@ const StatsCounters = {
 }
 
 // This cache has the controler token as key and stores the controler object as value
-const ControlerCache = require('js-object-cache');
+const ControlerCache = new Cache();
 // This cache has the plugID as key and is used to store flows for each plug
-const PlugHistoryCache = require('js-object-cache');
+const PlugHistoryCache = new Cache();
 //This cache has the userid as key and stores the allowed plugs for each user
-const UserCache = require('js-object-cache');
+const UserCache = new Cache();
 
 const commandClient = {
   setting: {
@@ -210,7 +211,7 @@ app.ws('/webuser', {
         }
       } else {
         ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
-        OutMessagesCounterOutMessagesCounter++;
+        StatsCounters.OutMessagesCounter++;
       }
     } else {
       ReBuildUserCache().then(function (User) {
@@ -223,15 +224,15 @@ app.ws('/webuser', {
             } else if (event === commandWebuser.plug.gethistory) {
               //{"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}
               ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
-              OutMessagesCounterOutMessagesCounter++;
+              StatsCounters.OutMessagesCounter++;
             }
           } else {
             ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
-            OutMessagesCounterOutMessagesCounter++;
+            StatsCounters.OutMessagesCounter++;
           }
         } else {
           ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
-          OutMessagesCounterOutMessagesCounter++;
+          StatsCounters.OutMessagesCounter++;
         }
       }).catch(function (err) {
         log.error(err);
@@ -244,8 +245,8 @@ app.ws('/webuser', {
 //Calculate the avrage messages per second
 setInterval(function () {
   //calculate diffrence
-  const IntMessageDiff = StatsCounters.InMessagesCounter-StatsCounters.LastInMessagesCounter
-  const OutMessageDiff = StatsCounters.OutMessagesCounter-StatsCounters.LastOutMessagesCounter
+  const IntMessageDiff = StatsCounters.InMessagesCounter - StatsCounters.LastInMessagesCounter
+  const OutMessageDiff = StatsCounters.OutMessagesCounter - StatsCounters.LastOutMessagesCounter
 
   //Set last value
   StatsCounters.LastInMessagesCounter = StatsCounters.InMessagesCounter;
@@ -254,10 +255,25 @@ setInterval(function () {
   //Calculate avrage per second
   StatsCounters.InMessagesPerSecond = Number(BigInt(IntMessageDiff) * 100n / BigInt(StatsCounters.CalculatedMessagesCounterinS)) / 100;
   StatsCounters.OutMessagesPerSecond = Number(BigInt(OutMessageDiff) * 100n / BigInt(StatsCounters.CalculatedMessagesCounterinS)) / 100;
-}, StatsCounters.CalculatedMessagesCounterinS*1000);
+}, StatsCounters.CalculatedMessagesCounterinS * 1000);
+
+//Push plugs data to PostgreSQL
+setInterval(function () {
+  const PlugIds = PlugHistoryCache.keys();
+  if (PlugIds.length > 0) {
+    for (let i = 0; i < PlugIds.length; i++) {
+      const PlugHistory = PlugHistoryCache.get_flow(PlugIds[i].replace('_flow', ''));
+      db.Plugs.SetPower(PlugHistory[PlugHistory.length - 1].ID, (PlugHistory[PlugHistory.length - 1].TotalEnergy / 1000).toFixed(2)).then(function (result) {
+        log.info(`Plug ${PlugHistory[PlugHistory.length - 1].ID} updated`);
+      }).catch(function (err) {
+        log.error(err);
+      });
+    }
+  }
+}, write_to_pg_every*1000);
 
 app.get('/*', (res, req) => {
-  res.writeStatus('200 OK').end(`This is a websocket relay for powerplugs!\n\nStats:\nCurrent open sockets ${StatsCounters.OpenWebSockets}\nTotal messages received: ${StatsCounters.InMessagesCounter} Currently: ${StatsCounters.InMessagesPerSecond}/s\nTotal messages send: ${StatsCounters.OutMessagesCounter} Currently: ${StatsCounters.OutMessagesPerSecond}/s\n\nRaw: ${util.inspect(StatsCounters, {showHidden: true, depth: null, colors: false})}`);
+  res.writeStatus('200 OK').end(`This is a websocket relay for powerplugs!\n\nStats:\nCurrent open sockets ${StatsCounters.OpenWebSockets}\nTotal messages received: ${StatsCounters.InMessagesCounter} Currently: ${StatsCounters.InMessagesPerSecond}/s\nTotal messages send: ${StatsCounters.OutMessagesCounter} Currently: ${StatsCounters.OutMessagesPerSecond}/s\n\nRaw: ${util.inspect(StatsCounters, { showHidden: true, depth: null, colors: false })}`);
 
 })
 
