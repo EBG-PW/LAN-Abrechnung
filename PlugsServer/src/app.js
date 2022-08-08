@@ -270,7 +270,7 @@ setInterval(function () {
       });
     }
   }
-}, write_to_pg_every*1000);
+}, process.env.write_to_pg_every*1000);
 
 app.get('/*', (res, req) => {
   res.writeStatus('200 OK').end(`This is a websocket relay for powerplugs!\n\nStats:\nCurrent open sockets ${StatsCounters.OpenWebSockets}\nTotal messages received: ${StatsCounters.InMessagesCounter} Currently: ${StatsCounters.InMessagesPerSecond}/s\nTotal messages send: ${StatsCounters.OutMessagesCounter} Currently: ${StatsCounters.OutMessagesPerSecond}/s\n\nRaw: ${util.inspect(StatsCounters, { showHidden: true, depth: null, colors: false })}`);
