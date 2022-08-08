@@ -59,7 +59,12 @@ if ('d' in args || 'debug' in args) {
 }
 
 if('s' in args || 'scan' in args) {
-    scan_interval = args.s || args.scan;
+    if(args.s < 100 || args.scan < 100) {
+        console.log("Scanning faster than 100ms is not recomended and can cause issues");
+        process.exit(1);
+    } else {
+        scan_interval = args.s || args.scan;
+    }
 }
 
 if ('r' in args || 'retrys' in args) {
@@ -335,6 +340,7 @@ setInterval(() => {
         check();
     } else {
         if (!ws_connecting) {
+            ws_connecting = true;
             log.system(`Connecting to server: ${url || 'ws://localhost:10027/client'}`);
             setTimeout(() => {
                 ws_connecting = false;

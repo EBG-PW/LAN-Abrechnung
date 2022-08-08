@@ -101,7 +101,7 @@ app.ws('/client', {
 
   pong: (ws, message) => {
     ws.ping(message)
-    OutMessagesCounterOutMessagesCounter++;
+    StatsCounters.OutMessagesCounter++;
   },
 
   message: (ws, message, isBinary) => {
