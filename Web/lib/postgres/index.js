@@ -314,7 +314,7 @@ let UpdateCollumByID = function (User_id, collum, value) {
  * @param {Number} userid
  * @returns {Promise}
  */
- let UpdateUserLang = function (lang, userid) {
+let UpdateUserLang = function (lang, userid) {
   return new Promise(function (resolve, reject) {
     pool.query(`UPDATE guests SET lang = $1 WHERE userid = $2`, [
       lang, userid
@@ -601,7 +601,7 @@ let DelWebToken = function (token) {
  * @param {Number} userid
  * @returns {Promise}
  */
- let UpdateUserLangWebToken = function (lang, userid) {
+let UpdateUserLangWebToken = function (lang, userid) {
   return new Promise(function (resolve, reject) {
     pool.query(`UPDATE webtoken SET lang = $1 WHERE userid = $2`, [
       lang, userid
@@ -633,7 +633,9 @@ let PlugsToggleAllowedState = function (userid) {
  */
 let GetKWHbyUserID = function (userid) {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT Distinct plugid,(first_value(energy) over (partition by plugid order by time desc) - first_value(energy) over (partition by plugid order by time asc) ) as diff from plugs_history WHERE plugid = (SELECT plugid FROM plugs WHERE userid = '${userid}')`, (err, result) => {
+    pool.query(`SELECT COALESCE(plugs_power.power_end,0) - COALESCE(plugs_power.power_start,0) AS power_used FROM plugs_power INNER JOIN plugs ON plugs_power.plugid = plugs.plugid WHERE plugs.userid = $1`, [
+      userid
+    ], (err, result) => {
       if (err) { reject(err) }
       resolve(result);
     });
@@ -827,7 +829,7 @@ let OrderSwitchState = function (Key, State) {
  * @param {String} token
  * @returns {Promise}
  */
- let AddPlugControler = function (controlername, token) {
+let AddPlugControler = function (controlername, token) {
   return new Promise(function (resolve, reject) {
     pool.query(`INSERT INTO plugs_controler(controlername, token) VALUES ($1,$2) ON CONFLICT (controlername) DO UPDATE SET token=$2, time=now()`, [
       controlername, token
@@ -844,7 +846,7 @@ let OrderSwitchState = function (Key, State) {
  * @param {String} plugs_controler
  * @returns {Promise}
  */
- let AddPlug = function (IP, plugs_controler) {
+let AddPlug = function (IP, plugs_controler) {
   return new Promise(function (resolve, reject) {
     pool.query(`INSERT INTO plugs(ipaddr, plugs_controlerid) VALUES ($1, $2) ON CONFLICT (ipaddr) DO UPDATE SET ipaddr=$1, time=now()`, [
       IP, plugs_controler
@@ -916,7 +918,7 @@ let GetTGLanguage = function (UserID) {
  * @param {boolean} write
  * @returns {Promise}
  */
- const AddPermissionToUser = function (userid, permission, read, write) {
+const AddPermissionToUser = function (userid, permission, read, write) {
   return new Promise(function (resolve, reject) {
     pool.query(`INSERT INTO guests_permissions(userid, permission, read, write) VALUES ($1,$2,$3,$4)`, [
       userid, permission, read, write

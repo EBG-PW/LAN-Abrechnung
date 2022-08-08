@@ -13,11 +13,11 @@ const { log } = require('../../lib/logger');
 let mainconfig, preisliste;
 
 /* Import Config */
-if (fs.existsSync(path.join(__dirname, '../', '../', 'config', 'mainconfig.json'))) {
-    mainconfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'mainconfig.json')));
+if (fs.existsSync(path.join(__dirname, '../', '../', '../', 'config', 'mainconfig.json'))) {
+    mainconfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', '../', 'config', 'mainconfig.json')));
 }
-if (fs.existsSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json'))) {
-    preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json')));
+if (fs.existsSync(path.join(__dirname, '../', '../', '../', 'config', 'preisliste.json'))) {
+    preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', '../', 'config', 'preisliste.json')));
 }
 
 const PluginConfig = {
@@ -76,7 +76,7 @@ router.get("/UserKWH", limiter, tokenpermissions(), async (reg, res, next) => {
                 if (kwh.rowCount === 1) {
                     res.status(200);
                     res.json({
-                        kwh: kwh.rows[0].diff.toFixed(2),
+                        kwh: kwh.rows[0].power_used.toFixed(2),
                         price: preisliste.PauschalKosten.StromKWH.Preis
                     });
                 } else {
