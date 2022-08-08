@@ -122,14 +122,14 @@ const GetPlugPower = (IPAdress) => {
                             }
                             resolve(out_arr);
                         } else {
-                            reject("Offline: No Body" + IPAdress);
+                            reject("Offline: No Body: " + IPAdress);
                         }
                     });
                 } catch (error) {
-                    reject("Offline: Request Failed" + IPAdress)
+                    reject("Offline: Request Failed: " + IPAdress)
                 }
             } else {
-                reject("Offline: No Ping Response" + IPAdress)
+                reject("Offline: No Ping Response: " + IPAdress)
             }
         });
     });
@@ -161,15 +161,15 @@ const SwitchPlugPower = (IPAdress, state) => {
                         }
                         resolve(NewState)
                     } else {
-                        resolve("Offline: No Body")
+                        resolve("Offline: No Body: ")
                     }
                 });
                 try {
                 } catch (error) {
-                    resolve("Offline: Request Failed")
+                    resolve("Offline: Request Failed: ")
                 }
             } else {
-                resolve("Offline: No Ping Response")
+                resolve("Offline: No Ping Response: ")
             }
         });
     });
@@ -258,7 +258,7 @@ const check = () => {
                     //Ensure Plugs are off if they are not allowed to be on
                     if ((CacheState.allowed_state === false || CacheState.allowed_state === 'false') && (data.ON === true || data.ON === 'true')) { //Run if allowed_state is false
                         log.info(`${data.IP} is not allowed to be ON`);
-                        SwitchPlugPower(data.IP, false).catch(error => log.error(data.IP + ": " + error));
+                        SwitchPlugPower(data.IP, false).catch(error => log.error(error));
                     }
                     ws.send(JSON.stringify({ event: command.plug.power, data_payload: { data } }));
                 } else {
