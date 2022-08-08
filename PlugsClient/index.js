@@ -13,6 +13,7 @@ let ws_connection_error_max = 3;
 const PlugCache = require('js-object-cache');
 
 let debug = false;
+let scan_interval = 1000;
 const urlR = /^wss?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
 const command = {
     setting: {
@@ -57,6 +58,10 @@ if ('d' in args || 'debug' in args) {
     debug = true;
 }
 
+if('s' in args || 'scan' in args) {
+    scan_interval = args.s || args.scan;
+}
+
 if ('r' in args || 'retrys' in args) {
     ws_connection_error_max = args.r || args.retrys;
 }
@@ -68,6 +73,7 @@ if (args.h || args.help) {
     console.log("-h, --help: Show this help");
     console.log("-d, --debug: Enable debug mode");
     console.log("-r, --retrys: Retrys to connect to the websocket");
+    console.log("-s, --scan: Scan for plugs in ms");
     console.log("-u, --url: Set the websocket url to connect to\n\n");
     process.exit(0);
 }
@@ -336,4 +342,4 @@ setInterval(() => {
             ConnectWS();
         }
     }
-}, 1000);
+}, scan_interval);
