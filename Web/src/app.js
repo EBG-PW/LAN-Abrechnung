@@ -18,12 +18,13 @@ app.use(cors());
 app.use(express.json());
 app.use(expressCspHeader({
   directives: {
-      'default-src': [SELF],
-      'script-src': [SELF, INLINE, 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js', 'https://unpkg.com/new-i18n@3.0.0-5/lib/index.js'],
-      'style-src': [SELF, INLINE],
-      'img-src': [SELF, INLINE],
-      'worker-src': [NONE],
-      'block-all-mixed-content': true
+    'default-src': [SELF],
+    'script-src': [SELF, INLINE, 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js', 'https://unpkg.com/new-i18n@3.0.0-5/lib/index.js'],
+    'style-src': [SELF, INLINE],
+    'img-src': [SELF, INLINE],
+    'worker-src': [NONE],
+    'connect-src': [[SELF], 'localhost:10027'],
+    'block-all-mixed-content': true
   }
 }));
 app.use(bodyParser.urlencoded({ extended: false }))

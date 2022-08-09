@@ -31,6 +31,7 @@
 						<div class="inner">
 							<h1 class="major" id="MainHeadline"></h1>
 							<h3 id="StromText"></h3>
+							<canvas id="StromChart" style="display: block; box-sizing: border-box; height: 100px; width: 800px;" width="1200" height="250"></canvas>
 						</div>
 					</section>
 
@@ -56,6 +57,7 @@
 			<script>const exports = {};//Fixes i18n Stuff lol.</script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/verifyToken.js"></script>
+			<script src="assets/js/chart.js"></script>
 			<script src="assets/js/i18n.source.js"></script>
 			<script src="assets/js/i18n.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
@@ -67,6 +69,7 @@
 			<script src="assets/js/BackendCalls.js"></script>
 			<script src="assets/js/BuildHTML.js"></script>
 			<script src="assets/js/table.js"></script>
+			<script src="assets/js/strom_websocket.js"></script>
 			<script src="assets/js/htmltables.js"></script>
 			<script src="assets/js/buttons.js"></script>
 			<script>
@@ -83,6 +86,80 @@
 					GeTotalKWH().then(function(TotalKWH) {
 						$("#StromText").html(translate('Stromseite.Text', {totalkwh: TotalKWH.kwh, totalkostenkwh: CentToEuro(TotalKWH.kwh*TotalKWH.price)}));
 					});
+					//Create the chart
+					const ws = new WebSocket('ws://localhost:10027');
+
+					ws.send(JSON.stringify({"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}));
+
+					ws.onmessage = function(response){
+						const responseData = JSON.parse(response.data);
+						console.log(responseData);
+						//drawChart();
+					}
+					//createChart()
+					const labels = [
+						'January',
+						'February',
+						'March',
+						'April',
+						'May',
+						'June',
+						'July',
+					];
+
+					const data = {
+						labels: labels,
+						datasets: [{
+						label: 'Power (W)',
+						backgroundColor: 'rgb(255, 99, 132)',
+						borderColor: 'rgb(255, 99, 132)',
+						data: [0, 25, 5, 43, 2, 32, 192],
+						}],
+						fill: false,
+      					tension: 0.4
+					};
+
+					const config = {
+					type: 'line',
+					data: data,
+					options: {
+						responsive: true,
+						plugins: {
+						title: {
+							display: true,
+							text: 'User Power Graph'
+						},
+						},
+						interaction: {
+						intersect: false,
+						},
+						scales: {
+						x: {
+							display: true,
+							title: {
+							display: true
+							}
+						},
+						y: {
+							display: true,
+							title: {
+							display: true,
+							text: 'Seconds'
+							},
+							suggestedMin: 0,
+							suggestedMax: 200
+						}
+						}
+					},
+					};
+					const myChart = new Chart(
+						document.getElementById('StromChart'),
+						config
+					);
+					setTimeout(function() {
+						myChart.data.datasets[0].data = [4,34,75,346,53,436,54];
+						myChart.update();
+					}, 1000);
 				})
 			</script>
 	</body>
