@@ -23,7 +23,7 @@ app.use(expressCspHeader({
     'style-src': [SELF, INLINE],
     'img-src': [SELF, INLINE],
     'worker-src': [NONE],
-    'connect-src': [[SELF], 'localhost:10027'],
+    'connect-src': [[SELF], `ws://${process.env.WebSocketURL}`, `wss://${process.env.WebSocketURL}`],
     'block-all-mixed-content': true
   }
 }));
