@@ -86,7 +86,7 @@
 					GeTotalKWH().then(function(TotalKWH) {
 						let powerChart;
 
-						$("#StromText").html(translate('Stromseite.Text', {totalkwh: TotalKWH.kwh, totalkostenkwh: CentToEuro(TotalKWH.kwh*TotalKWH.price)}));
+						$("#StromText").html(translate('Stromseite.Text', {totalkwh: ((TotalKWH.kwh/ 1000).toFixed(3)).replace(".", ","), totalkostenkwh: CentToEuro(TotalKWH.kwh*TotalKWH.price)}));
 
 						const webSocket = new WebSocket(`ws://${TotalKWH.url_websocket}/webuser`);
 						let PowerGraphData = []
@@ -109,7 +109,7 @@
 									PowerGraphData.shift()
 								}
 								powerChart.data.datasets[0].data = PowerGraphData;
-								$("#StromText").html(translate('Stromseite.Text', {totalkwh: (data_payload.TotalEnergy/ 1000).toFixed(3), totalkostenkwh: CentToEuro((data_payload.TotalEnergy/ 1000).toFixed(3)*TotalKWH.price)}));
+								$("#StromText").html(translate('Stromseite.Text', {totalkwh: ((data_payload.TotalEnergy/ 1000).toFixed(3)).replace(".", ","), totalkostenkwh: CentToEuro((data_payload.TotalEnergy/ 1000).toFixed(3)*TotalKWH.price)}));
 								$("#MainHeadline").html(`${translate('Header.Links.Strom')}  |  ${data_payload.Power}W`);
 								powerChart.update()
 							} else if (event === 'plug_history') {
