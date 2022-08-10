@@ -76,8 +76,12 @@ router.get("/UserKWH", limiter, tokenpermissions(), async (reg, res, next) => {
                 if (kwh.rowCount === 1) {
                     res.status(200);
                     res.json({
-                        kwh: kwh.rows[0].power_used.toFixed(2),
-                        price: preisliste.PauschalKosten.StromKWH.Preis
+                        url_websocket: process.env.WebSocketURL,
+                        kwh: kwh.rows[0].power_used.toFixed(3),
+                        price: preisliste.PauschalKosten.StromKWH.Preis,
+                        userid: reg.check.Data.userid,
+                        plugid: kwh.rows[0].plugid,
+                        graph_length: process.env.plug_power_graph
                     });
                 } else {
                     res.status(500);

@@ -158,9 +158,11 @@ app.ws('/client', {
           //Run InfluxDB request
         }
         //Create the flow cache in case it doesn't exist
-        if (!PlugHistoryCache.has(data_payload.data.ID)) {
+        if (!PlugHistoryCache.has_flow(data_payload.data.ID)) {
+          console.log("Creating new cache for plug: " + data_payload.data.ID);
           PlugHistoryCache.create_flow(data_payload.data.ID, process.env.plug_power_cache);
         }
+        console.log("Adding new data to cache for plug: " + data_payload.data.ID);
         PlugHistoryCache.set_flow(data_payload.data.ID, data_payload.data);
         StatsCounters.OutMessagesCounter++;
         app.publish(`/plug/id/${data_payload.data.ID}`, JSON.stringify({ event: commandWebuser.plug.power, data_payload: data_payload.data }));
@@ -272,7 +274,7 @@ setInterval(function () {
   if (PlugIds.length > 0) {
     for (let i = 0; i < PlugIds.length; i++) {
       const PlugHistory = PlugHistoryCache.get_flow(PlugIds[i].replace('_flow', ''));
-      db.Plugs.SetPower(PlugHistory[PlugHistory.length - 1].ID, (PlugHistory[PlugHistory.length - 1].TotalEnergy / 1000).toFixed(2)).then(function (result) {
+      db.Plugs.SetPower(PlugHistory[PlugHistory.length - 1].ID, (PlugHistory[PlugHistory.length - 1].TotalEnergy / 1000).toFixed(3)).then(function (result) {
         log.info(`Plug ${PlugHistory[PlugHistory.length - 1].ID} updated`);
       }).catch(function (err) {
         log.error(err);

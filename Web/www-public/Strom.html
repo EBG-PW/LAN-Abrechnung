@@ -84,86 +84,116 @@
 					//Write transladed headline in Main wrapper
 					$("#MainHeadline").html(translate('Header.Links.Strom'));
 					GeTotalKWH().then(function(TotalKWH) {
+						let powerChart;
+
 						$("#StromText").html(translate('Stromseite.Text', {totalkwh: TotalKWH.kwh, totalkostenkwh: CentToEuro(TotalKWH.kwh*TotalKWH.price)}));
+
+						const webSocket = new WebSocket(`ws://${TotalKWH.url_websocket}/webuser`);
+						let PowerGraphData = []
+
+						webSocket.onerror = function(message) {
+							console.log('WebSocket Error: ' + JSON.stringify(message));
+						};
+						
+						webSocket.onopen = function(message) {
+							webSocket.send(JSON.stringify({"event": "plug_gethistory", "data_payload": {"plugid": TotalKWH.plugid, "userid": TotalKWH.userid}}));
+							webSocket.send(JSON.stringify({"event": "subscribe_plugid", "data_payload": {"plugid": TotalKWH.plugid, "userid": TotalKWH.userid}}));
+						};
+
+						webSocket.onmessage = function(message) {
+							const message_data = JSON.parse(message.data);
+    						const { event, data_payload } = message_data;
+							if(event === 'plug_power'){
+								PowerGraphData.push(data_payload.Power)
+								if(PowerGraphData.length >= TotalKWH.graph_length){
+									PowerGraphData.shift()
+								}
+								powerChart.data.datasets[0].data = PowerGraphData;
+								$("#StromText").html(translate('Stromseite.Text', {totalkwh: (data_payload.TotalEnergy/ 1000).toFixed(3), totalkostenkwh: CentToEuro((data_payload.TotalEnergy/ 1000).toFixed(3)*TotalKWH.price)}));
+								$("#MainHeadline").html(`${translate('Header.Links.Strom')}  |  ${data_payload.Power}W`);
+								powerChart.update()
+							} else if (event === 'plug_history') {
+								for(let i = 0; i < data_payload.length; i++) {
+									PowerGraphData.push(data_payload[i].Power)
+								}
+								if(PowerGraphData.length < TotalKWH.graph_length) {
+									for(let i = 0; i < Number(TotalKWH.graph_length)-Number(data_payload.length); i++) {
+										PowerGraphData.push(0)
+									}
+								}
+								CreateChart(PowerGraphData.reverse())
+							}
+						}
+
+						function CreateChart(PowerGraphDataF) {
+							let labels = [];
+
+							for(let i = 0; i < TotalKWH.graph_length; i++) {
+								labels.push(`${i-TotalKWH.graph_length+1}`);
+							}
+
+							const data = {
+								labels: labels,
+								datasets: [{
+									label: 'Power (W)',
+									backgroundColor: 'rgb(255, 99, 132)',
+									borderColor: 'rgb(255, 99, 132)',
+									data: PowerGraphDataF,
+								}],
+								fill: false,
+								tension: 0.4
+							};
+
+							const config = {
+								type: 'line',
+								data: data,
+								options: {
+									responsive: true,
+									interaction: {
+										intersect: false,
+									},
+									plugins: {
+										title: {
+											display: true,
+											text: 'Chart.js Line Chart - Cubic interpolation mode'
+										},
+									},
+									elements: {
+										line: {
+											tension: 0.5, // disables bezier curves
+										},
+										point:{
+											radius: 0
+										}
+									},
+									scales: {
+										y: {
+											beginAtZero: true
+										}
+									},
+									animation: {
+										duration: 1, // general animation time
+									},
+								},
+							};
+							powerChart = new Chart(
+								document.getElementById('StromChart').getContext('2d'),
+								config
+							);
+						}
+						//Chart.js
+						
 					});
 					//Create the chart
-					const webSocket = new WebSocket('ws://localhost:10027/webuser');
 
-					webSocket.onerror = function(event) {
-						console.log('WebSocket Error: ' + JSON.stringify(event));
-					};
-
-					webSocket.onopen = function(event) {
-						webSocket.send(JSON.stringify({"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}));
-						webSocket.send(JSON.stringify({"event": "subscribe_plugid", "data_payload": {"plugid": "1", "userid": "206921999"}}));
-					};
-
-					webSocket.onmessage = function(event) {console.log(event)}
 
 					//createChart()
-					const labels = [
-						'January',
-						'February',
-						'March',
-						'April',
-						'May',
-						'June',
-						'July',
-					];
-
-					const data = {
-						labels: labels,
-						datasets: [{
-						label: 'Power (W)',
-						backgroundColor: 'rgb(255, 99, 132)',
-						borderColor: 'rgb(255, 99, 132)',
-						data: [0, 25, 5, 43, 2, 32, 192],
-						}],
-						fill: false,
-      					tension: 0.4
-					};
-
-					const config = {
-					type: 'line',
-					data: data,
-					options: {
-						responsive: true,
-						plugins: {
-						title: {
-							display: true,
-							text: 'User Power Graph'
-						},
-						},
-						interaction: {
-						intersect: false,
-						},
-						scales: {
-						x: {
-							display: true,
-							title: {
-							display: true
-							}
-						},
-						y: {
-							display: true,
-							title: {
-							display: true,
-							text: 'Seconds'
-							},
-							suggestedMin: 0,
-							suggestedMax: 200
-						}
-						}
-					},
-					};
-					const myChart = new Chart(
-						document.getElementById('StromChart'),
-						config
-					);
+					/*
 					setTimeout(function() {
 						myChart.data.datasets[0].data = [4,34,75,346,53,436,54];
 						myChart.update();
 					}, 1000);
+					*/
 				})
 			</script>
 	</body>

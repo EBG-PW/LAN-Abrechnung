@@ -18,7 +18,7 @@
             "Beschreibung": "Netzwerkpauschale"
         },
         "StromKWH": {
-            "Preis": 19,
+            "Preis": 1000,
             "Beschreibung": "KostenKWH"
         }
     },

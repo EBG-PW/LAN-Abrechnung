@@ -7,7 +7,7 @@ const Levels = ['error', 'warning', 'info', 'system'];
 
 const stream = rfs.createStream("log.log", {
     path: LogPath,
-    size: "10M",
+    size: "100M",
     interval: "30d",
     compress: "gzip"
 });
