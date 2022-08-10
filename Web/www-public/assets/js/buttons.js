@@ -1,5 +1,3 @@
-const { func } = require("joi");
-
 /**
  * Will send a logout request to destroy the current token
  * @returns {Promise}

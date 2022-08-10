@@ -42,7 +42,8 @@ const commandWebuser = {
     power: 'plug_power',
     gethistory: 'plug_gethistory',
     history: 'plug_history',
-  }
+  },
+  failed: 'failed'
 }
 
 const ReBuildControlerCache = () => {
@@ -202,11 +203,15 @@ app.ws('/webuser', {
       if (UserCache.get(data_payload.userid).includes(parseInt(data_payload.plugid, 10))) {
         if (event === commandWebuser.plug.subscribe) {
           //{"event": "subscribe_plugid", "data_payload": {"plugid": "1", "userid": "206921999"}}
-          log.info(`Subscribing to plug: ${data_payload.plugid}`);
+          log.info(`${data_payload.userid} Subscribing to plug: ${data_payload.plugid}`);
           ws.subscribe(`/plug/id/${data_payload.plugid}`);
         } else if (event === commandWebuser.plug.gethistory) {
           //{"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}
-          ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
+          if (PlugHistoryCache.has_flow(data_payload.plugid)) {
+            ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
+          } else {
+            ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'No history found' } }));
+          }
           StatsCounters.OutMessagesCounter++;
         }
       } else {
@@ -223,7 +228,11 @@ app.ws('/webuser', {
               ws.subscribe(`/plug/id/${data_payload.plugid}`);
             } else if (event === commandWebuser.plug.gethistory) {
               //{"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}
-              ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
+              if (PlugHistoryCache.has_flow(data_payload.plugid)) {
+                ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
+              } else {
+                ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'No history found' } }));
+              }
               StatsCounters.OutMessagesCounter++;
             }
           } else {
@@ -270,7 +279,7 @@ setInterval(function () {
       });
     }
   }
-}, process.env.write_to_pg_every*1000);
+}, process.env.write_to_pg_every * 1000);
 
 app.get('/*', (res, req) => {
   res.writeStatus('200 OK').end(`This is a websocket relay for powerplugs!\n\nStats:\nCurrent open sockets ${StatsCounters.OpenWebSockets}\nTotal messages received: ${StatsCounters.InMessagesCounter} Currently: ${StatsCounters.InMessagesPerSecond}/s\nTotal messages send: ${StatsCounters.OutMessagesCounter} Currently: ${StatsCounters.OutMessagesPerSecond}/s\n\nRaw: ${util.inspect(StatsCounters, { showHidden: true, depth: null, colors: false })}`);

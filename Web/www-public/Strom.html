@@ -87,15 +87,19 @@
 						$("#StromText").html(translate('Stromseite.Text', {totalkwh: TotalKWH.kwh, totalkostenkwh: CentToEuro(TotalKWH.kwh*TotalKWH.price)}));
 					});
 					//Create the chart
-					const ws = new WebSocket('ws://localhost:10027');
+					const webSocket = new WebSocket('ws://localhost:10027/webuser');
 
-					ws.send(JSON.stringify({"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}));
+					webSocket.onerror = function(event) {
+						console.log('WebSocket Error: ' + JSON.stringify(event));
+					};
 
-					ws.onmessage = function(response){
-						const responseData = JSON.parse(response.data);
-						console.log(responseData);
-						//drawChart();
-					}
+					webSocket.onopen = function(event) {
+						webSocket.send(JSON.stringify({"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}));
+						webSocket.send(JSON.stringify({"event": "subscribe_plugid", "data_payload": {"plugid": "1", "userid": "206921999"}}));
+					};
+
+					webSocket.onmessage = function(event) {console.log(event)}
+
 					//createChart()
 					const labels = [
 						'January',
