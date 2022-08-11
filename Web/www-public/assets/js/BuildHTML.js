@@ -32,18 +32,21 @@ function createHeaderLinks(active) {
             HeaderHTML += `<li><a href="UserBestellungen">${translate('Header.Links.UserBestellungen')}</a></li>`
         }
         
-        if(localStorage.getItem('Admin') === true || localStorage.getItem('Admin') === "true"){
+        if(localStorage.getItem('Permissions_Read').split(",").includes("admin_user")){
             //IF Admin add :D
             if(active.toLowerCase() === "Gäste".toLowerCase()){
-                HeaderHTML += `<li><a href="Users" class="active">${translate('Header.Links.Gäste')}</a></li>`
+                HeaderHTML += `<li><a style="color: rgb(255, 99, 132) !important;" href="Users" class="active">${translate('Header.Links.Gäste')}</a></li>`
             }else{
-                HeaderHTML += `<li><a href="Users">${translate('Header.Links.Gäste')}</a></li>`
+                HeaderHTML += `<li><a style="color: rgb(255, 99, 132) !important;" href="Users">${translate('Header.Links.Gäste')}</a></li>`
             }
+        }
 
+        if(localStorage.getItem('Permissions_Read').split(",").includes("admin_bestellungen")){
+            //IF Admin add :D
             if(active.toLowerCase() === "Bestellungen".toLowerCase()){
-                HeaderHTML += `<li><a href="Bestellungen" class="active">${translate('Header.Links.Bestellungen')}</a></li>`
+                HeaderHTML += `<li><a style="color: rgb(255, 99, 132) !important;" href="Bestellungen" class="active">${translate('Header.Links.Bestellungen')}</a></li>`
             }else{
-                HeaderHTML += `<li><a href="Bestellungen">${translate('Header.Links.Bestellungen')}</a></li>`
+                HeaderHTML += `<li><a style="color: rgb(255, 99, 132) !important;" href="Bestellungen">${translate('Header.Links.Bestellungen')}</a></li>`
             }
         }
 

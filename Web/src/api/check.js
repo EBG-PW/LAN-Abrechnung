@@ -29,9 +29,9 @@ const router = express.Router();
 router.post("/", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         res.status(200);
+        reg.check.Data.Permissions = reg.permissions
         res.json({
-            TokenData: reg.check.Data,
-            Permissions: reg.permissions
+            TokenData: reg.check.Data
         });
     } catch (error) {
         log.error(error);

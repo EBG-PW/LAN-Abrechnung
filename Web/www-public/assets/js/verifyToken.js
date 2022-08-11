@@ -38,6 +38,8 @@ function writeTokenDataToLocalStorrage(TokenData){
   localStorage.setItem('ip', TokenData.ip);
   localStorage.setItem('Browser', TokenData.browser);
   localStorage.setItem('Admin', TokenData.admin);
+  localStorage.setItem('Permissions_Read', TokenData.Permissions.read);
+  localStorage.setItem('Permissions_Write', TokenData.Permissions.write);
   localStorage.setItem('Time', TokenData.time);
   localStorage.setItem('Language', TokenData.lang);
 }

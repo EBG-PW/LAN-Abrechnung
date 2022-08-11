@@ -15,6 +15,8 @@
             posting.done(function(result) {
                 setTimeout(function(){ window.location.replace(`${baseUrl}api/v1/login/login`); }, 100);
                 localStorage.removeItem('Admin');
+                localStorage.removeItem('Permissions_Read');
+                localStorage.removeItem('Permissions_Write');
                 localStorage.removeItem('Browser');
                 localStorage.removeItem('ip');
                 localStorage.removeItem('Language');

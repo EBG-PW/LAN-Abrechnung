@@ -159,10 +159,8 @@ app.ws('/client', {
         }
         //Create the flow cache in case it doesn't exist
         if (!PlugHistoryCache.has_flow(data_payload.data.ID)) {
-          console.log("Creating new cache for plug: " + data_payload.data.ID);
           PlugHistoryCache.create_flow(data_payload.data.ID, process.env.plug_power_cache);
         }
-        console.log("Adding new data to cache for plug: " + data_payload.data.ID);
         PlugHistoryCache.set_flow(data_payload.data.ID, data_payload.data);
         StatsCounters.OutMessagesCounter++;
         app.publish(`/plug/id/${data_payload.data.ID}`, JSON.stringify({ event: commandWebuser.plug.power, data_payload: data_payload.data }));
