@@ -19,9 +19,9 @@ app.use(express.json());
 app.use(expressCspHeader({
   directives: {
     'default-src': [SELF],
-    'script-src': [SELF, INLINE, 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js', 'https://unpkg.com/new-i18n@3.0.0-5/lib/index.js'],
+    'script-src': [SELF, INLINE],
     'style-src': [SELF, INLINE],
-    'img-src': [SELF, INLINE],
+    'img-src': [SELF, INLINE, 'https://twemoji.maxcdn.com/v/13.1.0/72x72/'],
     'worker-src': [NONE],
     'connect-src': [[SELF], `ws://${process.env.WebSocketURL}`, `wss://${process.env.WebSocketURL}`],
     'block-all-mixed-content': true
@@ -55,6 +55,8 @@ app.get('/UserBestellungen', (req, res) => {
 });
 
 app.use('/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets')));
+app.use('/api/v1/login/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets'))); //For Login plugin
+app.use('/api/v1/register/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets'))); //For Register plugin
 
 app.use('/api/v1', api);
 

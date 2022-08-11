@@ -294,13 +294,13 @@ function translate(Key, Variables) {
 
 function convertFlags(lang_string) {
   if (lang_string === "de") {
-    return "🇩🇪";
+    return '<img width="18" height="14" src="https://twemoji.maxcdn.com/v/13.1.0/72x72/1f1e9-1f1ea.png">'; // 🇩🇪
   } else if (lang_string === "en") {
-    return "🇬🇧";
+    return '<img width="18" height="14" src="https://twemoji.maxcdn.com/v/13.1.0/72x72/1f1ec-1f1e7.png">'; // 🇬🇧
   } else if (lang_string === "ua") {
-    return "🇺🇦";
+    return '<img width="18" height="14" src="https://twemoji.maxcdn.com/v/13.1.0/72x72/1f1fa-1f1e6.png">'; // 🇺🇦
   } else if (lang_string === "it") {
-    return "🇮🇹";
+    return '<img width="18" height="14" src="https://twemoji.maxcdn.com/v/13.1.0/72x72/1f1ee-1f1f9.png">'; // 🇮🇹
   } else {
     return lang_string
   }
