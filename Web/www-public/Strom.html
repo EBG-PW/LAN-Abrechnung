@@ -109,7 +109,7 @@
 									PowerGraphData.shift()
 								}
 								powerChart.data.datasets[0].data = PowerGraphData;
-								$("#StromText").html(translate('Stromseite.Text', {totalkwh: ((data_payload.TotalEnergy/ 1000).toFixed(3)).replace(".", ","), totalkostenkwh: CentToEuro((data_payload.TotalEnergy/ 1000).toFixed(3)*TotalKWH.price)}));
+								$("#StromText").html(translate('Stromseite.Text', {totalkwh: (((data_payload.TotalEnergy/ 1000)-TotalKWH.power_start).toFixed(3)).replace(".", ","), totalkostenkwh: CentToEuro(((data_payload.TotalEnergy/ 1000)-TotalKWH.power_start).toFixed(3)*TotalKWH.price)}));
 								$("#MainHeadline").html(`${translate('Header.Links.Strom')}  |  ${data_payload.Power}W`);
 								powerChart.update()
 							} else if (event === 'plug_history') {
@@ -151,12 +151,6 @@
 									responsive: true,
 									interaction: {
 										intersect: false,
-									},
-									plugins: {
-										title: {
-											display: true,
-											text: 'Chart.js Line Chart - Cubic interpolation mode'
-										},
 									},
 									elements: {
 										line: {

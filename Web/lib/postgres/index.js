@@ -633,7 +633,7 @@ let PlugsToggleAllowedState = function (userid) {
  */
 let GetKWHbyUserID = function (userid) {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT plugs_power.plugid, COALESCE(plugs_power.power_end,0) - COALESCE(plugs_power.power_start,0) AS power_used FROM plugs_power INNER JOIN plugs ON plugs_power.plugid = plugs.plugid WHERE plugs.userid = $1`, [
+    pool.query(`SELECT plugs_power.plugid, plugs_power.power_start, COALESCE(plugs_power.power_end,0) - COALESCE(plugs_power.power_start,0) AS power_used FROM plugs_power INNER JOIN plugs ON plugs_power.plugid = plugs.plugid WHERE plugs.userid = $1`, [
       userid
     ], (err, result) => {
       if (err) { reject(err) }

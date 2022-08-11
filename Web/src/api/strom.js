@@ -78,6 +78,7 @@ router.get("/UserKWH", limiter, tokenpermissions(), async (reg, res, next) => {
                     res.json({
                         url_websocket: process.env.WebSocketURL,
                         kwh: kwh.rows[0].power_used.toFixed(3),
+                        power_start: kwh.rows[0].power_start.toFixed(3),
                         price: preisliste.PauschalKosten.StromKWH.Preis,
                         userid: reg.check.Data.userid,
                         plugid: kwh.rows[0].plugid,
