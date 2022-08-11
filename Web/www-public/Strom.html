@@ -86,7 +86,7 @@
 					GeTotalKWH().then(function(TotalKWH) {
 						let powerChart;
 
-						$("#StromText").html(translate('Stromseite.Text', {totalkwh: ((TotalKWH.kwh/ 1000).toFixed(3)).replace(".", ","), totalkostenkwh: CentToEuro(TotalKWH.kwh*TotalKWH.price)}));
+						$("#StromText").html(translate('Stromseite.Text', {totalkwh: (TotalKWH.kwh).replace(".", ","), totalkostenkwh: CentToEuro(TotalKWH.kwh*TotalKWH.price)}));
 
 						const webSocket = new WebSocket(`ws://${TotalKWH.url_websocket}/webuser`);
 						let PowerGraphData = []

@@ -4,11 +4,14 @@ const fs = require('fs');
 const rateLimit = require('express-rate-limit');
 useragent = require('express-useragent');
 const Joi = require('joi');
+const { SendEvent } = require('pm2-ctl')
 var path = require('path');
 let reqPath = path.join(__dirname, '../../');
 const DB = require('../../lib/postgres');
 const { tokenpermissions } = require('../middleware/tokenVerify')
 const { log } = require('../../lib/logger');
+const ecosystem = require('../../../ecosystem.config.js');
+const PlugServer_Process_Name = ecosystem.apps[2].name;
 
 let mainconfig, preisliste;
 
@@ -47,6 +50,7 @@ router.get("/PlugsToggleAllowedState", limiter, tokenpermissions(), async (reg, 
         if (reg.permissions.write.includes('admin_strom') || reg.permissions.write.includes('admin_all')) {
             DB.write.plugs.toggle_allowed_state(value.UserID).then(function (toggle_response) {
                 if (toggle_response.rowCount === 1) {
+                    SendEvent.ToProcess(PlugServer_Process_Name, {event: 'PlugsToggleAllowedState', data: {UserID: value.UserID}});
                     res.status(200);
                     res.json({
                         Message: "Sucsess"

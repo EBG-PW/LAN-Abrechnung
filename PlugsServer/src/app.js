@@ -283,7 +283,24 @@ setInterval(function () {
 
 app.get('/*', (res, req) => {
   res.writeStatus('200 OK').end(`This is a websocket relay for powerplugs!\n\nStats:\nCurrent open sockets ${StatsCounters.OpenWebSockets}\nTotal messages received: ${StatsCounters.InMessagesCounter} Currently: ${StatsCounters.InMessagesPerSecond}/s\nTotal messages send: ${StatsCounters.OutMessagesCounter} Currently: ${StatsCounters.OutMessagesPerSecond}/s\n\nRaw: ${util.inspect(StatsCounters, { showHidden: true, depth: null, colors: false })}`);
+})
 
+process.on('message', function (packet) {
+  const { event, data } = packet.data;
+  if(event === 'PlugsToggleAllowedState'){
+    ReBuildControlerCache().then(function (Controler) {
+      log.system('Controler cache rebuilt. Reason: PlugsToggleAllowedState Event');
+      db.Controler.ByUserID(data.UserID).then(function (result) {
+        if (result.length > 0) {
+          app.publish(`/client/id/${result[0].plugs_controlerid}`, JSON.stringify({ event: commandClient.setting.controler, data: "" }));
+        }
+      }).catch(function (err) {
+        log.error(err);
+      });
+    }).catch(function (err) {
+      log.error(err);
+    })
+  }
 })
 
 module.exports = app

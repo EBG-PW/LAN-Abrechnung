@@ -30,6 +30,20 @@ const GetControlers = function () {
   });
 }
 
+/**
+ * This function will return plugcontrolerid selected by userid.
+ * @param {Number} userID 
+ * @returns 
+ */
+const GetControlerIDByUserID = function (userID) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT plugs_controlerid FROM plugs WHERE userid = ${userID}`, (err, result) => {
+      if (err) { reject(err) }
+      resolve(result.rows);
+    })
+  })
+}
+
 /*
     |-------------------------------------------------------------------------------|
     |                                                                               |
@@ -75,9 +89,9 @@ const GetPlugs = function () {
  * @param {Number} controler_id
  * @returns {Promise}
  */
- const GetPlugsByControlerID = function (controlerid) {
+const GetPlugsByControlerID = function (controlerid) {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT plugid, ipaddr, allowed_state FROM plugs WHERE plugs_controlerid = $1`,[
+    pool.query(`SELECT plugid, ipaddr, allowed_state FROM plugs WHERE plugs_controlerid = $1`, [
       controlerid
     ], (err, result) => {
       if (err) { reject(err) }
@@ -88,6 +102,7 @@ const GetPlugs = function () {
 
 const Controler = {
   GetAll: GetControlers,
+  ByUserID: GetControlerIDByUserID
 }
 
 const Plugs = {
