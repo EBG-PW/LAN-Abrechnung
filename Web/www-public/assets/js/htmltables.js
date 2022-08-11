@@ -71,7 +71,7 @@ function Table_BestellungList(orderid) {
                 text: translate('Tabeles.AdminUserOrderTabelle.button_SetStatus_text'),
                 style: 'color: #fafa00 !important;',
                 function: "switch_order_to_shopinglist",
-                functionVar: getAdminUserOrderData.GetOrder_response[i].key,
+                functionVar: getAdminUserOrderData.GetOrder_response[i].orderkey,
                 Convert: false
             }
         } 
