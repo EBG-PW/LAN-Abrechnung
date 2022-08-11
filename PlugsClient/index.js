@@ -58,8 +58,8 @@ if ('d' in args || 'debug' in args) {
     debug = true;
 }
 
-if('s' in args || 'scan' in args) {
-    if(args.s < 100 || args.scan < 100) {
+if ('s' in args || 'scan' in args) {
+    if (args.s < 100 || args.scan < 100) {
         console.log("Scanning faster than 100ms is not recomended and can cause issues");
         process.exit(1);
     } else {
@@ -311,6 +311,8 @@ const ConnectWS = () => {
         } else if (event === command.setting.plugsinfo) {
             PlugCache.set_object('ipaddr', data_payload.plugs);
             log.system(`Resived data to monitor ${PlugCache.keys().length} plugs`);
+        } else if (event === command.setting.controler) {
+            ws.send(JSON.stringify({ event: command.setting.controler, data_payload: { token: token } }));
         }
     });
 
