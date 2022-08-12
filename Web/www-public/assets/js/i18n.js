@@ -84,6 +84,7 @@ const i18n = new I18n({
           artikel: "Artikel",
           amount: "Anzahl",
           price: "Preis",
+          totale_price: "Gesamtpreis:",
           button_SetPrice: "Ändere Preis",
           button_SetStatus: "Bestellt?",
           button_SetStatus_text: "Wurde bestellt"
@@ -93,6 +94,7 @@ const i18n = new I18n({
           artikel: "Artikel",
           amount: "Anzahl",
           price: "Preis",
+          totale_price: "Gesamtpreis:",
           status: "Status",
           status_text_true: "Wurde bestellt",
           status_text_false: "Nicht bestellt",
@@ -221,6 +223,7 @@ const i18n = new I18n({
           artikel: "Article",
           amount: "Amount",
           price: "Price",
+          totale_price: "Total price:",
           button_SetPrice: "Change Price",
           button_SetStatus: "Ordered?",
           button_SetStatus_text: "Ordered"
@@ -229,6 +232,7 @@ const i18n = new I18n({
           username: "Username",
           artikel: "Article",
           amount: "Amount",
+          totale_price: "Total price:",
           price: "Price",
           status: "Status",
           status_text_true: "Ordered",
