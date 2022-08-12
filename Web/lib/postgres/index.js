@@ -700,13 +700,12 @@ let GetOrderByID = function (OrderID) {
 /**
  * This function will get Order Data by ID 
  * @param {string} OrderID
- * @param {boolean} status
  * @returns {Promise}
  */
-let GetOrderByIDList = function (OrderID, status) {
+let GetOrderByIDList = function (OrderID) {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.orderkey, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE orderid = $1 AND status = $2`, [
-      OrderID, status
+    pool.query(`SELECT guests.username, bestellungen.userid, bestellungen.artikel, bestellungen.amount, bestellungen.price, bestellungen.orderid, bestellungen.orderkey, bestellungen.status FROM bestellungen INNER JOIN guests ON bestellungen.userid = guests.userid WHERE orderid = $1`, [
+      OrderID
     ], (err, result) => {
       if (err) { reject(err) }
       resolve(result);

@@ -87,7 +87,8 @@ const i18n = new I18n({
           totale_price: "Gesamtpreis:",
           button_SetPrice: "Ändere Preis",
           button_SetStatus: "Bestellt?",
-          button_SetStatus_text: "Wurde bestellt"
+          button_SetStatus_text_true: "Wurde bestellt",
+          button_SetStatus_text_false: "Bestellen",
         },
         UserUserOrderTabelle: {
           username: "Nutzername",
@@ -226,7 +227,8 @@ const i18n = new I18n({
           totale_price: "Total price:",
           button_SetPrice: "Change Price",
           button_SetStatus: "Ordered?",
-          button_SetStatus_text: "Ordered"
+          button_SetStatus_text_true: "Orderd",
+          button_SetStatus_text_false: "Order",
         },
         UserUserOrderTabelle: {
           username: "Username",

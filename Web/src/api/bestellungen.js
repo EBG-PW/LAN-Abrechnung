@@ -100,7 +100,7 @@ router.post("/new", limiter, tokenpermissions(), async (reg, res, next) => {
                     WebPanelURL: process.env.WebPanelURL
                 }
 
-                SendEvent.ToProcess(Telegram_Process_Name, {event: 'NewOrder', message: SendToTelegramData}).then(function (response) {
+                SendEvent.ToProcess(Telegram_Process_Name, { event: 'NewOrder', message: SendToTelegramData }).then(function (response) {
                     log.info(`[${PluginName}] Sent Event to Telegram Process`);
                     res.status(200);
                     res.json({
@@ -214,28 +214,36 @@ router.get("/switchOrderStateByKey", limiter, tokenpermissions(), async (reg, re
         const value = await switchOrderStateByKeyCheck.validateAsync(reg.query);
         if (reg.permissions.write.includes('admin_bestellungen') || reg.permissions.write.includes('admin_all')) {
             DB.get.order.GetByKey(value.key).then(function (GetOrder_response) {
-                let T_ID = randomstring.generate({
-                    length: 32,
-                    charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
-                });
-                let Product = {
-                    produktname: GetOrder_response.rows[0].artikel,
-                    produktcompany: "Order",
-                    price: GetOrder_response.rows[0].price,
-                    bought: GetOrder_response.rows[0].amount
-                }
-                DB.write.shopinglist.Buy(GetOrder_response.rows[0].userid, GetOrder_response.rows[0].userid, Product, T_ID).then(function (Buy_response) {
-                    DB.write.order.SwitchState(value.key, true).then(function (Switch_response) {
-                        res.status(200);
-                        res.json({
-                            Message: "Succsess",
-                            orderid: GetOrder_response.rows[0].orderid
-                        });
+                if (GetOrder_response.rows[0].status === false) {
+                    let T_ID = randomstring.generate({
+                        length: 32,
+                        charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
                     });
-                }).catch(function (error) {
-                    log.error(error);
-                    throw new Error("DBError");
-                })
+                    let Product = {
+                        produktname: GetOrder_response.rows[0].artikel,
+                        produktcompany: "Order",
+                        price: GetOrder_response.rows[0].price,
+                        bought: GetOrder_response.rows[0].amount
+                    }
+                    DB.write.shopinglist.Buy(GetOrder_response.rows[0].userid, GetOrder_response.rows[0].userid, Product, T_ID).then(function (Buy_response) {
+                        DB.write.order.SwitchState(value.key, true).then(function (Switch_response) {
+                            res.status(200);
+                            res.json({
+                                Message: "Succsess",
+                                orderid: GetOrder_response.rows[0].orderid
+                            });
+                        });
+                    }).catch(function (error) {
+                        log.error(error);
+                        throw new Error("DBError");
+                    })
+                } else {
+                    res.status(508);
+                    res.json({
+                        Message: "Failed",
+                        orderid: GetOrder_response.rows[0].orderid
+                    });
+                }
             }).catch(function (error) {
                 log.error(error);
                 throw new Error("DBError");

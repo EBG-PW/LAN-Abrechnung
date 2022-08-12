@@ -1,3 +1,13 @@
+const setColor = (boolean, mode) => {
+    if(mode === 'red_green'){
+        if(boolean || boolean === "true"){
+            return "#00fa00"
+        }else{
+            return "#fafa00"
+        }
+    }
+}
+
 //This is used in Users.html
 function Table_AdminUserDataList() {
     getAdminUserData().then(function (AdminUserDataList) {
@@ -70,8 +80,8 @@ function Table_BestellungList(orderid) {
             getAdminUserOrderData.GetOrder_response[i].price = CentToEuro(getAdminUserOrderData.GetOrder_response[i].price)
 
             getAdminUserOrderData.GetOrder_response[i].button_SetStatus = {
-                text: translate('Tabeles.AdminUserOrderTabelle.button_SetStatus_text'),
-                style: 'color: #fafa00 !important;',
+                text: translate(`Tabeles.AdminUserOrderTabelle.button_SetStatus_text_${getAdminUserOrderData.GetOrder_response[i].status}`),
+                style: `color: ${setColor(getAdminUserOrderData.GetOrder_response[i].status, "red_green")} !important;`,
                 function: "switch_order_to_shopinglist",
                 functionVar: getAdminUserOrderData.GetOrder_response[i].orderkey,
                 Convert: false
@@ -85,7 +95,7 @@ function Table_BestellungList(orderid) {
             price: CentToEuro(TotalCost),
             status: "",
             button_SetStatus: {
-                text: translate('Tabeles.UserUserOrderTabelle.button_delete_text'),
+                text: translate('Tabeles.AdminUserOrderTabelle.button_delete_text'),
                 style: 'background: transparent;border: none !important;font-size:0;',
                 function: "delete_user_order_by_key",
                 functionVar: "",
