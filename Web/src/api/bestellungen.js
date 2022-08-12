@@ -170,7 +170,6 @@ router.post("/newUserOrder", limiter, tokenpermissions(), async (reg, res, next)
 router.get("/getUserOrders", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         const value = await GetUserOrderCheck.validateAsync(reg.query);
-        console.log(value);
         if (reg.permissions.read.includes('admin_bestellungen') || reg.permissions.read.includes('admin_all')) {
             DB.get.order.GetOrderList(value.orderid, false).then(function (GetOrder_response) {
                 res.status(200);
@@ -255,7 +254,7 @@ router.post("/delUserOrder", limiter, tokenpermissions(), async (reg, res, next)
         if (reg.permissions.write.includes('user_bestellungen') || reg.permissions.write.includes('admin_bestellungen') || reg.permissions.write.includes('admin_all')) {
             DB.get.order.GetByKey(value.key).then(function (Order_key_Response) {
                 DB.get.order.GetOrder(Order_key_Response.rows[0].orderid).then(function (Order_Response) {
-                    if (Order_Response.rows[0].timeuntil > new Date().getTime()) {
+                    if (Order_Response.rows[0].timeuntil > new Date().getTime() && Order_Response.rows[0].status === false) {
                         DB.del.order.ByKey(value.key, reg.check.Data.userid).then(function (Del_Response) {
                             res.status(200);
                             res.json({
@@ -269,7 +268,7 @@ router.post("/delUserOrder", limiter, tokenpermissions(), async (reg, res, next)
                     } else {
                         res.status(410);
                         res.json({
-                            Message: "Time not valid anymore"
+                            Message: "Time not valid anymore or bough already"
                         });
                     }
                 }).catch(function (error) {
