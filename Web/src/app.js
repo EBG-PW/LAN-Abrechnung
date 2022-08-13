@@ -41,7 +41,6 @@ app.get('/Shopping', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'www-public', 'Shopping.html'));
 });
 
-
 app.get('/Strom', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'www-public', 'Strom.html'));
 });
@@ -49,6 +48,10 @@ app.get('/Strom', (req, res) => {
 app.get('/Users', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'www-public', 'Users.html'));
 });
+
+app.get('/Inventory', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'www-public', 'Inventory.html'));
+})
 
 app.get('/UserBestellungen', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'www-public', 'UserBestellungen.html'));

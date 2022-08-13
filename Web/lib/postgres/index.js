@@ -859,6 +859,23 @@ let AddPlug = function (IP, plugs_controler) {
 /*
     |-------------------------------------------------------------------------------|
     |                                                                               |
+    |                             Inventory - Managment                             |
+    |                                                                               |
+    |-------------------------------------------------------------------------------|
+*/
+
+let GetInvetory = function () {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT * FROM products`, (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+/*
+    |-------------------------------------------------------------------------------|
+    |                                                                               |
     |                            TG_Language - Managment                            |
     |                                                                               |
     |-------------------------------------------------------------------------------|
@@ -999,6 +1016,9 @@ let get = {
   },
   RegToken: {
     ByToken: GetRegTokenByToken
+  },
+  Inventory: {
+    GetAll: GetInvetory
   },
   Products: {
     LikeGet: LookLikeProduct,

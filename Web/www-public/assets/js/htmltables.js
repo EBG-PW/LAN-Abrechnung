@@ -151,3 +151,29 @@ function Table_UserBestellungList(orderid) {
         $("#UserresultOrderList").html(ButtonCreateTable(['username', 'artikel', 'amount', 'price', 'status', 'button_delete'], ['button_delete'], getUserUserOrderData.GetOrder_response, 'UserUserOrderTabelle', true))
     });
 }
+
+//This is used in Inventory.html
+function Table_InventoryList() {
+    //Request Userdata for the Usertable
+    let [TotalCost, SoledAmount, InventoryAmount] = [0,0,0];
+    console.log(SoledAmount, InventoryAmount, TotalCost)
+    GetInventory().then(function (InventoryData) {
+        for (let i = 0; i < InventoryData.Inventory_response.length; i++) {
+
+            InventoryData.Inventory_response[i].left = InventoryData.Inventory_response[i].amount - InventoryData.Inventory_response[i].bought
+
+            //Calculate some total costs
+            if(InventoryData.Inventory_response[i].produktname !== 'Spende'){
+                SoledAmount += InventoryData.Inventory_response[i].price * InventoryData.Inventory_response[i].bought
+                InventoryAmount += InventoryData.Inventory_response[i].price * InventoryData.Inventory_response[i].left
+                TotalCost += InventoryData.Inventory_response[i].price * InventoryData.Inventory_response[i].amount
+            }
+
+            InventoryData.Inventory_response[i].price = CentToEuro(InventoryData.Inventory_response[i].price)
+        }
+        console.log(SoledAmount, InventoryAmount, TotalCost)
+        //Add Table Format parameter...
+        $("#InventarText").html(`<h3>${translate('InventarSeite.Text', {SoledAmount: CentToEuro(SoledAmount), InventoryAmount: CentToEuro(InventoryAmount), TotalCost: CentToEuro(TotalCost)})}</h3>`)
+        $("#InventarTabelle").html(CreateTable(['produktname', 'produktcompany', 'amount', 'bought', 'left', 'price'], InventoryData.Inventory_response, 'InventoryTabelle', true))
+    });
+}

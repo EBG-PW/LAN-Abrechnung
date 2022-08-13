@@ -32,7 +32,7 @@ function createHeaderLinks(active) {
             HeaderHTML += `<li><a href="UserBestellungen">${translate('Header.Links.UserBestellungen')}</a></li>`
         }
         
-        if(localStorage.getItem('Permissions_Read').split(",").includes("admin_user")){
+        if(localStorage.getItem('Permissions_Read').split(",").includes("admin_user") || localStorage.getItem('Permissions_Read').split(",").includes("admin_all")){
             //IF Admin add :D
             if(active.toLowerCase() === "Gäste".toLowerCase()){
                 HeaderHTML += `<li><a style="color: rgb(255, 99, 132) !important;" href="Users" class="active">${translate('Header.Links.Gäste')}</a></li>`
@@ -41,7 +41,16 @@ function createHeaderLinks(active) {
             }
         }
 
-        if(localStorage.getItem('Permissions_Read').split(",").includes("admin_bestellungen")){
+        if(localStorage.getItem('Permissions_Read').split(",").includes("admin_inventory") || localStorage.getItem('Permissions_Read').split(",").includes("admin_all")){
+            //IF Admin add :D
+            if(active.toLowerCase() === "Inventar".toLowerCase()){
+                HeaderHTML += `<li><a style="color: rgb(255, 99, 132) !important;" href="Inventory" class="active">${translate('Header.Links.Inventar')}</a></li>`
+            }else{
+                HeaderHTML += `<li><a style="color: rgb(255, 99, 132) !important;" href="Inventory">${translate('Header.Links.Inventar')}</a></li>`
+            }
+        }
+
+        if(localStorage.getItem('Permissions_Read').split(",").includes("admin_bestellungen") || localStorage.getItem('Permissions_Read').split(",").includes("admin_all")){
             //IF Admin add :D
             if(active.toLowerCase() === "Bestellungen".toLowerCase()){
                 HeaderHTML += `<li><a style="color: rgb(255, 99, 132) !important;" href="Bestellungen" class="active">${translate('Header.Links.Bestellungen')}</a></li>`

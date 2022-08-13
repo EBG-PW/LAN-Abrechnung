@@ -8,6 +8,7 @@ const i18n = new I18n({
           Einkaufliste: "Einkaufliste",
           Strom: "Strom",
           UserBestellungen: "Bestellung",
+          Inventar: "Inventar",
           Gäste: "Gäste",
           Bestellungen: "Bestellungen",
           Ausloggen: "Ausloggen"
@@ -45,6 +46,9 @@ const i18n = new I18n({
       },
       GästeSeite: {
 
+      },
+      InventarSeite: {
+        Text: "Das gesamte Inventar hat einen Gesamtwert von {{TotalCost}}, es wurden {{SoledAmount}} für Essen und der aktuelle Wert ist {{InventoryAmount}}."
       },
       Bestellungen: {
         Text: "Erstelle eine neue Bestellung",
@@ -109,7 +113,15 @@ const i18n = new I18n({
           produktcompany: "Hersteller",
           bought: "Anzahl",
           price: "Preis"
-        }
+        },
+        InventoryTabelle: {
+          produktname: "Artikel",
+          produktcompany: "Hersteller",
+          amount: "Anzahl",
+          bought: "Gekauft",
+          left: "Verbleibend",
+          price: "Preis"
+        },
       },
       Tage: {
         Long: {
@@ -148,6 +160,7 @@ const i18n = new I18n({
           Einkaufliste: "Shoppinglist",
           Strom: "Electricity",
           UserBestellungen: "Orders",
+          Inventar: "Inventory",
           Gäste: "Guests",
           Bestellungen: "Orders",
           Ausloggen: "Logout"
@@ -185,6 +198,9 @@ const i18n = new I18n({
       },
       GästeSeite: {
 
+      },
+      InventarSeite: {
+        Text: "The total inventory has a total value of {{TotalCost}}, {{SoledAmount}} for food and the current value is {{InventoryAmount}}."
       },
       Bestellungen: {
         Text: "Create a new order",
@@ -248,6 +264,14 @@ const i18n = new I18n({
           produktname: "Product Name",
           produktcompany: "Manufacturer",
           bought: "Amount",
+          price: "Price"
+        },
+        InventoryTabelle: {
+          produktname: "Article",
+          produktcompany: "Manufacturer",
+          amount: "Amount",
+          bought: "Bought",
+          left: "Available",
           price: "Price"
         }
       },

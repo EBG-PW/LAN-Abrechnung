@@ -233,3 +233,28 @@ function GeTotalKWH() {
     }
   });
 }
+
+function GetInventory() {
+  return new Promise(function (resolve, reject) {
+    const getUrl = window.location;
+    const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+    if (localStorage.getItem("Token") !== null) {
+      const posting = $.ajax({
+        url: `${baseUrl}api/v1/inventory/inventory`,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        headers: { Authorization: "Bearer " + localStorage.getItem("Token") }
+      });
+      posting.done(function (result) {
+        resolve(result)
+      })
+      posting.fail(function (err) {
+        if (err.status === 401) {
+          resolve(err.status)
+        } else if (err.status === 500) {
+          resolve(err.status)
+        }
+      });
+    }
+  });
+}
