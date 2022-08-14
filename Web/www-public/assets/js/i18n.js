@@ -48,7 +48,8 @@ const i18n = new I18n({
 
       },
       InventarSeite: {
-        Text: "Das gesamte Inventar hat einen Gesamtwert von {{TotalCost}}, es wurden {{SoledAmount}} für Essen und der aktuelle Wert ist {{InventoryAmount}}."
+        Text: "Das gesamte Inventar hat einen Gesamtwert von {{TotalCost}}, es wurden {{SoledAmount}} für Essen und der aktuelle Wert ist {{InventoryAmount}}.",
+        DontationText: "Die gesamte Spende beträgt {{TotalDonated}}.",
       },
       Bestellungen: {
         Text: "Erstelle eine neue Bestellung",
@@ -122,6 +123,10 @@ const i18n = new I18n({
           left: "Verbleibend",
           price: "Preis"
         },
+        SpendeTabelle: {
+          username: "Spender",
+          total_donation: "Spende"
+        }
       },
       Tage: {
         Long: {
@@ -200,7 +205,8 @@ const i18n = new I18n({
 
       },
       InventarSeite: {
-        Text: "The total inventory has a total value of {{TotalCost}}, {{SoledAmount}} for food and the current value is {{InventoryAmount}}."
+        Text: "The inventory has a total value of {{TotalCost}}, {{SoledAmount}} for food and the current value is {{InventoryAmount}}.",
+        DontationText: "Total ammount of donations are {{TotalDonated}}."
       },
       Bestellungen: {
         Text: "Create a new order",
@@ -273,6 +279,10 @@ const i18n = new I18n({
           bought: "Bought",
           left: "Available",
           price: "Price"
+        },
+        SpendeTabelle: {
+          username: "Donor",
+          total_donation: "Donation"
         }
       },
       Tage: {

@@ -29,7 +29,22 @@ router.get("/inventory", limiter, tokenpermissions(), async (reg, res, next) => 
     try {
         if (reg.permissions.read.includes('user_inventory') || reg.permissions.read.includes('admin_inventory') || reg.permissions.read.includes('admin_all')) {
             DB.get.Inventory.GetAll().then(ShoppingList_response => {
-                res.status(200).json({Inventory_response: ShoppingList_response.rows});
+                res.status(200).json({ Inventory_response: ShoppingList_response.rows });
+            }).catch(err => {
+                log.error(error);
+                throw new Error("DBError");
+            });
+        }
+    } catch (err) {
+        next(error);
+    }
+});
+
+router.get("/donations", limiter, tokenpermissions(), async (reg, res, next) => {
+    try {
+        if (reg.permissions.read.includes('user_inventory') || reg.permissions.read.includes('admin_inventory') || reg.permissions.read.includes('admin_all')) {
+            DB.get.Inventory.GetDonations().then(ShoppingList_response => {
+                res.status(200).json({ Donation_response: ShoppingList_response.rows });
             }).catch(err => {
                 log.error(error);
                 throw new Error("DBError");
@@ -41,10 +56,10 @@ router.get("/inventory", limiter, tokenpermissions(), async (reg, res, next) => 
 });
 
 module.exports = {
-    router: router,
-    PluginName: PluginName,
-    PluginRequirements: PluginRequirements,
-    PluginVersion: PluginVersion,
-    PluginAuthor: PluginAuthor,
-    PluginDocs: PluginDocs
-};
+        router: router,
+        PluginName: PluginName,
+        PluginRequirements: PluginRequirements,
+        PluginVersion: PluginVersion,
+        PluginAuthor: PluginAuthor,
+        PluginDocs: PluginDocs
+    };

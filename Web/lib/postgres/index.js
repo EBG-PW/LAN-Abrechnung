@@ -864,9 +864,26 @@ let AddPlug = function (IP, plugs_controler) {
     |-------------------------------------------------------------------------------|
 */
 
+/**
+ * Returns all products from products table as array
+ * @returns {Promise}
+ */
 let GetInvetory = function () {
   return new Promise(function (resolve, reject) {
     pool.query(`SELECT * FROM products`, (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * Returns all Donations from the ordertable as array
+ * @returns {Promise}
+ */
+let GetDonation = function () {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT guests.username, SUM(bought*price) AS total_donation FROM shopinglist INNER JOIN guests ON shopinglist.userid = guests.userid WHERE produktname = 'Spende' GROUP BY guests.username ORDER BY SUM(bought*price) DESC`, (err, result) => {
       if (err) { reject(err) }
       resolve(result);
     });
@@ -1018,7 +1035,8 @@ let get = {
     ByToken: GetRegTokenByToken
   },
   Inventory: {
-    GetAll: GetInvetory
+    GetAll: GetInvetory,
+    GetDonations: GetDonation
   },
   Products: {
     LikeGet: LookLikeProduct,

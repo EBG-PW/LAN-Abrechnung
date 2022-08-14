@@ -156,7 +156,7 @@ function Table_UserBestellungList(orderid) {
 function Table_InventoryList() {
     //Request Userdata for the Usertable
     let [TotalCost, SoledAmount, InventoryAmount] = [0,0,0];
-    console.log(SoledAmount, InventoryAmount, TotalCost)
+
     GetInventory().then(function (InventoryData) {
         for (let i = 0; i < InventoryData.Inventory_response.length; i++) {
 
@@ -171,9 +171,24 @@ function Table_InventoryList() {
 
             InventoryData.Inventory_response[i].price = CentToEuro(InventoryData.Inventory_response[i].price)
         }
-        console.log(SoledAmount, InventoryAmount, TotalCost)
+
         //Add Table Format parameter...
         $("#InventarText").html(`<h3>${translate('InventarSeite.Text', {SoledAmount: CentToEuro(SoledAmount), InventoryAmount: CentToEuro(InventoryAmount), TotalCost: CentToEuro(TotalCost)})}</h3>`)
         $("#InventarTabelle").html(CreateTable(['produktname', 'produktcompany', 'amount', 'bought', 'left', 'price'], InventoryData.Inventory_response, 'InventoryTabelle', true))
+    });
+}
+
+//This is used in Inventory.html
+function Table_DonationList(){
+    GetDonations().then(function (DonationData) {
+        let TotalDonated = 0;
+        for (let i = 0; i < DonationData.Donation_response.length; i++) {
+            TotalDonated += Number(DonationData.Donation_response[i].total_donation)
+            DonationData.Donation_response[i].total_donation = CentToEuro(DonationData.Donation_response[i].total_donation)
+        }
+
+        //Add Table Format parameter...
+        $("#SpendeText").html(`<h3>${translate('InventarSeite.DontationText', {TotalDonated: CentToEuro(TotalDonated)})}</h3>`)
+        $("#SpendeTabelle").html(CreateTable(['username', 'total_donation'], DonationData.Donation_response, 'SpendeTabelle', true))
     });
 }
