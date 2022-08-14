@@ -38,6 +38,14 @@
 						</div>
 					</section>
 
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<a id="SpendeText"></a>
+							<br>
+							<div id="SpendeTabelle"></div>
+						</div>
+					</section>
+
 			</div>
 
 		<!-- Footer -->
@@ -85,6 +93,7 @@
 					//Write transladed headline in Main wrapper
 					$("#MainHeadline").html(translate('Header.Links.Startseite'));
 					Table_UserDataList()
+					Table_DonationList("Startseite.DontationText")
 					Promise.all([GetTotalSpend(), GeTotalKWH(), getMYData()]).then((values) => {
 						let RestGuthaben = CentToEuro(values[2].me.payed_ammount - (values[0].total + (values[1].kwh*values[1].price)))
 						let Guthaben = CentToEuro(values[2].me.payed_ammount)

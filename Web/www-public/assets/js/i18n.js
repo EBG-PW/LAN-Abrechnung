@@ -17,7 +17,8 @@ const i18n = new I18n({
       },
       Startseite: {
         Guthaben: "Dein Restguthaben beträgt {{restguthaben}}",
-        Text: "Dein Startguthaben beträgt {{guthaben}}, davon werden dir {{essenkosten}} für Essen abgezogen und {{stromkosten}} für verbrauchte Energie."
+        Text: "Dein Startguthaben beträgt {{guthaben}}, davon werden dir {{essenkosten}} für Essen abgezogen und {{stromkosten}} für verbrauchte Energie.",
+        DontationText: "Großes Dankeschön an die gelisteten Gäste, diese haben insgesamt {{TotalDonated}} gespendet."
       },
       Shoppingseite: {
         Text: "Deine gesamten Ausgaben auf Buffet, Getränke und Bestellungen belaufen sich auf {{total}}."
@@ -174,7 +175,8 @@ const i18n = new I18n({
       },
       Startseite: {
         Guthaben: "Your remaining balance is {{restguthaben}}",
-        Text: "Your start balance is {{guthaben}}, from which you will be deducted {{essenkosten}} for food and {{stromkosten}} for used energy."
+        Text: "Your start balance is {{guthaben}}, from which you will be deducted {{essenkosten}} for food and {{stromkosten}} for used energy.",
+        DontationText: "Special thanks to the people listed below, they donated {{TotalDonated}}.",
       },
       Shoppingseite: {
         Text: "Your total expenses on Buffet, Drinks and Orders are {{total}}."

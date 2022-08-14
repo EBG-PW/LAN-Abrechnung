@@ -179,7 +179,7 @@ function Table_InventoryList() {
 }
 
 //This is used in Inventory.html
-function Table_DonationList(){
+function Table_DonationList(Translation){
     GetDonations().then(function (DonationData) {
         let TotalDonated = 0;
         for (let i = 0; i < DonationData.Donation_response.length; i++) {
@@ -188,7 +188,7 @@ function Table_DonationList(){
         }
 
         //Add Table Format parameter...
-        $("#SpendeText").html(`<h3>${translate('InventarSeite.DontationText', {TotalDonated: CentToEuro(TotalDonated)})}</h3>`)
+        $("#SpendeText").html(`<h3>${translate(Translation, {TotalDonated: CentToEuro(TotalDonated)})}</h3>`)
         $("#SpendeTabelle").html(CreateTable(['username', 'total_donation'], DonationData.Donation_response, 'SpendeTabelle', true))
     });
 }
