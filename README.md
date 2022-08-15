@@ -34,6 +34,7 @@ Tested on Windows 10/11 and Linux Debian 11/Ubuntu 22.04
 | Methode | Route | Permissions | Parameter | Description |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
 | GET | / | - | - | Show Stats of the Relay |
+| GET | /raw | - | - | Show Raw Data of the Relay |
 
 # Permissions
 Every route or group of routes got a set permission, a list is here:

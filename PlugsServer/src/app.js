@@ -7,6 +7,7 @@ const Cache = require('js-object-cache');
 
 //Some variables to keep track of metrics
 const StatsCounters = {
+  TotalCurrentPower: 0,
   OpenWebSockets: 0,
   InMessagesCounter: 0n,
   OutMessagesCounter: 0n,
@@ -15,6 +16,7 @@ const StatsCounters = {
   InMessagesPerSecond: 0,
   OutMessagesPerSecond: 0,
   CalculatedMessagesCounterinS: 10,
+  TotalWebRESTRequests: 0n,
 }
 
 // This cache has the controler token as key and stores the controler object as value
@@ -264,6 +266,14 @@ setInterval(function () {
   //Calculate avrage per second
   StatsCounters.InMessagesPerSecond = Number(BigInt(IntMessageDiff) * 100n / BigInt(StatsCounters.CalculatedMessagesCounterinS)) / 100;
   StatsCounters.OutMessagesPerSecond = Number(BigInt(OutMessageDiff) * 100n / BigInt(StatsCounters.CalculatedMessagesCounterinS)) / 100;
+
+  //Calculate current total power flowing
+  let CurrentPowerTemp = 0;
+  PlugHistoryCache.keys().forEach(function (key) {
+    const PowerArray = PlugHistoryCache.get(key).data
+    CurrentPowerTemp += PowerArray[PowerArray.length - 1].Power;
+  });
+  StatsCounters.TotalCurrentPower = CurrentPowerTemp;
 }, StatsCounters.CalculatedMessagesCounterinS * 1000);
 
 //Push plugs data to PostgreSQL
@@ -282,7 +292,13 @@ setInterval(function () {
 }, process.env.write_to_pg_every * 1000);
 
 app.get('/*', (res, req) => {
+  StatsCounters.TotalWebRESTRequests++;
   res.writeStatus('200 OK').end(`This is a websocket relay for powerplugs!\n\nStats:\nCurrent open sockets ${StatsCounters.OpenWebSockets}\nTotal messages received: ${StatsCounters.InMessagesCounter} Currently: ${StatsCounters.InMessagesPerSecond}/s\nTotal messages send: ${StatsCounters.OutMessagesCounter} Currently: ${StatsCounters.OutMessagesPerSecond}/s\n\nRaw: ${util.inspect(StatsCounters, { showHidden: true, depth: null, colors: false })}`);
+})
+
+app.get('/raw', (res, req) => {
+  StatsCounters.TotalWebRESTRequests++;
+  res.writeStatus('200 OK').end(util.inspect(StatsCounters, { showHidden: true, depth: null, colors: false }));
 })
 
 process.on('message', function (packet) {
