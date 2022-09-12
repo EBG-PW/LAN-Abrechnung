@@ -1014,6 +1014,24 @@ const UpdatePermissionFromUser = function (userid, permission, read, write) {
   });
 }
 
+/**
+ * This function will add a given permission to a user
+ * @param {Number} userid
+ * @param {string} permission_group
+ * @returns {Promise}
+ */
+ const AddPermissionGroupToUser = function (userid, permission_group) {
+  return new Promise(function (resolve, reject) {
+    
+    pool.query(`INSERT INTO guests_permissions(userid, permission, read, write) VALUES ($1,$2,$3,$4)`, [
+      userid, permission, read, write
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
 let get = {
   Guests: {
     All: GetGuests,
