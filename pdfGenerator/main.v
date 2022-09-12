@@ -4,6 +4,14 @@ import os
 fn main() {
 	mut user := 'BolverBlitz'
 	mut headline := 'Abrechnung'
+
+	for i := 1; i <= 200; i++ {
+		genpdf(user, headline, 'pdf_' + i.str() + '.pdf')
+	}
+	
+}
+
+fn genpdf(user string, headline string, filename string) {
 	mut doc := pdf.Pdf{}
 	doc.init()
 
@@ -58,7 +66,6 @@ fn main() {
 	// Declare the base (Type1 font) we want use
 	if !doc.use_base_font(fnt_params_text.font_name) {
 		eprintln('ERROR: Font $fnt_params_text.font_name not available!')
-		return
 	}
 
 	// Write elements to PDF
@@ -75,8 +82,12 @@ fn main() {
 	)
 
 	// render the PDF
-	txt := doc.render() ?
+	txt := doc.render() or {
+		eprintln('ERROR: Doc.Render!')
+		exit(1)
+	}
 
-	// write it to a file
-	os.write_file_array('example01.pdf', txt) ?
+	os.write_file_array(filename, txt) or {
+		eprintln('ERROR: Doc.Render!')
+	}
 }
