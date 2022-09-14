@@ -1,5 +1,6 @@
 const pg = require('pg');
 const { log } = require('../../lib/logger');
+const permission_groups = require('../../../config/permission_groups');
 
 const pool = new pg.Pool({
   user: process.env.DB_USER,
@@ -1015,20 +1016,33 @@ const UpdatePermissionFromUser = function (userid, permission, read, write) {
 }
 
 /**
- * This function will add a given permission to a user
+ * This function will set a given permission to a user and remove all other permissions
  * @param {Number} userid
  * @param {string} permission_group
  * @returns {Promise}
  */
- const AddPermissionGroupToUser = function (userid, permission_group) {
+ const SetPermissionGroupToUser = function (userid, permission_group) {
   return new Promise(function (resolve, reject) {
-    
-    pool.query(`INSERT INTO guests_permissions(userid, permission, read, write) VALUES ($1,$2,$3,$4)`, [
-      userid, permission, read, write
-    ], (err, result) => {
-      if (err) { reject(err) }
-      resolve(result);
-    });
+    if(permission_group in permission_groups){
+      let result_list = [];
+      pool.query(`DELETE FROM guests_permissions WHERE userid = $1`, [
+        userid
+      ], (err, result) => {
+        if (err) { reject(err) }
+        for (const permission in permission_groups[permission_group].permissions) {
+          console.log(permission);
+          pool.query(`INSERT INTO guests_permissions(userid, permission, read, write) VALUES ($1,$2,$3,$4)`, [
+            userid, permission, permission_groups[permission_group].permissions[permission].read, permission_groups[permission_group].permissions[permission].write
+          ], (err, result) => {
+            if (err) { reject(err) }
+            result_list.push(result);
+          });
+        };
+        resolve(result_list);
+      });
+    }else{
+      reject('Permission group not found');
+    }
   });
 }
 
@@ -1093,6 +1107,7 @@ let write = {
   Permissions: {
     Add: AddPermissionToUser,
     Update: UpdatePermissionFromUser,
+    SetGroup: SetPermissionGroupToUser
   },
   RegToken: {
     NewToken: WriteNewRegToken

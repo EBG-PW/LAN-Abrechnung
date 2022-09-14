@@ -97,8 +97,8 @@ router.post("/register", limiter, async (reg, res, next) => {
                 DB.del.RegToken.DeleteToken(value.Token).then(function (del_response) {
                     if (del_response.rowCount === 1) {
                         bcrypt.hash(value.Password, parseInt(process.env.saltRounds), function (err, hash) {
-                            DB.write.Guests.UpdateCollumByID(response.rows[0].userid, 'passwort', hash).then(function (update_response) {
-                                SendEvent.ToProcess(Telegram_Process_Name, { event: 'NewRegestration', message: { chatid: response.rows[0].userid } }).then(function (response) {
+                            Promise.all([DB.write.Permissions.SetGroup(response.rows[0].userid, "user_group"), DB.write.Guests.UpdateCollumByID(response.rows[0].userid, 'passwort', hash)]).then(function (update_response) {
+                                SendEvent.ToProcess(Telegram_Process_Name, { event: 'NewRegestration', message: { chatid: response.rows[0].userid } }).then(function (event_response) {
                                     log.info(`[${PluginName}] Sent Event to Telegram Process`);
                                     res.status(200);
                                     res.json({
@@ -109,6 +109,9 @@ router.post("/register", limiter, async (reg, res, next) => {
                                     log.error(err)
                                     throw new Error("SendEvent");
                                 });
+                            }).catch(function (err) {
+                                log.error(err)
+                                throw new Error("DBError");
                             });
                         });
                     } else {

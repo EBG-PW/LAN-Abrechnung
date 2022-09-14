@@ -43,7 +43,7 @@ const tokenpermissions = (skip = false) => {
             }
         }
 
-        TV.check(UserToken, para).then(function (Check) {
+        TV.check(UserToken, para, false).then(function (Check) {
             if (Check.State) {
                 DB.get.Permissions.Get(Check.Data.userid).then(function (Permissions) {
                     const PermissionsObject = {

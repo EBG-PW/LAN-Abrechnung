@@ -59,7 +59,8 @@ app.get('/UserBestellungen', (req, res) => {
 
 app.use('/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets')));
 app.use('/api/v1/login/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets'))); //For Login plugin
-app.use('/api/v1/register/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets'))); //For Register plugin
+app.use('/api/v1/login/login/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets'))); //For Login plugin
+app.use('/api/v1/register/load/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets'))); //For Register plugin
 
 app.use('/api/v1', api);
 
