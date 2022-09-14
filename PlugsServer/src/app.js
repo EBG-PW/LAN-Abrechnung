@@ -3,7 +3,7 @@ const util = require('util')
 const db = require('../lib/postgres');
 const { log } = require('../../Web/lib/logger');
 const app = require('uWebSockets.js').App();
-const {writeDatapoint} = require('../lib/influx');
+const { writeDatapoint } = require('../lib/influx');
 const Cache = require('js-object-cache');
 
 //Some variables to keep track of metrics
@@ -167,7 +167,13 @@ app.ws('/client', {
         PlugHistoryCache.set_flow(data_payload.data.ID, data_payload.data);
         StatsCounters.OutMessagesCounter++;
         app.publish(`/plug/id/${data_payload.data.ID}`, JSON.stringify({ event: commandWebuser.plug.power, data_payload: data_payload.data }));
-        writeDatapoint('PowerPlug', data_payload.data.ID, data_payload.data);
+        const InfluxPlugObject = { ...data_payload.data }; // Clone the object wihout outer reference, inner reference is still there but there isnt a inner object anyway
+        delete InfluxPlugObject.IP
+        delete InfluxPlugObject.ControlerToken
+        delete InfluxPlugObject.ID
+        writeDatapoint('PowerPlug', InfluxPlugObject, data_payload.data.ID.toString()).catch(function (err) {
+          log.error(err);
+        });
       } else {
         //The requested controler dosn´t exist...
         ws.send(JSON.stringify({ event: commandClient.failed, data_payload: { error: 'Not permitted' } }));
@@ -305,7 +311,7 @@ app.get('/raw', (res, req) => {
 
 process.on('message', function (packet) {
   const { event, data } = packet.data;
-  if(event === 'PlugsToggleAllowedState'){
+  if (event === 'PlugsToggleAllowedState') {
     ReBuildControlerCache().then(function (Controler) {
       log.system('Controler cache rebuilt. Reason: PlugsToggleAllowedState Event');
       db.Controler.ByUserID(data.UserID).then(function (result) {

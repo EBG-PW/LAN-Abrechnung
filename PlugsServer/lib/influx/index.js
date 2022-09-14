@@ -1,4 +1,5 @@
 const Influxdb = require('influxdb-v2');
+const { log } = require('../../../Web/lib/logger');
 
 const db = new Influxdb({
 	host: process.env.Influx_Host,
@@ -14,12 +15,12 @@ const db = new Influxdb({
  * @param {String} host 
  */
 const writeDatapoint = async (measurement, value, host) => {
-	console.log(`Writing Datapoint to InfluxDB: ${measurement} of ${host}`);
+	log.info(`Writing Datapoint to InfluxDB: ${measurement} of ${host}`);
 	await db.write(
 		{
 			precision: 's',
-			bucket: process.env.bucket,
-			org: process.env.orga
+			bucket: process.env.Infux_Bucket,
+			org: process.env.Influx_Orga
 		}, [{
 			measurement: measurement,
 			tags: { host: host },
