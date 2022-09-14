@@ -870,7 +870,7 @@ let AddPlug = function (IP, plugs_controler) {
  */
 let GetInvetory = function () {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT * FROM products`, (err, result) => {
+    pool.query(`SELECT *, (bought*10/amount) AS Factor FROM products ORDER BY Factor DESC`, (err, result) => {
       if (err) { reject(err) }
       resolve(result);
     });
