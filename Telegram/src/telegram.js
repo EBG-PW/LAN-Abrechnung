@@ -1593,7 +1593,7 @@ const SendNewOrderMessage = (EssenListe, Zeit, ID, WebPanelURL) => {
                     PromiseArray.push(bot.sendMessage(rows[i].userid, Message, { parseMode: 'html', replyMarkup }));
                 }
             }
-            Promise.All(PromiseArray).then(function (msg_send) {
+            Promise.all(PromiseArray).then(function (msg_send) {
                 resolve(msg_send)
             }).catch(function (error) {
                 reject(error)
