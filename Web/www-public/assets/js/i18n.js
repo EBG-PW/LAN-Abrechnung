@@ -86,6 +86,16 @@ const i18n = new I18n({
           button_chancePlugAllowedState: "Steckdose Erlauben",
           dropdown_permisionGroup: "Berechtigungs Gruppe",
         },
+        GästeNotPayedTabelle: {
+          username: "Nutzername",
+          userid: "NutzerID",
+          payed: "Gezahlt",
+          payed_ammount: "Zahlung",
+          pyed_id: "Zahlungs ID",
+          button_chanceSetPayed: "Zahlung Erfolgreich",
+          setPayed: "Hat gezahlt",
+          headline: "Gäste die noch nicht gezahlt haben"
+        },
         AdminUserOrderTabelle: {
           username: "Nutzername",
           artikel: "Artikel",
@@ -244,6 +254,16 @@ const i18n = new I18n({
           pyed_id: "Payment ID",
           button_chancePlugAllowedState: "Plug Allowed",
           dropdown_permisionGroup: "Permission Group",
+        },
+        GästeNotPayedTabelle: {
+          username: "Username",
+          userid: "UserID",
+          payed: "Payed",
+          payed_ammount: "Payment",
+          pyed_id: "Payment ID",
+          button_chanceSetPayed: "Payed",
+          setPayed: "Has payed",
+          headline: "Users who have not payed yet"
         },
         AdminUserOrderTabelle: {
           username: "Username",

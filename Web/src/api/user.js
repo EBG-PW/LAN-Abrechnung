@@ -31,6 +31,10 @@ const SetLang = Joi.object({
     lang: Joi.string().required()
 });
 
+const setPayedState = Joi.object({
+    userid: Joi.string().required()
+});
+
 const SetPermissionGroup = Joi.object({
     userid: Joi.number().required(),
     permgroup: Joi.string().required()
@@ -112,6 +116,27 @@ router.post("/setLang", tokenpermissions(), limiter, async (reg, res, next) => {
                     log.error(error);
                     throw new Error("DBError");
                 })
+        } else {
+            throw new Error("NoPermissions");
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.post("/setPayedState", tokenpermissions(), limiter, async (reg, res, next) => {
+    try {
+        if (reg.permissions.write.includes('admin_finanzen') || reg.permissions.write.includes('admin_all')) {
+            const value = await setPayedState.validateAsync(reg.body);
+            DB.write.Guests.UpdateCollumByID(value.userid, 'payed', true).then(function (Check) {
+                res.status(200);
+                res.json({
+                    Message: `Payed State chanced to true`
+                });
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
         } else {
             throw new Error("NoPermissions");
         }

@@ -68,6 +68,32 @@ function Table_AdminUserDataList() {
 
         //Add Table Format parameter...
         $("#AdminUsersTabelle").html(CustomCreateTable(['username', 'userid', 'payed', 'admin', 'vaccinated', 'payed_ammount', 'pyed_id', 'button_chancePlugAllowedState', 'dropdown_permisionGroup'], OptionsList, AdminUserDataList.GuestsList_response, 'GästeAdminUserTabelle', true))
+        
+        let NotPayedUsers = []
+        AdminUserDataList.GuestsList_response.map((user, index) => {
+            if(!user.payed){
+                user.button_chanceSetPayed = {
+                    text: translate('Tabeles.GästeNotPayedTabelle.setPayed'),
+                    style: 'color: #00ff00 !important;',
+                    function: "setPayed_state",
+                    functionVar: user.userid,
+                    Convert: false
+                }
+                NotPayedUsers.push(user)
+            }
+        });
+
+        const OptionsListNotPayed = {
+            KeyButtonList: ['button_chanceSetPayed']
+        }
+        if(NotPayedUsers.length > 0){
+            $("#NotPayedUsers").html(translate('Tabeles.GästeNotPayedTabelle.headline'))
+            $("#NotPayedUsersTabelle").html(CustomCreateTable(['username', 'userid', 'payed', 'payed_ammount', 'pyed_id', 'button_chanceSetPayed'], OptionsListNotPayed, NotPayedUsers, 'GästeNotPayedTabelle', true))
+        }else{
+            $("#NotPayedUsers").html("")
+            $("#NotPayedUsers").removeClass('major')
+            $("#NotPayedUsersTabelle").html("")
+        }
     });
 }
 
