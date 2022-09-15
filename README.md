@@ -2,14 +2,14 @@
 Tested on Windows 10/11 and Linux Debian 11/Ubuntu 22.04
 
 # Features
-- Member Regestration
-- Member Administration
-- Powerplug Monitoring
-- Powerplug Administration
-- Buffet Managment
-- Buying from Buffets
+- Member regestration & administration
+- Powerplug monitoring & administration
+- Buffet Buying & Managment
+- Advanced permission and group managment with custom groups
 - Pushnotifications
-- Fully Translated
+- Dynamic cost calculation by user
+- Food order managment
+- Fully translated
 - Invoices
 - Donations
 
@@ -22,7 +22,8 @@ Tested on Windows 10/11 and Linux Debian 11/Ubuntu 22.04
 # Installation
 - Clone this repo
 - Run `node install.js`
-- 
+- Build the plugclient
+
 # API
 
 ### WebServer
