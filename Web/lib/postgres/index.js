@@ -1030,7 +1030,6 @@ const UpdatePermissionFromUser = function (userid, permission, read, write) {
       ], (err, result) => {
         if (err) { reject(err) }
         for (const permission in permission_groups[permission_group].permissions) {
-          console.log(permission);
           pool.query(`INSERT INTO guests_permissions(userid, permission, read, write) VALUES ($1,$2,$3,$4)`, [
             userid, permission, permission_groups[permission_group].permissions[permission].read, permission_groups[permission_group].permissions[permission].write
           ], (err, result) => {
