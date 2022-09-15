@@ -123,3 +123,34 @@ function delete_user_order_by_key(key){
     });
   }
 }
+
+/**
+ * Will set a new permissions group to the selected user
+ * @param {string} userid
+ * @param {string} dropdown_id
+ * @returns {Promise}
+ */
+function change_permisionGroup(userid, dropdown_id){
+  const getUrl = window.location;
+  const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+  if (localStorage.getItem("Token") !== null) {
+    const posting = $.ajax({
+      url: `${baseUrl}api/v1/user/setPermisionGroup`,
+      type: "POST",
+      contentType: "application/json; charset=utf-8",
+      headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
+      data: JSON.stringify({userid: userid, permgroup: $(`#${dropdown_id}`).val()})
+    });
+    posting.done(function(result) {
+      Table_AdminUserDataList()
+    })
+    posting.fail(function(err) {
+      if(err.status === 401){
+        console.log(err)
+      }else if(err.status === 500){
+        console.log(err)
+        alert(translate('Buttons.toggle_allowed_state.no_chance'))
+      }
+    });
+  }
+}

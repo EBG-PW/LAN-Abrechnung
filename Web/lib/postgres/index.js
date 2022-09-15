@@ -29,6 +29,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     payed_ammount bigint,
     lang text,
     admin boolean DEFAULT False,
+    permission_group text,
     vaccinated text,
     time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP)`, (err, result) => {
   if (err) { log.error(`DB Create guests: ${err}`) }
@@ -154,7 +155,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS bestellungen (
  */
 let GetGuests = function () {
   return new Promise(function (resolve, reject) {
-    pool.query('SELECT guests.userid, guests.username, guests.passwort, guests.pc, guests.displays_count, guests.network_cable, guests.vr, guests.expected_arrival, guests.expected_departure, guests.accepted_rules, guests.accepted_legal, guests.payed, guests.pyed_id, guests.admin, guests.vaccinated, guests.time, guests.payed_ammount, guests.lang, plugs.allowed_state FROM guests LEFT JOIN plugs ON guests.userid = plugs.userid', (err, result) => {
+    pool.query('SELECT guests.userid, guests.username, guests.passwort, guests.pc, guests.displays_count, guests.network_cable, guests.vr, guests.expected_arrival, guests.expected_departure, guests.accepted_rules, guests.accepted_legal, guests.payed, guests.pyed_id, guests.admin, guests.permission_group, guests.vaccinated, guests.time, guests.payed_ammount, guests.lang, plugs.allowed_state FROM guests LEFT JOIN plugs ON guests.userid = plugs.userid', (err, result) => {
       if (err) { reject(err) }
       resolve(result.rows);
     });
@@ -1037,7 +1038,13 @@ const UpdatePermissionFromUser = function (userid, permission, read, write) {
             result_list.push(result);
           });
         };
-        resolve(result_list);
+        pool.query(`UPDATE guests SET permission_group = $2 WHERE userid = $1`, [
+          userid, permission_group
+        ], (err, result) => {
+          if (err) { reject(err) }
+          result_list.push(result);
+          resolve(result_list);
+        });
       });
     }else{
       reject(new Error('Permission group not found'));

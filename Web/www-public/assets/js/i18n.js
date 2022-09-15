@@ -79,11 +79,12 @@ const i18n = new I18n({
           username: "Nutzername",
           userid: "NutzerID",
           payed: "Gezahlt",
-          admin: "Admin",
+          admin: "TG Admin",
           vaccinated: "Geimpft",
           payed_ammount: "Zahlung",
           pyed_id: "Zahlungs ID",
-          button_chancePlugAllowedState: "Steckdose Erlauben"
+          button_chancePlugAllowedState: "Steckdose Erlauben",
+          dropdown_permisionGroup: "Berechtigungs Gruppe",
         },
         AdminUserOrderTabelle: {
           username: "Nutzername",
@@ -237,11 +238,12 @@ const i18n = new I18n({
           username: "Username",
           userid: "UserID",
           payed: "Payed",
-          admin: "Admin",
+          admin: "TG Admin",
           vaccinated: "Vaccinated",
           payed_ammount: "Payment",
           pyed_id: "Payment ID",
-          button_chancePlugAllowedState: "Plug Allowed"
+          button_chancePlugAllowedState: "Plug Allowed",
+          dropdown_permisionGroup: "Permission Group",
         },
         AdminUserOrderTabelle: {
           username: "Username",

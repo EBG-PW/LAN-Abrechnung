@@ -1,8 +1,8 @@
 const setColor = (boolean, mode) => {
-    if(mode === 'red_green'){
-        if(boolean || boolean === "true"){
+    if (mode === 'red_green') {
+        if (boolean || boolean === "true") {
             return "#00fa00"
-        }else{
+        } else {
             return "#fafa00"
         }
     }
@@ -45,6 +45,7 @@ function Table_AdminUserDataList() {
                 style: 'width: 100%;',
                 options: []
             }
+
             for (const [key, value] of Object.entries(PermisionGroup)) {
                 AdminUserDataList.GuestsList_response[i].dropdown_permisionGroup.options.push({
                     tooltip: PermisionGroup[key].description,
@@ -52,6 +53,12 @@ function Table_AdminUserDataList() {
                     text: PermisionGroup[key].name
                 })
             }
+
+            AdminUserDataList.GuestsList_response[i].dropdown_permisionGroup.options.sort(function (a) {
+                if (a.value === AdminUserDataList.GuestsList_response[i].permission_group) return -1;
+                if (a.value !== AdminUserDataList.GuestsList_response[i].permission_group) return 1;
+                return 0;
+            });
         }
 
         const OptionsList = {
@@ -177,7 +184,7 @@ function Table_UserBestellungList(orderid) {
 //This is used in Inventory.html
 function Table_InventoryList() {
     //Request Userdata for the Usertable
-    let [TotalCost, SoledAmount, InventoryAmount] = [0,0,0];
+    let [TotalCost, SoledAmount, InventoryAmount] = [0, 0, 0];
 
     GetInventory().then(function (InventoryData) {
         for (let i = 0; i < InventoryData.Inventory_response.length; i++) {
@@ -185,7 +192,7 @@ function Table_InventoryList() {
             InventoryData.Inventory_response[i].left = InventoryData.Inventory_response[i].amount - InventoryData.Inventory_response[i].bought
 
             //Calculate some total costs
-            if(InventoryData.Inventory_response[i].produktname !== 'Spende'){
+            if (InventoryData.Inventory_response[i].produktname !== 'Spende') {
                 SoledAmount += InventoryData.Inventory_response[i].price * InventoryData.Inventory_response[i].bought
                 InventoryAmount += InventoryData.Inventory_response[i].price * InventoryData.Inventory_response[i].left
                 TotalCost += InventoryData.Inventory_response[i].price * InventoryData.Inventory_response[i].amount
@@ -195,13 +202,13 @@ function Table_InventoryList() {
         }
 
         //Add Table Format parameter...
-        $("#InventarText").html(`<h3>${translate('InventarSeite.Text', {SoledAmount: CentToEuro(SoledAmount), InventoryAmount: CentToEuro(InventoryAmount), TotalCost: CentToEuro(TotalCost)})}</h3>`)
+        $("#InventarText").html(`<h3>${translate('InventarSeite.Text', { SoledAmount: CentToEuro(SoledAmount), InventoryAmount: CentToEuro(InventoryAmount), TotalCost: CentToEuro(TotalCost) })}</h3>`)
         $("#InventarTabelle").html(CreateTable(['produktname', 'produktcompany', 'amount', 'bought', 'left', 'price'], InventoryData.Inventory_response, 'InventoryTabelle', true))
     });
 }
 
 //This is used in Inventory.html
-function Table_DonationList(Translation){
+function Table_DonationList(Translation) {
     GetDonations().then(function (DonationData) {
         let TotalDonated = 0;
         for (let i = 0; i < DonationData.Donation_response.length; i++) {
@@ -210,7 +217,7 @@ function Table_DonationList(Translation){
         }
 
         //Add Table Format parameter...
-        $("#SpendeText").html(`<h3>${translate(Translation, {TotalDonated: CentToEuro(TotalDonated)})}</h3>`)
+        $("#SpendeText").html(`<h3>${translate(Translation, { TotalDonated: CentToEuro(TotalDonated) })}</h3>`)
         $("#SpendeTabelle").html(CreateTable(['username', 'total_donation'], DonationData.Donation_response, 'SpendeTabelle', true))
     });
 }
