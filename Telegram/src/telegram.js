@@ -1568,6 +1568,7 @@ const WebRegSendConfim = (ChatID) => {
  */
 const SendNewOrderMessage = (EssenListe, Zeit, ID, WebPanelURL) => {
     return new Promise(function (resolve, reject) {
+        let PromiseArray = [];
         let replyMarkup = bot.inlineKeyboard([
             [
                 bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'PushNotification.Buttons.Webpanel'), { url: `${WebPanelURL}/UserBestellungen?${ID}` })
@@ -1576,9 +1577,29 @@ const SendNewOrderMessage = (EssenListe, Zeit, ID, WebPanelURL) => {
 
         const Message = newi18n.translate(process.env.Fallback_Language, 'PushNotification.NewOrder', { EssenListe: EssenListe, Zeit: Zeit, ID: ID, WebPanelURL: WebPanelURL });
 
-        bot.sendMessage(mainconfig.LanChat, Message, { parseMode: 'html', replyMarkup }).then(function (msg_send) {
-            resolve(msg_send)
+        PromiseArray.push(bot.sendMessage(mainconfig.LanChat, Message, { parseMode: 'html', replyMarkup }));
+
+        DB.get.Guests.AllSave().then(function (rows) {
+            for (let i = 0; i < rows.length; i++) {
+                if (rows[i].lang !== process.env.Fallback_Language) {
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton(newi18n.translate(rows[i].lang, 'PushNotification.Buttons.Webpanel'), { url: `${WebPanelURL}/UserBestellungen?${ID}` })
+                        ]
+                    ]);
+
+                    const Message = newi18n.translate(rows[i].lang, 'PushNotification.NewOrder', { EssenListe: EssenListe, Zeit: Zeit, ID: ID, WebPanelURL: WebPanelURL });
+
+                    PromiseArray.push(bot.sendMessage(rows[i].userid, Message, { parseMode: 'html', replyMarkup }));
+                }
+            }
+            Promise.All(PromiseArray).then(function (msg_send) {
+                resolve(msg_send)
+            }).catch(function (error) {
+                reject(error)
+            });
         }).catch(function (error) {
+            log.error(error)
             reject(error)
         });
     });
