@@ -311,7 +311,8 @@ bot.on(/^\/payed/i, (msg) => {
         } else {
             username = msg.from.first_name.toString();
         }
-        let Kosten = CentToEuro(parseInt(mainconfig.LanDauer) * parseInt(preisliste.FixKostenProTag));
+        let Kosten = CentToEuro(parseInt(Guest_response[0].payed_ammount));
+        
         let Status_String = ""
         if (Guest_response[0].payed === true) {
             Status_String = newi18n.translate(tglang_response, 'Payed.True')
@@ -1533,23 +1534,28 @@ const WebRegSendConfim = (ChatID) => {
                 ]
             ]);
 
-            let Kosten = CentToEuro(parseInt(mainconfig.LanDauer) * parseInt(preisliste.FixKostenProTag));
             let PayCode = randomstring.generate({
                 length: 8,
                 charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
             });
-
-            let Money_Amount = parseInt(mainconfig.LanDauer) * parseInt(preisliste.FixKostenProTag);
-            DB.write.Guests.UpdateCollumByID(ChatID, 'payed_ammount', Money_Amount).then(function (money_edit_response) {
-                DB.write.Guests.UpdateCollumByID(ChatID, 'pyed_id', PayCode).then(function (guest_edit_response) {
-                    bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.Sucsess', { Bank: mainconfig.KontoBank, IBAN: mainconfig.KontoIban, Kontoinhaber: mainconfig.KontoInhaber, Verwendungszweg: mainconfig.Verwendungszweg, PayCode: PayCode, Kosten: Kosten }), { parseMode: 'html', replyMarkup }).then(function (msg_send) {
-                        resolve(msg_send)
+            DB.get.Guests.ByID(ChatID).then(function (Guest_Response) {
+                const expected_arrival = new Date(Guest_Response[0].expected_arrival);
+                const expected_departure = new Date(Guest_Response[0].expected_departure);
+                const diffTime = Math.abs(expected_departure - expected_arrival);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                console.log(diffDays)
+                let Money_Amount = parseInt(diffDays) * parseInt(preisliste.FixKostenProTag);
+                DB.write.Guests.UpdateCollumByID(ChatID, 'payed_ammount', Money_Amount).then(function (money_edit_response) {
+                    DB.write.Guests.UpdateCollumByID(ChatID, 'pyed_id', PayCode).then(function (guest_edit_response) {
+                        bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.Sucsess', { Bank: mainconfig.KontoBank, IBAN: mainconfig.KontoIban, Kontoinhaber: mainconfig.KontoInhaber, Verwendungszweg: mainconfig.Verwendungszweg, PayCode: PayCode, Kosten: CentToEuro(Money_Amount), DiffDays: diffDays }), { parseMode: 'html', replyMarkup }).then(function (msg_send) {
+                            resolve(msg_send)
+                        }).catch(function (error) {
+                            reject(error)
+                        })
                     }).catch(function (error) {
                         reject(error)
                     })
-                }).catch(function (error) {
-                    reject(error)
-                })
+                });
             });
         }).catch(function (error) {
             log.error(error)
