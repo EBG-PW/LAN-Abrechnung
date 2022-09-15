@@ -29,6 +29,10 @@ const SetLang = Joi.object({
     lang: Joi.string().required()
 });
 
+const SetPermissionGroup = Joi.object({
+    userid: Joi.number().required(),
+    permgroup: Joi.string().required()
+});
 
 const router = express.Router();
 
@@ -105,6 +109,27 @@ router.post("/setLang", tokenpermissions(), limiter, async (reg, res, next) => {
                 }).catch(function (error) {
                     log.error(error);
                     throw new Error("DBError");
+                })
+        } else {
+            throw new Error("NoPermissions");
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.post("/setPermisionGroup", tokenpermissions(), limiter, async (reg, res, next) => {
+    try {
+        if (reg.permissions.write.includes('admin_permissions') || reg.permissions.write.includes('admin_all')) {
+            const value = await SetPermissionGroup.validateAsync(reg.body);
+            DB.write.Permissions.SetGroup(value.userid, value.permgroup).then(function (Check) {
+                    res.status(200);
+                    res.json({
+                        Message: `Permissionsgroup chanced to ${value.permgroup}`
+                    });
+                }).catch(function (error) {
+                    log.error(error);
+                    next(error);
                 })
         } else {
             throw new Error("NoPermissions");

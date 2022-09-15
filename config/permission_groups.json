@@ -50,6 +50,10 @@
       "admin_user": {
         "read": true,
         "write": true
+      },
+      "admin_permissions": {
+        "read": true,
+        "write": true
       }
     }
   }

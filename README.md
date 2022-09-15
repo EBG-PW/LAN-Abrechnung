@@ -47,6 +47,7 @@ Admin:
 |admin_inventory| Can see the entire inventora and donations made|
 |admin_strom| Can set the state of every plug and can request them|
 |admin_user| Can manage users
+|admin_permissions| Can manage permissions
 User:
 | Permission | Description |
 | ------------- | ------------- |

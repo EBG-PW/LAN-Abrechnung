@@ -1041,7 +1041,7 @@ const UpdatePermissionFromUser = function (userid, permission, read, write) {
         resolve(result_list);
       });
     }else{
-      reject('Permission group not found');
+      reject(new Error('Permission group not found'));
     }
   });
 }
