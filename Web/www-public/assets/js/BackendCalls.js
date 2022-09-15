@@ -88,6 +88,35 @@ function getAdminUserData() {
 }
 
 /**
+ * Will get PermisionGroups from the backend
+ * @returns {Promise}
+ */
+ function getPermisionGroup() {
+  return new Promise(function (resolve, reject) {
+    const getUrl = window.location;
+    const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
+    if (localStorage.getItem("Token") !== null) {
+      const posting = $.ajax({
+        url: `${baseUrl}api/v1/user/PermisionGroup`,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        headers: { Authorization: "Bearer " + localStorage.getItem("Token") }
+      });
+      posting.done(function (result) {
+        resolve(result)
+      })
+      posting.fail(function (err) {
+        if (err.status === 401) {
+          resolve(err.status)
+        } else if (err.status === 500) {
+          resolve(err.status)
+        }
+      });
+    }
+  });
+}
+
+/**
  * Will get UserOrders from the backend
  * @param {string} OrderID
  * @returns {Promise}

@@ -10,7 +10,9 @@ const setColor = (boolean, mode) => {
 
 //This is used in Users.html
 function Table_AdminUserDataList() {
-    getAdminUserData().then(function (AdminUserDataList) {
+    Promise.all([getAdminUserData(), getPermisionGroup()]).then(function (AdminUserData) {
+        const AdminUserDataList = AdminUserData[0];
+        const PermisionGroup = AdminUserData[1].PermissionGroups;
         for (let i = 0; i < AdminUserDataList.GuestsList_response.length; i++) {
             //Set Flags behind username
             AdminUserDataList.GuestsList_response[i].username = `${AdminUserDataList.GuestsList_response[i].username} ${convertFlags(AdminUserDataList.GuestsList_response[i].lang)}`
@@ -36,9 +38,29 @@ function Table_AdminUserDataList() {
                 functionVar: AdminUserDataList.GuestsList_response[i].userid,
                 Convert: false
             }
+            AdminUserDataList.GuestsList_response[i].dropdown_permisionGroup = {
+                function: "change_permisionGroup",
+                functionVar: AdminUserDataList.GuestsList_response[i].userid,
+                id: `change_permisionGroup_${i}`,
+                style: 'width: 100%;',
+                options: []
+            }
+            for (const [key, value] of Object.entries(PermisionGroup)) {
+                AdminUserDataList.GuestsList_response[i].dropdown_permisionGroup.options.push({
+                    tooltip: PermisionGroup[key].description,
+                    value: key,
+                    text: PermisionGroup[key].name
+                })
+            }
         }
+
+        const OptionsList = {
+            KeyButtonList: ['button_chancePlugAllowedState'],
+            KeyDropdownList: ['dropdown_permisionGroup']
+        }
+
         //Add Table Format parameter...
-        $("#AdminUsersTabelle").html(ButtonCreateTable(['username', 'userid', 'payed', 'admin', 'vaccinated', 'payed_ammount', 'pyed_id', 'button_chancePlugAllowedState'], ['button_chancePlugAllowedState'], AdminUserDataList.GuestsList_response, 'GästeAdminUserTabelle', true))
+        $("#AdminUsersTabelle").html(CustomCreateTable(['username', 'userid', 'payed', 'admin', 'vaccinated', 'payed_ammount', 'pyed_id', 'button_chancePlugAllowedState', 'dropdown_permisionGroup'], OptionsList, AdminUserDataList.GuestsList_response, 'GästeAdminUserTabelle', true))
     });
 }
 

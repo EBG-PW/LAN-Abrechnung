@@ -8,6 +8,8 @@ const DB = require('../../lib/postgres');
 const TV = require('../../lib/TokenVerification');
 const { tokenpermissions } = require('../middleware/tokenVerify')
 const { log } = require('../../lib/logger');
+const permission_groups = require('../../../config/permission_groups');
+const { object } = require('joi');
 
 
 const PluginConfig = {
@@ -110,6 +112,21 @@ router.post("/setLang", tokenpermissions(), limiter, async (reg, res, next) => {
                     log.error(error);
                     throw new Error("DBError");
                 })
+        } else {
+            throw new Error("NoPermissions");
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.get("/PermisionGroup", tokenpermissions(), limiter, async (reg, res, next) => {
+    try {
+        if (reg.permissions.read.includes('admin_permissions') || reg.permissions.read.includes('admin_all')) {
+            res.status(200);
+            res.json({
+                PermissionGroups: permission_groups
+            });
         } else {
             throw new Error("NoPermissions");
         }
