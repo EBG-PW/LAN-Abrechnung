@@ -10,6 +10,7 @@ const i18n = new I18n({
           UserBestellungen: "Bestellung",
           Inventar: "Inventar",
           Gäste: "Gäste",
+          Plugs: "Steckdosen",
           Bestellungen: "Bestellungen",
           Ausloggen: "Ausloggen"
         },
@@ -179,6 +180,7 @@ const i18n = new I18n({
           UserBestellungen: "Orders",
           Inventar: "Inventory",
           Gäste: "Guests",
+          Plugs: "Plugs",
           Bestellungen: "Orders",
           Ausloggen: "Logout"
         },

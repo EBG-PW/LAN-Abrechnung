@@ -858,6 +858,19 @@ let AddPlug = function (IP, plugs_controler) {
   });
 }
 
+/**
+ * This function will get all plugs from the database
+ * @returns {Promise}
+ */
+let GetPlugs = function () {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT * FROM plugs`, (err, result) => {
+      if (err) { reject(err) }
+      resolve(result.rows);
+    });
+  });
+}
+
 /*
     |-------------------------------------------------------------------------------|
     |                                                                               |
@@ -1022,9 +1035,9 @@ const UpdatePermissionFromUser = function (userid, permission, read, write) {
  * @param {string} permission_group
  * @returns {Promise}
  */
- const SetPermissionGroupToUser = function (userid, permission_group) {
+const SetPermissionGroupToUser = function (userid, permission_group) {
   return new Promise(function (resolve, reject) {
-    if(permission_group in permission_groups){
+    if (permission_group in permission_groups) {
       let result_list = [];
       pool.query(`DELETE FROM guests_permissions WHERE userid = $1`, [
         userid
@@ -1046,7 +1059,7 @@ const UpdatePermissionFromUser = function (userid, permission, read, write) {
           resolve(result_list);
         });
       });
-    }else{
+    } else {
       reject(new Error('Permission group not found'));
     }
   });
@@ -1088,6 +1101,7 @@ let get = {
     Get: GetWebToken
   },
   plugs: {
+    GetAll: GetPlugs,
     power: {
       kwh: GetKWHbyUserID
     }

@@ -73,6 +73,27 @@ router.get("/PlugsToggleAllowedState", limiter, tokenpermissions(), async (reg, 
     }
 });
 
+router.get("/allPlugs", limiter, tokenpermissions(), async (reg, res, next) => {
+    try {
+        if (reg.permissions.read.includes('admin_strom') || reg.permissions.read.includes('admin_all')) {
+            DB.get.plugs.GetAll().then(function (all_plugs) {
+                res.status(200);
+                res.json({
+                    Message: "Sucsess",
+                    Data: all_plugs
+                });
+            }).catch(function (error) {
+                log.error(error);
+                throw new Error("DBError");
+            })
+        } else {
+            throw new Error("NoPermissions");
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
 router.get("/UserKWH", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         if (reg.permissions.read.includes('user_strom') || reg.permissions.read.includes('admin_strom') || reg.permissions.read.includes('admin_all')) {

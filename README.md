@@ -48,8 +48,10 @@ Admin:
 |admin_finanzen| Can see money related information|
 |admin_inventory| Can see the entire inventora and donations made|
 |admin_strom| Can set the state of every plug and can request them|
-|admin_user| Can manage users
-|admin_permissions| Can manage permissions
+|admin_user| Can manage users|
+|admin_permissions| Can manage permissions|
+|admin_plugs| Can manage plugs|
+
 User:
 | Permission | Description |
 | ------------- | ------------- |

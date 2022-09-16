@@ -49,6 +49,11 @@ app.get('/Users', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'www-public', 'Users.html'));
 });
 
+app.get('/Plugs', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'www-public', 'Plugs.html'));
+});
+
+
 app.get('/Inventory', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'www-public', 'Inventory.html'));
 })

@@ -54,6 +54,10 @@
       "admin_permissions": {
         "read": true,
         "write": true
+      },
+      "admin_plugs": {
+        "read": true,
+        "write": true
       }
     }
   }

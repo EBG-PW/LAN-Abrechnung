@@ -30,6 +30,9 @@ footer, header, hgroup, menu, nav, section {
 
 body {
 	line-height: 1;
+	scrollbar-width: none;
+    overflow-y: scroll;
+    max-height: 300px;
 }
 
 ol, ul {
