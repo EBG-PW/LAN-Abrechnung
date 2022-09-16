@@ -171,9 +171,11 @@ app.ws('/client', {
         delete InfluxPlugObject.IP
         delete InfluxPlugObject.ControlerToken
         delete InfluxPlugObject.ID
-        writeDatapoint('PowerPlug', InfluxPlugObject, data_payload.data.ID.toString()).catch(function (err) {
-          log.error(err);
-        });
+        if(process.env.Influx_Enable === 'true' || process.env.Influx_Enable === true){
+          writeDatapoint('PowerPlug', InfluxPlugObject, data_payload.data.ID.toString()).catch(function (err) {
+            log.error(err);
+          });
+        }
       } else {
         //The requested controler dosn´t exist...
         ws.send(JSON.stringify({ event: commandClient.failed, data_payload: { error: 'Not permitted' } }));
