@@ -247,3 +247,25 @@ function Table_DonationList(Translation) {
         $("#SpendeTabelle").html(CreateTable(['username', 'total_donation'], DonationData.Donation_response, 'SpendeTabelle', true))
     });
 }
+
+// This is used in Plugs.html
+function PlugsManagmentTabelle(){
+    GetPlugsTable().then(function (PlugsData) {
+        for (let i = 0; i < PlugsData.Data.length; i++) {
+            PlugsData.Data[i].input_name = {
+                value: PlugsData.Data[i].username,
+                style: 'width: 100%;',
+                type: 'text',
+                function: 'change_plug_userid',
+                functionVar: PlugsData.Data[i].plugid,
+                id: 'input_userid_' + i,
+            }
+        }
+
+        const OptionsListNotPayed = {
+            KeyInputList: ['input_name']
+        }
+        //Add Table Format parameter...
+        $("#PlugsManagmentTabelle").html(CustomCreateTable(['ipaddr', 'controlername', 'token', 'state', 'allowed_state', 'input_name'], OptionsListNotPayed, PlugsData.Data, 'PlugsManagmentTabelle', true))
+    });
+}

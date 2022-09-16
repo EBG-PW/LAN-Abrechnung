@@ -108,6 +108,14 @@ const i18n = new I18n({
           button_SetStatus_text_true: "Wurde bestellt",
           button_SetStatus_text_false: "Bestellen",
         },
+        PlugsManagmentTabelle: {
+          input_name: "Nutzername",
+          allowed_state: "Benutzung Erlaubt",
+          ipaddr: "IP Adresse",
+          controlername: "Location Name",
+          token: "Location Token",
+          state:  "Status",
+        },
         UserUserOrderTabelle: {
           username: "Nutzername",
           artikel: "Artikel",
@@ -277,6 +285,14 @@ const i18n = new I18n({
           button_SetStatus: "Ordered?",
           button_SetStatus_text_true: "Orderd",
           button_SetStatus_text_false: "Order",
+        },
+        PlugsManagmentTabelle: {
+          input_name: "Username",
+          allowed_state: "Plug Allowed",
+          ipaddr: "IP-Address",
+          controlername: "Location Name",
+          token: "Location Token",
+          state:  "State",
         },
         UserUserOrderTabelle: {
           username: "Username",

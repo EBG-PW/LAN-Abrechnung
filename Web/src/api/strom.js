@@ -42,6 +42,11 @@ const PlugsToggleAllowedStateCheck = Joi.object({
     UserID: Joi.number().required()
 });
 
+const setPlugUserCheck = Joi.object({
+    username: Joi.string().required(),
+    plugid: Joi.number().required()
+});
+
 const router = express.Router();
 
 router.get("/PlugsToggleAllowedState", limiter, tokenpermissions(), async (reg, res, next) => {
@@ -50,7 +55,7 @@ router.get("/PlugsToggleAllowedState", limiter, tokenpermissions(), async (reg, 
         if (reg.permissions.write.includes('admin_strom') || reg.permissions.write.includes('admin_all')) {
             DB.write.plugs.toggle_allowed_state(value.UserID).then(function (toggle_response) {
                 if (toggle_response.rowCount === 1) {
-                    SendEvent.ToProcess(PlugServer_Process_Name, {event: 'PlugsToggleAllowedState', data: {UserID: value.UserID}});
+                    SendEvent.ToProcess(PlugServer_Process_Name, { event: 'PlugsToggleAllowedState', data: { UserID: value.UserID } });
                     res.status(200);
                     res.json({
                         Message: "Sucsess"
@@ -76,7 +81,8 @@ router.get("/PlugsToggleAllowedState", limiter, tokenpermissions(), async (reg, 
 router.get("/allPlugs", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         if (reg.permissions.read.includes('admin_strom') || reg.permissions.read.includes('admin_all')) {
-            DB.get.plugs.GetAll().then(function (all_plugs) {
+            Promise.all([DB.get.plugs.GetAll()]).then(function (responce) {
+                const [all_plugs] = responce;
                 res.status(200);
                 res.json({
                     Message: "Sucsess",
@@ -86,6 +92,20 @@ router.get("/allPlugs", limiter, tokenpermissions(), async (reg, res, next) => {
                 log.error(error);
                 throw new Error("DBError");
             })
+        } else {
+            throw new Error("NoPermissions");
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.post("/setPlugUser", limiter, tokenpermissions(), async (reg, res, next) => {
+    try {
+        if (reg.permissions.write.includes('admin_strom') || reg.permissions.write.includes('admin_all')) {
+            const value = await setPlugUserCheck.validateAsync(reg.body);
+            console.log(value);
+            //UPDATE tablename SET userid = (SELECT column from tablename2 WHERE x) WHERE y;
         } else {
             throw new Error("NoPermissions");
         }
