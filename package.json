@@ -4,7 +4,8 @@
   "description": "Manage your Lanparty",
   "main": "index.js",
   "scripts": {
-    "install": "node install.js"
+    "install": "node install.js",
+    "location": "node location.js"
   },
   "repository": {
     "type": "git",
