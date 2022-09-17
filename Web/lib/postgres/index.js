@@ -864,9 +864,11 @@ let AddPlug = function (IP, plugs_controler) {
  */
 let GetPlugs = function () {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT plugs.plugid, plugs.ipaddr, plugs_controler.controlername, plugs_controler.token, plugs.state, plugs.allowed_state, plugs.userid, guests.username FROM plugs 
+    pool.query(`SELECT plugs.plugid, plugs.ipaddr, plugs_controler.controlername, plugs_controler.token, plugs.state, plugs.allowed_state, plugs.userid, COALESCE(plugs_power.power_end,0) - COALESCE(plugs_power.power_start,0) AS power_used, guests.username FROM plugs 
                 INNER JOIN plugs_controler ON plugs_controlerid = controlerid 
-                LEFT JOIN guests ON plugs.userid = guests.userid ORDER BY plugid ASC`, (err, result) => {
+                LEFT JOIN guests ON plugs.userid = guests.userid 
+                LEFT JOIN plugs_power ON plugs.plugid = plugs_power.plugid
+                ORDER BY plugid ASC`, (err, result) => {
       if (err) { reject(err) }
       resolve(result.rows);
     });

@@ -68,10 +68,10 @@ function Table_AdminUserDataList() {
 
         //Add Table Format parameter...
         $("#AdminUsersTabelle").html(CustomCreateTable(['username', 'userid', 'payed', 'admin', 'vaccinated', 'payed_ammount', 'pyed_id', 'button_chancePlugAllowedState', 'dropdown_permisionGroup'], OptionsList, AdminUserDataList.GuestsList_response, 'GästeAdminUserTabelle', true))
-        
+
         let NotPayedUsers = []
         AdminUserDataList.GuestsList_response.map((user, index) => {
-            if(!user.payed){
+            if (!user.payed) {
                 user.button_chanceSetPayed = {
                     text: translate('Tabeles.GästeNotPayedTabelle.setPayed'),
                     style: 'color: #00ff00 !important;',
@@ -86,10 +86,10 @@ function Table_AdminUserDataList() {
         const OptionsListNotPayed = {
             KeyButtonList: ['button_chanceSetPayed']
         }
-        if(NotPayedUsers.length > 0){
+        if (NotPayedUsers.length > 0) {
             $("#NotPayedUsers").html(translate('Tabeles.GästeNotPayedTabelle.headline'))
             $("#NotPayedUsersTabelle").html(CustomCreateTable(['username', 'userid', 'payed', 'payed_ammount', 'pyed_id', 'button_chanceSetPayed'], OptionsListNotPayed, NotPayedUsers, 'GästeNotPayedTabelle', true))
-        }else{
+        } else {
             $("#NotPayedUsers").html("")
             $("#NotPayedUsers").removeClass('major')
             $("#NotPayedUsersTabelle").html("")
@@ -249,7 +249,7 @@ function Table_DonationList(Translation) {
 }
 
 // This is used in Plugs.html
-function PlugsManagmentTabelle(){
+function PlugsManagmentTabelle() {
     GetPlugsTable().then(function (PlugsData) {
         for (let i = 0; i < PlugsData.Data.length; i++) {
             PlugsData.Data[i].input_name = {
@@ -260,12 +260,14 @@ function PlugsManagmentTabelle(){
                 functionVar: PlugsData.Data[i].plugid,
                 id: 'input_userid_' + i,
             }
+
+            PlugsData.Data[i].power_used = (PlugsData.Data[i].power_used).toFixed(3).replace(".", ",") + " kWh"
         }
 
         const OptionsListNotPayed = {
             KeyInputList: ['input_name']
         }
         //Add Table Format parameter...
-        $("#PlugsManagmentTabelle").html(CustomCreateTable(['ipaddr', 'controlername', 'token', 'state', 'allowed_state', 'input_name'], OptionsListNotPayed, PlugsData.Data, 'PlugsManagmentTabelle', true))
+        $("#PlugsManagmentTabelle").html(CustomCreateTable(['ipaddr', 'controlername', 'token', 'state', 'allowed_state', 'power_used', 'input_name'], OptionsListNotPayed, PlugsData.Data, 'PlugsManagmentTabelle', true))
     });
 }

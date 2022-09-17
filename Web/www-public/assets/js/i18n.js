@@ -114,6 +114,7 @@ const i18n = new I18n({
           ipaddr: "IP Adresse",
           controlername: "Location Name",
           token: "Location Token",
+          power_used: "Verbrauch",
           state:  "Status",
         },
         UserUserOrderTabelle: {
@@ -292,6 +293,7 @@ const i18n = new I18n({
           ipaddr: "IP-Address",
           controlername: "Location Name",
           token: "Location Token",
+          power_used: "Power used",
           state:  "State",
         },
         UserUserOrderTabelle: {
