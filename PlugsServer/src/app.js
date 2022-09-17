@@ -16,7 +16,7 @@ const StatsCounters = {
   LastOutMessagesCounter: 0n,
   InMessagesPerSecond: 0,
   OutMessagesPerSecond: 0,
-  CalculatedMessagesCounterinS: 10,
+  CalculatedMessagesCounterinS: 1,
   TotalWebRESTRequests: 0n,
 }
 
@@ -42,7 +42,9 @@ const commandClient = {
 const commandWebuser = {
   plug: {
     subscribe: 'subscribe_plugid',
+    subscribetotalpower: 'subscribe_totalpower',
     power: 'plug_power',
+    totalpower: 'total_power',
     gethistory: 'plug_gethistory',
     history: 'plug_history',
   },
@@ -213,53 +215,58 @@ app.ws('/webuser', {
     const message_data = JSON.parse(Buffer.from(message).toString());
     const { event, data_payload } = message_data;
 
-    if (UserCache.has(data_payload.userid)) {
-      if (UserCache.get(data_payload.userid).includes(parseInt(data_payload.plugid, 10))) {
-        if (event === commandWebuser.plug.subscribe) {
-          //{"event": "subscribe_plugid", "data_payload": {"plugid": "1", "userid": "206921999"}}
-          log.info(`${data_payload.userid} Subscribing to plug: ${data_payload.plugid}`);
-          ws.subscribe(`/plug/id/${data_payload.plugid}`);
-        } else if (event === commandWebuser.plug.gethistory) {
-          //{"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}
-          if (PlugHistoryCache.has_flow(data_payload.plugid)) {
-            ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
-          } else {
-            ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'No history found' } }));
-          }
-          StatsCounters.OutMessagesCounter++;
-        }
-      } else {
-        ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
-        StatsCounters.OutMessagesCounter++;
-      }
+    if (event === commandWebuser.plug.subscribetotalpower) {
+      //{"event": "subscribe_totalpower", "data_payload": {}}
+      ws.subscribe('/TotalCurrentPower');
     } else {
-      ReBuildUserCache().then(function (User) {
-        if (UserCache.has(data_payload.userid)) {
-          if (UserCache.get(data_payload.userid).includes(parseInt(data_payload.plugid, 10))) {
-            if (event === commandWebuser.plug.subscribe) {
-              //{"event": "subscribe_plugid", "data_payload": {"plugid": "1", "userid": "206921999"}}
-              log.info(`Subscribing to plug: ${data_payload.plugid}`);
-              ws.subscribe(`/plug/id/${data_payload.plugid}`);
-            } else if (event === commandWebuser.plug.gethistory) {
-              //{"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}
-              if (PlugHistoryCache.has_flow(data_payload.plugid)) {
-                ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
-              } else {
-                ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'No history found' } }));
-              }
-              StatsCounters.OutMessagesCounter++;
+      if (UserCache.has(data_payload.userid)) {
+        if (UserCache.get(data_payload.userid).includes(parseInt(data_payload.plugid, 10))) {
+          if (event === commandWebuser.plug.subscribe) {
+            //{"event": "subscribe_plugid", "data_payload": {"plugid": "1", "userid": "206921999"}}
+            log.info(`${data_payload.userid} Subscribing to plug: ${data_payload.plugid}`);
+            ws.subscribe(`/plug/id/${data_payload.plugid}`);
+          } else if (event === commandWebuser.plug.gethistory) {
+            //{"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}
+            if (PlugHistoryCache.has_flow(data_payload.plugid)) {
+              ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
+            } else {
+              ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'No history found' } }));
             }
-          } else {
-            ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
             StatsCounters.OutMessagesCounter++;
           }
         } else {
           ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
           StatsCounters.OutMessagesCounter++;
         }
-      }).catch(function (err) {
-        log.error(err);
-      });
+      } else {
+        ReBuildUserCache().then(function (User) {
+          if (UserCache.has(data_payload.userid)) {
+            if (UserCache.get(data_payload.userid).includes(parseInt(data_payload.plugid, 10))) {
+              if (event === commandWebuser.plug.subscribe) {
+                //{"event": "subscribe_plugid", "data_payload": {"plugid": "1", "userid": "206921999"}}
+                log.info(`Subscribing to plug: ${data_payload.plugid}`);
+                ws.subscribe(`/plug/id/${data_payload.plugid}`);
+              } else if (event === commandWebuser.plug.gethistory) {
+                //{"event": "plug_gethistory", "data_payload": {"plugid": "1", "userid": "206921999"}}
+                if (PlugHistoryCache.has_flow(data_payload.plugid)) {
+                  ws.send(JSON.stringify({ event: commandWebuser.plug.history, data_payload: PlugHistoryCache.get_flow(data_payload.plugid) }));
+                } else {
+                  ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'No history found' } }));
+                }
+                StatsCounters.OutMessagesCounter++;
+              }
+            } else {
+              ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
+              StatsCounters.OutMessagesCounter++;
+            }
+          } else {
+            ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
+            StatsCounters.OutMessagesCounter++;
+          }
+        }).catch(function (err) {
+          log.error(err);
+        });
+      }
     }
   }
 
@@ -285,6 +292,7 @@ setInterval(function () {
     const PowerArray = PlugHistoryCache.get(key).data
     CurrentPowerTemp += PowerArray[PowerArray.length - 1].Power;
   });
+  app.publish(`/TotalCurrentPower`, JSON.stringify({ event: commandWebuser.plug.totalpower, data_payload: CurrentPowerTemp }));
   StatsCounters.TotalCurrentPower = CurrentPowerTemp;
 }, StatsCounters.CalculatedMessagesCounterinS * 1000);
 
