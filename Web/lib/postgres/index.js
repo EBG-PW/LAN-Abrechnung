@@ -13,7 +13,7 @@ const pool = new pg.Pool({
 pool.query(`CREATE TABLE IF NOT EXISTS guests (
     userid bigint PRIMARY KEY,
     hauptgast_userid bigint,
-    username text,
+    username text UNIQUE,
     passwort text,
     pc boolean DEFAULT False,
     displays_count smallint DEFAULT 1,
@@ -56,7 +56,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS plugs (
   plugid serial,
   plugs_controlerid serial,
   ipaddr inet,
-  userid bigint,
+  userid bigint UNIQUE references guests(userid),
   state boolean DEFAULT False,
   allowed_state boolean DEFAULT False,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,

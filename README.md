@@ -21,9 +21,11 @@ Tested on Windows 10/11 and Linux Debian 11/Ubuntu 22.04
 
 # Installation
 - Clone this repo
-- Run `node install.js` to install all dependencies & pm2 setup if you like
+- Run `npm run install` to install all dependencies & pm2 setup if you like
+- Register via the TG Bot
+- Run `/loadplugs` in Telegram as admin
+- Run `/loadprices` in Telegram as admin
 - Build the plugclient (Or use the prebuild one)
-- Run `npm run location` to create a new plug location
 
 # API
 
