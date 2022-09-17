@@ -72,6 +72,8 @@ const ReBuildUserCache = () => {
             UserCache.get(Plugs[i].userid).push(Plugs[i].plugid);
           }
         } else {
+          UserCache.delete(Plugs[i].userid);
+          UserCache.set(Plugs[i].userid, []);
           UserCache.get(Plugs[i].userid).push(Plugs[i].plugid);
         }
       }
@@ -112,7 +114,7 @@ app.ws('/client', {
     StatsCounters.InMessagesCounter++;
     /* Date Protocol: {event: String, data_payload: {}} */
 
-    log.info(`Received client_message: ${Buffer.from(message).toString()}`);
+    //log.info(`Received client_message: ${Buffer.from(message).toString()}`);
 
     const message_data = JSON.parse(Buffer.from(message).toString());
     const { event, data_payload } = message_data;
@@ -171,7 +173,7 @@ app.ws('/client', {
         delete InfluxPlugObject.IP
         delete InfluxPlugObject.ControlerToken
         delete InfluxPlugObject.ID
-        if(process.env.Influx_Enable === 'true' || process.env.Influx_Enable === true){
+        if (process.env.Influx_Enable === 'true' || process.env.Influx_Enable === true) {
           writeDatapoint('PowerPlug', InfluxPlugObject, data_payload.data.ID.toString()).catch(function (err) {
             log.error(err);
           });
@@ -207,7 +209,7 @@ app.ws('/webuser', {
 
   message: (ws, message, isBinary) => {
     StatsCounters.InMessagesCounter++;
-    log.info(`Received webuser_message: ${Buffer.from(message).toString()}`);
+    //log.info(`Received webuser_message: ${Buffer.from(message).toString()}`);
     const message_data = JSON.parse(Buffer.from(message).toString());
     const { event, data_payload } = message_data;
 
@@ -323,6 +325,12 @@ process.on('message', function (packet) {
       }).catch(function (err) {
         log.error(err);
       });
+    }).catch(function (err) {
+      log.error(err);
+    })
+  } else if (event === 'UserPlugLink') {
+    ReBuildUserCache().then(function (User) {
+      log.system('User cache rebuilt. Reason: UserPlugLink Event - ' + data.username);
     }).catch(function (err) {
       log.error(err);
     })

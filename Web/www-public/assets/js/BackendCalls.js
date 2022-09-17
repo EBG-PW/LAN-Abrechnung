@@ -350,10 +350,11 @@ function change_plug_userid(plugid, id){
         type: "POST",
         contentType: "application/json; charset=utf-8",
         headers: { Authorization: "Bearer " + localStorage.getItem("Token") },
-        data: JSON.stringify({plugid: plugid, username: $("#"+id).val()})
+        data: JSON.stringify({plugid: plugid, username: $("#"+id).val() || "null"})
       });
       posting.done(function (result) {
         resolve(result)
+        PlugsManagmentTabelle()
       })
       posting.fail(function (err) {
         if (err.status === 401) {

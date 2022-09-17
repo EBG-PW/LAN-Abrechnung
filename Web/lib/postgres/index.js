@@ -866,9 +866,46 @@ let GetPlugs = function () {
   return new Promise(function (resolve, reject) {
     pool.query(`SELECT plugs.plugid, plugs.ipaddr, plugs_controler.controlername, plugs_controler.token, plugs.state, plugs.allowed_state, plugs.userid, guests.username FROM plugs 
                 INNER JOIN plugs_controler ON plugs_controlerid = controlerid 
-                LEFT JOIN guests ON plugs.userid = guests.userid`, (err, result) => {
+                LEFT JOIN guests ON plugs.userid = guests.userid ORDER BY plugid ASC`, (err, result) => {
       if (err) { reject(err) }
       resolve(result.rows);
+    });
+  });
+}
+
+/**
+ * This function will link a plug to a user based on username
+ * @param {String} username
+ * @param {Number} plugid
+ * @returns {Promise}
+ */
+let SetUserIDForPlug = function (PlugID, UserName) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`UPDATE plugs SET userid = CASE
+                WHEN EXISTS (SELECT userid FROM guests WHERE username = $1) 
+                THEN (SELECT userid FROM guests WHERE username = $1)
+                ELSE 0
+                END WHERE plugid = $2`, [
+      UserName, PlugID
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * This function will unlink a plug from a user
+ * @param {Number} plugid
+ * @returns {Promise}
+ */
+ let DelUserIDForPlug = function (PlugID) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`UPDATE plugs SET userid = null WHERE plugid = $1`, [
+      PlugID
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
     });
   });
 }
@@ -1148,7 +1185,9 @@ let write = {
   plugs: {
     toggle_allowed_state: PlugsToggleAllowedState,
     addControler: AddPlugControler,
-    addPlug: AddPlug
+    addPlug: AddPlug,
+    addUserToPlug: SetUserIDForPlug,
+    delUserToPlug: DelUserIDForPlug
   },
   order: {
     AddOrder: AddOrder,

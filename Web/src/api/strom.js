@@ -104,8 +104,47 @@ router.post("/setPlugUser", limiter, tokenpermissions(), async (reg, res, next) 
     try {
         if (reg.permissions.write.includes('admin_strom') || reg.permissions.write.includes('admin_all')) {
             const value = await setPlugUserCheck.validateAsync(reg.body);
-            console.log(value);
-            //UPDATE tablename SET userid = (SELECT column from tablename2 WHERE x) WHERE y;
+            if (value.username === "null") {
+                DB.write.plugs.delUserToPlug(value.plugid).then(function (toggle_response) {
+                    res.status(200);
+                    res.json({
+                        Message: "Sucsess"
+                    });
+                }).catch(function (error) {
+                    log.error(error);
+                    throw new Error("DBError");
+                });
+            } else {
+                DB.write.plugs.addUserToPlug(value.plugid, value.username).then(function (toggle_response) {
+                    if (toggle_response.rowCount === 1) {
+                        SendEvent.ToProcess(PlugServer_Process_Name, { event: 'UserPlugLink', data: { username: value.username } });
+                        res.status(200);
+                        res.json({
+                            Message: "Sucsess"
+                        });
+                    } else {
+                        res.status(501);
+                        res.json({
+                            Message: "Nothing chanced."
+                        });
+                    }
+                }).catch(function (error) {
+                    log.error(error);
+                    if (error.message.includes("duplicate key value violates unique constraint")) {
+                        res.status(405);
+                        res.json({
+                            Error: "DuplicateKey"
+                        });
+                    } else if (error.message.includes("violates foreign key constraint")) {
+                        res.status(405);
+                        res.json({
+                            Error: "UnknownUser"
+                        });
+                    } else {
+                        throw new Error("DBError");
+                    }
+                })
+            }
         } else {
             throw new Error("NoPermissions");
         }
