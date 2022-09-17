@@ -40,6 +40,10 @@ Tested on Windows 10/11 and Linux Debian 11/Ubuntu 22.04
 | GET | / | - | - | Show Stats of the Relay |
 | GET | /raw | - | - | Show Raw Data of the Relay |
 
+### WebSocket
+You can subscribe to the following events without any authentification:
+Route `/webuser`, Payload: `{"event": "subscribe_totalpower", "data_payload": {}}` this will push you total power usage.
+
 # Permissions
 Every route or group of routes got a set permission, a list is here:
 Admin:
