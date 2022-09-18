@@ -1,13 +1,29 @@
-import pdf
 import os
+import pdf
+import vweb
 
-fn main() {
-	mut user := 'BolverBlitz'
+struct App {
+    vweb.Context
+}
+
+['/pdf'; get]
+pub fn (mut app App) articles() vweb.Result {
+    mut user := 'BolverBlitz'
 	mut headline := 'Abrechnung'
 
-	for i := 1; i <= 200; i++ {
-		genpdf(user, headline, 'pdf_' + i.str() + '.pdf')
+	genpdf(user, headline, 'pdf.pdf')
+
+	mut f := os.read_file('pdf.pdf') or {
+		eprintln('ERROR: Doc.Render!')
+		exit(1)
 	}
+
+    return app.file(f)
+}
+
+fn main() {
+	//Start Webserver to recive PDF Requests
+	vweb.run(&App{}, 8080)
 	
 }
 
@@ -82,7 +98,7 @@ fn genpdf(user string, headline string, filename string) {
 	)
 
 	// render the PDF
-	txt := doc.render() or {
+	mut txt := doc.render() or {
 		eprintln('ERROR: Doc.Render!')
 		exit(1)
 	}
