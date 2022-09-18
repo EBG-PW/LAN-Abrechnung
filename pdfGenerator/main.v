@@ -1,33 +1,36 @@
 import os
+import json
 import pdf
-import vweb
 
-struct App {
-    vweb.Context
+struct PDFTemplate {
+	headline string [required]
+	username string [required]
+	items []struct {
+		name string [required]
+		price string [required]
+	} [required]
 }
 
-['/pdf'; get]
-pub fn (mut app App) articles() vweb.Result {
-    mut user := 'BolverBlitz'
-	mut headline := 'Abrechnung'
-
-	genpdf(user, headline, 'pdf.pdf')
-
-	mut f := os.read_file('pdf.pdf') or {
-		eprintln('ERROR: Doc.Render!')
-		exit(1)
+[console]
+fn main() {
+	config := os.read_lines('./config.json') or {
+        panic('error reading file config.json')
+        return
+    }
+	
+	pdf_config := json.decode([]PDFTemplate, config[0]) or {
+		panic('Failed to parse json')
+		return
 	}
 
-    return app.file(f)
+	for i, pdf_element in pdf_config {
+		current_pdf := i + 1
+		println('Generating $current_pdf/$pdf_config.len')
+		genpdf(pdf_element)
+	}
 }
 
-fn main() {
-	//Start Webserver to recive PDF Requests
-	vweb.run(&App{}, 8080)
-	
-}
-
-fn genpdf(user string, headline string, filename string) {
+fn genpdf(template &PDFTemplate) {
 	mut doc := pdf.Pdf{}
 	doc.init()
 
@@ -86,11 +89,11 @@ fn genpdf(user string, headline string, filename string) {
 
 	// Write elements to PDF
 	page.push_content(
-		page.draw_base_text(user, 85, 30, fnt_params_text)
+		page.draw_base_text(template.username, 85, 30, fnt_params_text)
 	)
 
 	page.push_content(
-		page.draw_base_text(headline, 75, 20, fnt_params_headline)
+		page.draw_base_text(template.headline, 75, 20, fnt_params_headline)
 	)
 
 	page.push_content(
@@ -103,7 +106,7 @@ fn genpdf(user string, headline string, filename string) {
 		exit(1)
 	}
 
-	os.write_file_array(filename, txt) or {
+	os.write_file_array('$template.username' + '_invoice.pdf', txt) or {
 		eprintln('ERROR: Doc.Render!')
 	}
 }
