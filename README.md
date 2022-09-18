@@ -67,3 +67,22 @@ User:
 |user_inventory| Can see inventory and donations|
 |user_strom| Can see his own powerusage|
 |user_user| Can see other party members|
+
+## PDF Generator
+You can use the PDF Generator to generate a PDF by following the struct:
+```v
+struct PDFTemplate {
+	username string [required]
+	userid string [required]
+	headline string [required]
+	date string [required]
+	items []struct {
+		artikel string [required]
+		amount string [required]
+		price string [required]
+	} [required]
+}
+```
+You need to generate config.json in the same direcotry as the binary. 
+The first element of the items[] will be used as the header of the table.
+The last 3 will be used as the footer of the table. (Sum, Tax, etc)
