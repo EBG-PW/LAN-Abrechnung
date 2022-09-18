@@ -3,8 +3,9 @@ import json
 import pdf
 
 struct PDFTemplate {
-	headline string [required]
 	username string [required]
+	userid string [required]
+	headline string [required]
 	date string [required]
 	items []struct {
 		artikel string [required]
@@ -45,7 +46,7 @@ fn genpdf(template &PDFTemplate) {
 	})
 
 	mut page := &doc.page_list[page_n]
-	
+
 	page.user_unit = pdf.mm_unit
 
 	mut fnt_params_headline := pdf.Text_params{
@@ -113,6 +114,16 @@ fn genpdf(template &PDFTemplate) {
 		b: 60 / 255.0
 	}, 0)
 
+	doc.create_linear_gradient_shader('sep_list_geen', pdf.RGB{
+		r: 47 / 255.0
+		g: 94 / 255.0
+		b: 23 / 255.0
+	}, pdf.RGB{
+		r: 47 / 255.0
+		g: 94 / 255.0
+		b: 23 / 255.0
+	}, 0)
+
 	// Read logo jpg from fs
 	jpeg_data := os.read_bytes("logo.jpg") or { panic(err) }
 	jpeg_id := doc.add_jpeg_resource(jpeg_data)
@@ -121,6 +132,7 @@ fn genpdf(template &PDFTemplate) {
 	page.use_jpeg(jpeg_id)
 	page.use_shader('sep_list_blue')
 	page.use_shader('sep_list_red')
+	page.use_shader('sep_list_geen')
 
 	// get width and height in pixel of the jpeg image
 		_, jpg_w, jpg_h := pdf.get_jpeg_info(jpeg_data)
@@ -170,6 +182,19 @@ fn genpdf(template &PDFTemplate) {
 			}
 		}
 
+		if i >= (template.items.len - 3) {
+			y += 6
+			if i == (template.items.len - 3) {
+				page.use_shader('sep_list_geen')
+				page.push_content(page.draw_gradient_box('sep_list_geen', pdf.Box{
+					x: 8
+					y: y - 7
+					w: 194
+					h: 1.5
+				}, 10))
+			}
+		}
+
 		//Start putting content on the page with updated y
 		if new_page {
 			page.use_shader('sep_list_red')
@@ -209,12 +234,15 @@ fn genpdf(template &PDFTemplate) {
 			new_page = false //Set it to false because we are done with drawing new page stuff
 			continue
 		} else if i != 0 {
-			page.push_content(page.draw_gradient_box('sep_list_blue', pdf.Box{
-				x: 8
-				y: y+1
-				w: 194
-				h: 0.5
-			}, 10))
+			// If I decide to skip line  i could do it here, this could become usefull if artikels are too long and need spliting
+			if i != (template.items.len - 4) {
+				page.push_content(page.draw_gradient_box('sep_list_blue', pdf.Box{
+					x: 8
+					y: y+1
+					w: 194
+					h: 0.5
+				}, 10))
+			}
 		}
 
 		fnt_params_list.text_align = .left
@@ -278,7 +306,7 @@ fn genpdf(template &PDFTemplate) {
 		exit(1)
 	}
 
-	os.write_file_array('$template.username' + '_invoice.pdf', txt) or {
+	os.write_file_array('$template.username' + '_' + '$template.userid' + '_invoice.pdf', txt) or {
 		eprintln('ERROR: Doc.Render!')
 	}
 }
