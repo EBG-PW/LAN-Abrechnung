@@ -45,13 +45,7 @@ fn genpdf(template &PDFTemplate) {
 	})
 
 	mut page := &doc.page_list[page_n]
-/*
-	mut pag_2e := doc.page_list[doc.create_page(pdf.Page_params{
-		format: 'A4'
-		gen_content_obj: true
-		compress: false
-	})]
-*/
+	
 	page.user_unit = pdf.mm_unit
 
 	mut fnt_params_headline := pdf.Text_params{
@@ -187,17 +181,30 @@ fn genpdf(template &PDFTemplate) {
 				h: 0.5
 			}, 10))
 
-			page.push_content(
-				page.draw_base_text(template.items[0].artikel, 10, y, fnt_params_list)
-			)
+			fnt_params_list.text_align = .left
 
-			page.push_content(
-				page.draw_base_text(template.items[0].amount, 165, y, fnt_params_list)
-			)
+			page.text_box(template.items[0].artikel, pdf.Box{
+				x: 10
+				y: y - 5
+				w: 160 - 10
+				h: 4
+			}, fnt_params_list)
 
-			page.push_content(
-				page.draw_base_text(template.items[0].price, 185, y, fnt_params_list)
-			)
+			page.text_box(template.items[0].amount, pdf.Box{
+				x: 155
+				y: y - 5
+				w: 180 - 155
+				h: 4
+			}, fnt_params_list)
+
+			fnt_params_list.text_align = .right
+
+			page.text_box(template.items[0].price, pdf.Box{
+				x: 185
+				y: y - 5
+				w: 200 - 185
+				h: 4
+			}, fnt_params_list)
 
 			new_page = false //Set it to false because we are done with drawing new page stuff
 			continue
@@ -210,17 +217,28 @@ fn genpdf(template &PDFTemplate) {
 			}, 10))
 		}
 
-		page.push_content(
-			page.draw_base_text(item.artikel, 10, y, fnt_params_list)
-		)
+		fnt_params_list.text_align = .left
+		page.text_box(item.artikel, pdf.Box{
+			x: 10
+			y: y - 5
+			w: 160 - 10
+			h: 4
+		}, fnt_params_list)
 
-		page.push_content(
-			page.draw_base_text(item.amount, 165, y, fnt_params_list)
-		)
+		page.text_box(item.amount, pdf.Box{
+			x: 155
+			y: y - 5
+			w: 180 - 155
+			h: 4
+		}, fnt_params_list)
 
-		page.push_content(
-			page.draw_base_text(item.price, 185, y, fnt_params_list)
-		)
+		fnt_params_list.text_align = .right
+		page.text_box(item.price, pdf.Box{
+			x: 185
+			y: y - 5
+			w: 200 - 185
+			h: 4
+		}, fnt_params_list)
 
 		// Dynamic new page dedection
 		if y > (pg_fmt.h - 20) {
@@ -237,7 +255,7 @@ fn genpdf(template &PDFTemplate) {
 		}
 	}
 
-	// render the headers and footers
+	// render the footers
 	mut index := 0
 	for index < doc.page_list.len {
 		mut page_f := &doc.page_list[index]
