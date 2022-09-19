@@ -30,8 +30,13 @@ fn main() {
 
 	for i, pdf_element in pdf_config {
 		current_pdf := i + 1
-		println('Generating $current_pdf/$pdf_config.len: $pdf_element.username')
-		genpdf(pdf_element)
+		if pdf_element.items.len >= 4 {
+			println('Generating $current_pdf/$pdf_config.len: $pdf_element.username')
+			genpdf(pdf_element)
+		}else{
+			eprintln('Not enough items for $pdf_element.username')
+		}
+		
 	}
 }
 
