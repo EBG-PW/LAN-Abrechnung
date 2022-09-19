@@ -11,19 +11,26 @@ jobs:
     runs-on: ubuntu-20.04
     timeout-minutes: 5
     steps:
+    - name: Install Dependencies
+      run: sudo apt-get install --quiet -y libfreetype6-dev  libxi-dev libxcursor-dev libgl-dev gcc-mingw-w64-x86-64
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set up V version latest
+      uses: vlang/setup-v@v1
+      with:
+        stable: true
     - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install --quiet -y libpq-dev libglfw3 libglfw3-dev libfreetype6-dev libssl-dev libsqlite3-dev valgrind gcc-mingw-w64-x86-64
-    - name: Setup Vlang
-        uses: vlang/setup-v@v1.1
-        with:
-          check-latest: true
-          stable: true
-          architecture: 'linux'
+      run: v install pdf
     - name: Build
-      working-directory: pdfGenerator
+      run: | 
+        cd ./pdfGenerator
+        v -os windows ./main.v -o renderpdf
+        v -os linux ./main.v -o renderpdf
+    - name: Commit build
       run: |
-        ${{ v-bin-path }} ./main.v -os linux -o renderpdf
-        ${{ v-bin-path }} ../main.v -os windows -o renderpdf.exe
-        ls
+        git config --global user.name github-actions[bot]
+        git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
+        git add ./pdfGenerator/renderpdf
+        git add ./pdfGenerator/renderpdf.exe
+        git commit -am "Automated binary build"
+        git push
