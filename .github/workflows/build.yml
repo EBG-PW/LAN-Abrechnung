@@ -1,0 +1,25 @@
+name: Build binarys
+
+on:
+  push:
+    branches: [main]
+    paths: [pdfGenerator/**]
+  workflow_dispatch:
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-21.04
+    timeout-minutes: 5
+    steps:
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install --quiet -y libpq-dev libglfw3 libglfw3-dev libfreetype6-dev libssl-dev libsqlite3-dev valgrind gcc-mingw-w64-x86-64
+    - name: Download V
+      run: |
+        tag=${GITHUB_REF##*/}
+        wget https://github.com/vlang/v/releases/download/$tag/v_linux.zip
+        unzip v_linux.zip
+        cd v
+        ./v pdfGenerator/main.v -os linux -o renderpdf
+        ./v pdfGenerator/main.v -os windows -o renderpdf.exe
