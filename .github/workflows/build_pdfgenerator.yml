@@ -1,4 +1,4 @@
-name: Build binarys
+name: Build PDFGenerator
 
 on:
   push:
