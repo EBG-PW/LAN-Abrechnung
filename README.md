@@ -20,13 +20,105 @@ Tested on Windows 10/11 and Linux Debian 11/Ubuntu 22.04
 - PM2 Process Manager
 - InfluxDB 2.0 (Optional)
 
+# Required config
+There are multiple configs available in the config folder. You have to modify some of them to get the application running.
+mainconfig.json
+```json
+{
+    "SudoUser": "206921999", // Telegram Userid where some permission checks are skipped
+    "LanName": "Sommerlan 2021", // Name of the LAN-Party (Or whatever you use this project for)
+    "LanDauer": 8, // Duration of the LAN-Party in days
+    "RegTokenLength": 32, // Leave it as is, its good enoth for 2022
+    "WebTokenLength": 64, // Leave it as is, its good enoth for 2022
+    "KontoInhaber": "Viktor", // Name of the account holder
+    "KontoIban": "AT....", // IBAN of the account
+    "KontoBank": "Österreichische Bank lol", // Name of the bank
+    "Verwendungszweg": "Lan2021", // Purpose of the payment
+    "LanChat": -1001675639034 // Telegram Chatid where all users are in (Notification Chat)
+}
+```
+Please do NOT use float values in your prices, use integers instead.  
+preisliste.json
+```json
+{   
+    "FixKostenProTag": 1875, // Price that will be added per day of the stay to pay in advance. (In cents)
+    "PauschalKosten": {
+        "Wasser": {
+            "Preis": 100, // Extra costs for water the user used to shower / toilet (In cents)
+            "Beschreibung": "Wasserpauschale" // Key for the translator, only modify if you know what you are doing
+        },
+        "Strom": {
+            "Preis": 500, // Extra costs for electricity the user used for light (In cents)
+            "Beschreibung": "Strompauschale" // Key for the translator, only modify if you know what you are doing
+        },
+        "Verbrauchsgüter": {
+            "Preis": 400, // Extra costs for consumables (Toiletpaper, Soap, etc) the user used (In cents)
+            "Beschreibung": "Verbrauchsgüterpauschale" // Key for the translator, only modify if you know what you are doing
+        },
+        "Netzwerk": {
+            "Preis": 500, // Extra costs for the network the user used (In cents)
+            "Beschreibung": "Netzwerkpauschale" // Key for the translator, only modify if you know what you are doing
+        },
+        "StromKWH": {
+            "Preis": 1000, // Cost per kwh thats used by his powerplug (In cents)
+            "Beschreibung": "KostenKWH" // Key for the translator, only modify if you know what you are doing
+        }
+    },
+    "SnackBar": {
+		/*
+		Add as many items as you like, those are part of your buffet (Like a snack and minibar)
+		"Spende": {
+            "Name": "Spende", // Name of the item
+            "Hersteller": "EBG.PW", // Manufacturer of the item
+            "Preis": 100, // Price of the item (per item, in cents)
+            "Menge": 500 // Amount of items available
+        }
+		*/
+	}
+}
+```
+List all your powerplugs here, you can define as many controlers as you like with any amount of plugs.  
+Requirements: IP adresses MUST be available buy the software called plugclient.  
+The token is used to authenticate the plugclient!  
+plugsconfig.json
+```json
+{
+    "conrolpers": [
+        {
+            "ControlerName": "Home",
+            "token": "HomeTs",
+            "Plugs": [
+                {
+                    "IP": "192.168.5.55"
+                },
+                {
+                    "IP": "192.168.5.56"
+                },
+                {
+                    "IP": "192.168.5.57"
+                },
+                {
+                    "IP": "192.168.5.58"
+                },
+                {
+                    "IP": "192.168.10.101"
+                }
+            ]
+        }
+    ]
+}
+```
+
+
 # Installation
 - Clone this repo
+- Check the "Required config" section of the readme
 - Run `npm run install` to install all dependencies & pm2 setup if you like
 - Register via the TG Bot
 - Run `/loadplugs` in Telegram as admin
 - Run `/loadprices` in Telegram as admin
 - Build the plugclient (Or use the prebuild one)
+- Run the plugclient `plugclient -t <token> ` or use `plugclient -h` for more options
 
 # API
 
@@ -68,7 +160,14 @@ User:
 |user_strom| Can see his own powerusage|
 |user_user| Can see other party members|
 
-## PDF Generator
+# NPM Scripts
+| Script | Description |
+| ------------- | ------------- |
+| install | Install all dependencies and setup pm2 |
+| addadmin | Give the mainconfig.superuser his admin permissions |
+| location | Add a plug location (SHOULD BE DONE VIA CONFIG!) |
+
+# PDF Generator
 You can use the PDF Generator to generate a PDF by following the struct:
 ```v
 struct PDFTemplate {
