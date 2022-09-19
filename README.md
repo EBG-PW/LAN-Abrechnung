@@ -1,7 +1,18 @@
 # LAN-Party Manager
 Tested on Windows 10/11 and Linux Debian 11/Ubuntu 22.04
 
-# Features
+- [Features](#Features)
+- [Requirements](#Requirements)
+- [Required config](#Required-config)
+- [API](#Installation)
+	- [WebServer](#WebServer)
+	- [PlugServer](#PlugServer)
+	- [Installation](#WebSocket)
+- [Permissions](#Permissions)
+- [NPM Scripts](#NPM-Scripts)
+- [PDF Generator](#PDF-Generator)
+
+## Features
 - Member regestration & administration
 - Powerplug monitoring & administration
 - Buffet Buying & Managment
@@ -14,13 +25,13 @@ Tested on Windows 10/11 and Linux Debian 11/Ubuntu 22.04
 - [WIP] Invoices
 - Donations
 
-# Requirements
+## Requirements
 - NodeJS 16 or above
 - PostgreSQL
 - PM2 Process Manager
 - InfluxDB 2.0 (Optional)
 
-# Required config
+## Required config
 There are multiple configs available in the config folder. You have to modify some of them to get the application running.
 mainconfig.json
 ```js
@@ -108,7 +119,7 @@ plugsconfig.json
 ```
 
 
-# Installation
+## Installation
 - Clone this repo
 - Check the "Required config" section of the readme
 - Run `npm run install` to install all dependencies & pm2 setup if you like
@@ -118,7 +129,7 @@ plugsconfig.json
 - Build the plugclient (Or use the prebuild one)
 - Run the plugclient `plugclient -t <token> ` or use `plugclient -h` for more options
 
-# API
+## API
 
 ### WebServer
 | Methode | Route | Permissions | Parameter | Description |
@@ -135,7 +146,7 @@ plugsconfig.json
 You can subscribe to the following events without any authentification:
 Route `/webuser`, Payload: `{"event": "subscribe_totalpower", "data_payload": {}}` this will push you total power usage.
 
-# Permissions
+## Permissions
 Every route or group of routes got a set permission, a list is here:
 Admin:
 | Permission | Description |
@@ -158,14 +169,14 @@ User:
 |user_strom| Can see his own powerusage|
 |user_user| Can see other party members|
 
-# NPM Scripts
+## NPM Scripts
 | Script | Description |
 | ------------- | ------------- |
 | install | Install all dependencies and setup pm2 |
 | addadmin | Give the mainconfig.superuser his admin permissions |
 | location | Add a plug location (SHOULD BE DONE VIA CONFIG!) |
 
-# PDF Generator
+## PDF Generator
 You can use the PDF Generator to generate a PDF by following the struct:
 ```v
 struct PDFTemplate {
