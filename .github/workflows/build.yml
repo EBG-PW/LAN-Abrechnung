@@ -15,21 +15,15 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install --quiet -y libpq-dev libglfw3 libglfw3-dev libfreetype6-dev libssl-dev libsqlite3-dev valgrind gcc-mingw-w64-x86-64
-    - name: Download V & Build
+    - name: Setup Vlang
         uses: vlang/setup-v@v1.1
         with:
-          # Set this option if you want the action to check for the latest available version of V.
-          # If `stable` is false, it will check for the latest commit from the default branch.
           check-latest: true
-
-          # Set this option if you want the action to use the stable version of V.
-          # Will be ignored if `check-latest` is false.
           stable: true
-
-          # Target architecture for V to use. Examples: linux, macos, windows. Will use system architecture by default.
           architecture: 'linux'
-          working-directory: pdfGenerator
-            run: |
-              ${{ v-bin-path }} ./main.v -os linux -o renderpdf
-              ${{ v-bin-path }} ../main.v -os windows -o renderpdf.exe
-              ls
+    - name: Build
+      working-directory: pdfGenerator
+      run: |
+        ${{ v-bin-path }} ./main.v -os linux -o renderpdf
+        ${{ v-bin-path }} ../main.v -os windows -o renderpdf.exe
+        ls
