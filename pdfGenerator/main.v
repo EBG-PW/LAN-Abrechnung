@@ -17,9 +17,9 @@ struct PDFTemplate {
 [console]
 fn main() {
 	config := os.read_lines('./config.json') or {
-        panic('error reading file config.json')
-        return
-    }
+		panic(err)
+		return
+	}
 	
 	pdf_config := json.decode([]PDFTemplate, config[0]) or {
 		panic(err)
@@ -302,11 +302,12 @@ fn genpdf(template &PDFTemplate) {
 
 	// render the PDF
 	mut txt := doc.render() or {
-		eprintln('ERROR: Doc.Render!')
-		exit(1)
+		panic(err)
+		return
 	}
 
 	os.write_file_array('$template.username' + '_' + '$template.userid' + '_invoice.pdf', txt) or {
-		eprintln('ERROR: Doc.Render!')
+		panic(err)
+		return
 	}
 }
