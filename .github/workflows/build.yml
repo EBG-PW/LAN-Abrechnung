@@ -22,6 +22,6 @@ jobs:
     - name: Build Binarys
       run: |
         cd v
-        ./v pdfGenerator/main.v -os linux -o renderpdf
-        ./v pdfGenerator/main.v -os windows -o renderpdf.exe
-        ls pdfGenerator/
+        ./v ../pdfGenerator/main.v -os linux -o renderpdf
+        ./v ../pdfGenerator/main.v -os windows -o renderpdf.exe
+        ls ../pdfGenerator/
