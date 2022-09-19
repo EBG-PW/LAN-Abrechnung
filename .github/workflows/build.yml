@@ -19,6 +19,9 @@ jobs:
       run: |
         wget https://github.com/vlang/v/releases/download/weekly.2022.37/v_linux.zip
         unzip v_linux.zip
+    - name: Build Binarys
+      run: |
         cd v
         ./v pdfGenerator/main.v -os linux -o renderpdf
         ./v pdfGenerator/main.v -os windows -o renderpdf.exe
+        ls pdfGenerator/
