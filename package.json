@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "install": "node install.js",
-    "location": "node location.js"
+    "location": "node location.js",
+    "addadmin": "node addadmin.js"
   },
   "repository": {
     "type": "git",
