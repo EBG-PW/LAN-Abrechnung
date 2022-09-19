@@ -23,7 +23,7 @@ Tested on Windows 10/11 and Linux Debian 11/Ubuntu 22.04
 # Required config
 There are multiple configs available in the config folder. You have to modify some of them to get the application running.
 mainconfig.json
-```json
+```js
 {
     "SudoUser": "206921999", // Telegram Userid where some permission checks are skipped
     "LanName": "Sommerlan 2021", // Name of the LAN-Party (Or whatever you use this project for)
@@ -39,7 +39,7 @@ mainconfig.json
 ```
 Please do NOT use float values in your prices, use integers instead.  
 preisliste.json
-```json
+```js
 {   
     "FixKostenProTag": 1875, // Price that will be added per day of the stay to pay in advance. (In cents)
     "PauschalKosten": {
@@ -81,7 +81,7 @@ List all your powerplugs here, you can define as many controlers as you like wit
 Requirements: IP adresses MUST be available buy the software called plugclient.  
 The token is used to authenticate the plugclient!  
 plugsconfig.json
-```json
+```js
 {
     "conrolpers": [
         {
