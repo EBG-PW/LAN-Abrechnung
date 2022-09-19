@@ -17,11 +17,13 @@ struct PDFTemplate {
 [console]
 fn main() {
 	config := os.read_lines('./config.json') or {
+		eprintln('Could not read config file')
 		panic(err)
 		return
 	}
 	
 	pdf_config := json.decode([]PDFTemplate, config[0]) or {
+		eprintln('Could not decode config file')
 		panic(err)
 		return
 	}
@@ -302,11 +304,13 @@ fn genpdf(template &PDFTemplate) {
 
 	// render the PDF
 	mut txt := doc.render() or {
+		eprintln('Could not render PDF')
 		panic(err)
 		return
 	}
 
 	os.write_file_array('$template.username' + '_' + '$template.userid' + '_invoice.pdf', txt) or {
+		eprintln('Could not write PDF to disk')
 		panic(err)
 		return
 	}
