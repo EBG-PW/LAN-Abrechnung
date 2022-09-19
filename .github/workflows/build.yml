@@ -15,13 +15,13 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install --quiet -y libpq-dev libglfw3 libglfw3-dev libfreetype6-dev libssl-dev libsqlite3-dev valgrind gcc-mingw-w64-x86-64
-    - name: Download V
+    - name: Download V & Build
       run: |
         wget https://github.com/vlang/v/releases/download/weekly.2022.37/v_linux.zip
         unzip v_linux.zip
-    - name: Build Binarys
-      run: |
+        ls
         cd v
+        ls
         ./v ../pdfGenerator/main.v -os linux -o renderpdf
         ./v ../pdfGenerator/main.v -os windows -o renderpdf.exe
         ls ../pdfGenerator/
