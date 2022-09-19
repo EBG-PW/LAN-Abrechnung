@@ -65,15 +65,13 @@ preisliste.json
         }
     },
     "SnackBar": {
-		/*
-		Add as many items as you like, those are part of your buffet (Like a snack and minibar)
-		"Spende": {
+		//Add as many items as you like, those are part of your buffet (Like a snack and minibar)
+	"Spende": {
             "Name": "Spende", // Name of the item
             "Hersteller": "EBG.PW", // Manufacturer of the item
             "Preis": 100, // Price of the item (per item, in cents)
             "Menge": 500 // Amount of items available
         }
-		*/
 	}
 }
 ```
