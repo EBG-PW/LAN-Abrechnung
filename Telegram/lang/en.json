@@ -200,6 +200,13 @@
     "loadplugs": {
         "Text": "{{Amount}} item were read or updated, they are managed by {{ControlerAmount}} Clients and this took {{duration}}."
     },
+    "geninvoices": {
+        "Abrechnung": "Invoice",
+        "Artikel": "Item",
+        "Amount": "Amount",
+        "Price": "Price",
+        "kwh": "Electricity"
+    },
     "Inline": {
         "NoQuery": {
             "ID": "NoQuery",

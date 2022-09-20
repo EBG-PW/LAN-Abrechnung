@@ -116,7 +116,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS products (
 
 pool.query(`CREATE TABLE IF NOT EXISTS shopinglist (
   userid bigint,
-  byer_userid text,
+  byer_userid bigint,
   produktname text,
   produktcompany text,
   price integer,
@@ -286,6 +286,19 @@ let CheckIfAdminbyID = function (user_id) {
 let ListAllAdmin = function () {
   return new Promise(function (resolve, reject) {
     pool.query(`SELECT * FROM guests WHERE admin = 'true'`, (err, result) => {
+      if (err) { reject(err) }
+      resolve(result.rows);
+    });
+  });
+}
+
+/**
+ * This function will return a list of main guests
+ * @returns {Object}
+ */
+let ListHauptGuest = function () {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT userid, username FROM guests  WHERE hauptgast_userid IS NULL`, (err, result) => {
       if (err) { reject(err) }
       resolve(result.rows);
     });
@@ -519,7 +532,7 @@ let UpdateProductByName = function (produktname, old_bought, new_bought) {
  */
 let GetAllBoughItemsByUser = function (userid) {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT guests.username, shopinglist.userid, shopinglist.produktname, shopinglist.produktcompany, shopinglist.price, shopinglist.bought, shopinglist.byer_userid, shopinglist.transaction_id FROM shopinglist INNER JOIN guests ON shopinglist.userid = guests.userid WHERE shopinglist.userid = '${userid}' ORDER BY shopinglist.time DESC`, (err, result) => {
+    pool.query(`SELECT guests.username, shopinglist.userid, shopinglist.produktname, shopinglist.produktcompany, shopinglist.price, shopinglist.bought, shopinglist.byer_userid, shopinglist.transaction_id FROM shopinglist INNER JOIN guests ON shopinglist.byer_userid = guests.userid WHERE shopinglist.userid = '${userid}' ORDER BY shopinglist.time DESC`, (err, result) => {
       if (err) { reject(err) }
       resolve(result);
     });
@@ -912,6 +925,25 @@ let SetUserIDForPlug = function (PlugID, UserName) {
   });
 }
 
+/**
+ * This function will get all transactions from a user and groups them by article
+ * @param {Number} userid
+ * @returns {Promise}
+ */
+let GetGuestShoppinglistGrouped = function (userid) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT produktname, SUM(price) AS price_sum, SUM(bought) AS bough, (SUM(price)/SUM(bought)) AS price_per_item 
+    FROM shopinglist 
+    WHERE userid = $1
+    GROUP BY produktname`, [
+      userid
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result.rows);
+    });
+  });
+}
+
 /*
     |-------------------------------------------------------------------------------|
     |                                                                               |
@@ -1112,6 +1144,7 @@ let get = {
     AllSave: GetGuestsSave,
     Admins: ListAllAdmin,
     ByID: GetGuestsByID,
+    Main: ListHauptGuest,
     Check: {
       ByID: CheckGuestByID,
       Admin: CheckIfAdminbyID,
@@ -1128,7 +1161,8 @@ let get = {
   },
   Inventory: {
     GetAll: GetInvetory,
-    GetDonations: GetDonation
+    GetDonations: GetDonation,
+    GetGroupedTransactions: GetGuestShoppinglistGrouped
   },
   Products: {
     LikeGet: LookLikeProduct,
