@@ -143,8 +143,10 @@ plugsconfig.json
 | GET | /raw | - | - | Show Raw Data of the Relay |
 
 ### WebSocket
-You can subscribe to the following events without any authentification:
-Route `/webuser`, Payload: `{"event": "subscribe_totalpower", "data_payload": {}}` this will push you total power usage.
+You can subscribe to the following events without any authentification:  
+Route `/webuser`, Payload: `{"event": "subscribe_totalpower", "data_payload": {}}` this will push you total power usage.  
+You can subscribe to the applications log with your webtoken as authentication:  
+Router `/webuser`, Payload `{"event": "subscribe_logs", "data_payload": {"webtoken": "Your Admin Webtoken"}}` you can also add the ID parameter to subscribe to a specific pm2_process log.  
 
 ## Permissions
 Every route or group of routes got a set permission, a list is here:

@@ -100,6 +100,38 @@ const GetPlugsByControlerID = function (controlerid) {
   });
 }
 
+/*
+    |-------------------------------------------------------------------------------|
+    |                                                                               |
+    |                                 Plugs - Managment                             |
+    |                                                                               |
+    |-------------------------------------------------------------------------------|
+*/
+
+/**
+ * Will resolve with boolean if the webtoken had correct access to get logs
+ * @param {String} webtoken 
+ * @returns {Boolean}
+ */
+const CheckLogsPermissions = function (webtoken) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT guests_permissions.read FROM guests_permissions INNER JOIN webtoken ON webtoken.userid = guests_permissions.userid WHERE webtoken.token = $1 AND guests_permissions.permission = 'admin_logs'`, [
+      webtoken
+    ], (err, result) => {
+      if (err) { reject(err) }
+      if (result.rows.length > 0) {
+        if (result.rows[0].read == true || result.rows[0].read == 'true') {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      } else {
+        resolve(false);
+      }
+    });
+  });
+}
+
 const Controler = {
   GetAll: GetControlers,
   ByUserID: GetControlerIDByUserID
@@ -111,7 +143,12 @@ const Plugs = {
   SetPower: SetPlugPower,
 }
 
+const Logs = {
+  CheckPermissions: CheckLogsPermissions
+}
+
 module.exports = {
   Controler,
-  Plugs
+  Plugs,
+  Logs
 }

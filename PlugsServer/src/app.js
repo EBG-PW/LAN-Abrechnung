@@ -5,6 +5,7 @@ const { log } = require('../../Web/lib/logger');
 const app = require('uWebSockets.js').App();
 const { writeDatapoint } = require('../lib/influx');
 const Cache = require('js-object-cache');
+const pm2 = require('pm2')
 
 //Some variables to keep track of metrics
 const StatsCounters = {
@@ -48,7 +49,11 @@ const commandWebuser = {
     gethistory: 'plug_gethistory',
     history: 'plug_history',
   },
-  failed: 'failed'
+  failed: 'failed',
+  logs: {
+    subscribe: 'subscribe_logs',
+    push: 'push_logs'
+  }
 }
 
 const ReBuildControlerCache = () => {
@@ -218,6 +223,23 @@ app.ws('/webuser', {
     if (event === commandWebuser.plug.subscribetotalpower) {
       //{"event": "subscribe_totalpower", "data_payload": {}}
       ws.subscribe('/TotalCurrentPower');
+    } else if (event === commandWebuser.logs.subscribe) {
+      //{"event": "subscribe_logs", "data_payload": {"webtoken": "Your Admin Webtoken"}} Subscribe to all logs
+      //{"event": "subscribe_logs", "data_payload": {"webtoken": "Your Admin Webtoken", "ID": 1}} Subscribe to logs of pm2_process with ID 1
+      db.Logs.CheckPermissions(data_payload?.webtoken).then(function (result) {
+        if (result) {
+          if ('ID' in data_payload) {
+            ws.subscribe(`/logs/${data_payload.ID}`);
+          } else {
+            ws.subscribe('/logs/all');
+          }
+        } else {
+          ws.send(JSON.stringify({ event: commandWebuser.failed, data_payload: { error: 'Not permitted' } }));
+          StatsCounters.OutMessagesCounter++;
+        }
+      }).catch(function (err) {
+        log.error(err);
+      });
     } else {
       if (UserCache.has(data_payload.userid)) {
         if (UserCache.get(data_payload.userid).includes(parseInt(data_payload.plugid, 10))) {
@@ -344,5 +366,20 @@ process.on('message', function (packet) {
     })
   }
 })
+
+pm2.connect(function (err) {
+  if (err) {
+    console.error(err)
+  }
+  pm2.launchBus(function (err, pm2_bus) {
+    pm2_bus.on('log:*', function (type, packet) {
+      if (type === "out" || type === "err") {
+        app.publish(`/logs/${packet.process.pm_id}`, JSON.stringify({ event: commandWebuser.logs.push, data: { pm2_id: packet.process.pm_id, name: packet.process.name, data: packet.data.replace('\n', '') } }));
+        app.publish(`/logs/all`, JSON.stringify({ event: commandWebuser.logs.push, data: { pm2_id: packet.process.pm_id, name: packet.process.name, data: packet.data.replace('\n', '') } }));
+      }
+    })
+  })
+})
+
 
 module.exports = app
