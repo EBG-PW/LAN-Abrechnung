@@ -26,7 +26,8 @@
     },
     "Error": {
         "NotPrivate": "This is only possible in direct chat with the bot.",
-        "DBFehler": "An error occurred with the database."
+        "DBFehler": "An error occurred with the database.",
+        "ExecuteCommandFehler": "An error occurred while executing the command."
     },
     "Vaccinated": {
         "Voll": "Entirely",
@@ -205,7 +206,11 @@
         "Artikel": "Item",
         "Amount": "Amount",
         "Price": "Price",
-        "kwh": "Electricity"
+        "kwh": "Electricity (in kWh)",
+        "Payed" : "Prepaid",
+        "TotalSpend": "Total spend",
+        "Difference": "Difference",
+        "Text": "There were {{Amount}} invoices generated and that took {{duration}}.\nCreating the config took {{config_duration}}.\nCreating the PDFs took {{exec_duration}}.\nSending the files took {{send_duration}}."
     },
     "Inline": {
         "NoQuery": {

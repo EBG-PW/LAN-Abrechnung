@@ -26,7 +26,8 @@
     },
     "Error": {
         "NotPrivate": "Das ist nur im Chat direkt mit dem Bot möglich.",
-        "DBFehler": "Ein Fehler mit der Datenbank ist aufgetreten."
+        "DBFehler": "Ein Fehler mit der Datenbank ist aufgetreten.",
+        "ExecuteCommandFehler": "Ein Fehler beim ausführen des Befehls ist aufgetreten."
     },
     "Vaccinated": {
         "Voll": "Vollständig",
@@ -205,7 +206,11 @@
         "Artikel": "Artikel",
         "Amount": "Anzahl",
         "Price": "Preis",
-        "kwh": "Elektrische Energie"
+        "kwh": "Elektrische Energie (in kWh)",
+        "Payed" : "Eingezahlt",
+        "TotalSpend": "Gesamtausgaben",
+        "Difference": "Differenz",
+      "Text": "Es wurden {{Amount}} Abrechnungen generiert und das hat {{duration}} gedauert.\nErstellen der Config hat {{config_duration}} gedauert.\nErstellen der PDFs hat {{exec_duration}} gedauert.\nDas senden der PDFs hat {{send_duration}} gedauert."
     },
     "Inline": {
         "NoQuery": {

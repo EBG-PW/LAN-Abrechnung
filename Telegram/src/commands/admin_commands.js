@@ -38,6 +38,7 @@ function generateJson(Guests, preisliste, mainconfig) {
         let Restult_array = [];
         for(let i = 0; i < Guests.length; i++) {
             let Items_Array = [];
+            let sum_cost = 0;
             let Guest = Guests[i];
             await Promise.all([DB.get.plugs.power.kwh(Guest.userid), DB.get.Inventory.GetGroupedTransactions(Guest.userid), DB.get.tglang.Get(Guest.userid)]).then(function (values) {
                 const [kwh_used, items_used, tglang_response_inner] = values;
@@ -51,21 +52,40 @@ function generateJson(Guests, preisliste, mainconfig) {
                 if (kwh_used.rows.length > 0) {
                     Items_Array.push({
                         artikel: newi18n.translate(tglang_response_inner, 'geninvoices.kwh'),
-                        amount: kwh_used.rows[0].power_used,
-                        price: kwh_used.rows[0].power_used * preisliste.PauschalKosten.StromKWH.Preis
+                        amount: kwh_used.rows[0].power_used.toFixed(3).toString().replace('.', ',') + "x",
+                        price: CentToEuro(kwh_used.rows[0].power_used * preisliste.PauschalKosten.StromKWH.Preis),
                     })
                 }
                 // Push all the bough items into the array
                 //Here is price_per_item also avaible
                 if (items_used.length > 0) {
                     items_used.map((item) => {
+                        sum_cost += Number(item.price_sum);
                         Items_Array.push({
-                            artikel: item.produktname,
-                            amount: item.bough,
-                            price: item.price_sum
+                            artikel: item.produktname.substring(0, 32),
+                            amount: `${item.bough}x`,
+                            price: CentToEuro(item.price_sum),
                         })
                     })
                 }
+                // Push the payed amount into the array
+                Items_Array.push({
+                    artikel: newi18n.translate(tglang_response_inner, 'geninvoices.Payed'),
+                    amount: "",
+                    price: CentToEuro(Guest.payed_ammount)
+                })
+                // Push the total price into the array
+                Items_Array.push({
+                    artikel: newi18n.translate(tglang_response_inner, 'geninvoices.TotalSpend'),
+                    amount: "",
+                    price: CentToEuro(sum_cost)
+                })
+                // Push the difference into the array
+                Items_Array.push({
+                    artikel: newi18n.translate(tglang_response_inner, 'geninvoices.Difference'),
+                    amount: "",
+                    price: `${CentToEuro(Number(Guest.payed_ammount) - Number(sum_cost))}`
+                })
                 // Generate the final object
                 Restult_array.push({
                     headline: `${mainconfig.LanName} ${newi18n.translate(tglang_response_inner, 'geninvoices.Abrechnung')}`,
@@ -215,9 +235,28 @@ module.exports = function (bot, mainconfig, preisliste) {
             const [Admin_Check_response, tglang_response] = values;
             if (Admin_Check_response) {
                 DB.get.Guests.Main().then(function (Guests) {
+                    const config_start = new Date().getTime();
                     generateJson(Guests, preisliste, mainconfig).then(function (response) {
                         fs.writeFileSync(path.join(__dirname, '../', '../', '../', 'pdfGenerator', 'config.json'), JSON.stringify(response));
-                        const config_start = new Date().getTime();
+                        const config_end = new Date().getTime();
+                        executeCommand('renderpdf', path.join(__dirname, '../', '../', '../', 'pdfGenerator')).then(function (executeCommand_response) {
+                            const exec_end = new Date().getTime();
+                            let Send_Incoices = [];
+                            fs.readdirSync(path.join(__dirname, '../', '../', '../', 'pdfGenerator')).forEach(function (file) {
+                                if (file.match(/\.pdf$/) !== null) {
+                                    Send_Incoices.push(bot.sendDocument(file.split('_')[1], path.join(__dirname, '../', '../', '../', 'pdfGenerator', file)));
+                                }
+                            });
+                            Promise.allSettled(Send_Incoices).then(function (response) {
+                                const send_end = new Date().getTime();
+                                let amount_word_count = (executeCommand_response.match(/Generating/g) || []).length;
+                            bot.sendMessage(msg.chat.id, executeCommand_response);
+                            bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'geninvoices.Text', { Amount: amount_word_count, duration: TimeConvert(new Date().getTime() - run_start), config_duration: TimeConvert(config_end - config_start), exec_duration: TimeConvert(exec_end - config_end), send_duration: TimeConvert(send_end - exec_end) }));
+                            })
+                        }).catch(function (error) {
+                            log.error(error)
+                            return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Error.ExecuteCommandFehler'));
+                        });
                     }).catch(function (error) {
                         log.error(error)
                         return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));

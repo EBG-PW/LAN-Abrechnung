@@ -26,7 +26,8 @@
   },
   "Error": {
     "NotPrivate": "Des is grod im Chod direkt mid am Bot möglich.",
-    "DBFehler": "A Fehla mid da Datenbank is aufgtredn."
+    "DBFehler": "A Fehla mid da Datenbank is aufgtredn.",
+    "ExecuteCommandFehler": "A Fehla is passiert beim Ausfüra vom Kommando."
   },
   "Vaccinated": {
     "Voll": "Voiständig",
@@ -205,7 +206,11 @@
       "Artikel": "Artikel",
       "Amount": "Anzahl",
       "Price": "Preis",
-      "kwh": "Elektrische Energie"
+      "kwh": "Elektrische Energie (in kWh)",
+      "Payed" : "Eingezahlt",
+      "TotalSpend": "Gesamtausgaben",
+      "Difference": "Differenz",
+      "Text": "Es wurden {{Amount}} Abrechnungen generiert und das hat {{duration}} gedauert.\nErstellen der Config hat {{config_duration}} gedauert.\nErstellen der PDFs hat {{exec_duration}} gedauert.\nDas senden der PDFs hat {{send_duration}} gedauert."
   },
   "Inline": {
     "NoQuery": {

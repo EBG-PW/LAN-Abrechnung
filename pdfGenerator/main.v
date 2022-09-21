@@ -36,7 +36,6 @@ fn main() {
 		}else{
 			eprintln('Not enough items for $pdf_element.username')
 		}
-		
 	}
 }
 
@@ -223,18 +222,17 @@ fn genpdf(template &PDFTemplate) {
 			}, fnt_params_list)
 
 			page.text_box(template.items[0].amount, pdf.Box{
-				x: 155
+				x: 150
 				y: y - 5
-				w: 180 - 155
+				w: 180 - 150
 				h: 4
 			}, fnt_params_list)
 
 			fnt_params_list.text_align = .right
-
 			page.text_box(template.items[0].price, pdf.Box{
-				x: 185
+				x: 172
 				y: y - 5
-				w: 200 - 185
+				w: 200 - 172
 				h: 4
 			}, fnt_params_list)
 
@@ -261,17 +259,17 @@ fn genpdf(template &PDFTemplate) {
 		}, fnt_params_list)
 
 		page.text_box(item.amount, pdf.Box{
-			x: 155
+			x: 150
 			y: y - 5
-			w: 180 - 155
+			w: 180 - 150
 			h: 4
 		}, fnt_params_list)
 
 		fnt_params_list.text_align = .right
 		page.text_box(item.price, pdf.Box{
-			x: 185
+			x: 172
 			y: y - 5
-			w: 200 - 185
+			w: 200 - 172
 			h: 4
 		}, fnt_params_list)
 
@@ -313,7 +311,7 @@ fn genpdf(template &PDFTemplate) {
 		panic(err)
 		return
 	}
-
+	
 	os.write_file_array('$template.username' + '_' + '$template.userid' + '_invoice.pdf', txt) or {
 		eprintln('Could not write PDF to disk')
 		panic(err)

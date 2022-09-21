@@ -42,7 +42,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests_permissions (
   write boolean,
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (userid, permission))`, (err, result) => {
-  if (err) { logger('error', `Table-gen: Error mshc_config ${err}`) }
+  if (err) { log.error('error', `Table-gen: Error mshc_config ${err}`) }
 });
 
 pool.query(`CREATE TABLE IF NOT EXISTS tg_users (
@@ -298,7 +298,7 @@ let ListAllAdmin = function () {
  */
 let ListHauptGuest = function () {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT userid, username FROM guests  WHERE hauptgast_userid IS NULL`, (err, result) => {
+    pool.query(`SELECT userid, username, payed_ammount FROM guests WHERE hauptgast_userid IS NULL AND payed = true`, (err, result) => {
       if (err) { reject(err) }
       resolve(result.rows);
     });
