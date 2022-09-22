@@ -5,6 +5,13 @@ const helmet = require('helmet');
 const cors = require('cors');
 var path = require('path');
 const bodyParser = require('body-parser');
+const pm2ctl = require('pm2-ctl');
+const ecosystem = require('../../ecosystem.config.js');
+const PlugsServer_Process_Name = ecosystem.apps[2].name;
+
+setInterval(function () {
+    pm2ctl.SendEvent.ToProcess(PlugsServer_Process_Name, { event: 'KeepAliveNotify', data: { name: "WebServer" } })
+}, 55*1000);
 
 const middleware = require('./middleware');
 const api = require('./api');

@@ -2,6 +2,7 @@
 const util = require('util')
 const db = require('../lib/postgres');
 const { log } = require('../../Web/lib/logger');
+const request = require('request');
 const app = require('uWebSockets.js').App();
 const { writeDatapoint } = require('../lib/influx');
 const Cache = require('js-object-cache');
@@ -23,6 +24,8 @@ const StatsCounters = {
 
 // This cache has the controler token as key and stores the controler object as value
 const ControlerCache = new Cache();
+// This cache stores the latest timestamp when a application pushed a keepalive
+const KeepAliveCache = new Cache();
 // This cache has the plugID as key and is used to store flows for each plug
 const PlugHistoryCache = new Cache();
 //This cache has the userid as key and stores the allowed plugs for each user
@@ -91,6 +94,16 @@ const ReBuildUserCache = () => {
     }
     );
   });
+}
+
+/**
+ * Call this function when the software sends a keep alive packet to store current timestamp
+ * @param {String} fromSoftware 
+ */
+const KeepAliveUpdate = (fromSoftware) => {
+  // The wasNofifyed key is there to prevent spam.
+  // We check this cache every x seconds and if the key wasNofifyed is set false we send a notification
+  KeepAliveCache.set(fromSoftware, {timestamp: Date.now(), wasNofifyed: false});
 }
 
 /* Clients route is used for the PlugClients connecting, the PlugsClient will establish a connection to this appliaction. */
@@ -166,9 +179,7 @@ app.ws('/client', {
     } else if (event === commandClient.plug.power) {
       if (ControlerCache.has(data_payload.data.ControlerToken)) {
         //Runs when the client sends status of one plug
-        if (process.env.enable_influx === 'true' || process.env.enable_influx === true) {
-          //Run InfluxDB request
-        }
+        KeepAliveUpdate(`PlugControler${ControlerCache.get(data_payload.data.ControlerToken).controlername}`) // Update the keep alive timestamp
         //Create the flow cache in case it doesn't exist
         if (!PlugHistoryCache.has_flow(data_payload.data.ID)) {
           PlugHistoryCache.create_flow(data_payload.data.ID, process.env.plug_power_cache);
@@ -318,6 +329,17 @@ setInterval(function () {
   StatsCounters.TotalCurrentPower = CurrentPowerTemp;
 }, StatsCounters.CalculatedMessagesCounterinS * 1000);
 
+setInterval(function () {
+  KeepAliveCache.keys().forEach(function (key) {
+    if (new Date(KeepAliveCache.get(key).timestamp).getTime() + (2*60*1000) < Date.now() && KeepAliveCache.get(key).wasNofifyed === false) {
+      //send telegram message
+      request(`https://api.telegram.org/bot${process.env.Telegram_Bot_Token}/sendMessage?chat_id=${process.env.Telegram_Nofify_Channel}&text=System ${key} is offline!`);
+      log.error(`KeepAlive timeout for ${key}`);
+      KeepAliveCache.set(key, { wasNofifyed: true });
+    }
+  });
+}, 60 * 1000);
+
 //Push plugs data to PostgreSQL
 setInterval(function () {
   const PlugIds = PlugHistoryCache.keys();
@@ -364,6 +386,8 @@ process.on('message', function (packet) {
     }).catch(function (err) {
       log.error(err);
     })
+  } else if(event === 'KeepAliveNotify'){
+    KeepAliveUpdate(data.name);
   }
 })
 

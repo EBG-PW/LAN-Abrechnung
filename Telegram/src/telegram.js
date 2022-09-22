@@ -8,6 +8,13 @@ const newi18n = new i18n(path.join(__dirname, '../', 'lang'), ['de', 'en', 'de-b
 const DE_SLANG = ["de-by"] //Used to store the diffrent slangs of german. 
 const { log } = require('../../Web/lib/logger');
 const { CentToEuro, boolToText } = require('../lib/utils');
+const pm2ctl = require('pm2-ctl');
+const ecosystem = require('../../ecosystem.config.js');
+const PlugsServer_Process_Name = ecosystem.apps[2].name;
+
+setInterval(function () {
+    pm2ctl.SendEvent.ToProcess(PlugsServer_Process_Name, { event: 'KeepAliveNotify', data: { name: "TelegramBot" } })
+}, 55*1000);
 
 let mainconfig, preisliste;
 
