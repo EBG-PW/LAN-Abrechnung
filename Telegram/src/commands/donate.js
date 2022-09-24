@@ -2,7 +2,7 @@ const path = require('path');
 const DB = require('../../../Web/lib/postgres');
 const { default: i18n } = require('new-i18n')
 const randomstring = require('randomstring');
-const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'), ['de', 'en', 'de-by'], process.env.Fallback_Language);
+const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'), ['de', 'en', 'de-by', 'ua', 'it'], process.env.Fallback_Language);
 const { log } = require('../../../Web/lib/logger');
 const { CentToEuro } = require('../../lib/utils');
 

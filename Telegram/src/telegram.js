@@ -4,7 +4,7 @@ const fs = require('fs');
 const randomstring = require('randomstring');
 let reqPath = path.join(__dirname, '../');
 const { default: i18n } = require('new-i18n')
-const newi18n = new i18n(path.join(__dirname, '../', 'lang'), ['de', 'en', 'de-by'], process.env.Fallback_Language);
+const newi18n = new i18n(path.join(__dirname, '../', 'lang'), ['de', 'en', 'de-by', 'ua', 'it'], process.env.Fallback_Language);
 const DE_SLANG = ["de-by"] //Used to store the diffrent slangs of german. 
 const { log } = require('../../Web/lib/logger');
 const { CentToEuro, boolToText } = require('../lib/utils');
@@ -87,7 +87,7 @@ bot.on('callbackQuery', (msg) => {
                     }
                     //Push Rules Button to enter registration
                     inlineKeyboard.push([
-                        bot.inlineButton(newi18n.translate(tglang_response, 'Sprachen.Knöpfe.Zurück'), { callback: `/moreinfo` }),
+                        bot.inlineButton(newi18n.translate(data[1], 'Sprachen.Knöpfe.Zurück'), { callback: `/moreinfo` }),
                     ])
                     let replyMarkup = bot.inlineKeyboard(inlineKeyboard);
 
