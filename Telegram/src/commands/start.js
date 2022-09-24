@@ -22,12 +22,36 @@ module.exports = function (bot, mainconfig, preisliste) {
                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `R_${msg.from.id}_setlang_de-by` }),
                     ])
-                    //Push Rules Button to enter registration
-                    inlineKeyboard.push([
-                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Knöpfe.Reg'), { callback: `R_${msg.from.id}_rules` })
-                    ])
-                    let replyMarkup = bot.inlineKeyboard(inlineKeyboard);
-                    return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language, 'WellcomeMSG', { LanName: mainconfig.LanName }), { replyMarkup });
+
+                    const text_array = msg.text.split('_');
+                    if (text_array.length === 2) {
+                        if (text_array[0].includes('SubGuest')) {
+                            DB.get.Guests.ByID(text_array[1]).then(function (HauptGuest_response) {
+                                if (HauptGuest_response.length > 0) {
+                                    //Push Rules Button to enter registration
+                                    inlineKeyboard.push([
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Knöpfe.Reg'), { callback: `RSU_${msg.from.id}_rules_${text_array[1]}` })
+                                    ])
+                                    let replyMarkup = bot.inlineKeyboard(inlineKeyboard);
+                                    return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language, 'WellcomeMSGSubGuest', { LanName: mainconfig.LanName, Username: HauptGuest_response[0].username }), { replyMarkup, parseMode: 'html' });
+                                } else { // Fallback in case something went wrong, return normal invite response
+                                    //Push Rules Button to enter registration
+                                    inlineKeyboard.push([
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Knöpfe.Reg'), { callback: `R_${msg.from.id}_rules` })
+                                    ])
+                                    let replyMarkup = bot.inlineKeyboard(inlineKeyboard);
+                                    return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language, 'WellcomeMSG', { LanName: mainconfig.LanName }), { replyMarkup, parseMode: 'html' });
+                                }
+                            });
+                        } else {
+                            //Push Rules Button to enter registration
+                            inlineKeyboard.push([
+                                bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Knöpfe.Reg'), { callback: `R_${msg.from.id}_rules` })
+                            ])
+                            let replyMarkup = bot.inlineKeyboard(inlineKeyboard);
+                            return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language, 'WellcomeMSG', { LanName: mainconfig.LanName }), { replyMarkup });
+                        }
+                    }
                 } else {
                     if (User_response[0].pyed_id !== null) {
                         let replyMarkup = bot.inlineKeyboard([

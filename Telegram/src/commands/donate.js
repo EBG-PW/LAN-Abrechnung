@@ -34,12 +34,12 @@ module.exports = function (bot, mainconfig, preisliste) {
                 bot.editMessageText(
                     { inlineMsgId: inlineId }, Message,
                     { parseMode: 'html', replyMarkup }
-                ).catch(error => log.error('Error (editMessageText):', error));
+                ).catch(error => log.error('Error (editMessageText):' + error));
             } else {
                 bot.editMessageText(
                     { chatId: chatId, messageId: messageId }, Message,
                     { parseMode: 'html', replyMarkup }
-                ).catch(error => log.error('Error (editMessageText):', error));
+                ).catch(error => log.error('Error (editMessageText):' + error));
             }
         }).catch(function (error) {
             log.error(error)

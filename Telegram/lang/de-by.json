@@ -1,5 +1,6 @@
 {
   "WellcomeMSG": "Wuikomma zua Local-Area-Network-Party {{LanName}} mid dem Bot kannst du di registriern.\n\nWähle dei Sprach:",
+  "WellcomeMSGSubGuest": "Du wurdest als Begleitung von {{Username}} eingeladen\n\nWuikomma zua Local-Area-Network-Party {{LanName}} mid dem Bot kannst du di registriern.\n\nWähle dei Sprach:",
   "WellcomeMSGAR": "Wuikomma zua Local-Area-Network-Party {{LanName}} mid dem Bot kannst du di registriern.\n\nDu bisd bereits regstriad. Do des Haumtmenü.",
   "WellcomeErr": "Bitte beend dei Regstrierung. Fals du des bereits gmacht hosd, hosd du vamulich de Regln ned aktzeptiad und bisd somit leida ned wuikomma!",
   "Fragen": {
@@ -22,7 +23,8 @@
   "Knöpfe": {
     "Reg": "Registriern",
     "WebReg": "Do",
-    "Hauptmenu": "Habtmenü"
+    "Hauptmenu": "Habtmenü",
+    "SubGuest": "Gast Einladen"
   },
   "Error": {
     "NotPrivate": "Des is grod im Chod direkt mid am Bot möglich.",
@@ -202,17 +204,22 @@
     "Text": "Es wurden {{Amount}} Steckdosen eingelesen oder geupdatet, die von {{ControlerAmount}} Clients verwaltet werden und das hat {{duration}} gedauert."
   },
   "geninvoices": {
-      "Abrechnung": "Abrechnung",
-      "Artikel": "Artikel",
-      "Amount": "Anzahl",
-      "Price": "Preis",
-      "kwh": "Elektrische Energie (in kWh)",
-      "Payed" : "Eingezahlt",
-      "TotalSpend": "Gesamtausgaben",
-      "Difference": "Differenz",
-      "Text": "Es wurden {{Amount}} Abrechnungen generiert und das hat {{duration}} gedauert.\nErstellen der Config hat {{config_duration}} gedauert.\nErstellen der PDFs hat {{exec_duration}} gedauert.\nDas senden der PDFs hat {{send_duration}} gedauert."
+    "Abrechnung": "Abrechnung",
+    "Artikel": "Artikel",
+    "Amount": "Anzahl",
+    "Price": "Preis",
+    "kwh": "Elektrische Energie (in kWh)",
+    "Payed": "Eingezahlt",
+    "TotalSpend": "Gesamtausgaben",
+    "Difference": "Differenz",
+    "Text": "Es wurden {{Amount}} Abrechnungen generiert und das hat {{duration}} gedauert.\nErstellen der Config hat {{config_duration}} gedauert.\nErstellen der PDFs hat {{exec_duration}} gedauert.\nDas senden der PDFs hat {{send_duration}} gedauert."
   },
   "Inline": {
+    "SubUserInvite": {
+      "Title": "Einladung",
+      "Description": "Sende eine Einladung.",
+      "Text": "Klicke auf den Button um die Einladung anzunehmen."
+    },
     "NoQuery": {
       "ID": "NoQuery",
       "Text": "Bitte gib einen Artikel in die Leiste ein",
@@ -234,7 +241,8 @@
       "Remove": "-1",
       "Abbrechen": "Abbrechen",
       "Bestätigen": "Bestätigen",
-      "Kaufen": "Buchen"
+      "Kaufen": "Buchen",
+      "SubUserInvite": "Einladung Annehmen"
     },
     "Confirm": {
       "NotPayed": "Du hast noch nicht gezahlt oder deine Zahlung wurde noch nicht verarbeitet.",

@@ -16,7 +16,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     username text UNIQUE,
     passwort text,
     pc boolean DEFAULT False,
-    displays_count smallint DEFAULT 1,
+    displays_count smallint DEFAULT 0,
     network_cable boolean DEFAULT False,
     vr boolean DEFAULT False,
     expected_arrival timestamp with time zone,
@@ -351,6 +351,25 @@ let WriteNewUser = function (User_id, username, lang) {
   return new Promise(function (resolve, reject) {
     pool.query('INSERT INTO guests (userid, username, lang) VALUES ($1,$2,$3) ON CONFLICT (userid) DO UPDATE SET username=$2', [
       User_id, username, lang
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+/**
+ * This function will write new sub user to DB
+ * @param {number} User_id
+ * @param {number} HauptGuest_id
+ * @param {String} username
+ * @param {string} lang
+ * @returns {Promise}
+ */
+ let WriteNewSubUser = function (User_id, HauptGuest_id, username, lang) {
+  return new Promise(function (resolve, reject) {
+    pool.query('INSERT INTO guests (userid, hauptgast_userid, username, lang) VALUES ($1,$2,$3,$4) ON CONFLICT (userid) DO UPDATE SET username=$3', [
+      User_id, HauptGuest_id, username, lang
     ], (err, result) => {
       if (err) { reject(err) }
       resolve(result);
@@ -1197,6 +1216,7 @@ let write = {
   Guests: {
     UpdateCollumByID: UpdateCollumByID,
     NewUser: WriteNewUser,
+    NewSubUser: WriteNewSubUser,
     updatelang: UpdateUserLang
   },
   Permissions: {

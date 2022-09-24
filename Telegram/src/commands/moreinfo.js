@@ -23,6 +23,8 @@ module.exports = function (bot, mainconfig, preisliste) {
                 ],
                 [
                     bot.inlineButton(newi18n.translate(tglang_response, 'Moreinfo.Knöpfe.Sprache'), { callback: `/lang` }),
+                ],[
+                    bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.SubGuest'), { inline: `SubGuest_${msg.from.id}` }),
                 ],
                 [
                     bot.inlineButton(newi18n.translate(tglang_response, 'Moreinfo.Knöpfe.Hauptmenu'), { callback: `/maincallback` }),
@@ -42,12 +44,12 @@ module.exports = function (bot, mainconfig, preisliste) {
                 bot.editMessageText(
                     { inlineMsgId: inlineId }, Message,
                     { parseMode: 'html', replyMarkup }
-                ).catch(error => log.error('Error:', error));
+                ).catch(error => log.error(error));
             } else {
                 bot.editMessageText(
                     { chatId: chatId, messageId: messageId }, Message,
                     { parseMode: 'html', replyMarkup }
-                ).catch(error => log.error('Error:', error));
+                ).catch(error => log.error(error));
             }
         }).catch(function (error) {
             log.error(error)

@@ -62,64 +62,48 @@ fs.readdirSync(path.join(__dirname, 'callbackQuery')).forEach(function (file) {
 bot.on('inlineQuery', msg => {
     let query = msg.query.toLowerCase();
     let queryarr = query.split('');
+    let queryarr2 = query.split('_');
     const answers = bot.answerList(msg.id, { cacheTime: 1 });
     DB.get.tglang.Get(msg.from.id).then(function (tglang_response) {
-        if (queryarr.length === 0) {
-            DB.get.Products.GetAll("produktname").then(function (AllProducts) {
-                let ProductString = "";
-                AllProducts.rows.map(Product => {
-                    ProductString = `${ProductString}${Product.produktname} - Auf Lager: ${Product.amount - Product.bought} zum Preis von ${CentToEuro(Product.price)} pro Stück\n`
-                })
-                answers.addArticle({
-                    id: `${newi18n.translate(tglang_response, `Inline.NoQuery.ID`)}`,
-                    title: `${newi18n.translate(tglang_response, `Inline.NoQuery.Text`)}`,
-                    description: msg.query,
-                    message_text: (`${newi18n.translate(tglang_response, `Inline.NoQuery.Message`)}\n${ProductString}`),
-                    parse_mode: 'html'
-                });
-                return bot.answerQuery(answers).catch(function (error) {
-                    log.error(error)
-                })
+        if (queryarr2[0] === "subguest") {
+            let replyMarkup = bot.inlineKeyboard([
+                [
+                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.SubUserInvite'), { url: `https://t.me/${process.env.Telegram_Bot_Botname}?start=SubGuest_${queryarr2[1]}` })
+                ]
+            ]);
+            answers.addArticle({
+                id: `000`,
+                title: `${newi18n.translate(tglang_response, `Inline.SubUserInvite.Title`)}`,
+                description: `${newi18n.translate(tglang_response, `Inline.SubUserInvite.Description`)}`,
+                message_text: (`${newi18n.translate(tglang_response, `Inline.SubUserInvite.Text`)}`),
+                reply_markup: replyMarkup,
+                parse_mode: 'html'
             });
+            return bot.answerQuery(answers).catch(function (error) {
+                log.error(error)
+            })
         } else {
-            DB.get.Products.LikeGet(query).then(function (Product_Response) {
-                let rows = Product_Response.rows
-                if (Object.entries(rows).length === 0) {
+            if (queryarr.length === 0) {
+                DB.get.Products.GetAll("produktname").then(function (AllProducts) {
+                    let ProductString = "";
+                    AllProducts.rows.map(Product => {
+                        ProductString = `${ProductString}${Product.produktname} - Auf Lager: ${Product.amount - Product.bought} zum Preis von ${CentToEuro(Product.price)} pro Stück\n`
+                    })
                     answers.addArticle({
-                        id: `${newi18n.translate(tglang_response, `Inline.NotFound.ID`)}`,
-                        title: `${newi18n.translate(tglang_response, `Inline.NotFound.Text`)}`,
+                        id: `${newi18n.translate(tglang_response, `Inline.NoQuery.ID`)}`,
+                        title: `${newi18n.translate(tglang_response, `Inline.NoQuery.Text`)}`,
                         description: msg.query,
-                        message_text: (`${newi18n.translate(tglang_response, `Inline.NotFound.Message`)}`),
+                        message_text: (`${newi18n.translate(tglang_response, `Inline.NoQuery.Message`)}\n${ProductString}`),
                         parse_mode: 'html'
                     });
                     return bot.answerQuery(answers).catch(function (error) {
                         log.error(error)
                     })
-                } else {
-                    idCount = 0;
-                    for (i in rows) {
-
-                        let replyMarkup = bot.inlineKeyboard([
-                            [
-                                bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Kaufen'), { callback: `Buy_Main_${rows[i].produktname}` })
-                            ]
-                        ]);
-
-                        if (rows[i].amount - rows[i].bought > 0) {
-
-                            answers.addArticle({
-                                id: `${newi18n.translate(tglang_response, `Inline.Found.ID`, { ID: idCount })}`,
-                                title: `${newi18n.translate(tglang_response, `Inline.Found.Text`, { Produkt: rows[i].produktname, Hersteller: rows[i].produktcompany })}`,
-                                description: `${newi18n.translate(tglang_response, `Inline.Found.Beschreibung`, { Preis: CentToEuro(rows[i].price), Verfügbar: rows[i].amount - rows[i].bought })}`,
-                                message_text: `${newi18n.translate(tglang_response, `Inline.Found.Message`, { price: CentToEuro(rows[i].price), storrage: rows[i].amount - rows[i].bought, produktname: rows[i].produktname, produktcompany: rows[i].produktcompany })}`,
-                                reply_markup: replyMarkup,
-                                parse_mode: 'html'
-                            });
-                            idCount++
-                        }
-                    }
-
-                    if (idCount === 0) {
+                });
+            } else {
+                DB.get.Products.LikeGet(query).then(function (Product_Response) {
+                    let rows = Product_Response.rows
+                    if (Object.entries(rows).length === 0) {
                         answers.addArticle({
                             id: `${newi18n.translate(tglang_response, `Inline.NotFound.ID`)}`,
                             title: `${newi18n.translate(tglang_response, `Inline.NotFound.Text`)}`,
@@ -127,13 +111,49 @@ bot.on('inlineQuery', msg => {
                             message_text: (`${newi18n.translate(tglang_response, `Inline.NotFound.Message`)}`),
                             parse_mode: 'html'
                         });
-                    }
+                        return bot.answerQuery(answers).catch(function (error) {
+                            log.error(error)
+                        })
+                    } else {
+                        idCount = 0;
+                        for (i in rows) {
 
-                    return bot.answerQuery(answers).catch(function (error) {
-                        log.error(error)
-                    })
-                }
-            });
+                            let replyMarkup = bot.inlineKeyboard([
+                                [
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Kaufen'), { callback: `Buy_Main_${rows[i].produktname}` })
+                                ]
+                            ]);
+
+                            if (rows[i].amount - rows[i].bought > 0) {
+
+                                answers.addArticle({
+                                    id: `${newi18n.translate(tglang_response, `Inline.Found.ID`, { ID: idCount })}`,
+                                    title: `${newi18n.translate(tglang_response, `Inline.Found.Text`, { Produkt: rows[i].produktname, Hersteller: rows[i].produktcompany })}`,
+                                    description: `${newi18n.translate(tglang_response, `Inline.Found.Beschreibung`, { Preis: CentToEuro(rows[i].price), Verfügbar: rows[i].amount - rows[i].bought })}`,
+                                    message_text: `${newi18n.translate(tglang_response, `Inline.Found.Message`, { price: CentToEuro(rows[i].price), storrage: rows[i].amount - rows[i].bought, produktname: rows[i].produktname, produktcompany: rows[i].produktcompany })}`,
+                                    reply_markup: replyMarkup,
+                                    parse_mode: 'html'
+                                });
+                                idCount++
+                            }
+                        }
+
+                        if (idCount === 0) {
+                            answers.addArticle({
+                                id: `${newi18n.translate(tglang_response, `Inline.NotFound.ID`)}`,
+                                title: `${newi18n.translate(tglang_response, `Inline.NotFound.Text`)}`,
+                                description: msg.query,
+                                message_text: (`${newi18n.translate(tglang_response, `Inline.NotFound.Message`)}`),
+                                parse_mode: 'html'
+                            });
+                        }
+
+                        return bot.answerQuery(answers).catch(function (error) {
+                            log.error(error)
+                        })
+                    }
+                });
+            }
         }
     }).catch(function (error) {
         log.error(error)
@@ -154,6 +174,7 @@ const WebRegSendConfim = (ChatID) => {
         DB.get.tglang.Get(ChatID).then(function (tglang_response) {
             let replyMarkup = bot.inlineKeyboard([
                 [
+                    bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.SubGuest'), { inline: `SubGuest_${ChatID}` }),
                     bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.Hauptmenu'), { callback: '/hauptmenu' })
                 ]
             ]);
@@ -167,7 +188,6 @@ const WebRegSendConfim = (ChatID) => {
                 const expected_departure = new Date(Guest_Response[0].expected_departure);
                 const diffTime = Math.abs(expected_departure - expected_arrival);
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                console.log(diffDays)
                 let Money_Amount = parseInt(diffDays) * parseInt(preisliste.FixKostenProTag);
                 DB.write.Guests.UpdateCollumByID(ChatID, 'payed_ammount', Money_Amount).then(function (money_edit_response) {
                     DB.write.Guests.UpdateCollumByID(ChatID, 'pyed_id', PayCode).then(function (guest_edit_response) {
