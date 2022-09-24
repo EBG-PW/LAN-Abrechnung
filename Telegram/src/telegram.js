@@ -327,7 +327,7 @@ bot.on('callbackQuery', (msg) => {
 
             // Methods to handle the regestration Questions...
             if (data[0] === 'F') {
-                if (data[1] === 'PC') //If quest has PC with him
+                if (data[1] === 'PC') //If guest has PC with him
                 {
                     DB.write.Guests.UpdateCollumByID(msg.from.id, "pc", data[2]).then(function (response) {
                         let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${boolToText(data[2], tglang_response)}`
