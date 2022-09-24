@@ -115,6 +115,50 @@ module.exports = function (bot, mainconfig, preisliste) {
                         });
                     }
                 }
+
+                if (data[0] === "RSU") { //RSU for Registration (Set Language)
+                    if (data[2] === 'setlang') {
+                        DB.write.tglang.Set(msg.from.id, data[3]).then(function (response) {
+                            bot.answerCallbackQuery(msg.id)
+                            let inlineKeyboard = []
+                            //Push Base Language Buttons
+                            inlineKeyboard.push([
+                                bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.DE'), { callback: `RSU_${msg.from.id}_setlang_de_${data[4]}` }),
+                                bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.EN'), { callback: `RSU_${msg.from.id}_setlang_en_${data[4]}` }),
+                                bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.UA'), { callback: `RSU_${msg.from.id}_setlang_ua_${data[4]}` }),
+                                bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.IT'), { callback: `RSU_${msg.from.id}_setlang_it_${data[4]}` }),
+                            ])
+                            //Push Slang Buttons for German
+                            if (data[3] === 'de' || DE_SLANG.includes(data[3])) {
+                                inlineKeyboard.push([
+                                    bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.Full.DE'), { callback: `RSU_${msg.from.id}_setlang_de_${data[4]}` }),
+                                    bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `RSU_${msg.from.id}_setlang_de-by_${data[4]}` }),
+                                ])
+                            }
+                            //Push Rules Button to enter registration
+                            inlineKeyboard.push([
+                                bot.inlineButton(newi18n.translate(data[3], 'Knöpfe.Reg'), { callback: `RSU_${msg.from.id}_rules_${data[4]}` })
+                            ])
+                            let replyMarkup = bot.inlineKeyboard(inlineKeyboard);
+
+
+                            if ('inline_message_id' in msg) {
+                                bot.editMessageText(
+                                    { inlineMsgId: inlineId }, newi18n.translate(data[3], 'WellcomeMSG', { LanName: mainconfig.LanName }),
+                                    { parseMode: 'html', replyMarkup }
+                                ).catch(error => log.error('Error:', error));
+                            } else {
+                                bot.editMessageText(
+                                    { chatId: chatId, messageId: messageId }, newi18n.translate(data[3], 'WellcomeMSG', { LanName: mainconfig.LanName }),
+                                    { parseMode: 'html', replyMarkup }
+                                ).catch(error => log.error('Error:', error));
+                            }
+                        }).catch(function (error) {
+                            log.error(error)
+                            return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Error.DBFehler'));
+                        });
+                    }
+                }
             }
         }).catch(function (error) {
             log.error(error)

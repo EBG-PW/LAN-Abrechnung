@@ -10,24 +10,24 @@ module.exports = function (bot, mainconfig, preisliste) {
             DB.get.Guests.ByID(msg.from.id).then(function (User_response) {
                 if (User_response.length <= 0 || parseInt(mainconfig.SudoUser) === msg.from.id) {
                     let inlineKeyboard = []
-                    //Push Base Language Buttons
-                    inlineKeyboard.push([
-                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
-                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.EN'), { callback: `R_${msg.from.id}_setlang_en` }),
-                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.UA'), { callback: `R_${msg.from.id}_setlang_ua` }),
-                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.IT'), { callback: `R_${msg.from.id}_setlang_it` }),
-                    ])
-                    //Push Slang Buttons for German
-                    inlineKeyboard.push([
-                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
-                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `R_${msg.from.id}_setlang_de-by` }),
-                    ])
 
                     const text_array = msg.text.split('_');
                     if (text_array.length === 2) {
                         if (text_array[0].includes('SubGuest')) {
                             DB.get.Guests.ByID(text_array[1]).then(function (HauptGuest_response) {
                                 if (HauptGuest_response.length > 0) {
+                                    //Push Base Language Buttons
+                                    inlineKeyboard.push([
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.DE'), { callback: `RSU_${msg.from.id}_setlang_de_${text_array[1]}` }),
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.EN'), { callback: `RSU_${msg.from.id}_setlang_en_${text_array[1]}` }),
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.UA'), { callback: `RSU_${msg.from.id}_setlang_ua_${text_array[1]}` }),
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.IT'), { callback: `RSU_${msg.from.id}_setlang_it_${text_array[1]}` }),
+                                    ])
+                                    //Push Slang Buttons for German
+                                    inlineKeyboard.push([
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE'), { callback: `RSU_${msg.from.id}_setlang_de_${text_array[1]}` }),
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `RSU_${msg.from.id}_setlang_de-by_${text_array[1]}` }),
+                                    ])
                                     //Push Rules Button to enter registration
                                     inlineKeyboard.push([
                                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Knöpfe.Reg'), { callback: `RSU_${msg.from.id}_rules_${text_array[1]}` })
@@ -35,6 +35,18 @@ module.exports = function (bot, mainconfig, preisliste) {
                                     let replyMarkup = bot.inlineKeyboard(inlineKeyboard);
                                     return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language, 'WellcomeMSGSubGuest', { LanName: mainconfig.LanName, Username: HauptGuest_response[0].username }), { replyMarkup, parseMode: 'html' });
                                 } else { // Fallback in case something went wrong, return normal invite response
+                                    //Push Base Language Buttons
+                                    inlineKeyboard.push([
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.EN'), { callback: `R_${msg.from.id}_setlang_en` }),
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.UA'), { callback: `R_${msg.from.id}_setlang_ua` }),
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.IT'), { callback: `R_${msg.from.id}_setlang_it` }),
+                                    ])
+                                    //Push Slang Buttons for German
+                                    inlineKeyboard.push([
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `R_${msg.from.id}_setlang_de-by` }),
+                                    ])
                                     //Push Rules Button to enter registration
                                     inlineKeyboard.push([
                                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Knöpfe.Reg'), { callback: `R_${msg.from.id}_rules` })
@@ -44,6 +56,18 @@ module.exports = function (bot, mainconfig, preisliste) {
                                 }
                             });
                         } else {
+                            //Push Base Language Buttons
+                            inlineKeyboard.push([
+                                bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
+                                bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.EN'), { callback: `R_${msg.from.id}_setlang_en` }),
+                                bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.UA'), { callback: `R_${msg.from.id}_setlang_ua` }),
+                                bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.IT'), { callback: `R_${msg.from.id}_setlang_it` }),
+                            ])
+                            //Push Slang Buttons for German
+                            inlineKeyboard.push([
+                                bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
+                                bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `R_${msg.from.id}_setlang_de-by` }),
+                            ])
                             //Push Rules Button to enter registration
                             inlineKeyboard.push([
                                 bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Knöpfe.Reg'), { callback: `R_${msg.from.id}_rules` })
