@@ -174,7 +174,14 @@ const WebRegSendConfim = (ChatID) => {
         DB.get.tglang.Get(ChatID).then(function (tglang_response) {
             let replyMarkup = bot.inlineKeyboard([
                 [
-                    bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.SubGuest'), { inline: `SubGuest_${ChatID}` }),
+                    bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.SubGuest'), { inline: `SubGuest_${ChatID}` })
+                ], [
+                    bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.Hauptmenu'), { callback: '/hauptmenu' })
+                ]
+            ]);
+
+            let replyMarkupSubGuest = bot.inlineKeyboard([
+                [
                     bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.Hauptmenu'), { callback: '/hauptmenu' })
                 ]
             ]);
@@ -184,22 +191,68 @@ const WebRegSendConfim = (ChatID) => {
                 charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
             });
             DB.get.Guests.ByID(ChatID).then(function (Guest_Response) {
-                const expected_arrival = new Date(Guest_Response[0].expected_arrival);
-                const expected_departure = new Date(Guest_Response[0].expected_departure);
-                const diffTime = Math.abs(expected_departure - expected_arrival);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                let Money_Amount = parseInt(diffDays) * parseInt(preisliste.FixKostenProTag);
-                DB.write.Guests.UpdateCollumByID(ChatID, 'payed_ammount', Money_Amount).then(function (money_edit_response) {
-                    DB.write.Guests.UpdateCollumByID(ChatID, 'pyed_id', PayCode).then(function (guest_edit_response) {
-                        bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.Sucsess', { Bank: mainconfig.KontoBank, IBAN: mainconfig.KontoIban, Kontoinhaber: mainconfig.KontoInhaber, Verwendungszweg: mainconfig.Verwendungszweg, PayCode: PayCode, Kosten: CentToEuro(Money_Amount), DiffDays: diffDays }), { parseMode: 'html', replyMarkup }).then(function (msg_send) {
-                            resolve(msg_send)
+                if (Guest_Response[0].hauptgast_userid === null) {
+                    // No Hauptgast ID is set, so its normal registration
+                    const expected_arrival = new Date(Guest_Response[0].expected_arrival);
+                    const expected_departure = new Date(Guest_Response[0].expected_departure);
+                    const diffTime = Math.abs(expected_departure - expected_arrival);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    let Money_Amount = parseInt(diffDays) * parseInt(preisliste.FixKostenProTag);
+                    DB.write.Guests.UpdateCollumByID(ChatID, 'payed_ammount', Money_Amount).then(function (money_edit_response) {
+                        DB.write.Guests.UpdateCollumByID(ChatID, 'pyed_id', PayCode).then(function (guest_edit_response) {
+                            bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.Sucsess', {
+                                Bank: mainconfig.KontoBank,
+                                IBAN: mainconfig.KontoIban,
+                                Kontoinhaber: mainconfig.KontoInhaber,
+                                Verwendungszweg: mainconfig.Verwendungszweg,
+                                PayCode: PayCode,
+                                Kosten: CentToEuro(Money_Amount),
+                                DiffDays: diffDays
+                            }), { parseMode: 'html', replyMarkup }).then(function (msg_send) {
+                                resolve(msg_send)
+                            }).catch(function (error) {
+                                reject(error)
+                            })
                         }).catch(function (error) {
                             reject(error)
                         })
+                    });
+                } else {
+                    Promise.all([DB.get.tglang.Get(Guest_Response[0].hauptgast_userid), DB.get.Guests.ByID(Guest_Response[0].hauptgast_userid)]).then(function (HauptUser_Response_main) {
+                        const [tglang_response_haupt, HauptUser_Response] = HauptUser_Response_main;
+                        // Hauptgast ID is set, so its a sub guest registration
+                        const expected_arrival = new Date(Guest_Response[0].expected_arrival);
+                        const expected_departure = new Date(Guest_Response[0].expected_departure);
+                        const diffTime = Math.abs(expected_departure - expected_arrival);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        let Money_Amount = parseInt(diffDays) * (parseInt(preisliste.FixKostenProTag) / 1.7);
+
+                        Promise.all([DB.write.Guests.UpdateCollumByID(HauptUser_Response[0].userid, 'payed', false), DB.write.Guests.UpdateCollumByID(HauptUser_Response[0].userid, 'payed_ammount', parseInt(HauptUser_Response[0].payed_ammount) + parseInt(Money_Amount))]).then(function (money_edit_response) {
+                            Promise.all([bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.SucsessSubUser', {
+                                DiffDays: diffDays,
+                                Username: HauptUser_Response[0].username
+                            }), { parseMode: 'html', replyMarkup: replyMarkupSubGuest }),
+
+                            bot.sendMessage(HauptUser_Response[0].userid, newi18n.translate(tglang_response_haupt, 'PaySystem.PushMessageHauptGast', {
+                                Bank: mainconfig.KontoBank,
+                                IBAN: mainconfig.KontoIban,
+                                Kontoinhaber: mainconfig.KontoInhaber,
+                                Verwendungszweg: mainconfig.Verwendungszweg,
+                                PayCode: HauptUser_Response[0].pyed_id,
+                                DiffDays: diffDays,
+                                Subgast: Guest_Response[0].username,
+                                Zusatzkosten: CentToEuro(Money_Amount),
+                                Kosten: CentToEuro(parseInt(HauptUser_Response[0].payed_ammount) + parseInt(Money_Amount))
+                            }), { parseMode: 'html', replyMarkup })])
+                        }).catch(function (error) {
+                            log.error(error)
+                            return bot.sendMessage(ChatID, newi18n.translate(process.env.Fallback_Language, 'Error.DBFehler'));
+                        });
                     }).catch(function (error) {
-                        reject(error)
-                    })
-                });
+                        log.error(error)
+                        return bot.sendMessage(ChatID, newi18n.translate(process.env.Fallback_Language, 'Error.DBFehler'));
+                    });
+                }
             });
         }).catch(function (error) {
             log.error(error)

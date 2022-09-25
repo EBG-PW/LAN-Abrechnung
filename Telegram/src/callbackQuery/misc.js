@@ -141,18 +141,22 @@ module.exports = function (bot, mainconfig, preisliste) {
                             ])
                             let replyMarkup = bot.inlineKeyboard(inlineKeyboard);
 
-
-                            if ('inline_message_id' in msg) {
-                                bot.editMessageText(
-                                    { inlineMsgId: inlineId }, newi18n.translate(data[3], 'WellcomeMSG', { LanName: mainconfig.LanName }),
-                                    { parseMode: 'html', replyMarkup }
-                                ).catch(error => log.error('Error:', error));
-                            } else {
-                                bot.editMessageText(
-                                    { chatId: chatId, messageId: messageId }, newi18n.translate(data[3], 'WellcomeMSG', { LanName: mainconfig.LanName }),
-                                    { parseMode: 'html', replyMarkup }
-                                ).catch(error => log.error('Error:', error));
-                            }
+                            DB.get.Guests.ByID(data[4]).then(function (Hauptguest) {
+                                if ('inline_message_id' in msg) {
+                                    bot.editMessageText(
+                                        { inlineMsgId: inlineId }, newi18n.translate(data[3], 'WellcomeMSGSubGuest', { LanName: mainconfig.LanName, Username: Hauptguest[0].username }),
+                                        { parseMode: 'html', replyMarkup }
+                                    ).catch(error => log.error('Error:', error));
+                                } else {
+                                    bot.editMessageText(
+                                        { chatId: chatId, messageId: messageId }, newi18n.translate(data[3], 'WellcomeMSGSubGuest', { LanName: mainconfig.LanName, Username: Hauptguest[0].username }),
+                                        { parseMode: 'html', replyMarkup }
+                                    ).catch(error => log.error('Error:', error));
+                                }
+                            }).catch(function (error) {
+                                log.error(error)
+                                return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Error.DBFehler'));
+                            });
                         }).catch(function (error) {
                             log.error(error)
                             return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Error.DBFehler'));

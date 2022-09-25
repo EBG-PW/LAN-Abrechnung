@@ -77,7 +77,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                         }
                     }
                 } else {
-                    if (User_response[0].pyed_id !== null) {
+                    if (User_response[0].pyed_id !== null || User_response[0].hauptgast_userid !== null) {
                         let replyMarkup = bot.inlineKeyboard([
                             [
                                 bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Knöpfe.Hauptmenu'), { callback: `/hauptmenu` })

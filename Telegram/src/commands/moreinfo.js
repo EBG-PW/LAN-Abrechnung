@@ -23,8 +23,6 @@ module.exports = function (bot, mainconfig, preisliste) {
                 ],
                 [
                     bot.inlineButton(newi18n.translate(tglang_response, 'Moreinfo.Knöpfe.Sprache'), { callback: `/lang` }),
-                ],[
-                    bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.SubGuest'), { inline: `SubGuest_${msg.from.id}` }),
                 ],
                 [
                     bot.inlineButton(newi18n.translate(tglang_response, 'Moreinfo.Knöpfe.Hauptmenu'), { callback: `/maincallback` }),

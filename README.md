@@ -174,6 +174,7 @@ User:
 |user_inventory| Can see inventory and donations|
 |user_strom| Can see his own powerusage|
 |user_user| Can see other party members|
+|user_subadmin| Can manage his guests|
 
 ## NPM Scripts
 | Script | Description |

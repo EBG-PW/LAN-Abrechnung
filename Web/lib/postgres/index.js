@@ -208,6 +208,26 @@ let CheckGuestByID = function (user_id) {
 }
 
 /**
+ * This function will return hauptgast id & permission_group if guest is a subgast
+ * @param {Number} user_id 
+ * @returns 
+ */
+let GetHauptGuestofguest = function (user_id) {
+  return new Promise(function (resolve, reject) {
+    // Is das a gute query? :D
+    // > VERMUTLICH NED! looooool
+    pool.query(`SELECT permission_group, (SELECT hauptgast_userid FROM guests WHERE userid = '${user_id}') FROM guests WHERE userid = (SELECT hauptgast_userid FROM guests WHERE userid = '${user_id}')`, (err, result) => {
+      if (err) { reject(err) }
+      if(result.rows.length === 1){
+        resolve(result.rows[0]);
+      }else{
+        resolve(false);
+      }
+    });
+  });
+}
+
+/**
  * This function will check if a user finished registration
  * @param {number} user_id
  * @returns {boolean}
@@ -1169,7 +1189,8 @@ let get = {
       Admin: CheckIfAdminbyID,
       Rules: CheckGuestRulesByID,
       Reg: RegCheckGuestByID,
-      Payed: PayedCheckGuestByID
+      Payed: PayedCheckGuestByID,
+      HauptGuest: GetHauptGuestofguest
     }
   },
   Permissions: {

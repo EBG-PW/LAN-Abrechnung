@@ -58,6 +58,56 @@
       "admin_plugs": {
         "read": true,
         "write": true
+      },
+      "user_subadmin": {
+        "read": true,
+        "write": true
+      }
+    }
+  },
+  "sub_group": {
+    "id": 3,
+    "name": "Lan-Guest",
+    "description": "User, thats just a guest of another member",
+    "permissions": {
+      "user_inventory": {
+        "read": true,
+        "write": true
+      },
+      "user_user": {
+        "read": true,
+        "write": true
+      }
+    }
+  },
+  "user_sub_group": {
+    "id": 4,
+    "name": "Lan-Member + Subuser",
+    "description": "User with access to everything to be a LAN-Party member with a guest",
+    "permissions": {
+      "user_bestellungen": {
+        "read": true,
+        "write": true
+      },
+      "user_finanzen": {
+        "read": true,
+        "write": true
+      },
+      "user_inventory": {
+        "read": true,
+        "write": true
+      },
+      "user_strom": {
+        "read": true,
+        "write": true
+      },
+      "user_user": {
+        "read": true,
+        "write": true
+      },
+      "user_subadmin": {
+        "read": true,
+        "write": true
       }
     }
   }
