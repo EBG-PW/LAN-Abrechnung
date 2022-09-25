@@ -155,7 +155,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS bestellungen (
  */
 let GetGuests = function () {
   return new Promise(function (resolve, reject) {
-    pool.query('SELECT guests.userid, guests.username, guests.passwort, guests.pc, guests.displays_count, guests.network_cable, guests.vr, guests.expected_arrival, guests.expected_departure, guests.accepted_rules, guests.accepted_legal, guests.payed, guests.pyed_id, guests.admin, guests.permission_group, guests.vaccinated, guests.time, guests.payed_ammount, guests.lang, plugs.allowed_state FROM guests LEFT JOIN plugs ON guests.userid = plugs.userid', (err, result) => {
+    pool.query('SELECT guests.userid, hauptgast_userid, guests.username, guests.passwort, guests.pc, guests.displays_count, guests.network_cable, guests.vr, guests.expected_arrival, guests.expected_departure, guests.accepted_rules, guests.accepted_legal, guests.payed, guests.pyed_id, guests.admin, guests.permission_group, guests.vaccinated, guests.time, guests.payed_ammount, guests.lang, plugs.allowed_state FROM guests LEFT JOIN plugs ON guests.userid = plugs.userid', (err, result) => {
       if (err) { reject(err) }
       resolve(result.rows);
     });

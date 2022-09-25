@@ -71,7 +71,7 @@ function Table_AdminUserDataList() {
 
         let NotPayedUsers = []
         AdminUserDataList.GuestsList_response.map((user, index) => {
-            if (!user.payed) {
+            if (!user.payed && user.hauptgast_userid === null) {
                 user.button_chanceSetPayed = {
                     text: translate('Tabeles.GästeNotPayedTabelle.setPayed'),
                     style: 'color: #00ff00 !important;',

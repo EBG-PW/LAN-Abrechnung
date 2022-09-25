@@ -227,7 +227,7 @@ const WebRegSendConfim = (ChatID) => {
                         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                         let Money_Amount = parseInt(diffDays) * (parseInt(preisliste.FixKostenProTag) / 1.7);
 
-                        Promise.all([DB.write.Guests.UpdateCollumByID(HauptUser_Response[0].userid, 'payed', false), DB.write.Guests.UpdateCollumByID(HauptUser_Response[0].userid, 'payed_ammount', parseInt(HauptUser_Response[0].payed_ammount) + parseInt(Money_Amount))]).then(function (money_edit_response) {
+                        Promise.all([DB.write.Guests.UpdateCollumByID(HauptUser_Response[0].userid, 'payed', false), DB.write.Guests.UpdateCollumByID(HauptUser_Response[0].userid, 'payed_ammount', parseInt(HauptUser_Response[0].payed_ammount) + parseInt(Money_Amount)), DB.write.Guests.UpdateCollumByID(ChatID, 'payed_ammount', parseInt(Money_Amount))]).then(function (money_edit_response) {
                             Promise.all([bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.SucsessSubUser', {
                                 DiffDays: diffDays,
                                 Username: HauptUser_Response[0].username
