@@ -175,6 +175,7 @@ User:
 |user_strom| Can see his own powerusage|
 |user_user| Can see other party members|
 |user_subadmin| Can manage his guests|
+|sub_user| To track if its a subuser, do not give this to normal users!|
 
 ## NPM Scripts
 | Script | Description |

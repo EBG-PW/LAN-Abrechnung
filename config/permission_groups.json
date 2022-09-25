@@ -77,6 +77,18 @@
       "user_user": {
         "read": true,
         "write": true
+      },
+      "user_bestellungen": {
+        "read": true,
+        "write": true
+      },
+      "user_finanzen": {
+        "read": true,
+        "write": true
+      },
+      "sub_user": {
+        "read": true,
+        "write": true
       }
     }
   },
