@@ -45,6 +45,7 @@ function generateJson(Guests, preisliste, mainconfig) {
                 // Push Table heads into array position 1
                 Items_Array.push({
                     artikel: newi18n.translate(tglang_response_inner, 'geninvoices.Artikel'),
+                    priceper: newi18n.translate(tglang_response_inner, 'geninvoices.PricePerUnit'),
                     amount: newi18n.translate(tglang_response_inner, 'geninvoices.Amount'),
                     price: newi18n.translate(tglang_response_inner, 'geninvoices.Price'),
                 })
@@ -52,8 +53,9 @@ function generateJson(Guests, preisliste, mainconfig) {
                 if (kwh_used.rows.length > 0) {
                     Items_Array.push({
                         artikel: newi18n.translate(tglang_response_inner, 'geninvoices.kwh'),
+                        priceper: CentToEuro(preisliste.PauschalKosten.StromKWH.Preis).replace(' €', ' Euro'),
                         amount: kwh_used.rows[0].power_used.toFixed(3).toString().replace('.', ',') + "x",
-                        price: CentToEuro(kwh_used.rows[0].power_used * preisliste.PauschalKosten.StromKWH.Preis),
+                        price: CentToEuro(kwh_used.rows[0].power_used * preisliste.PauschalKosten.StromKWH.Preis).replace(' €', ' Euro'),
                     })
                 }
                 // Push all the bough items into the array
@@ -63,28 +65,32 @@ function generateJson(Guests, preisliste, mainconfig) {
                         sum_cost += Number(item.price_sum);
                         Items_Array.push({
                             artikel: item.produktname.substring(0, 32),
+                            priceper: CentToEuro(item.price_per_item).replace(' €', ' Euro'),
                             amount: `${item.bough}x`,
-                            price: CentToEuro(item.price_sum),
+                            price: CentToEuro(item.price_sum).replace(' €', ' Euro'),
                         })
                     })
                 }
                 // Push the payed amount into the array
                 Items_Array.push({
                     artikel: newi18n.translate(tglang_response_inner, 'geninvoices.Payed'),
+                    priceper: "",
                     amount: "",
-                    price: CentToEuro(Guest.payed_ammount)
+                    price: CentToEuro(Guest.payed_ammount).replace(' €', ' Euro')
                 })
                 // Push the total price into the array
                 Items_Array.push({
                     artikel: newi18n.translate(tglang_response_inner, 'geninvoices.TotalSpend'),
+                    priceper: "",
                     amount: "",
-                    price: CentToEuro(sum_cost)
+                    price: CentToEuro(sum_cost).replace(' €', ' Euro')
                 })
                 // Push the difference into the array
                 Items_Array.push({
                     artikel: newi18n.translate(tglang_response_inner, 'geninvoices.Difference'),
+                    priceper: "",
                     amount: "",
-                    price: `${CentToEuro(Number(Guest.payed_ammount) - Number(sum_cost))}`
+                    price: `${CentToEuro(Number(Guest.payed_ammount) - Number(sum_cost)).replace(' €', ' Euro')}`
                 })
                 // Generate the final object
                 Restult_array.push({

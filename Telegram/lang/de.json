@@ -208,6 +208,7 @@
   "geninvoices": {
     "Abrechnung": "Abrechnung",
     "Artikel": "Artikel",
+    "PricePerUnit": "Einzelpreis",
     "Amount": "Anzahl",
     "Price": "Preis",
     "kwh": "Elektrische Energie (in kWh)",

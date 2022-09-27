@@ -9,6 +9,7 @@ struct PDFTemplate {
 	date string [required]
 	items []struct {
 		artikel string [required]
+		priceper string [required]
 		amount string [required]
 		price string [required]
 	} [required]
@@ -217,14 +218,21 @@ fn genpdf(template &PDFTemplate) {
 			page.text_box(template.items[0].artikel, pdf.Box{
 				x: 10
 				y: y - 5
-				w: 160 - 10
+				w: 108 - 10
+				h: 4
+			}, fnt_params_list)
+
+			page.text_box(template.items[0].priceper, pdf.Box{
+				x: 18
+				y: y - 5
+				w: 125 - 90
 				h: 4
 			}, fnt_params_list)
 
 			page.text_box(template.items[0].amount, pdf.Box{
-				x: 150
+				x: 125
 				y: y - 5
-				w: 180 - 150
+				w: 172 - 130
 				h: 4
 			}, fnt_params_list)
 
@@ -254,14 +262,22 @@ fn genpdf(template &PDFTemplate) {
 		page.text_box(item.artikel, pdf.Box{
 			x: 10
 			y: y - 5
-			w: 160 - 10
+			w: 108 - 10
+			h: 4
+		}, fnt_params_list)
+
+		fnt_params_list.text_align = .right
+		page.text_box(item.priceper, pdf.Box{
+			x: 108
+			y: y - 5
+			w: 125 - 90
 			h: 4
 		}, fnt_params_list)
 
 		page.text_box(item.amount, pdf.Box{
-			x: 150
+			x: 125
 			y: y - 5
-			w: 180 - 150
+			w: 172 - 130
 			h: 4
 		}, fnt_params_list)
 
