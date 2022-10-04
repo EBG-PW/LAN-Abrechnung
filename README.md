@@ -194,6 +194,7 @@ struct PDFTemplate {
 	date string [required]
 	items []struct {
 		artikel string [required]
+		priceper string [required]
 		amount string [required]
 		price string [required]
 	} [required]
