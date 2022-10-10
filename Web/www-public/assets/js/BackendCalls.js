@@ -357,6 +357,15 @@ function change_plug_userid(plugid, id){
         PlugsManagmentTabelle()
       })
       posting.fail(function (err) {
+        PlugsManagmentTabelle()
+        SnackBar({
+          message: `Error ${err.status} - ${err.responseJSON.Error}`,
+          width: "400px",
+          speed: SnackBox_Timeout,
+          position: SnackBox_Location,
+          fixed: true,
+          status: "error",
+        });
         if (err.status === 401) {
           resolve(err.status)
         } else if (err.status === 500) {
