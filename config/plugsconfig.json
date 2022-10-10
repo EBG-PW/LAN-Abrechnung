@@ -1,5 +1,5 @@
 {
-    "conrolpers": [
+    "controlers": [
         {
             "ControlerName": "Home",
             "token": "HomeTs",

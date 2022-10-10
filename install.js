@@ -69,7 +69,7 @@ function executeCommand(command, cwd, message) {
             });
         }
 
-        await askQuestion('Fill out ecosystem.config.js or verify its correct?');
+        await askQuestion('Fill out ecosystem.config.js or verify its correct? Press enter to continue');
         const InstallPM2 = await askQuestion('Do you want to use PM2 and want that setup? (y/n)');
         if (InstallPM2 === 'y' || InstallPM2 === 'Y') {
             await executeCommand(PM2_install, LocalPath, 'Installed PM2');
@@ -86,7 +86,7 @@ function executeCommand(command, cwd, message) {
         }
 
         // Register first user and then give admin
-        await askQuestion('Please register via the telegram bot and then continue');
+        await askQuestion('Please register via the telegram bot and then press enter to continue');
         const mainconfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'config/mainconfig.json')));
         const AskAdmin = await askQuestion(`Do you want to give admin rights to ${mainconfig.SudoUser}? (y/n)`);
         if (AskAdmin.toLowerCase() === 'y') {

@@ -172,14 +172,6 @@ bot.start();
 const WebRegSendConfim = (ChatID) => {
     return new Promise(function (resolve, reject) {
         DB.get.tglang.Get(ChatID).then(function (tglang_response) {
-            let replyMarkup = bot.inlineKeyboard([
-                [
-                    bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.SubGuest'), { inline: `SubGuest_${ChatID}` })
-                ], [
-                    bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.Hauptmenu'), { callback: '/hauptmenu' })
-                ]
-            ]);
-
             let replyMarkupSubGuest = bot.inlineKeyboard([
                 [
                     bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.Hauptmenu'), { callback: '/hauptmenu' })
@@ -192,6 +184,13 @@ const WebRegSendConfim = (ChatID) => {
             });
             DB.get.Guests.ByID(ChatID).then(function (Guest_Response) {
                 if (Guest_Response[0].hauptgast_userid === null) {
+                    let replyMarkup = bot.inlineKeyboard([
+                        [
+                            bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.SubGuest'), { inline: `SubGuest_${ChatID}` })
+                        ], [
+                            bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.Hauptmenu'), { callback: '/hauptmenu' })
+                        ]
+                    ]);
                     // No Hauptgast ID is set, so its normal registration
                     const expected_arrival = new Date(Guest_Response[0].expected_arrival);
                     const expected_departure = new Date(Guest_Response[0].expected_departure);
@@ -226,6 +225,14 @@ const WebRegSendConfim = (ChatID) => {
                         const diffTime = Math.abs(expected_departure - expected_arrival);
                         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                         let Money_Amount = parseInt(diffDays) * (parseInt(preisliste.FixKostenProTag) / 1.7);
+
+                        let replyMarkup = bot.inlineKeyboard([
+                            [
+                                bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.SubGuest'), { inline: `SubGuest_${Guest_Response[0].hauptgast_userid}` })
+                            ], [
+                                bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.Hauptmenu'), { callback: '/hauptmenu' })
+                            ]
+                        ]);
 
                         Promise.all([DB.write.Guests.UpdateCollumByID(HauptUser_Response[0].userid, 'payed', false), DB.write.Guests.UpdateCollumByID(HauptUser_Response[0].userid, 'payed_ammount', parseInt(HauptUser_Response[0].payed_ammount) + parseInt(Money_Amount)), DB.write.Guests.UpdateCollumByID(ChatID, 'payed_ammount', parseInt(Money_Amount))]).then(function (money_edit_response) {
                             Promise.all([bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.SucsessSubUser', {

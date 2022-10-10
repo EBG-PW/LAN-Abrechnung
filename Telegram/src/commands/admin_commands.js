@@ -176,12 +176,12 @@ module.exports = function (bot, mainconfig, preisliste) {
 
     bot.on(/^\/loadprice/i, (msg) => {
         const run_start = new Date().getTime();
-        if (fs.existsSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json'))) {
-            preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'preisliste.json')));
+        if (fs.existsSync(path.join(__dirname, '../', '../', '../', 'config', 'preisliste.json'))) {
+            preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', '../', 'config', 'preisliste.json')));
         }
         Promise.all([DB.get.Guests.Check.Admin(msg.from.id), DB.get.tglang.Get(msg.from.id)]).then(function (values) {
             const [Admin_Check_response, tglang_response] = values;
-            if (Admin_Check_response) {
+            if (Admin_Check_response === true || parseInt(mainconfig.SudoUser) === msg.from.id) {
                 let Restul_array = [];
                 for (const key in preisliste.SnackBar) {
                     Restul_array.push(DB.write.Products.Add(preisliste.SnackBar[key]))
@@ -202,21 +202,23 @@ module.exports = function (bot, mainconfig, preisliste) {
     });
 
     bot.on(/^\/loadplugs/i, (msg) => {
+        let plugsconfig;
         const run_start = new Date().getTime();
-        if (fs.existsSync(path.join(__dirname, '../', '../', 'config', 'plugsconfig.json'))) {
-            preisliste = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', 'config', 'plugsconfig.json')));
+        if (fs.existsSync(path.join(__dirname, '../', '../', '../', 'config', 'plugsconfig.json'))) {
+            plugsconfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', '../', 'config', 'plugsconfig.json')));
         }
+        
         Promise.all([DB.get.Guests.Check.Admin(msg.from.id), DB.get.tglang.Get(msg.from.id)]).then(function (values) {
             const [Admin_Check_response, tglang_response] = values;
-            if (Admin_Check_response) {
+            if (Admin_Check_response === true || parseInt(mainconfig.SudoUser) === msg.from.id) {
                 let Restult_array = [];
-                for (let i = 0; i < preisliste.conrolpers.length; i++) {
-                    DB.write.plugs.addControler(preisliste.conrolpers[i].ControlerName, preisliste.conrolpers[i].token).then(function (response) {
-                        for (let j = 0; j < preisliste.conrolpers[i].Plugs.length; j++) {
-                            Restult_array.push(DB.write.plugs.addPlug(preisliste.conrolpers[i].Plugs[j].IP, i + 1))
+                for (let i = 0; i < plugsconfig.controlers.length; i++) {
+                    DB.write.plugs.addControler(plugsconfig.controlers[i].ControlerName, plugsconfig.controlers[i].token).then(function (response) {
+                        for (let j = 0; j < plugsconfig.controlers[i].Plugs.length; j++) {
+                            Restult_array.push(DB.write.plugs.addPlug(plugsconfig.controlers[i].Plugs[j].IP, i + 1))
                         }
                         Promise.all(Restult_array).then(function (response) {
-                            return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'loadplugs.Text', { Amount: Restult_array.length, ControlerAmount: preisliste.conrolpers.length, duration: TimeConvert(new Date().getTime() - run_start) }));
+                            return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'loadplugs.Text', { Amount: Restult_array.length, ControlerAmount: plugsconfig.controlers.length, duration: TimeConvert(new Date().getTime() - run_start) }));
                         }).catch(function (error) {
                             log.error(error)
                             return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
@@ -239,7 +241,7 @@ module.exports = function (bot, mainconfig, preisliste) {
         const run_start = new Date().getTime();
         Promise.all([DB.get.Guests.Check.Admin(msg.from.id), DB.get.tglang.Get(msg.from.id)]).then(function (values) {
             const [Admin_Check_response, tglang_response] = values;
-            if (Admin_Check_response) {
+            if (Admin_Check_response === true || parseInt(mainconfig.SudoUser) === msg.from.id) {
                 DB.get.Guests.Main().then(function (Guests) {
                     const config_start = new Date().getTime();
                     generateJson(Guests, preisliste, mainconfig).then(function (response) {

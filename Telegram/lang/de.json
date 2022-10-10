@@ -1,6 +1,6 @@
 {
   "WellcomeMSG": "Willkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.\n\nWähle deine Sprache:",
-  "WellcomeMSGSubGuest": "Du wurdest als Begleitung von {{Username}} eingeladen\n\nWuikomma zua Local-Area-Network-Party {{LanName}} mid dem Bot kannst du di registriern.\n\nWähle dei Sprach:",
+  "WellcomeMSGSubGuest": "Du wurdest als Begleitung von {{Username}} eingeladen\n\nWillkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.\n\nWähle deine Sprache:",
   "WellcomeMSGAR": "Willkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.\n\nDu bist bereits regestriert. Hier das Haumtmenü.",
   "WellcomeErr": "Bitte beende deine Regestrierung. Fals du dies bereits gemacht hast, hast du vermulich die Regeln nicht aktzeptiert und bist somit leider nicht willkommen!",
   "Fragen": {

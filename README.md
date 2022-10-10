@@ -126,8 +126,7 @@ plugsconfig.json
 ## Installation
 - Clone this repo
 - Check the "Required config" section of the readme
-- Run `npm run install` to install all dependencies & pm2 setup if you like
-- Register via the TG Bot
+- Run `npm run install` and follow the instructions
 - Run `/loadplugs` in Telegram as admin
 - Run `/loadprices` in Telegram as admin
 - Build the plugclient (Or use the prebuild one)

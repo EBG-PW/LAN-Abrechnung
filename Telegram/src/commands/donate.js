@@ -57,7 +57,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                 var messageId = msg.message.message_id;
             }
 
-            Promise.all([DB.get.Guests.ByID(msg.from.id), DB.get.plugs.power.kwh(msg.from.id), DB.get.shopinglist.Get(msg.from.id), DB.get.tglang.Get(msg.from.id)]).then(function (response) {
+            Promise.all([DB.get.Guests.ByID(msg.from.id), DB.get.plugs.power.kwh(msg.from.id), DB.get.shopinglist.Get(msg.from.id, 'userid'), DB.get.tglang.Get(msg.from.id)]).then(function (response) {
                 const [Guest_response, plugs_response, shoppinglist_response, tglang_response] = response;
                 let total_shopping = 0;
                 const total_powercost = plugs_response.rows[0]?.diff?.toFixed(2) * preisliste.PauschalKosten.StromKWH.Preis || 0;

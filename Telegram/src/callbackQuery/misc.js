@@ -22,7 +22,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                 if (data[0] === 'delete') {
                     if (data[1] === 'this') {
                         //delete message here!
-                        bot.deleteMessage(chatId, messageId).catch(error => log.error('Error:', error));
+                        bot.deleteMessage(chatId, messageId).catch(error => log.error(error));
                     }
                 }
                 if (data[0] === "lang") { // Language change from after registration
@@ -62,12 +62,12 @@ module.exports = function (bot, mainconfig, preisliste) {
                             bot.editMessageText(
                                 { inlineMsgId: inlineId }, Message,
                                 { parseMode: 'html', replyMarkup }
-                            ).catch(error => log.error('Error:', error));
+                            ).catch(error => log.error(error));
                         } else {
                             bot.editMessageText(
                                 { chatId: chatId, messageId: messageId }, Message,
                                 { parseMode: 'html', replyMarkup }
-                            ).catch(error => log.error('Error:', error));
+                            ).catch(error => log.error(error));
                         }
                     });
                 }
@@ -102,12 +102,12 @@ module.exports = function (bot, mainconfig, preisliste) {
                                 bot.editMessageText(
                                     { inlineMsgId: inlineId }, newi18n.translate(data[3], 'WellcomeMSG', { LanName: mainconfig.LanName }),
                                     { parseMode: 'html', replyMarkup }
-                                ).catch(error => log.error('Error:', error));
+                                ).catch(error => log.error(error));
                             } else {
                                 bot.editMessageText(
                                     { chatId: chatId, messageId: messageId }, newi18n.translate(data[3], 'WellcomeMSG', { LanName: mainconfig.LanName }),
                                     { parseMode: 'html', replyMarkup }
-                                ).catch(error => log.error('Error:', error));
+                                ).catch(error => log.error(error));
                             }
                         }).catch(function (error) {
                             log.error(error)
@@ -146,12 +146,12 @@ module.exports = function (bot, mainconfig, preisliste) {
                                     bot.editMessageText(
                                         { inlineMsgId: inlineId }, newi18n.translate(data[3], 'WellcomeMSGSubGuest', { LanName: mainconfig.LanName, Username: Hauptguest[0].username }),
                                         { parseMode: 'html', replyMarkup }
-                                    ).catch(error => log.error('Error:', error));
+                                    ).catch(error => log.error(error));
                                 } else {
                                     bot.editMessageText(
                                         { chatId: chatId, messageId: messageId }, newi18n.translate(data[3], 'WellcomeMSGSubGuest', { LanName: mainconfig.LanName, Username: Hauptguest[0].username }),
                                         { parseMode: 'html', replyMarkup }
-                                    ).catch(error => log.error('Error:', error));
+                                    ).catch(error => log.error(error));
                                 }
                             }).catch(function (error) {
                                 log.error(error)
@@ -170,12 +170,12 @@ module.exports = function (bot, mainconfig, preisliste) {
                 bot.editMessageText(
                     { inlineMsgId: inlineId }, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'),
                     { parseMode: 'html' }
-                ).catch(error => log.error('Error:', error));
+                ).catch(error => log.error(error));
             } else {
                 bot.editMessageText(
                     { chatId: chatId, messageId: messageId }, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'),
                     { parseMode: 'html' }
-                ).catch(error => log.error('Error:', error));
+                ).catch(error => log.error(error));
             }
         });
     });
