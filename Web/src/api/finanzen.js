@@ -29,7 +29,11 @@ const router = express.Router();
 router.get("/shoppinglist", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         if (reg.permissions.read.includes('user_finanzen') || reg.permissions.read.includes('admin_finanzen') || reg.permissions.read.includes('admin_all')) {
-            DB.get.shopinglist.Get(reg.check.Data.userid).then(function (ShoppingList_response) {
+            let collum_name = "userid";
+            if(reg.permissions.read.includes('sub_user')){
+                collum_name = "byer_userid";
+            }
+            DB.get.shopinglist.Get(reg.check.Data.userid, collum_name).then(function (ShoppingList_response) {
                 res.status(200);
                 res.json({
                     ShoppingList_response: ShoppingList_response.rows
@@ -50,7 +54,11 @@ router.get("/shoppinglist", limiter, tokenpermissions(), async (reg, res, next) 
 router.get("/gettotalspend", limiter, tokenpermissions(), async (reg, res, next) => {
     try {
         if (reg.permissions.read.includes('user_finanzen') || reg.permissions.read.includes('admin_finanzen') || reg.permissions.read.includes('admin_all')) {
-            DB.get.shopinglist.Get(reg.check.Data.userid).then(function (ShoppingList_response) {
+            let collum_name = "userid";
+            if(reg.permissions.read.includes('sub_user')){
+                collum_name = "byer_userid";
+            }
+            DB.get.shopinglist.Get(reg.check.Data.userid, collum_name).then(function (ShoppingList_response) {
                 let total = 0;
                 ShoppingList_response.rows.map(row => {
                     total = total + row.price

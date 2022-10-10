@@ -567,11 +567,12 @@ let UpdateProductByName = function (produktname, old_bought, new_bought) {
 /**
  * This function will get all bough items of a user
  * @param {number} userid
+ * @param {string} collum
  * @returns {Promise}
  */
-let GetAllBoughItemsByUser = function (userid) {
+let GetAllBoughItemsByUser = function (userid, collum) {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT guests.username, shopinglist.userid, shopinglist.produktname, shopinglist.produktcompany, shopinglist.price, shopinglist.bought, shopinglist.byer_userid, shopinglist.transaction_id FROM shopinglist INNER JOIN guests ON shopinglist.byer_userid = guests.userid WHERE shopinglist.userid = '${userid}' ORDER BY shopinglist.time DESC`, (err, result) => {
+    pool.query(`SELECT guests.username, shopinglist.userid, shopinglist.produktname, shopinglist.produktcompany, shopinglist.price, shopinglist.bought, shopinglist.byer_userid, shopinglist.transaction_id FROM shopinglist INNER JOIN guests ON shopinglist.byer_userid = guests.userid WHERE shopinglist.${collum} = '${userid}' ORDER BY shopinglist.time DESC`, (err, result) => {
       if (err) { reject(err) }
       resolve(result);
     });
