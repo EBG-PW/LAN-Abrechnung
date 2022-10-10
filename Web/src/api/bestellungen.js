@@ -225,18 +225,24 @@ router.get("/switchOrderStateByKey", limiter, tokenpermissions(), async (reg, re
                         price: GetOrder_response.rows[0].price,
                         bought: GetOrder_response.rows[0].amount
                     }
-                    DB.write.shopinglist.Buy(GetOrder_response.rows[0].userid, GetOrder_response.rows[0].userid, Product, T_ID).then(function (Buy_response) {
-                        DB.write.order.SwitchState(value.key, true).then(function (Switch_response) {
-                            res.status(200);
-                            res.json({
-                                Message: "Succsess",
-                                orderid: GetOrder_response.rows[0].orderid
+                    DB.get.Guests.ByID(GetOrder_response.rows[0].userid).then(function (User_Thats_Ordered) {
+                        const Billed_User = User_Thats_Ordered[0].hauptgast_userid || GetOrder_response.rows[0].userid;
+                        DB.write.shopinglist.Buy(Billed_User, GetOrder_response.rows[0].userid, Product, T_ID).then(function (Buy_response) {
+                            DB.write.order.SwitchState(value.key, true).then(function (Switch_response) {
+                                res.status(200);
+                                res.json({
+                                    Message: "Succsess",
+                                    orderid: GetOrder_response.rows[0].orderid
+                                });
                             });
+                        }).catch(function (error) {
+                            log.error(error);
+                            throw new Error("DBError");
                         });
                     }).catch(function (error) {
                         log.error(error);
                         throw new Error("DBError");
-                    })
+                    });
                 } else {
                     res.status(508);
                     res.json({
