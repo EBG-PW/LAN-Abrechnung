@@ -16,7 +16,11 @@ module.exports = function (bot, mainconfig, preisliste) {
         }
 
         Promise.all([DB.get.Guests.ByID(msg.from.id), DB.get.tglang.Get(msg.from.id)]).then(function (response) {
+            let PromiseArray = [];
             const [Guest_response, tglang_response] = response;
+            if (Guest_response[0].hauptgast_userid !== null) {
+                PromiseArray.push(DB.get.Guests.ByID(Guest_response[0].hauptgast_userid));
+            }
             let replyMarkup = bot.inlineKeyboard([
                 [
                     bot.inlineButton(newi18n.translate(tglang_response, 'Moreinfo.Knöpfe.Hauptmenu'), { callback: `/maincallback` })
@@ -30,24 +34,28 @@ module.exports = function (bot, mainconfig, preisliste) {
             }
             let Kosten = CentToEuro(parseInt(Guest_response[0].payed_ammount));
 
-            let Status_String = ""
-            if (Guest_response[0].payed === true) {
-                Status_String = newi18n.translate(tglang_response, 'Payed.True')
-            } else {
-                Status_String = newi18n.translate(tglang_response, 'Payed.False')
-            }
-            let Message = newi18n.translate(tglang_response, 'Payed.Text', { Username: username, Status_String: Status_String, money: Kosten, PayedID: Guest_response[0].pyed_id })
-            if ('inline_message_id' in msg) {
-                bot.editMessageText(
-                    { inlineMsgId: inlineId }, Message,
-                    { parseMode: 'html', replyMarkup }
-                ).catch(error => log.error('Error:' + error));
-            } else {
-                bot.editMessageText(
-                    { chatId: chatId, messageId: messageId }, Message,
-                    { parseMode: 'html', replyMarkup }
-                ).catch(error => log.error('Error:' + error));
-            }
+            Promise.all(PromiseArray).then(function (hauptgast) {
+                const [hauptgast_response] = hauptgast;
+                console.log(hauptgast_response);
+                let Status_String = ""
+                if (Guest_response[0].payed === true || hauptgast_response[0].payed === true) {
+                    Status_String = newi18n.translate(tglang_response, 'Payed.True')
+                } else {
+                    Status_String = newi18n.translate(tglang_response, 'Payed.False')
+                }
+                let Message = newi18n.translate(tglang_response, 'Payed.Text', { Username: username, Status_String: Status_String, money: Kosten, PayedID: Guest_response[0].pyed_id || hauptgast_response[0].pyed_id });
+                if ('inline_message_id' in msg) {
+                    bot.editMessageText(
+                        { inlineMsgId: inlineId }, Message,
+                        { parseMode: 'html', replyMarkup }
+                    ).catch(error => log.error('Error:' + error));
+                } else {
+                    bot.editMessageText(
+                        { chatId: chatId, messageId: messageId }, Message,
+                        { parseMode: 'html', replyMarkup }
+                    ).catch(error => log.error('Error:' + error));
+                }
+            });
         }).catch(function (error) {
             log.error(error)
             return bot.sendMessage(chatId, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
