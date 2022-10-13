@@ -51,6 +51,7 @@ function generateJson(Guests, preisliste, mainconfig) {
                 })
                 // Push power into row 2
                 if (kwh_used.rows.length > 0) {
+                    sum_cost += Number(kwh_used.rows[0].power_used * preisliste.PauschalKosten.StromKWH.Preis);
                     Items_Array.push({
                         artikel: newi18n.translate(tglang_response_inner, 'geninvoices.kwh'),
                         priceper: CentToEuro(preisliste.PauschalKosten.StromKWH.Preis).replace(' €', ' Euro'),
