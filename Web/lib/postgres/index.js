@@ -10,6 +10,7 @@ const pool = new pg.Pool({
   port: process.env.DB_PORT,
 })
 
+// payed is used in 2 ways, for main guest its if he has payed. If subguest, its if he is allowed to pay (Buffet)
 pool.query(`CREATE TABLE IF NOT EXISTS guests (
     userid bigint PRIMARY KEY,
     hauptgast_userid bigint,

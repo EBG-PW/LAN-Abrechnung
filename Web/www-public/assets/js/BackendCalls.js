@@ -1,5 +1,3 @@
-const { func } = require("joi");
-
 /**
  * Will get Userdata for logged in user
  * @returns {Promise}
