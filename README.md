@@ -5,6 +5,9 @@ Tested on Windows 10/11 and Linux Debian 11/Ubuntu 22.04
 - [Requirements](#Requirements)
 - [Required config](#Required-config)
 - [Installation](#Installation)
+- [Telegram Commands](#Telegram-Commands)
+    - [User Commands](#User)
+    - [Admin Commands](#Admin)
 - [API](#API)
 	- [WebServer](#WebServer)
 	- [PlugServer](#PlugServer)
@@ -131,6 +134,17 @@ plugsconfig.json
 - Run `/loadprices` in Telegram as admin
 - Build the plugclient (Or use the prebuild one)
 - Run the plugclient `plugclient -t <token> ` or use `plugclient -h` for more options
+
+## Telegram Commands
+### User
+- `/start` - Start the registration process
+- `/hauptmenu` - Show the main menu
+
+### Admin
+- `/admin [add/rem/list]` - Add, remove or list admins
+- `/loadplugs` - Load all powerplugs from the config
+- `/loadprices` - Load all prices from the config
+- `/geninvoices` - Generate invoices for all users
 
 ## API
 
