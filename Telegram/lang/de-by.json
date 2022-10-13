@@ -249,6 +249,8 @@
     },
     "Confirm": {
       "NotPayed": "Du hast noch nicht gezahlt oder deine Zahlung wurde noch nicht verarbeitet.",
+      "OverLimit": "Du hast dein Limit von {{limit}} überschritten.",
+      "NotAllowedToPay": "Du bist nicht berechtigt zu bezahlen. Der Lan-Member muss dies im Webpanel aktivieren.",
       "DoesNotExist": "Das ausgewählte Produkt {{produktname}} von {{produktcompany}} wurde leider aus dem Angebot entfernt.",
       "NotEnoth": "Das Produkt {{produktname}} von {{produktcompany}} ist leider nicht mehr in ausrechender Menge verfügbar!",
       "OtherBuy": "Das gewählte Produkt wurde zeitgleich von jemand anderem gekauft, versuche es bitte nochmals!"

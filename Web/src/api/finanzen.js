@@ -61,7 +61,7 @@ router.get("/gettotalspend", limiter, tokenpermissions(), async (reg, res, next)
             DB.get.shopinglist.Get(reg.check.Data.userid, collum_name).then(function (ShoppingList_response) {
                 let total = 0;
                 ShoppingList_response.rows.map(row => {
-                    total = total + row.price
+                    total = total + (row.price * row.bought);
                 })
                 res.status(200);
                 res.json({

@@ -150,67 +150,153 @@ module.exports = function (bot, mainconfig, preisliste) {
                         let price = msg.message.reply_markup.inline_keyboard[1][1].callback_data;
 
                         DB.get.Guests.ByID(msg.from.id).then(function (guest_response) {
-                            if (guest_response[0].payed === true || guest_response[0].payed === "true") {
-                                DB.get.Products.Get(product).then(function (product_response) {
-                                    if (product_response.rows.length >= 1) {
-                                        if (parseInt(product_response.rows[0].amount) - parseInt(product_response.rows[0].bought) >= parseInt(amount_to_buy)) {
-                                            DB.write.Products.UpdateBought(product, product_response.rows[0].bought, Number(product_response.rows[0].bought) + Number(amount_to_buy)).then(function (update_response) {
-                                                if (update_response.rowCount === 1) {
-                                                    let SQLprodukt = {
-                                                        produktname: product,
-                                                        produktcompany: product_response.rows[0].produktcompany,
-                                                        price: product_response.rows[0].price * amount_to_buy,
-                                                        bought: amount_to_buy
-                                                    }
-
-                                                    let transaction_id = randomstring.generate({
-                                                        length: mainconfig.RegTokenLength, //DO NOT CHANCE!!!
-                                                        charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
-                                                    });
-
-                                                    DB.write.shopinglist.Buy(msg.from.id, msg.from.id, SQLprodukt, transaction_id).then(function (Write_Shoppinglist) { //Here Stuff needs to be chanced when subusers will be added!!
-                                                        let MSG;
-                                                        if (product === "Spende") {
-                                                            MSG = newi18n.translate(tglang_response, 'Inline.Donation', { price: CentToEuro(price * amount_to_buy), Company_Name_URL: process.env.Company_Name_Url, Company_Name: process.env.Company_Name });
-                                                        } else {
-                                                            if (amount_to_buy >= 2) {
-                                                                MSG = newi18n.translate(tglang_response, 'Inline.ItemsBought', { produktname: product, produktcompany: product_response.rows[0].produktcompany, price: CentToEuro(price * amount_to_buy), amount: amount_to_buy })
+                            if (guest_response[0].hauptgast_userid !== null) { // Detect Hauptguests
+                                //User is SubGuest
+                                DB.get.Guests.ByID(guest_response[0].hauptgast_userid).then(function (all_response) {
+                                    const [hauptgast] = all_response;
+                                    if (hauptgast.payed === true || hauptgast.payed === "true") { // check if main guest has payed
+                                        if (guest_response[0].payed === true || guest_response[0].payed === "true") { // Check if user is allowed to buy from buffet
+                                            DB.get.Guests.ShopingSpend(msg.from.id).then(function (shoping_response) {
+                                                if (shoping_response.rows[0].sum < guest_response[0].payed_ammount) { // Check if user is still within his limit
+                                                    DB.get.Products.Get(product).then(function (product_response) {
+                                                        if (product_response.rows.length >= 1) {
+                                                            if (parseInt(product_response.rows[0].amount) - parseInt(product_response.rows[0].bought) >= parseInt(amount_to_buy)) {
+                                                                DB.write.Products.UpdateBought(product, product_response.rows[0].bought, Number(product_response.rows[0].bought) + Number(amount_to_buy)).then(function (update_response) {
+                                                                    if (update_response.rowCount === 1) {
+                                                                        let SQLprodukt = {
+                                                                            produktname: product,
+                                                                            produktcompany: product_response.rows[0].produktcompany,
+                                                                            price: product_response.rows[0].price * amount_to_buy,
+                                                                            bought: amount_to_buy
+                                                                        }
+                
+                                                                        let transaction_id = randomstring.generate({
+                                                                            length: mainconfig.RegTokenLength, //DO NOT CHANCE!!!
+                                                                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                                                                        });
+                
+                                                                        DB.write.shopinglist.Buy(hauptgast.userid, msg.from.id, SQLprodukt, transaction_id).then(function (Write_Shoppinglist) { //Here Stuff needs to be chanced when subusers will be added!!
+                                                                            let MSG;
+                                                                            if (product === "Spende") {
+                                                                                MSG = newi18n.translate(tglang_response, 'Inline.Donation', { price: CentToEuro(price * amount_to_buy), Company_Name_URL: process.env.Company_Name_Url, Company_Name: process.env.Company_Name });
+                                                                            } else {
+                                                                                if (amount_to_buy >= 2) {
+                                                                                    MSG = newi18n.translate(tglang_response, 'Inline.ItemsBought', { produktname: product, produktcompany: product_response.rows[0].produktcompany, price: CentToEuro(price * amount_to_buy), amount: amount_to_buy })
+                                                                                } else {
+                                                                                    MSG = newi18n.translate(tglang_response, 'Inline.ItemBought', { produktname: product, produktcompany: product_response.rows[0].produktcompany, price: CentToEuro(price * amount_to_buy), amount: amount_to_buy })
+                                                                                }
+                                                                            }
+                                                                            if ('inline_message_id' in msg) {
+                                                                                bot.editMessageText(
+                                                                                    { inlineMsgId: inlineId }, MSG,
+                                                                                    { parseMode: 'html' }
+                                                                                ).catch(error => log.error('Error:', error));
+                                                                            } else {
+                                                                                bot.editMessageText(
+                                                                                    { chatId: chatId, messageId: messageId }, MSG,
+                                                                                    { parseMode: 'html' }
+                                                                                ).catch(error => log.error('Error:', error));
+                                                                            }
+                                                                        })
+                                                                    } else {
+                                                                        //Produkt wurde zeitgleich von jemand anderem gekauft
+                                                                        return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.OtherBuy'));
+                                                                    }
+                                                                });
                                                             } else {
-                                                                MSG = newi18n.translate(tglang_response, 'Inline.ItemBought', { produktname: product, produktcompany: product_response.rows[0].produktcompany, price: CentToEuro(price * amount_to_buy), amount: amount_to_buy })
+                                                                //Produkt nicht in ausreichender Menge verfügbar
+                                                                return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.NotEnoth', { produktname: product, produktcompany: product_response.rows[0].produktcompany }));
                                                             }
-                                                        }
-                                                        if ('inline_message_id' in msg) {
-                                                            bot.editMessageText(
-                                                                { inlineMsgId: inlineId }, MSG,
-                                                                { parseMode: 'html' }
-                                                            ).catch(error => log.error('Error:', error));
                                                         } else {
-                                                            bot.editMessageText(
-                                                                { chatId: chatId, messageId: messageId }, MSG,
-                                                                { parseMode: 'html' }
-                                                            ).catch(error => log.error('Error:', error));
+                                                            //Produkt existiert nimmer
+                                                            return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.DoesNotExist', { produktname: product, produktcompany: product_response.rows[0].produktcompany }));
                                                         }
+                                                    }).catch(function (error) {
+                                                        log.error(error)
+                                                        return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Error.DBFehler'));
                                                     })
                                                 } else {
-                                                    //Produkt wurde zeitgleich von jemand anderem gekauft
-                                                    return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.OtherBuy'));
+                                                    return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.OverLimit', {limit: CentToEuro(guest_response[0].payed_ammount)}));
                                                 }
+                                            }).catch(function (error) {
+                                                log.error(error);
+                                                return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Error.DBFehler'));
                                             });
                                         } else {
-                                            //Produkt nicht in ausreichender Menge verfügbar
-                                            return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.NotEnoth', { produktname: product, produktcompany: product_response.rows[0].produktcompany }));
+                                            //Nutzer isn´t allowed to buy (SubGuest Only)
+                                            return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.NotAllowedToPay'));
                                         }
                                     } else {
-                                        //Produkt existiert nimmer
-                                        return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.DoesNotExist', { produktname: product, produktcompany: product_response.rows[0].produktcompany }));
+                                        //Main user didn´t pay yet, either for hims elf or for his subguests
+                                        return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.NotPayed'));
                                     }
                                 }).catch(function (error) {
                                     log.error(error)
                                     return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Error.DBFehler'));
                                 })
                             } else {
-                                //Nutzer hat noch nicht gezahlt
-                                return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.NotPayed'));
+                                if (guest_response[0].payed === true || guest_response[0].payed === "true") {
+                                    DB.get.Products.Get(product).then(function (product_response) {
+                                        if (product_response.rows.length >= 1) {
+                                            if (parseInt(product_response.rows[0].amount) - parseInt(product_response.rows[0].bought) >= parseInt(amount_to_buy)) {
+                                                DB.write.Products.UpdateBought(product, product_response.rows[0].bought, Number(product_response.rows[0].bought) + Number(amount_to_buy)).then(function (update_response) {
+                                                    if (update_response.rowCount === 1) {
+                                                        let SQLprodukt = {
+                                                            produktname: product,
+                                                            produktcompany: product_response.rows[0].produktcompany,
+                                                            price: product_response.rows[0].price * amount_to_buy,
+                                                            bought: amount_to_buy
+                                                        }
+
+                                                        let transaction_id = randomstring.generate({
+                                                            length: mainconfig.RegTokenLength, //DO NOT CHANCE!!!
+                                                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                                                        });
+
+                                                        DB.write.shopinglist.Buy(msg.from.id, msg.from.id, SQLprodukt, transaction_id).then(function (Write_Shoppinglist) { //Here Stuff needs to be chanced when subusers will be added!!
+                                                            let MSG;
+                                                            if (product === "Spende") {
+                                                                MSG = newi18n.translate(tglang_response, 'Inline.Donation', { price: CentToEuro(price * amount_to_buy), Company_Name_URL: process.env.Company_Name_Url, Company_Name: process.env.Company_Name });
+                                                            } else {
+                                                                if (amount_to_buy >= 2) {
+                                                                    MSG = newi18n.translate(tglang_response, 'Inline.ItemsBought', { produktname: product, produktcompany: product_response.rows[0].produktcompany, price: CentToEuro(price * amount_to_buy), amount: amount_to_buy })
+                                                                } else {
+                                                                    MSG = newi18n.translate(tglang_response, 'Inline.ItemBought', { produktname: product, produktcompany: product_response.rows[0].produktcompany, price: CentToEuro(price * amount_to_buy), amount: amount_to_buy })
+                                                                }
+                                                            }
+                                                            if ('inline_message_id' in msg) {
+                                                                bot.editMessageText(
+                                                                    { inlineMsgId: inlineId }, MSG,
+                                                                    { parseMode: 'html' }
+                                                                ).catch(error => log.error('Error:', error));
+                                                            } else {
+                                                                bot.editMessageText(
+                                                                    { chatId: chatId, messageId: messageId }, MSG,
+                                                                    { parseMode: 'html' }
+                                                                ).catch(error => log.error('Error:', error));
+                                                            }
+                                                        })
+                                                    } else {
+                                                        //Produkt wurde zeitgleich von jemand anderem gekauft
+                                                        return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.OtherBuy'));
+                                                    }
+                                                });
+                                            } else {
+                                                //Produkt nicht in ausreichender Menge verfügbar
+                                                return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.NotEnoth', { produktname: product, produktcompany: product_response.rows[0].produktcompany }));
+                                            }
+                                        } else {
+                                            //Produkt existiert nimmer
+                                            return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.DoesNotExist', { produktname: product, produktcompany: product_response.rows[0].produktcompany }));
+                                        }
+                                    }).catch(function (error) {
+                                        log.error(error)
+                                        return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Error.DBFehler'));
+                                    })
+                                } else {
+                                    //Nutzer hat noch nicht gezahlt
+                                    return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Inline.Confirm.NotPayed'));
+                                }
                             }
                         }).catch(function (error) {
                             log.error(error)

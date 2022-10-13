@@ -249,6 +249,8 @@
     },
     "Confirm": {
       "NotPayed": "You have not yet paid or your payment has not yet been processed.",
+      "OverLimit": "You have reached your limit of {{limit}}.",
+      "NotAllowedToPay": "You are not allowed to pay. The person you invited you needs to enable it on the webpanel.",
       "DoesNotExist": "The selected product {{produktname}} by {{produktcompany}} was unfortunately removed from the offer.",
       "NotEnoth": "The product {{produktname}} by {{produktcompany}} is no longer available in sufficient quantities!",
       "OtherBuy": "The selected product was bought at the same time by someone else, please try again"

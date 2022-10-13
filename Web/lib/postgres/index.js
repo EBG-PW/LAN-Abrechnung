@@ -218,9 +218,9 @@ let GetHauptGuestofguest = function (user_id) {
     // > VERMUTLICH NED! looooool
     pool.query(`SELECT permission_group, (SELECT hauptgast_userid FROM guests WHERE userid = '${user_id}') FROM guests WHERE userid = (SELECT hauptgast_userid FROM guests WHERE userid = '${user_id}')`, (err, result) => {
       if (err) { reject(err) }
-      if(result.rows.length === 1){
+      if (result.rows.length === 1) {
         resolve(result.rows[0]);
-      }else{
+      } else {
         resolve(false);
       }
     });
@@ -386,7 +386,7 @@ let WriteNewUser = function (User_id, username, lang) {
  * @param {string} lang
  * @returns {Promise}
  */
- let WriteNewSubUser = function (User_id, HauptGuest_id, username, lang) {
+let WriteNewSubUser = function (User_id, HauptGuest_id, username, lang) {
   return new Promise(function (resolve, reject) {
     pool.query('INSERT INTO guests (userid, hauptgast_userid, username, lang) VALUES ($1,$2,$3,$4) ON CONFLICT (userid) DO UPDATE SET username=$3', [
       User_id, HauptGuest_id, username, lang
@@ -579,7 +579,19 @@ let GetAllBoughItemsByUser = function (userid, collum) {
   });
 }
 
-
+/**
+ * This function will get all bough items of a user
+ * @param {number} userid 
+ * @returns 
+ */
+let GetTotalShoppingListSpendByUser = function (userid) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT SUM(price*bought) FROM shopinglist WHERE byer_userid = $1  AND produktcompany != 'Order'`, [userid], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
 
 /**
  * This function will add a bought product to shopinglist
@@ -954,7 +966,7 @@ let SetUserIDForPlug = function (PlugID, UserName) {
  * @param {Number} plugid
  * @returns {Promise}
  */
- let DelUserIDForPlug = function (PlugID) {
+let DelUserIDForPlug = function (PlugID) {
   return new Promise(function (resolve, reject) {
     pool.query(`UPDATE plugs SET userid = null WHERE plugid = $1`, [
       PlugID
@@ -1183,6 +1195,7 @@ let get = {
     All: GetGuests,
     AllSave: GetGuestsSave,
     Admins: ListAllAdmin,
+    ShopingSpend: GetTotalShoppingListSpendByUser,
     ByID: GetGuestsByID,
     Main: ListHauptGuest,
     Check: {
