@@ -1,6 +1,7 @@
 {
     "WellcomeMSG": "Benvenuto nel Gruppo di Rete Locale {{LanName}} con questo bot puoi registrarti.\n\nScegli la tua lingua:",
     "WellcomeMSGAR": "Benvenuto nel Gruppo di Rete Locale {{LanName}} con questo bot puoi registrarti.\n\nSei già regestred. Questo è il menu principale.",
+	"WellcomeMSGSubGuest": "You got invited as friend of {{Username}}\n\nWelcome to the Local Area Network Party {{LanName}} with this bot you can register.\n\nChoose your language:",
     "WellcomeErr": "Si prega di completare la registrazione. f avete già fatto, probabilmente non avete accettato le regole e quindi purtroppo non sono i benvenuti!",
     "Fragen": {
         "PC": "Hai un computer (PC) con te?",
@@ -22,7 +23,8 @@
     "Knöpfe": {
         "Reg": "Registrazione",
         "WebReg": "Qui",
-        "Hauptmenu": "Menu principale"
+        "Hauptmenu": "Menu principale",
+		"SubGuest": "Invite guest"
     },
     "Error": {
         "NotPrivate": "Questo è possibile solo in chat diretta con il bot.",
@@ -74,7 +76,9 @@
         "list": "I seguenti ospiti sono amministratori: {{AdminList}}"
     },
     "PaySystem": {
-        "Sucsess": "Hai completato con successo la registrazione\n\nSi prega di trasferire i costi per i {{DiffDays}} giorni di LAN-Party ora:\n\n<b>titolare dell'account:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Banca:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Motivo del Pagamento:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nL'importo del trasferimento per {{DiffDays}} giorni è: <pre language='c++'>{{Kosten}}</pre>"
+        "Sucsess": "Hai completato con successo la registrazione\n\nSi prega di trasferire i costi per i {{DiffDays}} giorni di LAN-Party ora:\n\n<b>titolare dell'account:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Banca:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Motivo del Pagamento:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nL'importo del trasferimento per {{DiffDays}} giorni è: <pre language='c++'>{{Kosten}}</pre>",
+		"SucsessSubUser": "You have successfully completed the registration\n\nYou stay for {{DiffDays}} days and you are guest of {{Username}}",
+    	"PushMessageHauptGast": "{{Subgast}} completed the registartion and is now your guest.\n\nPlease transfer the addintional cost of {{DiffDays}} days for {{Subgast}}:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the extra expenses are <pre language='c++'>{{Zusatzkosten}}</pre>The new total is: <pre language='c++'>{{Kosten}}</pre>"
     },
     "Hauptmenu": {
         "Text": "<b>Menu principale:</b>\n{{Username}} qui puoi vedere tutte le funzioni del bot.\n\nSotto 'Ulteriori informazioni' troverai le regole e le condizioni della casa che hai concordato.",
@@ -204,6 +208,7 @@
     "geninvoices": {
         "Abrechnung": "Fattura",
         "Artikel": "Elemento",
+		"PricePerUnit": "per unit",
         "Amount": "Importo",
         "Price": "Prezzo",
         "kwh": "Elettricità (in kWh)",
@@ -213,6 +218,11 @@
         "Text": "Ci sono state {{Amount}} fatture generate e che hanno preso {{duration}}.\nLa creazione della configurazione ha preso {{config_duration}}.\nLa creazione dei PDF ha preso {{exec_duration}}.\nL'invio dei file ha richiesto {{send_duration}}."
     },
     "Inline": {
+		"SubUserInvite": {
+			"Title": "Invite",
+			"Description": "Send a new invite",
+			"Text": "click the button below, to accept the invite"
+		  },
         "NoQuery": {
             "ID": "NoQuery",
             "Text": "Inserisci un elemento nella barra",
@@ -234,10 +244,13 @@
             "Remove": "-1",
             "Abbrechen": "Esci",
             "Bestätigen": "Conferma",
-            "Kaufen": "Acquista"
+            "Kaufen": "Acquista",
+			"SubUserInvite": "Accept Invite"
         },
         "Confirm": {
             "NotPayed": "Non hai ancora pagato o il tuo pagamento non è ancora stato elaborato.",
+			"OverLimit": "You have reached your limit of {{limit}}.",
+      		"NotAllowedToPay": "You are not allowed to pay. The person you invited you needs to enable it on the webpanel.",
             "DoesNotExist": "Il prodotto selezionato {{produktname}} da {{produktcompany}} è stato purtroppo rimosso dall'offerta.",
             "NotEnoth": "Il prodotto {{produktname}} di {{produktcompany}} non è più disponibile in quantità sufficienti!",
             "OtherBuy": "Il prodotto selezionato è stato acquistato contemporaneamente da qualcun altro, si prega di riprovare"
