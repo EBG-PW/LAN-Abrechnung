@@ -69,6 +69,10 @@ app.get('/UserBestellungen', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'www-public', 'UserBestellungen.html'));
 });
 
+app.get('/Subusermanager', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'www-public', 'Subusermanager.html'));
+});
+
 app.use('/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets')));
 app.use('/api/v1/login/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets'))); //For Login plugin
 app.use('/api/v1/login/login/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets'))); //For Login plugin
