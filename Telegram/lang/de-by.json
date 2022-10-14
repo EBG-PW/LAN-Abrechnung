@@ -76,8 +76,8 @@
     "list": "Foigende Gäste san Admin:{{AdminList}}"
   },
   "PaySystem": {
-    "Sucsess": "Du hosd de Registration eafolgreich obgschlossn\n\nBitte übaweise de Kosdn fia de {{DiffDays}} Tage LAN-Party jetz:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Vawendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Hechn da Übaweisung für {{DiffDays}} Tage beträgt: <pre language='c++'>{{Kosten}}</pre>",
-    "SucsessSubUser": "Du hast die Registration erfolgreich abgeschlossen\n\nDu bist für {{DiffDays}} Tage Gast von {{Username}}",
+    "Success": "Du hosd de Registration eafolgreich obgschlossn\n\nBitte übaweise de Kosdn fia de {{DiffDays}} Tage LAN-Party jetz:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Vawendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Hechn da Übaweisung für {{DiffDays}} Tage beträgt: <pre language='c++'>{{Kosten}}</pre>",
+    "SuccessSubUser": "Du hast die Registration erfolgreich abgeschlossen\n\nDu bist für {{DiffDays}} Tage Gast von {{Username}}",
     "PushMessageHauptGast": "{{Subgast}} hat sich erfolgreich registriert und ist nun Gast von dir.\n\nBitte überweise nun die zusätzlichen Kosten für die {{DiffDays}} Tage von {{Subgast}} LAN-Party:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Höhe der Zusatzkosten beträgt <pre language='c++'>{{Zusatzkosten}}</pre>Die gesamt Kosten betragen: <pre language='c++'>{{Kosten}}</pre>"
   },
   "Hauptmenu": {

@@ -76,8 +76,8 @@
     "list": "I seguenti ospiti sono amministratori: {{AdminList}}"
   },
   "PaySystem": {
-    "Sucsess": "Hai completato con successo la registrazione\n\nSi prega di trasferire i costi per i {{DiffDays}} giorni di LAN-Party ora:\n\n<b>titolare dell'account:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Banca:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Motivo del Pagamento:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nL'importo del trasferimento per {{DiffDays}} giorni è: <pre language='c++'>{{Kosten}}</pre>",
-    "SucsessSubUser": "Hai effettuato la registrazione con sucesso\n\nStarai per {{DiffDays}} giorni e sei ospite di {{Username}}",
+    "Success": "Hai completato con successo la registrazione\n\nSi prega di trasferire i costi per i {{DiffDays}} giorni di LAN-Party ora:\n\n<b>titolare dell'account:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Banca:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Motivo del Pagamento:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nL'importo del trasferimento per {{DiffDays}} giorni è: <pre language='c++'>{{Kosten}}</pre>",
+    "SuccessSubUser": "Hai effettuato la registrazione con sucesso\n\nStarai per {{DiffDays}} giorni e sei ospite di {{Username}}",
     "PushMessageHauptGast": "{{Subgast}} ha completato la registrazione ed è ora un tuo ospite.\n\nSi prega di trasferire il costo addizionale di {{DiffDays}} giorni {{Subgast}}:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nL'ammonto delle spese extra è <pre language='c++'>{{Zusatzkosten}}</pre>Il nuovo totale è: <pre language='c++'>{{Kosten}}</pre>"
   },
   "Hauptmenu": {

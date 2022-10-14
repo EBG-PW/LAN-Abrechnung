@@ -74,7 +74,7 @@
         "list": "Адміністратори наступні гості: {{AdminList}}"
     },
     "PaySystem": {
-        "Sucsess": "You have successfully completed the registration\n\nPlease transfer the costs for the {{DiffDays}} days of LAN-Party now:\n\n<b>account holder:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Reason for Payment:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the transfer for {{DiffDays}} days is: <pre language='c++'>{{Kosten}}</pre>"
+        "Success": "You have successfully completed the registration\n\nPlease transfer the costs for the {{DiffDays}} days of LAN-Party now:\n\n<b>account holder:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Reason for Payment:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the transfer for {{DiffDays}} days is: <pre language='c++'>{{Kosten}}</pre>"
     },
     "Hauptmenu": {
         "Text": "<b>Головне меню:</b>\n{{Username}} тут ви можете побачити всі функції бота.\n\nЗа 'Більше інформації' ви знайдете правила будинку та умови, які ви погодились.",

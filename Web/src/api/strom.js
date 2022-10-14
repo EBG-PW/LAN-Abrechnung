@@ -58,7 +58,7 @@ router.get("/PlugsToggleAllowedState", limiter, tokenpermissions(), async (reg, 
                     SendEvent.ToProcess(PlugServer_Process_Name, { event: 'PlugsToggleAllowedState', data: { UserID: value.UserID } });
                     res.status(200);
                     res.json({
-                        Message: "Sucsess"
+                        Message: "Success"
                     });
                 } else {
                     res.status(501);
@@ -85,7 +85,7 @@ router.get("/allPlugs", limiter, tokenpermissions(), async (reg, res, next) => {
                 const [all_plugs] = responce;
                 res.status(200);
                 res.json({
-                    Message: "Sucsess",
+                    Message: "Success",
                     Data: all_plugs
                 });
             }).catch(function (error) {
@@ -108,7 +108,7 @@ router.post("/setPlugUser", limiter, tokenpermissions(), async (reg, res, next) 
                 DB.write.plugs.delUserToPlug(value.plugid).then(function (toggle_response) {
                     res.status(200);
                     res.json({
-                        Message: "Sucsess"
+                        Message: "Success"
                     });
                 }).catch(function (error) {
                     log.error(error);
@@ -120,7 +120,7 @@ router.post("/setPlugUser", limiter, tokenpermissions(), async (reg, res, next) 
                         SendEvent.ToProcess(PlugServer_Process_Name, { event: 'UserPlugLink', data: { username: value.username } });
                         res.status(200);
                         res.json({
-                            Message: "Sucsess"
+                            Message: "Success"
                         });
                     } else {
                         res.status(501);

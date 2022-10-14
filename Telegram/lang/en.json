@@ -76,8 +76,8 @@
     "list": "The following guests are admin: {{AdminList}}"
   },
   "PaySystem": {
-    "Sucsess": "You have successfully completed the registration\n\nPlease transfer the costs for the {{DiffDays}} days of LAN-Party now:\n\n<b>account holder:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Reason for Payment:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the transfer for {{DiffDays}} days is: <pre language='c++'>{{Kosten}}</pre>",
-    "SucsessSubUser": "You have successfully completed the registration\n\nYou stay for {{DiffDays}} days and you are guest of {{Username}}",
+    "Success": "You have successfully completed the registration\n\nPlease transfer the costs for the {{DiffDays}} days of LAN-Party now:\n\n<b>account holder:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Reason for Payment:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the transfer for {{DiffDays}} days is: <pre language='c++'>{{Kosten}}</pre>",
+    "SuccessSubUser": "You have successfully completed the registration\n\nYou stay for {{DiffDays}} days and you are guest of {{Username}}",
     "PushMessageHauptGast": "{{Subgast}} completed the registartion and is now your guest.\n\nPlease transfer the additional cost of {{DiffDays}} days for {{Subgast}}:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the extra expenses are <pre language='c++'>{{Zusatzkosten}}</pre>The new total is: <pre language='c++'>{{Kosten}}</pre>"
   },
   "Hauptmenu": {
