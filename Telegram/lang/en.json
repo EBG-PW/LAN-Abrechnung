@@ -69,10 +69,10 @@
     "MustBeReply": "This command can only be used as a reply.",
     "MustHaveAtributes": "This command needs attributes such as: {{Atributes}}",
     "MustBeAdmin": "You have to be an admin to use this command.",
-    "AddNoSuccsess": "The user was already admin or is not registered.",
-    "AddSuccsess": "{{Username}}({{UserID}}) is now admin.",
-    "RemNoSuccsess": "The user was not an admin or is not registered.",
-    "RemSuccsess": "{{Username}}({{UserID}}) is no longer an admin.",
+    "AddNoSuccess": "The user was already admin or is not registered.",
+    "AddSuccess": "{{Username}}({{UserID}}) is now admin.",
+    "RemNoSuccess": "The user was not an admin or is not registered.",
+    "RemSuccess": "{{Username}}({{UserID}}) is no longer an admin.",
     "list": "The following guests are admin: {{AdminList}}"
   },
   "PaySystem": {

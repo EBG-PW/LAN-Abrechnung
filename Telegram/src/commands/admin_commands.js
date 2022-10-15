@@ -133,17 +133,17 @@ module.exports = function (bot, mainconfig, preisliste) {
                             if (CheckAtributes.atributes[0] === "add") {
                                 DB.write.Guests.UpdateCollumByID(UserID, 'admin', true).then(function (Admin_Update_response) {
                                     if (Admin_Update_response.rowCount === 1) {
-                                        return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.AddSuccsess', { Username: username, UserID: UserID }));
+                                        return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.AddSuccess', { Username: username, UserID: UserID }));
                                     } else {
-                                        return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.AddNoSuccsess'));
+                                        return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.AddNoSuccess'));
                                     }
                                 });
                             } else if (CheckAtributes.atributes[0] === "rem" || CheckAtributes.atributes[0] === "remove") {
                                 DB.write.Guests.UpdateCollumByID(UserID, 'admin', false).then(function (Admin_Update_response) {
                                     if (Admin_Update_response.rowCount === 1) {
-                                        return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.RemSuccsess', { Username: username, UserID: UserID }));
+                                        return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.RemSuccess', { Username: username, UserID: UserID }));
                                     } else {
-                                        return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.RemNoSuccsess'));
+                                        return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.RemNoSuccess'));
                                     }
                                 });
                             }

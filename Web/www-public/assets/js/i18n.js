@@ -35,7 +35,7 @@ const i18n = new I18n({
           article: "Genauer Artikel Name + Extras",
           price: "Einzelpreis",
           Submit: "Hinzufügen",
-          Succsess: "Hinzufügen erfolgreich!",
+          Success: "Hinzufügen erfolgreich!",
           Errors: {
             PriceNumber: "Preis muss eine Nummer sein",
             PriceNull: "Preis muss angegeben werden",
@@ -214,7 +214,7 @@ const i18n = new I18n({
           article: "Exact Article Name + Extras",
           price: "Price",
           Submit: "Add",
-          Succsess: "Add successful!",
+          Success: "Add successful!",
           Errors: {
             PriceNumber: "Price must be a number",
             PriceNull: "Price must be filled",

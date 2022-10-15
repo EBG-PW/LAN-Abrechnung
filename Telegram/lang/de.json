@@ -69,10 +69,10 @@
     "MustBeReply": "Dieser Befehl kann nur als Antwort verwendet werden.",
     "MustHaveAtributes": "Dieser Befehl braucht Attribute wie: {{Atributes}}",
     "MustBeAdmin": "Du musst selbst ein Admin sein um diesen Befehl zu nutzen.",
-    "AddNoSuccsess": "Der Nutzer war schon Admin oder ist nicht registriert.",
-    "AddSuccsess": "{{Username}}({{UserID}}) ist nun Admin.",
-    "RemNoSuccsess": "Der Nutzer war kein Admin oder ist nicht registriert.",
-    "RemSuccsess": "{{Username}}({{UserID}}) ist nun kein Admin mehr.",
+    "AddNoSuccess": "Der Nutzer war schon Admin oder ist nicht registriert.",
+    "AddSuccess": "{{Username}}({{UserID}}) ist nun Admin.",
+    "RemNoSuccess": "Der Nutzer war kein Admin oder ist nicht registriert.",
+    "RemSuccess": "{{Username}}({{UserID}}) ist nun kein Admin mehr.",
     "list": "Folgende Gäste sind Admin:{{AdminList}}"
   },
   "PaySystem": {

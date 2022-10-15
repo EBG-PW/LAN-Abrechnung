@@ -69,10 +69,10 @@
     "MustBeReply": "Dea Befehl konn grod ois Antwoad vawendt wern.",
     "MustHaveAtributes": "Dea Befehl braucht Attribute wia: {{Atributes}}",
     "MustBeAdmin": "Du musst seibsd a Admin sei um desn Befehl zua nutzn.",
-    "AddNoSuccsess": "Da Nutza war scho Admin oda is ned registriad.",
-    "AddSuccsess": "{{Username}}({{UserID}}) is jetz Admin.",
-    "RemNoSuccsess": "Da Nutza war koa Admin oda is ned registriad.",
-    "RemSuccsess": "{{Username}}({{UserID}}) is jetz koa Admin mehr.",
+    "AddNoSuccess": "Da Nutza war scho Admin oda is ned registriad.",
+    "AddSuccess": "{{Username}}({{UserID}}) is jetz Admin.",
+    "RemNoSuccess": "Da Nutza war koa Admin oda is ned registriad.",
+    "RemSuccess": "{{Username}}({{UserID}}) is jetz koa Admin mehr.",
     "list": "Foigende Gäste san Admin:{{AdminList}}"
   },
   "PaySystem": {

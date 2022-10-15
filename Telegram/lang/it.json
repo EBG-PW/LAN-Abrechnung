@@ -69,10 +69,10 @@
     "MustBeReply": "Questo comando può essere usato solo come risposta.",
     "MustHaveAtributes": "Questo comando ha bisogno di attributi come: {{Atributes}}",
     "MustBeAdmin": "Devi essere un amministratore per usare questo comando.",
-    "AddNoSuccsess": "L'utente era già amministratore o non è registrato.",
-    "AddSuccsess": "{{Username}}({{UserID}}) è ora amministratore.",
-    "RemNoSuccsess": "L'utente non era un amministratore o non è registrato.",
-    "RemSuccsess": "{{Username}}({{UserID}}) non è più un amministratore.",
+    "AddNoSuccess": "L'utente era già amministratore o non è registrato.",
+    "AddSuccess": "{{Username}}({{UserID}}) è ora amministratore.",
+    "RemNoSuccess": "L'utente non era un amministratore o non è registrato.",
+    "RemSuccess": "{{Username}}({{UserID}}) non è più un amministratore.",
     "list": "I seguenti ospiti sono amministratori: {{AdminList}}"
   },
   "PaySystem": {
