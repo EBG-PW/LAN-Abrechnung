@@ -1,0 +1,268 @@
+{
+	"WellcomeMSG": "Bienvenue au Local Area Network Party {{LanName}} avec ce bot.\n\nChoisissez votre langue:",
+	"WellcomeMSGAR": "Bienvenue au Local Area Network Party {{LanName}} avec ce bot, vous pouvez vous inscrire.\n\nVous êtes déjà enregistré. Il s’agit du menu principal.",
+	"WellcomeMSGSubGuest": "Vous avez été invité en tant qu’ami de {{Username}}\n\nBienvenue à la partie du réseau local {{LanName}} avec ce bot, vous pouvez vous inscrire.\n\nChoisissez votre langue :",
+	"WellcomeErr": "Veuillez terminer votre inscription. Si vous l’avez déjà fait, vous n’avez probablement pas accepté le règlement et n’êtes donc malheureusement pas les bienvenus!",
+	"Fragen": {
+	  "PC": "Avez-vous un ordinateur (PC) avec vous?",
+	  "Displays": "Combien d’affichages apportez-vous?",
+	  "LanKabel": "Vous prenez un câble LAN pour votre PC?",
+	  "VR": "Tu prends le VR?",
+	  "Vaccinated": "Quel sera votre statut vaccinal au moment de votre arrivée?",
+	  "Arrivale": "Quelle est la date d’arrivée prévue?",
+	  "Depature": "Quand est prévue la journée de départ?",
+	  "WebReg": "Veuillez cliquer sur le bouton pour définir votre mot de passe du webpanel."
+	},
+	"Antworten": {
+	  "Ja": "Oui",
+	  "Nein": "Non",
+	  "Vollständig": "Entièrement",
+	  "Teil": "Partiellement vacciné",
+	  "NichtSagen": "Je ne veux pas dire"
+	},
+	"Knöpfe": {
+	  "Reg": "Inscription",
+	  "WebReg": "Ici",
+	  "Hauptmenu": "Menu principal",
+	  "SubGuest": "Ajouter un invité"
+	},
+	"Error": {
+	  "NotPrivate": "Cela n’est possible que dans le chat direct avec le bot.",
+	  "DBFehler": "Une erreur s’est produite avec la base de données.",
+	  "ExecuteCommandFehler": "Une erreur s’est produite lors de l’exécution de la commande."
+	},
+	"Vaccinated": {
+	  "Voll": "Entièrement",
+	  "Teil": "Premier vacciné",
+	  "Nein": "Non",
+	  "Secret": "Secret"
+	},
+	"Arrivale": {
+	  "1": "30.12.22",
+	  "1_Voll": "FR: 30.12.2022",
+	  "2": "31.12.22",
+	  "2_Voll": "SA: 31.12.2022",
+	  "3": "1.1.23",
+	  "3_Voll": "SU: 01.01.2023",
+	  "4": "2.1.23",
+	  "4_Voll": "MO: 02.01.2023",
+	  "5": "3.1.23",
+	  "5_Voll": "TU: 03.01.2023",
+	  "6": "4.1.23",
+	  "6_Voll": "WE: 04.01.2023"
+	},
+	"Depature": {
+	  "1": "4.1.23",
+	  "1_Voll": "WS: 04.01.2023",
+	  "2": "5.1.23",
+	  "2_Voll": "TH: 05.01.2023",
+	  "3": "6.1.23",
+	  "3_Voll": "FR: 06.01.2023",
+	  "4": "7.1.23",
+	  "4_Voll": "SA: 07.01.2023",
+	  "5": "8.1.23",
+	  "5_Voll": "SO: 08.01.2023",
+	  "6": "9.1.23",
+	  "6_Voll": "MO: 09.01.2023"
+	},
+	"Admin": {
+	  "MustBeReply": "Cette commande ne peut être utilisée que comme réponse.",
+	  "MustHaveAttributes": "Cette commande nécessite des attributs tels que: {{Attributes}}",
+	  "MustBeAdmin": "Vous devez être un administrateur pour utiliser cette commande.",
+	  "AddNoSuccess": "L’utilisateur était déjà administrateur ou n’est pas enregistré.",
+	  "AddSuccess": "{{Username}}({{UserID}}) est maintenant administrateur.",
+	  "RemNoSuccess": "L’utilisateur n’était pas un administrateur ou n’est pas enregistré.",
+	  "RemSuccess": "{{Username}}({{UserID}}) n’est plus un administrateur.",
+	  "list": "Les invités suivants sont admin: {{AdminList}}"
+	},
+	"PaySystem": {
+	  "Success": "Vous avez réussi l’inscription\n\nVeuillez transférer les coûts pour les {{DiffDays}} jours de LAN-Party maintenant:\n\n<b>titulaire du compte:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Banque:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Motif du paiement:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nLe montant du transfert pour {{DiffDays}} jours est: <pre language='c++'>{{Kosten}}</pre>",
+	  "SuccessSubUser": "Vous avez réussi l’inscription\n\nVous restez pour {{DiffDays}} jours et vous êtes invité de {{Username}}",
+	  "PushMessageHauptGast": "{{Subguest}} a complété la registartion et est maintenant votre invité.\n\nVeuillez transférer le coût supplémentaire de {{DiffDays}} jours pour {{Subguest}}:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Banque:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nLe montant des frais supplémentaires est <pre language='c++'>{{Zusatzkosten}}</pre>le nouveau total est: <pre language='c++'>{{Kosten}}</pre>"
+	},
+	"Hauptmenu": {
+	  "Text": "<b>Menu principal:</b>\n{{Username}} ici vous pouvez voir toutes les fonctions du bot.\n\nSous 'Plus d’infos', vous trouverez les règles et conditions de la maison que vous avez acceptées.",
+	  "Knöpfe": {
+		"Zahlung": "Paiement",
+		"Artikel": "Acheter des articles",
+		"Spenden": "Donations",
+		"Other": "Plus d'infos",
+		"Webpanel": "Webpanel"
+	  }
+	},
+	"Payed": {
+	  "Text": "{{Username}}, {{Status_String}}\n\nMontant: {{money}}\nID: {{PayedID}}",
+	  "True": "Votre paiement a été <b>confirmé</b> par notre système",
+	  "False": "Votre paiement n’a pas été <b>confirmé</b> par notre système. Si c’est toujours le cas au début de la partie LAN, veuillez contacter les organisateurs!"
+	},
+	"Spenden": {
+	  "Text": "Vous pouvez faire un don si vous êtes satisfait de la planification et de l’organisation.\n\nCliquez sur le bouton ci-dessous et sélectionnez le montant du don ;)",
+	  "Knöpfe": {
+		"Spenden": "Donnez maintenant",
+		"SpendeAlles": "Donnez tout votre solde",
+		"Hauptmenu": "⏪ Menu principal"
+	  }
+	},
+	"SpendenAll": {
+	  "Text": "Souhaitez-vous faire don de la totalité de votre solde?  {{current_balance}}?",
+	  "Knöpfe": {
+		"Ja": "Oui",
+		"Nein": "Non",
+		"Hauptmenu": "⏪ Menu principal"
+	  },
+	  "Fehler": {
+		"NoMoney": "Vous n’avez pas assez d’argent pour donner tout votre solde."
+	  }
+	},
+	"Preisliste": {
+	  "PauschalKosten": {
+		"Wasserpauschale": "Forfait eau (toilette, douche, etc.)",
+		"Strompauschale": "Forfait électricité (couloir, chambres, cuisine, etc.)",
+		"Verbrauchsgüterpauschale": "Consommables à taux fixe (savon, etc.)",
+		"Netzwerkpauschale": "Forfait réseau",
+		"KostenKWH": "Coût par kWh"
+	  }
+	},
+	"Sprachen": {
+	  "Text": "Changer de langue ici",
+	  "Knöpfe": {
+		"DE": "🇩🇪",
+		"EN": "🇬🇧",
+		"UA": "🇺🇦",
+		"IT": "🇮🇹",
+		"Zurück": "⏪ retourner",
+		"Full": {
+		  "DE": "Allemand normal",
+		  "DE-BY": "Bavaroise"
+		}
+	  }
+	},
+	"Moreinfo": {
+	  "Text": "<b>Plus d'informations:</b>\n{{Username}} ici vous trouverez plus d’informations utiles.",
+	  "Knöpfe": {
+		"Rules": "Règles",
+		"Legal": "légal",
+		"Sprache": "Langue",
+		"Hauptmenu": "⏪ Menu principal"
+	  },
+	  "Regeln": {
+		"Exit": "❌ Quitter",
+		"AcceptedDate": "\nVous avez accepté les règles sur{{akteptiert}} "
+	  },
+	  "Legal": {
+		"Exit": "❌ Quitter",
+		"AcceptedDate": "\nVous avez accepté les avis et règlements sur {{akteptiert}} "
+	  }
+	},
+	"PushNotification": {
+	  "NewOrder": "Nous allons bientôt commander à manger!\n\nVeuillez choisir les aliments que vous désirez dans cette liste. {{EssenListe}}.\nVeuillez commander jusqu’à <b>{{Zeit}}</b>.\n\n<a href='{{WebPanelURL}}/UserBestellungen?{{ID}}'>Webpanel lien</a>",
+	  "Buttons": {
+		"Webpanel": "Webpanel"
+	  }
+	},
+	"Regeln": {
+	  "Text": "<b>Veuillez lire attentivement le règlement intérieur!</b>\n\n <i>Les règles suivantes doivent être strictement respectées pendant la durée du LAN, ce qui peut entraîner une violation du pouvoir discrétionnaire jusqu’à l’exclusion du LAN.</i>",
+	  "RegelnAnzahl": "7",
+	  "Regeln": {
+		"0": "1: Il n’y a pas d’exception à l’interdiction stricte de fumer dans le bâtiment, il y a des aérosols -> il est <b>Interdit!</b> Pour les fumeurs il y a la possibilité de fumer comme l’année dernière dans la cour avec <u>porte fermée</u>.",
+		"1": "2: Selon la réglementation en vigueur, une exigence de masque FFP2 s’applique au rez-de-chaussée pendant les heures de bureau (7-17 pm Weekdays)",
+		"2": "3: <b>tout le monde</b> laver <b>EN AUTONOMIE</b> la vaisselle et les déchets. (Pour un coût de 150€ vous obtenez vos propres plats VIP et GEO papa nettoie vos ordures et vaisselle.)",
+		"3": "4: Reste de la nourriture inutilisée dans les déchets résiduels. Les pizzas n’ont pas leur place dans leurs boîtes en carton. La violation de cette règle entraînera une pénalité de 150€. (PS : Oui cette règle existe pour de bonnes raisons.)",
+		"4": "5: Ne marcher dans l’immeuble que dans des vêtements appropriés pendant les heures de bureau.",
+		"5": "6: Maintenir les niveaux de bruit à un niveau approprié pendant les heures de bureau.",
+		"6": "7: Avec la consommation d’alcool, un comportement correspondant est néanmoins à prévoir. (L’attitude des EG envers la consommation excessive d’alcool et ses effets doivent être connus de tous)"
+	  },
+	  "Knöpfe": {
+		"Zustimmen": "Accepter",
+		"Ablehnen": "Rejeter"
+	  },
+	  "Antworten": {
+		"Zustimmen": "Accepter",
+		"Ablehnen": "Rejeter"
+	  }
+	},
+	"Legal": {
+	  "Text": "<b>Veuillez lire attentivement les règlements et les accepter!</b>",
+	  "Preisliste": "Les taxes suivantes sont obligatoires pour chaque client et seront calculées automatiquement.",
+	  "LegalAnzahl": "3",
+	  "Legal": {
+		"0": "Un compteur d’électricité est fourni pour facturer les coûts d’électricité. L’utilisation du compteur est obligatoire. Le compteur n’est pas étalonné officiellement et a une tolérance de 1%",
+		"1": "Il y a quelques frais généraux pour le LAN ceux-ci sont énumérés ci-dessous et servent à faire cet événement sans perte pour GEO et son père.",
+		"2": "Vous n’avez aucun problème avec spontanément n’ayant pas de réseau ou obtenir un RubberDucky amical dans votre PC. :D"
+	  },
+	  "Knöpfe": {
+		"Zustimmen": "Accepter",
+		"Ablehnen": "Rejeter"
+	  },
+	  "Antworten": {
+		"Zustimmen": "Accepter",
+		"Ablehnen": "Rejeter"
+	  }
+	},
+	"loadprice": {
+	  "Text": "{{Amount}} article ont été lus ou mis à jour et cela a pris {{duration}}"
+	},
+	"loadplugs": {
+	  "Text": "{{Amount}} article ont été lus ou mis à jour, ils sont gérés par {{ControlerAmount}} Clients et cela a pris {{duration}}."
+	},
+	"geninvoices": {
+	  "Abrechnung": "Facture",
+	  "Artikel": "Article",
+	  "PricePerUnit": "Par unité",
+	  "Amount": "Montant",
+	  "Price": "Prix",
+	  "kwh": "Électricité (en kWh)",
+	  "Payed": "Prépayé",
+	  "TotalSpend": "Total des dépenses",
+	  "Difference": "Différence",
+	  "Text": "Il y avait {{Amount}} factures générées et qui ont pris {{duration}}.\nLa création de la configuration a pris {{config_duration}}.\nCréation des PDF a pris {{exec_duration}}.\nEnvoi des fichiers a pris {{send_duration}}."
+	},
+	"Inline": {
+	  "SubUserInvite": {
+		"Title": "Invite",
+		"Description": "Envoyer une nouvelle invitation",
+		"Text": "cliquez sur le bouton ci-dessous pour accepter l’invitation"
+	  },
+	  "NoQuery": {
+		"ID": "NoQuery",
+		"Text": "Veuillez entrer un article dans la barre",
+		"Message": "Pour acheter un article, vous devez entrer le nom dans la barre de clavardage, puis sélectionner le champ approprié..\n\n<b>Voici une liste de tous les articles:</b>\n"
+	  },
+	  "NotFound": {
+		"ID": "NotFound",
+		"Text": "Article introuvable",
+		"Message": "L’élément {{}} n’a pas été trouvé."
+	  },
+	  "Found": {
+		"ID": "N{{ID}}",
+		"Text": "{{Produkt}} par {{Hersteller}}",
+		"Beschreibung": "prix par pièce: {{Preis}} - Il y a {{Available}} en stock",
+		"Message": "<b>Article sélectionné:</b> {{produktname}} par {{produktcompany}}\nPrix par pièce: {{price}}\nEn stock: {{storrage}}\n\nPour acheter l’article cliquez sur le bouton ci-dessous."
+	  },
+	  "Knöpfe": {
+		"Add": "+1",
+		"Remove": "-1",
+		"Abbrechen": "Quitter",
+		"Bestätigen": "Confirmer",
+		"Kaufen": "Acheter",
+		"SubUserInvite": "Accepter l’invitation"
+	  },
+	  "Confirm": {
+		"NotPayed": "Vous n’avez pas encore payé ou votre paiement n’a pas encore été traité.",
+		"OverLimit": "Vous avez atteint votre limite de {{limit}}.",
+		"NotAllowedToPay": "Vous n’êtes pas autorisé à payer. La personne que vous avez invitée doit l’activer sur le webpanel.",
+		"DoesNotExist": "Le produit sélectionné {{produktname}} par {{produktcompany}} a malheureusement été retiré de l’offre.",
+		"NotEnoth": "Le produit {{produktname}} de {{produktcompany}} n’est plus disponible en quantité suffisante!",
+		"OtherBuy": "Le produit sélectionné a été acheté en même temps par quelqu’un d’autre, veuillez réessayer"
+	  },
+	  "MainMessage": "<b>Article sélectionné:</b> {{produktname}} par {{produktcompany}}\nPrix par pièce: {{price}}\nEn stock: {{storrage}}\n\nVeuillez sélectionner la quantité ci-dessous et confirmer votre achat. Veuillez attendre la confirmation du bot.",
+	  "MainProgress": "Le menu de réservation est appelé...",
+	  "Escape": "Le menu de réservation a été fermé...",
+	  "TooMutch": "Vous ne pouvez pas acheter plus que nous en stock.",
+	  "TooLitle": "On ne peut pas en acheter moins d’un",
+	  "Donation": "Merci de votre don de {{price}} à <a href='{{Company_Name_URL}}'>{{Company_Name}}</a> ❤️",
+	  "ItemBought": "Vous avez acheté {{amount}} fois le produit {{produktname}} par {{produktcompany}} pour {{prix}}.\n\nVous pouvez maintenant afficher l’élément.",
+	  "ItemsBought": "Vous avez acheté {{amount}} fois les produits {{produktname}} par {{produktcompany}} pour {{prix}}.\n\nVous pouvez maintenant afficher l’élément."
+	}
+  }
+  
