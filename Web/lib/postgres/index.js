@@ -209,7 +209,7 @@ let CheckGuestByID = function (user_id) {
 }
 
 /**
- * This function will return hauptgast id & permission_group if guest is a subgast
+ * This function will return hauptgast id & permission_group if guest is a subguest
  * @param {Number} user_id 
  * @returns 
  */
