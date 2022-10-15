@@ -67,7 +67,7 @@
   },
   "Admin": {
     "MustBeReply": "Dea Befehl konn grod ois Antwoad vawendt wern.",
-    "MustHaveAtributes": "Dea Befehl braucht Attribute wia: {{Atributes}}",
+    "MustHaveAttributes": "Dea Befehl braucht Attribute wia: {{Attributes}}",
     "MustBeAdmin": "Du musst seibsd a Admin sei um desn Befehl zua nutzn.",
     "AddNoSuccess": "Da Nutza war scho Admin oda is ned registriad.",
     "AddSuccess": "{{Username}}({{UserID}}) is jetz Admin.",
@@ -78,7 +78,7 @@
   "PaySystem": {
     "Success": "Du hosd de Registration eafolgreich obgschlossn\n\nBitte übaweise de Kosdn fia de {{DiffDays}} Tage LAN-Party jetz:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Vawendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Hechn da Übaweisung für {{DiffDays}} Tage beträgt: <pre language='c++'>{{Kosten}}</pre>",
     "SuccessSubUser": "Du hast die Registration erfolgreich abgeschlossen\n\nDu bist für {{DiffDays}} Tage Gast von {{Username}}",
-    "PushMessageHauptGast": "{{Subgast}} hat sich erfolgreich registriert und ist nun Gast von dir.\n\nBitte überweise nun die zusätzlichen Kosten für die {{DiffDays}} Tage von {{Subgast}} LAN-Party:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Höhe der Zusatzkosten beträgt <pre language='c++'>{{Zusatzkosten}}</pre>Die gesamt Kosten betragen: <pre language='c++'>{{Kosten}}</pre>"
+    "PushMessageHauptGast": "{{Subguest}} hat sich erfolgreich registriert und ist nun Gast von dir.\n\nBitte überweise nun die zusätzlichen Kosten für die {{DiffDays}} Tage von {{Subguest}} LAN-Party:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Höhe der Zusatzkosten beträgt <pre language='c++'>{{Zusatzkosten}}</pre>Die gesamt Kosten betragen: <pre language='c++'>{{Kosten}}</pre>"
   },
   "Hauptmenu": {
     "Text": "<b>Habtmenü:</b>\n{{Username}} do kannst du olle Funktiona des Bots seng.\n\nUnta 'Mehr Infos' findest du de Heislordnung und Konditiona dane du zuagstimmt hosd.",

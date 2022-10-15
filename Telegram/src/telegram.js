@@ -247,7 +247,7 @@ const WebRegSendConfim = (ChatID) => {
                                 Verwendungszweg: mainconfig.Verwendungszweg,
                                 PayCode: HauptUser_Response[0].pyed_id,
                                 DiffDays: diffDays,
-                                Subgast: Guest_Response[0].username,
+                                Subguest: Guest_Response[0].username,
                                 Zusatzkosten: CentToEuro(Money_Amount),
                                 Kosten: CentToEuro(parseInt(HauptUser_Response[0].payed_ammount) + parseInt(Money_Amount))
                             }), { parseMode: 'html', replyMarkup })])

@@ -10,25 +10,25 @@ const newi18n = new i18n(path.join(__dirname, '../', 'lang'), ['de', 'en', 'de-b
  function AtrbutCheck(props) {
     let input = props.match.input.split(' ')
     if (input[0].endsWith(process.env.Telegram_Bot_Botname)) {
-        let atributesWName = [];
+        let attributesWName = [];
         for (let i = 1; i <= input.length - 1; i++) {
-            atributesWName.push(input[i])
+            attributesWName.push(input[i])
         }
-        if (atributesWName.length >= 1) {
-            return { hasAtributes: true, atributes: atributesWName }
+        if (attributesWName.length >= 1) {
+            return { hasAttributes: true, attributes: attributesWName }
         } else {
-            return { hasAtributes: false }
+            return { hasAttributes: false }
         }
     } else {
         if (typeof (props.match[1]) === 'undefined') {
-            return { hasAtributes: false }
+            return { hasAttributes: false }
         } else {
             let atributeOName = [];
             let input = props.match[1].split(' ')
             for (let i = 1; i <= input.length - 1; i++) {
                 atributeOName.push(input[i])
             }
-            return { hasAtributes: true, atributes: atributeOName }
+            return { hasAttributes: true, attributes: atributeOName }
         }
     }
 }

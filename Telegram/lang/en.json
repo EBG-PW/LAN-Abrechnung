@@ -67,7 +67,7 @@
   },
   "Admin": {
     "MustBeReply": "This command can only be used as a reply.",
-    "MustHaveAtributes": "This command needs attributes such as: {{Atributes}}",
+    "MustHaveAttributes": "This command needs attributes such as: {{Attributes}}",
     "MustBeAdmin": "You have to be an admin to use this command.",
     "AddNoSuccess": "The user was already admin or is not registered.",
     "AddSuccess": "{{Username}}({{UserID}}) is now admin.",
@@ -78,7 +78,7 @@
   "PaySystem": {
     "Success": "You have successfully completed the registration\n\nPlease transfer the costs for the {{DiffDays}} days of LAN-Party now:\n\n<b>account holder:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Reason for Payment:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the transfer for {{DiffDays}} days is: <pre language='c++'>{{Kosten}}</pre>",
     "SuccessSubUser": "You have successfully completed the registration\n\nYou stay for {{DiffDays}} days and you are guest of {{Username}}",
-    "PushMessageHauptGast": "{{Subgast}} completed the registartion and is now your guest.\n\nPlease transfer the additional cost of {{DiffDays}} days for {{Subgast}}:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the extra expenses are <pre language='c++'>{{Zusatzkosten}}</pre>The new total is: <pre language='c++'>{{Kosten}}</pre>"
+    "PushMessageHauptGast": "{{Subguest}} completed the registartion and is now your guest.\n\nPlease transfer the additional cost of {{DiffDays}} days for {{Subguest}}:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the extra expenses are <pre language='c++'>{{Zusatzkosten}}</pre>The new total is: <pre language='c++'>{{Kosten}}</pre>"
   },
   "Hauptmenu": {
     "Text": "<b>Main menu:</b>\n{{Username}} here you can see all functions of the bot.\n\nUnder 'More Info' you will find the house rules and conditions you have agreed to.",
@@ -262,6 +262,6 @@
     "TooLitle": "You can’t buy less than one",
     "Donation": "Thank you for your donation of {{price}} to <a href='{{Company_Name_URL}}'>{{Company_Name}}</a> ❤️",
     "ItemBought": "You have successfully bought {{amount}} times the product {{produktname}} by {{produktcompany}} for {{price}}.\n\nYou can now view the item.",
-    "ItemsBought": "You have successfully bought {{amount}} times the products {{produktname}} from {{produktcompany}} for {{price}}\n\nYou can now view the items."
+    "ItemsBought": "You have successfully bought {{amount}} times the products {{produktname}} by {{produktcompany}} for {{price}}\n\nYou can now view the items."
   }
 }

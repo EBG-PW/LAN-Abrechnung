@@ -115,13 +115,13 @@ function generateJson(Guests, preisliste, mainconfig) {
 module.exports = function (bot, mainconfig, preisliste) {
     bot.on(/^\/admin( .+)*/i, (msg, props) => {
         let AvaibleModes = ['add', 'remove', 'rem', 'list']
-        let CheckAtributes = AtrbutCheck(props);
+        let CheckAttributes = AtrbutCheck(props);
         Promise.all([DB.get.tglang.Get(msg.from.id), DB.get.Guests.Check.Admin(msg.from.id)]).then(function (response) {
             const [tglang_response, Admin_Check_response] = response;
             if (Admin_Check_response === true || parseInt(mainconfig.SudoUser) === msg.from.id) {
-                if (CheckAtributes.hasAtributes) {
+                if (CheckAttributes.hasAttributes) {
                     if ('reply_to_message' in msg) {
-                        if (AvaibleModes.includes(CheckAtributes.atributes[0])) {
+                        if (AvaibleModes.includes(CheckAttributes.attributes[0])) {
                             let UserID = msg.reply_to_message.from.id
                             let username;
                             if ('username' in msg.reply_to_message.from) {
@@ -130,7 +130,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                                 username = msg.reply_to_message.from.first_name.toString();
                             }
 
-                            if (CheckAtributes.atributes[0] === "add") {
+                            if (CheckAttributes.attributes[0] === "add") {
                                 DB.write.Guests.UpdateCollumByID(UserID, 'admin', true).then(function (Admin_Update_response) {
                                     if (Admin_Update_response.rowCount === 1) {
                                         return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.AddSuccess', { Username: username, UserID: UserID }));
@@ -138,7 +138,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                                         return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.AddNoSuccess'));
                                     }
                                 });
-                            } else if (CheckAtributes.atributes[0] === "rem" || CheckAtributes.atributes[0] === "remove") {
+                            } else if (CheckAttributes.attributes[0] === "rem" || CheckAttributes.attributes[0] === "remove") {
                                 DB.write.Guests.UpdateCollumByID(UserID, 'admin', false).then(function (Admin_Update_response) {
                                     if (Admin_Update_response.rowCount === 1) {
                                         return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.RemSuccess', { Username: username, UserID: UserID }));
@@ -148,10 +148,10 @@ module.exports = function (bot, mainconfig, preisliste) {
                                 });
                             }
                         } else {
-                            return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.MustHaveAtributes', { Atributes: AvaibleModes.join(", ") }));
+                            return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.MustHaveAttributes', { Attributes: AvaibleModes.join(", ") }));
                         }
                     } else {
-                        if (CheckAtributes.atributes[0] === "list") {
+                        if (CheckAttributes.attributes[0] === "list") {
                             DB.get.Guests.Admins().then(function (Admin_List_response) {
                                 let AdminList = "";
                                 Admin_List_response.map(Admin => {
@@ -164,7 +164,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                         }
                     }
                 } else {
-                    return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.MustHaveAtributes', { Atributes: AvaibleModes.join(", ") }));
+                    return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.MustHaveAttributes', { Attributes: AvaibleModes.join(", ") }));
                 }
             } else {
                 return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.MustBeAdmin'));
