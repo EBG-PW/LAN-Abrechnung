@@ -32,7 +32,7 @@ const en = {
         article: "Exact Article Name + Extras",
         price: "Price",
         Submit: "Add",
-        Succsess: "Add successful!",
+        Success: "Add successful!",
         Errors: {
           PriceNumber: "Price must be a number",
           PriceNull: "Price must be filled",

@@ -142,7 +142,7 @@ router.post("/newUserOrder", limiter, tokenpermissions(), async (reg, res, next)
                         DB.write.order.AddOrderArticle(reg.check.Data.userid, value.article, value.Amount, Number(value.price) * Number(value.Amount), value.orderid, OrderKey).then(function (AddOrderArticle_Response) {
                             res.status(200);
                             res.json({
-                                Message: "Succsess"
+                                Message: "Success"
                             });
                         }).catch(function (error) {
                             log.error(error);
@@ -231,7 +231,7 @@ router.get("/switchOrderStateByKey", limiter, tokenpermissions(), async (reg, re
                             DB.write.order.SwitchState(value.key, true).then(function (Switch_response) {
                                 res.status(200);
                                 res.json({
-                                    Message: "Succsess",
+                                    Message: "Success",
                                     orderid: GetOrder_response.rows[0].orderid
                                 });
                             });
@@ -272,7 +272,7 @@ router.post("/delUserOrder", limiter, tokenpermissions(), async (reg, res, next)
                         DB.del.order.ByKey(value.key, reg.check.Data.userid).then(function (Del_Response) {
                             res.status(200);
                             res.json({
-                                Message: "Succsess",
+                                Message: "Success",
                                 orderid: Order_key_Response.rows[0].orderid
                             });
                         }).catch(function (error) {

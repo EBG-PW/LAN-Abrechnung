@@ -199,7 +199,7 @@ const WebRegSendConfim = (ChatID) => {
                     let Money_Amount = parseInt(diffDays) * parseInt(preisliste.FixKostenProTag);
                     DB.write.Guests.UpdateCollumByID(ChatID, 'payed_ammount', Money_Amount).then(function (money_edit_response) {
                         DB.write.Guests.UpdateCollumByID(ChatID, 'pyed_id', PayCode).then(function (guest_edit_response) {
-                            bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.Sucsess', {
+                            bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.Success', {
                                 Bank: mainconfig.KontoBank,
                                 IBAN: mainconfig.KontoIban,
                                 Kontoinhaber: mainconfig.KontoInhaber,
@@ -235,7 +235,7 @@ const WebRegSendConfim = (ChatID) => {
                         ]);
 
                         Promise.all([DB.write.Guests.UpdateCollumByID(HauptUser_Response[0].userid, 'payed', false), DB.write.Guests.UpdateCollumByID(HauptUser_Response[0].userid, 'payed_ammount', parseInt(HauptUser_Response[0].payed_ammount) + parseInt(Money_Amount)), DB.write.Guests.UpdateCollumByID(ChatID, 'payed_ammount', parseInt(Money_Amount))]).then(function (money_edit_response) {
-                            Promise.all([bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.SucsessSubUser', {
+                            Promise.all([bot.sendMessage(ChatID, newi18n.translate(tglang_response, 'PaySystem.SuccessSubUser', {
                                 DiffDays: diffDays,
                                 Username: HauptUser_Response[0].username
                             }), { parseMode: 'html', replyMarkup: replyMarkupSubGuest }),

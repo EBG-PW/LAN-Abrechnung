@@ -106,7 +106,7 @@ router.post("/logout", limiter, tokenpermissions(), async (reg, res, next) => {
         DB.del.webtoken.Del(reg.headers['authorization'].replace('Bearer ', '')).then(function (Check) {
             res.status(200);
             res.json({
-                Message: "Sucsess"
+                Message: "Success"
             });
         }).catch(function (error) {
             log.error(error)
