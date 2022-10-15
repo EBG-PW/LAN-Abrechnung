@@ -1,267 +1,267 @@
 {
-    "WellcomeMSG": "Benvenuto nel Gruppo di Rete Locale {{LanName}} con questo bot puoi registrarti.\n\nScegli la tua lingua:",
-    "WellcomeMSGAR": "Benvenuto nel Gruppo di Rete Locale {{LanName}} con questo bot puoi registrarti.\n\nSei già regestred. Questo è il menu principale.",
-	"WellcomeMSGSubGuest": "You got invited as friend of {{Username}}\n\nWelcome to the Local Area Network Party {{LanName}} with this bot you can register.\n\nChoose your language:",
-    "WellcomeErr": "Si prega di completare la registrazione. f avete già fatto, probabilmente non avete accettato le regole e quindi purtroppo non sono i benvenuti!",
-    "Fragen": {
-        "PC": "Hai un computer (PC) con te?",
-        "Displays": "Quante esposizioni portate?",
-        "LanKabel": "Stai prendendo un cavo LAN per il tuo PC?",
-        "VR": "Stai prendendo degli occhiali VR?",
-        "Vaccinated": "Quale stato vaccinale avrà al momento del suo arrivo?",
-        "Arrivale": "Quando è prevista la data di arrivo?",
-        "Depature": "Quando è previsto il giorno di partenza?",
-        "WebReg": "Fare clic sul pulsante per impostare la password del pannello web."
-    },
-    "Antworten": {
-        "Ja": "Sì",
-        "Nein": "No",
-        "Vollständig": "Interamente",
-        "Teil": "Vaccinazione parziale",
-        "NichtSagen": "Non voglio dire"
-    },
+  "WellcomeMSG": "Benvenuto nel Gruppo di Rete Locale {{LanName}} con questo bot puoi registrarti.\n\nScegli la tua lingua:",
+  "WellcomeMSGAR": "Benvenuto nel Gruppo di Rete Locale {{LanName}} con questo bot puoi registrarti.\n\nSei già regestred. Questo è il menu principale.",
+  "WellcomeMSGSubGuest": "Sei stato invitato come amico di {{Username}}\n\nBenvenuto nel party in rete locale {{LanName}} con questo bot  puoi registrarti.\n\nScegli la lingua:",
+  "WellcomeErr": "Si prega di completare la registrazione. f avete già fatto, probabilmente non avete accettato le regole e quindi purtroppo non sono i benvenuti!",
+  "Fragen": {
+    "PC": "Hai un computer (PC) con te?",
+    "Displays": "Quante esposizioni portate?",
+    "LanKabel": "Stai prendendo un cavo LAN per il tuo PC?",
+    "VR": "Stai prendendo degli occhiali VR?",
+    "Vaccinated": "Quale stato vaccinale avrà al momento del suo arrivo?",
+    "Arrivale": "Quando è prevista la data di arrivo?",
+    "Depature": "Quando è previsto il giorno di partenza?",
+    "WebReg": "Fare clic sul pulsante per impostare la password del pannello web."
+  },
+  "Antworten": {
+    "Ja": "Sì",
+    "Nein": "No",
+    "Vollständig": "Interamente",
+    "Teil": "Vaccinazione parziale",
+    "NichtSagen": "Non voglio dire"
+  },
+  "Knöpfe": {
+    "Reg": "Registrazione",
+    "WebReg": "Qui",
+    "Hauptmenu": "Menu principale",
+    "SubGuest": "Invita un ospite"
+  },
+  "Error": {
+    "NotPrivate": "Questo è possibile solo in chat diretta con il bot.",
+    "DBFehler": "Si è verificato un errore con il database.",
+    "ExecuteCommandFehler": "Si è verificato un errore durante l'esecuzione del comando."
+  },
+  "Vaccinated": {
+    "Voll": "Interamente",
+    "Teil": "Primi vaccini",
+    "Nein": "No",
+    "Secret": "Segreto"
+  },
+  "Arrivale": {
+    "1": "30.12.22",
+    "1_Voll": "FR: 30.12.2022",
+    "2": "31.12.22",
+    "2_Voll": "SA: 31.12.2022",
+    "3": "1.1.23",
+    "3_Voll": "SU: 01.01.2023",
+    "4": "2.1.23",
+    "4_Voll": "MO: 02.01.2023",
+    "5": "3.1.23",
+    "5_Voll": "TU: 03.01.2023",
+    "6": "4.1.23",
+    "6_Voll": "WE: 04.01.2023"
+  },
+  "Depature": {
+    "1": "4.1.23",
+    "1_Voll": "WS: 04.01.2023",
+    "2": "5.1.23",
+    "2_Voll": "TH: 05.01.2023",
+    "3": "6.1.23",
+    "3_Voll": "FR: 06.01.2023",
+    "4": "7.1.23",
+    "4_Voll": "SA: 07.01.2023",
+    "5": "8.1.23",
+    "5_Voll": "SO: 8.01.2023",
+    "6": "9.1.23",
+    "6_Voll": "MO: 09.01.2023"
+  },
+  "Admin": {
+    "MustBeReply": "Questo comando può essere usato solo come risposta.",
+    "MustHaveAtributes": "Questo comando ha bisogno di attributi come: {{Atributes}}",
+    "MustBeAdmin": "Devi essere un amministratore per usare questo comando.",
+    "AddNoSuccsess": "L'utente era già amministratore o non è registrato.",
+    "AddSuccsess": "{{Username}}({{UserID}}) è ora amministratore.",
+    "RemNoSuccsess": "L'utente non era un amministratore o non è registrato.",
+    "RemSuccsess": "{{Username}}({{UserID}}) non è più un amministratore.",
+    "list": "I seguenti ospiti sono amministratori: {{AdminList}}"
+  },
+  "PaySystem": {
+    "Sucsess": "Hai completato con successo la registrazione\n\nSi prega di trasferire i costi per i {{DiffDays}} giorni di LAN-Party ora:\n\n<b>titolare dell'account:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Banca:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Motivo del Pagamento:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nL'importo del trasferimento per {{DiffDays}} giorni è: <pre language='c++'>{{Kosten}}</pre>",
+    "SucsessSubUser": "Hai effettuato la registrazione con sucesso\n\nStarai per {{DiffDays}} giorni e sei ospite di {{Username}}",
+    "PushMessageHauptGast": "{{Subgast}} ha completato la registrazione ed è ora un tuo ospite.\n\nSi prega di trasferire il costo addizionale di {{DiffDays}} giorni {{Subgast}}:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nL'ammonto delle spese extra è <pre language='c++'>{{Zusatzkosten}}</pre>Il nuovo totale è: <pre language='c++'>{{Kosten}}</pre>"
+  },
+  "Hauptmenu": {
+    "Text": "<b>Menu principale:</b>\n{{Username}} qui puoi vedere tutte le funzioni del bot.\n\nSotto 'Ulteriori informazioni' troverai le regole e le condizioni della casa che hai concordato.",
     "Knöpfe": {
-        "Reg": "Registrazione",
-        "WebReg": "Qui",
-        "Hauptmenu": "Menu principale",
-		"SubGuest": "Invite guest"
+      "Zahlung": "Pagamento",
+      "Artikel": "Acquista articoli",
+      "Spenden": "Donazioni",
+      "Other": "Ulteriori Informazioni",
+      "Webpanel": "Webpanel"
+    }
+  },
+  "Payed": {
+    "Text": "{{Username}}, {{Status_String}}\n\nImporto: {{money}}\nID: {{PayedID}}",
+    "True": "il tuo pagamento è stato <b>confermato</b> dal nostro sistema",
+    "False": "il tuo pagamento non è ancora stato <b>confermato</b> dal nostro sistema. Se questo dovesse essere ancora il caso all'inizio del gruppo LAN, si prega di contattare gli organizzatori!"
+  },
+  "Spenden": {
+    "Text": "Puoi donare qualcosa se sei soddisfatto della pianificazione e organizzazione.\n\nBasta cliccare sul pulsante qui sotto e selezionare l'importo della donazione ;)",
+    "Knöpfe": {
+      "Spenden": "Dona ora",
+      "SpendeAlles": "Dona l'intero saldo",
+      "Hauptmenu": "⏪ Menu principale"
+    }
+  },
+  "SpendenAll": {
+    "Text": "Vuoi donare l'intero saldo di {{current_balance}}?",
+    "Knöpfe": {
+      "Ja": "Sì",
+      "Nein": "No",
+      "Hauptmenu": "⏪ Menu principale"
     },
-    "Error": {
-        "NotPrivate": "Questo è possibile solo in chat diretta con il bot.",
-        "DBFehler": "Si è verificato un errore con il database.",
-        "ExecuteCommandFehler": "Si è verificato un errore durante l'esecuzione del comando."
-    },
-    "Vaccinated": {
-        "Voll": "Interamente",
-        "Teil": "Primi vaccini",
-        "Nein": "No",
-        "Secret": "Segreto"
-    },
-    "Arrivale": {
-        "1": "30.12.22",
-        "1_Voll": "FR: 30.12.2022",
-        "2": "31.12.22",
-        "2_Voll": "SA: 31.12.2022",
-        "3": "1.1.23",
-        "3_Voll": "SU: 01.01.2023",
-        "4": "2.1.23",
-        "4_Voll": "MO: 02.01.2023",
-        "5": "3.1.23",
-        "5_Voll": "TU: 03.01.2023",
-        "6": "4.1.23",
-        "6_Voll": "WE: 04.01.2023"
-    },
-    "Depature": {
-        "1": "4.1.23",
-        "1_Voll": "WS: 04.01.2023",
-        "2": "5.1.23",
-        "2_Voll": "TH: 05.01.2023",
-        "3": "6.1.23",
-        "3_Voll": "FR: 06.01.2023",
-        "4": "7.1.23",
-        "4_Voll": "SA: 07.01.2023",
-        "5": "8.1.23",
-        "5_Voll": "SO: 8.01.2023",
-        "6": "9.1.23",
-        "6_Voll": "MO: 09.01.2023"
-    },
-    "Admin": {
-        "MustBeReply": "Questo comando può essere usato solo come risposta.",
-        "MustHaveAtributes": "Questo comando ha bisogno di attributi come: {{Atributes}}",
-        "MustBeAdmin": "Devi essere un amministratore per usare questo comando.",
-        "AddNoSuccsess": "L'utente era già amministratore o non è registrato.",
-        "AddSuccsess": "{{Username}}({{UserID}}) è ora amministratore.",
-        "RemNoSuccsess": "L'utente non era un amministratore o non è registrato.",
-        "RemSuccsess": "{{Username}}({{UserID}}) non è più un amministratore.",
-        "list": "I seguenti ospiti sono amministratori: {{AdminList}}"
-    },
-    "PaySystem": {
-        "Sucsess": "Hai completato con successo la registrazione\n\nSi prega di trasferire i costi per i {{DiffDays}} giorni di LAN-Party ora:\n\n<b>titolare dell'account:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Banca:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Motivo del Pagamento:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nL'importo del trasferimento per {{DiffDays}} giorni è: <pre language='c++'>{{Kosten}}</pre>",
-		"SucsessSubUser": "You have successfully completed the registration\n\nYou stay for {{DiffDays}} days and you are guest of {{Username}}",
-    	"PushMessageHauptGast": "{{Subgast}} completed the registartion and is now your guest.\n\nPlease transfer the addintional cost of {{DiffDays}} days for {{Subgast}}:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the extra expenses are <pre language='c++'>{{Zusatzkosten}}</pre>The new total is: <pre language='c++'>{{Kosten}}</pre>"
-    },
-    "Hauptmenu": {
-        "Text": "<b>Menu principale:</b>\n{{Username}} qui puoi vedere tutte le funzioni del bot.\n\nSotto 'Ulteriori informazioni' troverai le regole e le condizioni della casa che hai concordato.",
-        "Knöpfe": {
-            "Zahlung": "Pagamento",
-            "Artikel": "Acquista articoli",
-            "Spenden": "Donazioni",
-            "Other": "Ulteriori Informazioni",
-            "Webpanel": "Webpanel"
-        }
-    },
-    "Payed": {
-        "Text": "{{Username}}, {{Status_String}}\n\nImporto: {{money}}\nID: {{PayedID}}",
-        "True": "il tuo pagamento è stato <b>confermato</b> dal nostro sistema",
-        "False": "il tuo pagamento non è ancora stato <b>confermato</b> dal nostro sistema. Se questo dovesse essere ancora il caso all'inizio del gruppo LAN, si prega di contattare gli organizzatori!"
-    },
-    "Spenden": {
-        "Text": "Puoi donare qualcosa se sei soddisfatto della pianificazione e organizzazione.\n\nBasta cliccare sul pulsante qui sotto e selezionare l'importo della donazione ;)",
-        "Knöpfe": {
-            "Spenden": "Dona ora",
-            "SpendeAlles": "Dona l'intero saldo",
-            "Hauptmenu": "⏪ Menu principale"
-        }
-    },
-    "SpendenAll": {
-        "Text": "Vuoi donare l'intero saldo di {{current_balance}}?",
-        "Knöpfe": {
-            "Ja": "Sì",
-            "Nein": "No",
-            "Hauptmenu": "⏪ Menu principale"
-        },
-        "Fehler": {
-            "NoMoney": "Non hai abbastanza soldi per donare l'intero saldo."
-        }
-    },
-    "Preisliste": {
-        "PauschalKosten": {
-            "Wasserpauschale": "Acqua forfettaria (wc, doccia, ecc)",
-            "Strompauschale": "Elettricità forfettaria (corridoio, camere, cucina, ecc.)",
-            "Verbrauchsgüterpauschale": "Importo forfettario dei beni di consumo (sapone, ecc.)",
-            "Netzwerkpauschale": "Rete forfettaria",
-            "KostenKWH": "Costo per kWh"
-        }
-    },
-    "Sprachen": {
-        "Text": "Cambia la tua lingua qui",
-        "Knöpfe": {
-            "DE": "🇩🇪",
-            "EN": "🇬🇧",
-            "UA": "🇺🇦",
-            "IT": "🇮🇹",
-            "Zurück": "⏪ ritorno",
-            "Full": {
-                "DE": "Normale Tedesco",
-                "DE-BY": "Bavarese"
-            }
-        }
-    },
-    "Moreinfo": {
-        "Text": "<b>Maggiori informazioni:</b>\n{{Username}} qui troverai maggiori informazioni utili.",
-        "Knöpfe": {
-            "Rules": "Regole",
-            "Legal": "Legale",
-            "Sprache": "Lingua",
-            "Hauptmenu": "⏪ Menu principale"
-        },
-        "Regeln": {
-            "Exit": "❌ Esci",
-            "AcceptedDate": "\nHai accettato le regole su{{akteptiert}} "
-        },
-        "Legal": {
-            "Exit": "❌ Esci",
-            "AcceptedDate": "\nHai accettato gli avvisi e i regolamenti su {{akteptiert}} "
-        }
-    },
-    "PushNotification": {
-        "NewOrder": "Stiamo ordinando il cibo presto!\n\nScegli quale cibo vorresti da quella lista {{EssenListe}}.\nSi prega di ordinare fino a <b>{{Zeit}}</b>.\n\n<a href='{{WebPanelURL}}/UserBestellungen?{{ID}}'>Webpanel Link</a>",
-        "Buttons": {
-            "Webpanel": "Webpanel"
-        }
+    "Fehler": {
+      "NoMoney": "Non hai abbastanza soldi per donare l'intero saldo."
+    }
+  },
+  "Preisliste": {
+    "PauschalKosten": {
+      "Wasserpauschale": "Acqua forfettaria (wc, doccia, ecc)",
+      "Strompauschale": "Elettricità forfettaria (corridoio, camere, cucina, ecc.)",
+      "Verbrauchsgüterpauschale": "Importo forfettario dei beni di consumo (sapone, ecc.)",
+      "Netzwerkpauschale": "Rete forfettaria",
+      "KostenKWH": "Costo per kWh"
+    }
+  },
+  "Sprachen": {
+    "Text": "Cambia la tua lingua qui",
+    "Knöpfe": {
+      "DE": "🇩🇪",
+      "EN": "🇬🇧",
+      "UA": "🇺🇦",
+      "IT": "🇮🇹",
+      "Zurück": "⏪ ritorno",
+      "Full": {
+        "DE": "Normale Tedesco",
+        "DE-BY": "Bavarese"
+      }
+    }
+  },
+  "Moreinfo": {
+    "Text": "<b>Maggiori informazioni:</b>\n{{Username}} qui troverai maggiori informazioni utili.",
+    "Knöpfe": {
+      "Rules": "Regole",
+      "Legal": "Legale",
+      "Sprache": "Lingua",
+      "Hauptmenu": "⏪ Menu principale"
     },
     "Regeln": {
-        "Text": "<b>Per favore leggi attentamente le regole della casa!</b>\n\n <i>Le seguenti regole devono essere rigorosamente rispettate per la durata della LAN, la cui violazione può comportare la discrezionalità fino all’esclusione dalla LAN.</i>",
-        "RegelnAnzahl": "7",
-        "Regeln": {
-            "0": "1: Non c'è eccezione al severo divieto di fumare nell'edificio, ci sono aerosol -> è <b>proibito!</b> Per i fumatori c'è la possibilità di fumare come l'anno scorso nel cortile con <u>porta chiusa</u>.",
-            "1": "2: Secondo le norme vigenti, un requisito maschera FFP2 si applica al piano terra durante le ore di ufficio (7-17 giorni feriali)",
-            "2": "3: <b>TUTTO</b> pulire <b>AUTONOMOSAMENTE</b> i loro piatti e spazzatura. (Per un costo di 150€ si ottiene i vostri piatti VIP e GEOs papà cancella la spazzatura e piatti.)",
-            "3": "4: Rimanere inutilizzati nei rifiuti residui. Le pizze non hanno posto nelle loro scatole nelle scatole di cartone. La violazione di questa regola comporterà una penale di 150€. (Sì: Sì questa regola esiste per un buon motivo.)",
-            "4": "5: Camminare solo attraverso l'edificio in abbigliamento appropriato durante le ore di ufficio.",
-            "5": "6: Mantenere i livelli di rumore ad un livello appropriato durante l'orario di ufficio.",
-            "6": "7: Con il consumo di alcol è comunque prevedibile un comportamento corrispondente. (GEO atteggiamento nei confronti del consumo eccessivo di alcol e i suoi effetti dovrebbero essere noti a tutti)"
-        },
-        "Knöpfe": {
-            "Zustimmen": "Accetta",
-            "Ablehnen": "Rifiuta"
-        },
-        "Antworten": {
-            "Zustimmen": "Accetta",
-            "Ablehnen": "Rifiuta"
-        }
+      "Exit": "❌ Esci",
+      "AcceptedDate": "\nHai accettato le regole su{{akteptiert}} "
     },
     "Legal": {
-        "Text": "<b>Per favore leggi attentamente la normativa e accetti loro!</b>",
-        "Preisliste": "Le seguenti tasse sono obbligatorie da pagare da ogni ospite e saranno calcolate automaticamente.",
-        "LegalAnzahl": "3",
-        "Legal": {
-            "0": "È previsto un contatore per la fatturazione dei costi dell'elettricità. L'uso del contatore è obbligatorio. Il contatore non è ufficialmente calibrato e ha una tolleranza dell'1%",
-            "1": "Ci sono alcuni costi generali per la LAN questi sono elencati di seguito e servono a rendere questo evento senza perdita per GEO e suo papà.",
-            "2": "Non hai problemi a non avere spontaneamente nessuna rete o ottenere un amichevole RubberDucky nel tuo PC. :D"
-        },
-        "Knöpfe": {
-            "Zustimmen": "Accetta",
-            "Ablehnen": "Rifiuta"
-        },
-        "Antworten": {
-            "Zustimmen": "Accetta",
-            "Ablehnen": "Rifiuta"
-        }
-    },
-    "loadprice": {
-        "Text": "{{Amount}} oggetto è stato letto o aggiornato e questo ha preso {{duration}}"
-    },
-    "loadplugs": {
-        "Text": "{{Amount}} oggetto sono stati letti o aggiornati, sono gestiti da {{ControlerAmount}} Clients e questo ha preso {{duration}}."
-    },
-    "geninvoices": {
-        "Abrechnung": "Fattura",
-        "Artikel": "Elemento",
-		"PricePerUnit": "per unit",
-        "Amount": "Importo",
-        "Price": "Prezzo",
-        "kwh": "Elettricità (in kWh)",
-        "Payed": "Prepagato",
-        "TotalSpend": "Spesa totale",
-        "Difference": "Differenza",
-        "Text": "Ci sono state {{Amount}} fatture generate e che hanno preso {{duration}}.\nLa creazione della configurazione ha preso {{config_duration}}.\nLa creazione dei PDF ha preso {{exec_duration}}.\nL'invio dei file ha richiesto {{send_duration}}."
-    },
-    "Inline": {
-		"SubUserInvite": {
-			"Title": "Invite",
-			"Description": "Send a new invite",
-			"Text": "click the button below, to accept the invite"
-		  },
-        "NoQuery": {
-            "ID": "NoQuery",
-            "Text": "Inserisci un elemento nella barra",
-            "Message": "Per acquistare un oggetto, è necessario inserire il nome nella barra di chat e quindi selezionare il campo appropriato.\n\n<b>Ecco un elenco di tutti gli elementi:</b>\n"
-        },
-        "NotFound": {
-            "ID": "NotFound",
-            "Text": "Impossibile trovare l'elemento",
-            "Message": "L'elemento {{}} non è stato trovato."
-        },
-        "Found": {
-            "ID": "N{{ID}}",
-            "Text": "{{Produkt}} di {{Hersteller}}",
-            "Beschreibung": "Prezzo al pezzo: {{Preis}} - Ci sono {{Available}} in magazzino",
-            "Message": "<b>Articolo selezionato:</b> {{produktname}} di {{produktcompany}}\nPrezzo per pezzo: {{price}}\nDisponibile {{storrage}}\n\nPer acquistare l'oggetto clicca sul pulsante qui sotto."
-        },
-        "Knöpfe": {
-            "Add": "+1",
-            "Remove": "-1",
-            "Abbrechen": "Esci",
-            "Bestätigen": "Conferma",
-            "Kaufen": "Acquista",
-			"SubUserInvite": "Accept Invite"
-        },
-        "Confirm": {
-            "NotPayed": "Non hai ancora pagato o il tuo pagamento non è ancora stato elaborato.",
-			"OverLimit": "You have reached your limit of {{limit}}.",
-      		"NotAllowedToPay": "You are not allowed to pay. The person you invited you needs to enable it on the webpanel.",
-            "DoesNotExist": "Il prodotto selezionato {{produktname}} da {{produktcompany}} è stato purtroppo rimosso dall'offerta.",
-            "NotEnoth": "Il prodotto {{produktname}} di {{produktcompany}} non è più disponibile in quantità sufficienti!",
-            "OtherBuy": "Il prodotto selezionato è stato acquistato contemporaneamente da qualcun altro, si prega di riprovare"
-        },
-        "MainMessage": "<b>Articolo selezionato:</b> {{produktname}} di {{produktcompany}}\nPrezzo per pezzo: {{price}}\nDisponibile: {{storrage}}\n\nSeleziona la quantità sottostante e conferma il tuo acquisto. Si prega di attendere la conferma dal bot.",
-        "MainProgress": "Il menu di prenotazione si chiama...",
-        "Escape": "Il menu di prenotazione è stato chiuso...",
-        "TooMutch": "Non puoi comprare più di quanto abbiamo in magazzino.",
-        "TooLitle": "Non puoi comprare meno di uno",
-        "Donation": "Grazie per la tua donazione di {{price}} a <a href='{{Company_Name_URL}}'>{{Company_Name}}</a>❤️",
-        "ItemBought": "Hai acquistato con successo {{amount}} volte il prodotto {{produktname}} da {{produktcompany}} per {{price}}.\n\nOra puoi visualizzare l'oggetto.",
-        "ItemsBought": "Hai acquistato con successo {{amount}} volte i prodotti {{produktname}} da {{produktcompany}} per {{price}}\n\nOra puoi visualizzare gli oggetti."
+      "Exit": "❌ Esci",
+      "AcceptedDate": "\nHai accettato gli avvisi e i regolamenti su {{akteptiert}} "
     }
+  },
+  "PushNotification": {
+    "NewOrder": "Stiamo ordinando il cibo presto!\n\nScegli quale cibo vorresti da quella lista {{EssenListe}}.\nSi prega di ordinare fino a <b>{{Zeit}}</b>.\n\n<a href='{{WebPanelURL}}/UserBestellungen?{{ID}}'>Webpanel Link</a>",
+    "Buttons": {
+      "Webpanel": "Webpanel"
+    }
+  },
+  "Regeln": {
+    "Text": "<b>Per favore leggi attentamente le regole della casa!</b>\n\n <i>Le seguenti regole devono essere rigorosamente rispettate per la durata della LAN, la cui violazione può comportare la discrezionalità fino all’esclusione dalla LAN.</i>",
+    "RegelnAnzahl": "7",
+    "Regeln": {
+      "0": "1: Non c'è eccezione al severo divieto di fumare nell'edificio, ci sono aerosol -> è <b>proibito!</b> Per i fumatori c'è la possibilità di fumare come l'anno scorso nel cortile con <u>porta chiusa</u>.",
+      "1": "2: Secondo le norme vigenti, un requisito maschera FFP2 si applica al piano terra durante le ore di ufficio (7-17 giorni feriali)",
+      "2": "3: <b>TUTTO</b> pulire <b>AUTONOMOSAMENTE</b> i loro piatti e spazzatura. (Per un costo di 150€ si ottiene i vostri piatti VIP e GEOs papà cancella la spazzatura e piatti.)",
+      "3": "4: Rimanere inutilizzati nei rifiuti residui. Le pizze non hanno posto nelle loro scatole nelle scatole di cartone. La violazione di questa regola comporterà una penale di 150€. (Sì: Sì questa regola esiste per un buon motivo.)",
+      "4": "5: Camminare solo attraverso l'edificio in abbigliamento appropriato durante le ore di ufficio.",
+      "5": "6: Mantenere i livelli di rumore ad un livello appropriato durante l'orario di ufficio.",
+      "6": "7: Con il consumo di alcol è comunque prevedibile un comportamento corrispondente. (GEO atteggiamento nei confronti del consumo eccessivo di alcol e i suoi effetti dovrebbero essere noti a tutti)"
+    },
+    "Knöpfe": {
+      "Zustimmen": "Accetta",
+      "Ablehnen": "Rifiuta"
+    },
+    "Antworten": {
+      "Zustimmen": "Accetta",
+      "Ablehnen": "Rifiuta"
+    }
+  },
+  "Legal": {
+    "Text": "<b>Per favore leggi attentamente la normativa e accetti loro!</b>",
+    "Preisliste": "Le seguenti tasse sono obbligatorie da pagare da ogni ospite e saranno calcolate automaticamente.",
+    "LegalAnzahl": "3",
+    "Legal": {
+      "0": "È previsto un contatore per la fatturazione dei costi dell'elettricità. L'uso del contatore è obbligatorio. Il contatore non è ufficialmente calibrato e ha una tolleranza dell'1%",
+      "1": "Ci sono alcuni costi generali per la LAN questi sono elencati di seguito e servono a rendere questo evento senza perdita per GEO e suo papà.",
+      "2": "Non hai problemi a non avere spontaneamente nessuna rete o ottenere un amichevole RubberDucky nel tuo PC. :D"
+    },
+    "Knöpfe": {
+      "Zustimmen": "Accetta",
+      "Ablehnen": "Rifiuta"
+    },
+    "Antworten": {
+      "Zustimmen": "Accetta",
+      "Ablehnen": "Rifiuta"
+    }
+  },
+  "loadprice": {
+    "Text": "{{Amount}} oggetto è stato letto o aggiornato e questo ha preso {{duration}}"
+  },
+  "loadplugs": {
+    "Text": "{{Amount}} oggetto sono stati letti o aggiornati, sono gestiti da {{ControlerAmount}} Clients e questo ha preso {{duration}}."
+  },
+  "geninvoices": {
+    "Abrechnung": "Fattura",
+    "Artikel": "Elemento",
+    "PricePerUnit": "per unit",
+    "Amount": "Importo",
+    "Price": "Prezzo",
+    "kwh": "Elettricità (in kWh)",
+    "Payed": "Prepagato",
+    "TotalSpend": "Spesa totale",
+    "Difference": "Differenza",
+    "Text": "Ci sono state {{Amount}} fatture generate e che hanno preso {{duration}}.\nLa creazione della configurazione ha preso {{config_duration}}.\nLa creazione dei PDF ha preso {{exec_duration}}.\nL'invio dei file ha richiesto {{send_duration}}."
+  },
+  "Inline": {
+    "SubUserInvite": {
+      "Title": "Invito",
+      "Description": "Manda un novo invito",
+      "Text": "per accettare l'invito, clicca il bottone qui sotto"
+      },
+    "NoQuery": {
+      "ID": "NoQuery",
+      "Text": "Inserisci un elemento nella barra",
+      "Message": "Per acquistare un oggetto, è necessario inserire il nome nella barra di chat e quindi selezionare il campo appropriato.\n\n<b>Ecco un elenco di tutti gli elementi:</b>\n"
+    },
+    "NotFound": {
+      "ID": "NotFound",
+      "Text": "Impossibile trovare l'elemento",
+      "Message": "L'elemento {{}} non è stato trovato."
+    },
+    "Found": {
+      "ID": "N{{ID}}",
+      "Text": "{{Produkt}} di {{Hersteller}}",
+      "Beschreibung": "Prezzo al pezzo: {{Preis}} - Ci sono {{Available}} in magazzino",
+      "Message": "<b>Articolo selezionato:</b> {{produktname}} di {{produktcompany}}\nPrezzo per pezzo: {{price}}\nDisponibile {{storrage}}\n\nPer acquistare l'oggetto clicca sul pulsante qui sotto."
+    },
+    "Knöpfe": {
+      "Add": "+1",
+      "Remove": "-1",
+      "Abbrechen": "Esci",
+      "Bestätigen": "Conferma",
+      "Kaufen": "Acquista",
+      "SubUserInvite": "Accetta l'invito"
+    },
+    "Confirm": {
+      "NotPayed": "Non hai ancora pagato o il tuo pagamento non è ancora stato elaborato.",
+      "OverLimit": "Hai raggiunto il limite di {{limit}}.",
+        "NotAllowedToPay": "Non hai il permesso di pagare. La persona che hai invitato deve abilitare il webpanel.",
+      "DoesNotExist": "Il prodotto selezionato {{produktname}} da {{produktcompany}} è stato purtroppo rimosso dall'offerta.",
+      "NotEnoth": "Il prodotto {{produktname}} di {{produktcompany}} non è più disponibile in quantità sufficienti!",
+      "OtherBuy": "Il prodotto selezionato è stato acquistato contemporaneamente da qualcun altro, si prega di riprovare"
+    },
+    "MainMessage": "<b>Articolo selezionato:</b> {{produktname}} di {{produktcompany}}\nPrezzo per pezzo: {{price}}\nDisponibile: {{storrage}}\n\nSeleziona la quantità sottostante e conferma il tuo acquisto. Si prega di attendere la conferma dal bot.",
+    "MainProgress": "Il menu di prenotazione si chiama...",
+    "Escape": "Il menu di prenotazione è stato chiuso...",
+    "TooMutch": "Non puoi comprare più di quanto abbiamo in magazzino.",
+    "TooLitle": "Non puoi comprare meno di uno",
+    "Donation": "Grazie per la tua donazione di {{price}} a <a href='{{Company_Name_URL}}'>{{Company_Name}}</a>❤️",
+    "ItemBought": "Hai acquistato con successo {{amount}} volte il prodotto {{produktname}} da {{produktcompany}} per {{price}}.\n\nOra puoi visualizzare l'oggetto.",
+    "ItemsBought": "Hai acquistato con successo {{amount}} volte i prodotti {{produktname}} da {{produktcompany}} per {{price}}\n\nOra puoi visualizzare gli oggetti."
+  }
 }
