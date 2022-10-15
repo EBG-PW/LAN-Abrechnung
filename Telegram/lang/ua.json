@@ -1,7 +1,8 @@
 {
     "WellcomeMSG": "Ласкаво просимо на вечірку з локальною мережею розділу {{LanName}} на цього бота, ви можете зареєструвати.\n\nВиберіть свою мову:",
     "WellcomeMSGAR": "Ласкаво просимо на вечірку з локальною мережею {{LanName}} на цьому боті, ви можете зареєструватися.\n\nВи вже є повторенням. Це головне меню.",
-    "WellcomeErr": "Будь ласка, завершіть реєстрацію. Ви вже це зробили, швидше за все, не підтвердили правила і тому на жаль, не вітаються!",
+	"WellcomeMSGSubGuest": "You got invited as friend of {{Username}}\n\nWelcome to the Local Area Network Party {{LanName}} with this bot you can register.\n\nChoose your language:",
+	"WellcomeErr": "Будь ласка, завершіть реєстрацію. Ви вже це зробили, швидше за все, не підтвердили правила і тому на жаль, не вітаються!",
     "Fragen": {
         "PC": "У вас є комп'ютер (ПК) з вами?",
         "Displays": "Скільки дисплеїв ви привласнюєте?",
@@ -22,7 +23,8 @@
     "Knöpfe": {
         "Reg": "Реєстрація",
         "WebReg": "Тут",
-        "Hauptmenu": "Головне меню"
+        "Hauptmenu": "Головне меню",
+		"SubGuest": "Invite guest"
     },
     "Error": {
         "NotPrivate": "Це можливо лише в безпосередньому чаті з ботом.",
@@ -74,8 +76,10 @@
         "list": "Адміністратори наступні гості: {{AdminList}}"
     },
     "PaySystem": {
-        "Success": "You have successfully completed the registration\n\nPlease transfer the costs for the {{DiffDays}} days of LAN-Party now:\n\n<b>account holder:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Reason for Payment:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the transfer for {{DiffDays}} days is: <pre language='c++'>{{Kosten}}</pre>"
-    },
+        "Success": "You have successfully completed the registration\n\nPlease transfer the costs for the {{DiffDays}} days of LAN-Party now:\n\n<b>account holder:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Reason for Payment:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the transfer for {{DiffDays}} days is: <pre language='c++'>{{Kosten}}</pre>",
+		"SuccessSubUser": "You have successfully completed the registration\n\nYou stay for {{DiffDays}} days and you are guest of {{Username}}",
+    	"PushMessageHauptGast": "{{Subgast}} completed the registartion and is now your guest.\n\nPlease transfer the additional cost of {{DiffDays}} days for {{Subgast}}:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nThe amount of the extra expenses are <pre language='c++'>{{Zusatzkosten}}</pre>The new total is: <pre language='c++'>{{Kosten}}</pre>"
+	},
     "Hauptmenu": {
         "Text": "<b>Головне меню:</b>\n{{Username}} тут ви можете побачити всі функції бота.\n\nЗа 'Більше інформації' ви знайдете правила будинку та умови, які ви погодились.",
         "Knöpfe": {
@@ -204,6 +208,7 @@
     "geninvoices": {
         "Abrechnung": "Інвойс",
         "Artikel": "Елемент",
+		"PricePerUnit": "per unit",
         "Amount": "Сума",
         "Price": "Ціна",
         "kwh": "Електрика (в кВт)",
@@ -213,6 +218,11 @@
         "Text": "Було згенеровано {{Amount}} рахунків-фактур, і це зайняло {{duration}}.\nСтворення конфігурації зайняло {{config_duration}}.\nСтворення PDF зайняло {{exec_duration}}.\nВідправлення файлів прийнято {{send_duration}}."
     },
     "Inline": {
+		"SubUserInvite": {
+			"Title": "Invite",
+			"Description": "Send a new invite",
+			"Text": "click the button below, to accept the invite"
+		},
         "NoQuery": {
             "ID": "Немає запитів",
             "Text": "Будь ласка, введіть елемент в панелі",
@@ -234,10 +244,13 @@
             "Remove": "-1",
             "Abbrechen": "Вийти",
             "Bestätigen": "Підтвердити",
-            "Kaufen": "Купити"
+            "Kaufen": "Купити",
+      		"SubUserInvite": "Accept Invite"
         },
         "Confirm": {
             "NotPayed": "Ви ще не сплатили, або ваш платіж ще не опрацьований.",
+			"OverLimit": "You have reached your limit of {{limit}}.",
+			"NotAllowedToPay": "You are not allowed to pay. The person you invited you needs to enable it on the webpanel.",
             "DoesNotExist": "Вибраний продукт {{produktname}} по {{produktcompany}} був видалений з пропозиції.",
             "NotEnoth": "Товар {{produktname}} за {{produktcompany}} більше не доступний у достатніх кількостях!",
             "OtherBuy": "Вибраний продукт був куплений одночасно кимось іншим, будь ласка, спробуйте ще раз"
