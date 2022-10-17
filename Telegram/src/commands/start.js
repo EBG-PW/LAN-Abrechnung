@@ -1,7 +1,7 @@
 const path = require('path');
 const DB = require('../../../Web/lib/postgres');
 const { default: i18n } = require('new-i18n')
-const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'), ['de', 'en', 'de-by', 'ua', 'it'], process.env.Fallback_Language);
+const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'),  ['de', 'en', 'de-by', 'ua', 'it', 'fr'], process.env.Fallback_Language);
 const { log } = require('../../../Web/lib/logger');
 
 module.exports = function (bot, mainconfig, preisliste) {
@@ -21,6 +21,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.EN'), { callback: `RSU_${msg.from.id}_setlang_en_${text_array[1]}` }),
                                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.UA'), { callback: `RSU_${msg.from.id}_setlang_ua_${text_array[1]}` }),
                                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.IT'), { callback: `RSU_${msg.from.id}_setlang_it_${text_array[1]}` }),
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.FR'), { callback: `RSU_${msg.from.id}_setlang_fr_${text_array[1]}` }),
                                     ])
                                     //Push Slang Buttons for German
                                     inlineKeyboard.push([
@@ -40,6 +41,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.EN'), { callback: `R_${msg.from.id}_setlang_en` }),
                                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.UA'), { callback: `R_${msg.from.id}_setlang_ua` }),
                                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.IT'), { callback: `R_${msg.from.id}_setlang_it` }),
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.FR'), { callback: `R_${msg.from.id}_setlang_fr` }),
                                     ])
                                     //Push Slang Buttons for German
                                     inlineKeyboard.push([
@@ -62,6 +64,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                             bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.EN'), { callback: `R_${msg.from.id}_setlang_en` }),
                             bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.UA'), { callback: `R_${msg.from.id}_setlang_ua` }),
                             bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.IT'), { callback: `R_${msg.from.id}_setlang_it` }),
+                            bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.FR'), { callback: `R_${msg.from.id}_setlang_fr` }),
                         ])
                         //Push Slang Buttons for German
                         inlineKeyboard.push([
