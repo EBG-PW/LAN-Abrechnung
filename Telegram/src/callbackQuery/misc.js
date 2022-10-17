@@ -1,7 +1,7 @@
 const path = require('path');
 const DB = require('../../../Web/lib/postgres');
 const { default: i18n } = require('new-i18n')
-const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'), ['de', 'en', 'de-by', 'ua', 'it'], process.env.Fallback_Language);
+const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'),  ['de', 'en', 'de-by', 'ua', 'it', 'fr'], process.env.Fallback_Language);
 const DE_SLANG = ["de-by"] //Used to store the diffrent slangs of german. 
 const { log } = require('../../../Web/lib/logger');
 
@@ -83,6 +83,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                                 bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.EN'), { callback: `R_${msg.from.id}_setlang_en` }),
                                 bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.UA'), { callback: `R_${msg.from.id}_setlang_ua` }),
                                 bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.IT'), { callback: `R_${msg.from.id}_setlang_it` }),
+                                bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.FR'), { callback: `R_${msg.from.id}_setlang_fr` }),
                             ])
                             //Push Slang Buttons for German
                             if (data[3] === 'de' || DE_SLANG.includes(data[3])) {
@@ -127,6 +128,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                                 bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.EN'), { callback: `RSU_${msg.from.id}_setlang_en_${data[4]}` }),
                                 bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.UA'), { callback: `RSU_${msg.from.id}_setlang_ua_${data[4]}` }),
                                 bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.IT'), { callback: `RSU_${msg.from.id}_setlang_it_${data[4]}` }),
+                                bot.inlineButton(newi18n.translate(data[3], 'Sprachen.Knöpfe.FR'), { callback: `RSU_${msg.from.id}_setlang_fr_${data[4]}` }),
                             ])
                             //Push Slang Buttons for German
                             if (data[3] === 'de' || DE_SLANG.includes(data[3])) {

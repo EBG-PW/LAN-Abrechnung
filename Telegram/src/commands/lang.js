@@ -1,7 +1,7 @@
 const path = require('path');
 const DB = require('../../../Web/lib/postgres');
 const { default: i18n } = require('new-i18n')
-const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'), ['de', 'en', 'de-by', 'ua', 'it'], process.env.Fallback_Language);
+const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'),  ['de', 'en', 'de-by', 'ua', 'it', 'fr'], process.env.Fallback_Language);
 const { log } = require('../../../Web/lib/logger');
 
 module.exports = function (bot, mainconfig, preisliste) {
@@ -29,6 +29,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                     bot.inlineButton(newi18n.translate('en', 'Sprachen.Knöpfe.EN'), { callback: 'lang_en' }),
                     bot.inlineButton(newi18n.translate('en', 'Sprachen.Knöpfe.UA'), { callback: 'lang_ua' }),
                     bot.inlineButton(newi18n.translate('en', 'Sprachen.Knöpfe.IT'), { callback: 'lang_it' }),
+                    bot.inlineButton(newi18n.translate('en', 'Sprachen.Knöpfe.FR'), { callback: 'lang_fr' }),
                 ],
                 [
                     bot.inlineButton(newi18n.translate(tglang_response, 'Sprachen.Knöpfe.Zurück'), { callback: `/moreinfo` }),
