@@ -97,17 +97,17 @@ function CreateTable(TableHeadData, TableData, TableName, Convert) {
 			if(TableHeadData.includes(key)){
 			let index = TableHeadData.indexOf(key);
 				if(OptionsList?.KeyButtonList?.includes(key)){
-					TableBodyDataPart.splice(index, 0, `<td><button type="button" style="${value.style}" onclick="${value.function}('${value.functionVar}')">${ConvertString(value.text, value.Convert)}</button></td>`)
+					TableBodyDataPart.splice(index, 0, `<td style="vertical-align: middle;"><button type="button" style="${value.style}" onclick="${value.function}('${value.functionVar}')">${ConvertString(value.text, value.Convert)}</button></td>`)
 				}else if(OptionsList?.KeyDropdownList?.includes(key)){
 					let OptionsString = "";
 					value.options.map(option => {
-						OptionsString += `<option title="${option.tooltip}" value="${option.value}">${option.text}</option>`
+						OptionsString += `<option style="vertical-align: middle;" title="${option.tooltip}" value="${option.value}">${option.text}</option>`
 					});
-					TableBodyDataPart.splice(index, 0, `<td><select id="${value.id}" onchange="${value.function}('${value.functionVar}', '${value.id}')" style="${value.style}">${OptionsString}</select></td>`)
+					TableBodyDataPart.splice(index, 0, `<td style="vertical-align: middle;"><select id="${value.id}" onchange="${value.function}('${value.functionVar}', '${value.id}')" style="${value.style}">${OptionsString}</select></td>`)
 				}else if(OptionsList?.KeyInputList?.includes(key)){
-					TableBodyDataPart.splice(index, 0, `<td><input id="${value.id}" type="${value.type}" value="${value.value}" style="${value.style}" onchange="${value.function}('${value.functionVar}', '${value.id}')"></td>`)
+					TableBodyDataPart.splice(index, 0, `<td style="vertical-align: middle;"><input id="${value.id}" type="${value.type}" value="${value.value}" style="${value.style}" onchange="${value.function}('${value.functionVar}', '${value.id}')"></td>`)
 				}else{
-					TableBodyDataPart.splice(index, 0, `<td>${ConvertString(value, Convert)}</td>`)
+					TableBodyDataPart.splice(index, 0, `<td style="vertical-align: middle;">${ConvertString(value, Convert)}</td>`)
 				}
 			}
 		}

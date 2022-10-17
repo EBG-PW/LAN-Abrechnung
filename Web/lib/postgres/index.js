@@ -229,6 +229,20 @@ let GetHauptGuestofguest = function (user_id) {
 }
 
 /**
+ * This function will return all guests by hauptgast
+ * @param {Number} user_id 
+ * @returns 
+ */
+let GetSubGuestFromHauptGuest = function (user_id) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT username, lang, userid, expected_arrival, expected_departure, payed, payed_ammount FROM guests WHERE hauptgast_userid = '${user_id}'`, (err, result) => {
+      if (err) { reject(err) }
+      resolve(result.rows);
+    });
+  });
+}
+
+/**
  * This function will check if a user finished registration
  * @param {number} user_id
  * @returns {boolean}
@@ -1196,6 +1210,7 @@ let get = {
     All: GetGuests,
     AllSave: GetGuestsSave,
     Admins: ListAllAdmin,
+    GetMySubguests: GetSubGuestFromHauptGuest,
     ShopingSpend: GetTotalShoppingListSpendByUser,
     ByID: GetGuestsByID,
     Main: ListHauptGuest,

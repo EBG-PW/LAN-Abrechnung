@@ -271,3 +271,51 @@ function PlugsManagmentTabelle() {
         $("#PlugsManagmentTabelle").html(CustomCreateTable(['ipaddr', 'controlername', 'token', 'state', 'allowed_state', 'power_used', 'input_name'], OptionsListNotPayed, PlugsData.Data, 'PlugsManagmentTabelle', true))
     });
 }
+
+// This is used in Subusermanager.html
+function SubUserManagmentTabelle() {
+    GetSubuserByUser().then(function (SubUserData) {
+        for (let i = 0; i < SubUserData.Subusers.length; i++) {
+            SubUserData.Subusers[i].username = `${SubUserData.Subusers[i].username} ${convertFlags(SubUserData.Subusers[i].lang)}`
+
+            SubUserData.Subusers[i].payed_ammount = CentToEuro(SubUserData.Subusers[i].payed_ammount)
+
+            SubUserData.Subusers[i].payed_amount_input = {
+                value: SubUserData.Subusers[i].payed_ammount,
+                style: 'width: 100%;',
+                type: 'text',
+                function: 'change_subuser_payed_amount',
+                functionVar: SubUserData.Subusers[i].userid,
+                id: 'input_userid_' + i,
+            }
+
+            //Add Button to switch pugs allowed status
+            let allowed_state, allowed_state_color;
+            if (SubUserData.Subusers[i].payed === null) {
+                allowed_state = translate('undefined')
+                allowed_state_color = 'color: #ff0000 !important;'
+            } else if (SubUserData.Subusers[i].payed === true) {
+                allowed_state = translate('Tabeles.SubUserManagerTabelle.button_states.true')
+                allowed_state_color = 'color: #00ff00 !important;'
+            } else {
+                allowed_state = translate('Tabeles.SubUserManagerTabelle.button_states.false')
+                allowed_state_color = 'color: #ffff00 !important;'
+            }
+
+            SubUserData.Subusers[i].button_toggle_payment = {
+                text: allowed_state,
+                style: allowed_state_color,
+                function: "toggle_payment_allowed_state",
+                functionVar: SubUserData.Subusers[i].userid,
+                Convert: false
+            }
+        }
+
+        const OptionsListNotPayed = {
+            KeyInputList: ['payed_amount_input'],
+            KeyButtonList: ['button_toggle_payment']
+        }
+        //Add Table Format parameter...
+        $("#SubUserManagerTabelle").html(CustomCreateTable(['username', 'expected_arrival', 'expected_departure', 'button_toggle_payment','payed_amount_input'], OptionsListNotPayed, SubUserData.Subusers, 'SubUserManagerTabelle', true))
+    });
+}

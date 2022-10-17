@@ -181,6 +181,24 @@ router.post("/setPermisionGroup", tokenpermissions(), limiter, async (reg, res, 
     }
 });
 
+router.get("/getSubusersOfUser", tokenpermissions(), limiter, async (reg, res, next) => {
+    try {
+        if(reg.permissions.read.includes('user_subadmin') || reg.permissions.read.includes('admin_all')){
+            DB.get.Guests.GetMySubguests(reg.check.Data.userid).then(function (Subusers) {
+                res.status(200);
+                res.json({
+                    Subusers
+                });
+            }).catch(function (error) {
+                log.error(error);
+                next(error);
+            })
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = {
     router: router,
     PluginName: PluginName,

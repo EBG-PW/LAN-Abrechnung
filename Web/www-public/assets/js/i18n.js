@@ -109,6 +109,17 @@ const i18n = new I18n({
           button_SetStatus_text_true: "Wurde bestellt",
           button_SetStatus_text_false: "Bestellen",
         },
+        SubUserManagerTabelle: {
+          username: "Nutzername",
+          expected_arrival: "Ankuft",
+          expected_departure: "Abfahrt",
+          button_toggle_payment: "Zahlung",
+          payed_amount_input: "Budget",
+          button_states: {
+            true: "Erlaubt",
+            false: "Verboten"
+          }
+        },
         PlugsManagmentTabelle: {
           input_name: "Nutzername",
           allowed_state: "Benutzung Erlaubt",
@@ -288,6 +299,17 @@ const i18n = new I18n({
           button_SetStatus: "Ordered?",
           button_SetStatus_text_true: "Orderd",
           button_SetStatus_text_false: "Order",
+        },
+        SubUserManagerTabelle: {
+          username: "Username",
+          expected_arrival: "Arrival",
+          expected_departure: "Departure",
+          button_toggle_payment: "Payment",
+          payed_amount_input: "Budget",
+          button_states: {
+            true: "Allowed",
+            false: "Forbidden"
+          }
         },
         PlugsManagmentTabelle: {
           input_name: "Username",
