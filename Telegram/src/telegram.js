@@ -104,11 +104,12 @@ bot.on('inlineQuery', msg => {
                 DB.get.Products.LikeGet(query).then(function (Product_Response) {
                     let rows = Product_Response.rows
                     if (Object.entries(rows).length === 0) {
+                        const message = newi18n.translate(tglang_response, `Inline.NotFound.Message`, {Article: msg.query});
                         answers.addArticle({
                             id: `${newi18n.translate(tglang_response, `Inline.NotFound.ID`)}`,
                             title: `${newi18n.translate(tglang_response, `Inline.NotFound.Text`)}`,
                             description: msg.query,
-                            message_text: (`${newi18n.translate(tglang_response, `Inline.NotFound.Message`)}`),
+                            message_text: message,
                             parse_mode: 'html'
                         });
                         return bot.answerQuery(answers).catch(function (error) {
@@ -139,11 +140,12 @@ bot.on('inlineQuery', msg => {
                         }
 
                         if (idCount === 0) {
+                            const message = newi18n.translate(tglang_response, `Inline.NotFound.Message`, {Article: "msg.query"});
                             answers.addArticle({
                                 id: `${newi18n.translate(tglang_response, `Inline.NotFound.ID`)}`,
                                 title: `${newi18n.translate(tglang_response, `Inline.NotFound.Text`)}`,
                                 description: msg.query,
-                                message_text: (`${newi18n.translate(tglang_response, `Inline.NotFound.Message`)}`),
+                                message_text: message,
                                 parse_mode: 'html'
                             });
                         }

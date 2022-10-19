@@ -35,6 +35,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                             bot.inlineButton(newi18n.translate(data[1], 'Sprachen.Knöpfe.EN'), { callback: 'lang_en' }),
                             bot.inlineButton(newi18n.translate(data[1], 'Sprachen.Knöpfe.UA'), { callback: 'lang_ua' }),
                             bot.inlineButton(newi18n.translate(data[1], 'Sprachen.Knöpfe.IT'), { callback: 'lang_it' }),
+                            bot.inlineButton(newi18n.translate(data[1], 'Sprachen.Knöpfe.FR'), { callback: 'lang_fr' }),
                         ])
                         //Push Slang Buttons for German
                         if (data[1] === 'de' || DE_SLANG.includes(data[1])) {

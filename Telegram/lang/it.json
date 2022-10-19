@@ -232,7 +232,7 @@
     "NotFound": {
       "ID": "NotFound",
       "Text": "Impossibile trovare l'elemento",
-      "Message": "L'elemento {{}} non è stato trovato."
+      "Message": "L'elemento {{Article}} non è stato trovato."
     },
     "Found": {
       "ID": "N{{ID}}",
