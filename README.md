@@ -23,7 +23,7 @@ Tested on Windows 10/11 and Linux Debian 11/Ubuntu 22.04
 - Advanced permission and group managment with custom groups
 - Pushnotifications
 - Dynamic cost calculation by user
-- [WIP] LAN Guests can add sub-users to their account with custom permissions and budget
+- LAN Guests can add sub-users to their account with custom permissions and budget
 - Food order managment
 - Fully translated
 - Build in monitoring, will notify if something is wrong with web, telegram or plugclients.
