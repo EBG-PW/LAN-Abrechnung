@@ -46,7 +46,7 @@ const setPaymentAllowedState = Joi.object({
 
 const setSubuserPayedAmount = Joi.object({
     userid: Joi.string().required(),
-    amount: Joi.number().required()
+    amount: Joi.number().required().min(0).max(1000)
 });
 
 const router = express.Router();

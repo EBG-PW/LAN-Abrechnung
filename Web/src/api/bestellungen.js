@@ -91,29 +91,36 @@ router.post("/new", limiter, tokenpermissions(), async (reg, res, next) => {
             });
             let Zeit = new Date().getTime() + (value.Zeit * 60 * 1000)
             let ZeitString = new Date(Zeit);
-            DB.write.order.AddOrder(value.EssenListe, ID, ZeitString).then(function (response) {
+            //check if TIme is in the future
+            if (ZeitString > new Date().getTime()) {
+                DB.write.order.AddOrder(value.EssenListe, ID, ZeitString).then(function (response) {
 
-                const SendToTelegramData = {
-                    EssenListe: value.EssenListe,
-                    Zeit: new Date(Zeit).toLocaleString('de-DE') + ':' + new Date(Zeit).getMilliseconds(),
-                    ID: ID,
-                    WebPanelURL: process.env.WebPanelURL
-                }
-
-                SendEvent.ToProcess(Telegram_Process_Name, { event: 'NewOrder', message: SendToTelegramData }).then(function (response) {
-                    log.info(`[${PluginName}] Sent Event to Telegram Process`);
-                    res.status(200);
-                    res.json({
-                        message: "Success",
+                    const SendToTelegramData = {
+                        EssenListe: value.EssenListe,
+                        Zeit: new Date(Zeit).toLocaleString('de-DE') + ':' + new Date(Zeit).getMilliseconds(),
+                        ID: ID,
+                        WebPanelURL: process.env.WebPanelURL
+                    }
+                    SendEvent.ToProcess(Telegram_Process_Name, { event: 'NewOrder', message: SendToTelegramData }).then(function (response) {
+                        log.info(`[${PluginName}] Sent Event to Telegram Process`);
+                        res.status(200);
+                        res.json({
+                            message: "Success",
+                        });
+                    }).catch(function (err) {
+                        log.error(err)
+                        throw new Error("SendEvent");
                     });
-                }).catch(function (err) {
-                    log.error(err)
-                    throw new Error("SendEvent");
+                }).catch(function (error) {
+                    log.error(error);
+                    throw new Error("DBError");
+                })
+            } else {
+                res.status(400);
+                res.json({
+                    message: "Time MUST be in the Future",
                 });
-            }).catch(function (error) {
-                log.error(error);
-                throw new Error("DBError");
-            })
+            }
         } else {
             throw new Error("NoPermissions");
         }

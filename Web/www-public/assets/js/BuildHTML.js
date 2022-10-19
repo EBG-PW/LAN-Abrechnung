@@ -34,10 +34,12 @@ function createHeaderLinks(active) {
         HeaderHTML += `<li><a href="UserBestellungen">${translate('Header.Links.UserBestellungen')}</a></li>`
     }
 
-    if (active.toLowerCase() === "SubUserManager".toLowerCase()) {
-        HeaderHTML += `<li><a style="color: rgb(2, 129, 145) !important;" href="Subusermanager" class="active">${translate('Header.Links.SubUserManager')}</a></li>`
-    } else {
-        HeaderHTML += `<li><a style="color: rgb(5, 179, 223) !important;" href="Subusermanager">${translate('Header.Links.SubUserManager')}</a></li>`
+    if (localStorage.getItem('Permissions_Read').split(",").includes("user_subadmin") || localStorage.getItem('Permissions_Read').split(",").includes("admin_all")) {
+        if (active.toLowerCase() === "SubUserManager".toLowerCase()) {
+            HeaderHTML += `<li><a style="color: rgb(2, 129, 145) !important;" href="Subusermanager" class="active">${translate('Header.Links.SubUserManager')}</a></li>`
+        } else {
+            HeaderHTML += `<li><a style="color: rgb(5, 179, 223) !important;" href="Subusermanager">${translate('Header.Links.SubUserManager')}</a></li>`
+        }
     }
 
     if (localStorage.getItem('Permissions_Read').split(",").includes("admin_user") || localStorage.getItem('Permissions_Read').split(",").includes("admin_all")) {

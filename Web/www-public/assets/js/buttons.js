@@ -200,6 +200,7 @@ function toggle_payment_allowed_state(userid) {
       SubUserManagmentTabelle()
     })
     posting.fail(function (err) {
+      if(err.status === 400){ SubUserManagmentTabelle() }
       if (err.status === 401) {
         console.log(err)
       } else if (err.status === 500) {
@@ -227,6 +228,7 @@ function change_subuser_payed_amount(userid) {
       SubUserManagmentTabelle()
     })
     posting.fail(function (err) {
+      if(err.status === 400){ SubUserManagmentTabelle() }
       if (err.status === 401) {
         console.log(err)
       } else if (err.status === 500) {

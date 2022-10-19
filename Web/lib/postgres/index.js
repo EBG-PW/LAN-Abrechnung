@@ -237,7 +237,7 @@ let GetHauptGuestofguest = function (user_id) {
  */
 let GetSubGuestFromHauptGuest = function (user_id) {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT username, lang, userid, expected_arrival, expected_departure, payed, payed_ammount FROM guests WHERE hauptgast_userid = '${user_id}'`, (err, result) => {
+    pool.query(`SELECT username, lang, userid, expected_arrival, expected_departure, payed, payed_ammount FROM guests WHERE hauptgast_userid = '${user_id}' ORDER BY username ASC`, (err, result) => {
       if (err) { reject(err) }
       resolve(result.rows);
     });
