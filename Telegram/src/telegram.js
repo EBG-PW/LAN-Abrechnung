@@ -228,9 +228,9 @@ const WebRegSendConfim = (ChatID) => {
 
                         let replyMarkup = bot.inlineKeyboard([
                             [
-                                bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.SubGuest'), { inline: `SubGuest_${Guest_Response[0].hauptgast_userid}` })
+                                bot.inlineButton(newi18n.translate(tglang_response_haupt, 'Knöpfe.SubGuest'), { inline: `SubGuest_${Guest_Response[0].hauptgast_userid}` })
                             ], [
-                                bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.Hauptmenu'), { callback: '/hauptmenu' })
+                                bot.inlineButton(newi18n.translate(tglang_response_haupt, 'Knöpfe.Hauptmenu'), { callback: '/hauptmenu' })
                             ]
                         ]);
 
