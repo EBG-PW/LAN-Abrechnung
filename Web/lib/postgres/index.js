@@ -228,6 +228,8 @@ let GetHauptGuestofguest = function (user_id) {
   });
 }
 
+
+
 /**
  * This function will return all guests by hauptgast
  * @param {Number} user_id 
@@ -702,6 +704,28 @@ let UpdateUserLangWebToken = function (lang, userid) {
 let PlugsToggleAllowedState = function (userid) {
   return new Promise(function (resolve, reject) {
     pool.query(`UPDATE plugs SET allowed_state = NOT allowed_state WHERE userid = '${userid}'`, (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+let ToggleSubUserPayedAllowedState = function (hauptgast_userid, userid) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`UPDATE guests SET payed = NOT payed WHERE hauptgast_userid = $1 AND userid = $2`,[
+      hauptgast_userid, userid
+    ], (err, result) => {
+      if (err) { reject(err) }
+      resolve(result);
+    });
+  });
+}
+
+let SetSubUserPayedAmount = function (hauptgast_userid, userid, payed_amount) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`UPDATE guests SET payed_ammount = $1 WHERE hauptgast_userid = $2 AND userid = $3`,[
+      payed_amount, hauptgast_userid, userid
+    ], (err, result) => {
       if (err) { reject(err) }
       resolve(result);
     });
@@ -1268,7 +1292,9 @@ let write = {
     UpdateCollumByID: UpdateCollumByID,
     NewUser: WriteNewUser,
     NewSubUser: WriteNewSubUser,
-    updatelang: UpdateUserLang
+    updatelang: UpdateUserLang,
+    ToggleSubUserPayedAllowedState: ToggleSubUserPayedAllowedState,
+    SetSubUserPayedAmount: SetSubUserPayedAmount,
   },
   Permissions: {
     Add: AddPermissionToUser,

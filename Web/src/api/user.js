@@ -40,6 +40,15 @@ const SetPermissionGroup = Joi.object({
     permgroup: Joi.string().required()
 });
 
+const setPaymentAllowedState = Joi.object({
+    userid: Joi.string().required()
+});
+
+const setSubuserPayedAmount = Joi.object({
+    userid: Joi.string().required(),
+    amount: Joi.number().required()
+});
+
 const router = express.Router();
 
 router.get("/user", limiter, tokenpermissions(), async (reg, res, next) => {
@@ -165,14 +174,14 @@ router.post("/setPermisionGroup", tokenpermissions(), limiter, async (reg, res, 
         if (reg.permissions.write.includes('admin_permissions') || reg.permissions.write.includes('admin_all')) {
             const value = await SetPermissionGroup.validateAsync(reg.body);
             DB.write.Permissions.SetGroup(value.userid, value.permgroup).then(function (Check) {
-                    res.status(200);
-                    res.json({
-                        Message: `Permissionsgroup chanced to ${value.permgroup}`
-                    });
-                }).catch(function (error) {
-                    log.error(error);
-                    next(error);
-                })
+                res.status(200);
+                res.json({
+                    Message: `Permissionsgroup chanced to ${value.permgroup}`
+                });
+            }).catch(function (error) {
+                log.error(error);
+                next(error);
+            })
         } else {
             throw new Error("NoPermissions");
         }
@@ -183,11 +192,49 @@ router.post("/setPermisionGroup", tokenpermissions(), limiter, async (reg, res, 
 
 router.get("/getSubusersOfUser", tokenpermissions(), limiter, async (reg, res, next) => {
     try {
-        if(reg.permissions.read.includes('user_subadmin') || reg.permissions.read.includes('admin_all')){
+        if (reg.permissions.read.includes('user_subadmin') || reg.permissions.read.includes('admin_all')) {
             DB.get.Guests.GetMySubguests(reg.check.Data.userid).then(function (Subusers) {
                 res.status(200);
                 res.json({
                     Subusers
+                });
+            }).catch(function (error) {
+                log.error(error);
+                next(error);
+            })
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.post("/setPaymentAllowedState", tokenpermissions(), limiter, async (reg, res, next) => {
+    try {
+        if (reg.permissions.write.includes('user_subadmin') || reg.permissions.write.includes('admin_all')) {
+            const value = await setPaymentAllowedState.validateAsync(reg.body);
+            DB.write.Guests.ToggleSubUserPayedAllowedState(reg.check.Data.userid, value.userid).then(function (Check) {
+                res.status(200);
+                res.json({
+                    Message: `Toggle Payment Allowed State`
+                });
+            }).catch(function (error) {
+                log.error(error);
+                next(error);
+            })
+        }
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.post("/setSubuserPayedAmount", tokenpermissions(), limiter, async (reg, res, next) => {
+    try {
+        if (reg.permissions.write.includes('user_subadmin') || reg.permissions.write.includes('admin_all')) {
+            const value = await setSubuserPayedAmount.validateAsync(reg.body);
+            DB.write.Guests.SetSubUserPayedAmount(reg.check.Data.userid, value.userid, value.amount).then(function (Check) {
+                res.status(200);
+                res.json({
+                    Message: `Set Subuser Payed Amount`
                 });
             }).catch(function (error) {
                 log.error(error);

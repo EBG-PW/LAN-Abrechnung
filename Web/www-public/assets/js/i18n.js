@@ -185,7 +185,9 @@ const i18n = new I18n({
       undefined: "Undefiniert",
       Buttons: {
         toggle_allowed_state: {
-          no_chance: "Fehler: Dieser Nutzer hat vermutlich keine Steckdose"
+          no_chance: "Fehler: Dieser Nutzer hat vermutlich keine Steckdose",
+          toggle_error: "Fehler: Konnte den Status nicht ändern",
+          setAmountError: "Fehler: Konnte den Betrag nicht ändern",
         },
         delete_user_order_by_key: {
           notime: "Die Bearbeitsungszeit für diese Bestellunge ist bereits Abgelaufen"
@@ -376,7 +378,9 @@ const i18n = new I18n({
       undefined: "Undefined",
       Buttons: {
         toggle_allowed_state: {
-          no_chance: "Error: This user probably has no plug"
+          no_chance: "Error: This user probably has no plug",
+          toggle_error: "Error: Could not change the state",
+          setAmountError: "Error: Could not set the amount",
         },
         delete_user_order_by_key: {
           notime: "The time period for this order has expired!"

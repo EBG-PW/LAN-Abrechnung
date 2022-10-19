@@ -286,7 +286,7 @@ function SubUserManagmentTabelle() {
                 type: 'text',
                 function: 'change_subuser_payed_amount',
                 functionVar: SubUserData.Subusers[i].userid,
-                id: 'input_userid_' + i,
+                id: 'input_userid_' + SubUserData.Subusers[i].userid,
             }
 
             //Add Button to switch pugs allowed status
