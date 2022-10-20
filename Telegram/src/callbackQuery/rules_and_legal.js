@@ -211,7 +211,7 @@ module.exports = function (bot, mainconfig, preisliste) {
 
                                     Message.push(`\n\n${newi18n.translate(tglang_response, `Legal.Preisliste`)}`)
                                     for (var key in preisliste.PauschalKosten) {
-                                        Message.push(`<b>${CentToEuro(preisliste.PauschalKosten[key].Preis)}</b> für <i>${newi18n.translate(tglang_response, `Preisliste.PauschalKosten.${preisliste.PauschalKosten[key].Beschreibung}`)}</i>`)
+                                        Message.push(`<b>${CentToEuro(preisliste.PauschalKosten[key].Preis)}</b>: <i>${newi18n.translate(tglang_response, `Preisliste.PauschalKosten.${preisliste.PauschalKosten[key].Beschreibung}`)}</i>`)
                                     }
 
                                     Message = Message.join("\n")
