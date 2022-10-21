@@ -138,7 +138,7 @@ router.post("/setPlugUser", limiter, tokenpermissions(), async (reg, res, next) 
                     } else if (error.message.includes("violates foreign key constraint")) {
                         res.status(405);
                         res.json({
-                            Error: "UnknownUser"
+                            Error: "Unknown/Notallowed User"
                         });
                     } else {
                         throw new Error("DBError");

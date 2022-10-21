@@ -988,7 +988,7 @@ let GetPlugs = function () {
 let SetUserIDForPlug = function (PlugID, UserName) {
   return new Promise(function (resolve, reject) {
     pool.query(`UPDATE plugs SET userid = CASE
-                WHEN EXISTS (SELECT userid FROM guests WHERE username = $1) 
+                WHEN EXISTS (SELECT userid FROM guests WHERE username = $1 AND hauptgast_userid IS NULL) 
                 THEN (SELECT userid FROM guests WHERE username = $1)
                 ELSE 0
                 END WHERE plugid = $2`, [
