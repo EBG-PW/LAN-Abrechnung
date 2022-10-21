@@ -54,6 +54,16 @@ function toggle_allowed_state(userid) {
       Table_AdminUserDataList()
     })
     posting.fail(function (err) {
+      if (err.status === 501) {
+        SnackBar({
+          message: `Error ${err.status} - ${err.responseJSON.Message}`,
+          width: "400px",
+          speed: SnackBox_Timeout,
+          position: SnackBox_Location,
+          fixed: true,
+          status: "error",
+        });
+      }
       if (err.status === 401) {
         console.log(err)
       } else if (err.status === 500) {
@@ -200,7 +210,7 @@ function toggle_payment_allowed_state(userid) {
       SubUserManagmentTabelle()
     })
     posting.fail(function (err) {
-      if(err.status === 400){ SubUserManagmentTabelle() }
+      if (err.status === 400) { SubUserManagmentTabelle() }
       if (err.status === 401) {
         console.log(err)
       } else if (err.status === 500) {
@@ -228,7 +238,7 @@ function change_subuser_payed_amount(userid) {
       SubUserManagmentTabelle()
     })
     posting.fail(function (err) {
-      if(err.status === 400){ SubUserManagmentTabelle() }
+      if (err.status === 400) { SubUserManagmentTabelle() }
       if (err.status === 401) {
         console.log(err)
       } else if (err.status === 500) {

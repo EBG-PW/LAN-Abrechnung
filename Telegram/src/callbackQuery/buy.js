@@ -25,9 +25,9 @@ module.exports = function (bot, mainconfig, preisliste) {
                         DB.get.Products.Get(data[2]).then(function (product_response) {
                             let replyMarkup = bot.inlineKeyboard([
                                 [
-                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Add'), { callback: `Buy_Add` }),
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Remove'), { callback: `Buy_Rem` }),
                                     bot.inlineButton(`1/${product_response.rows[0].amount - product_response.rows[0].bought}`, { callback: `${data[2]}` }),
-                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Remove'), { callback: `Buy_Rem` })
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Add'), { callback: `Buy_Add` })
                                 ], [
                                     bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Abbrechen'), { callback: `Buy_Escape` }),
                                     bot.inlineButton(`${CentToEuro(product_response.rows[0].price)}`, { callback: `${product_response.rows[0].price}` }),
@@ -63,9 +63,9 @@ module.exports = function (bot, mainconfig, preisliste) {
                         if (parseInt(amount_max) > parseInt(amount_to_buy)) {
                             let replyMarkup = bot.inlineKeyboard([
                                 [
-                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Add'), { callback: `Buy_Add` }),
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Remove'), { callback: `Buy_Rem` }),
                                     bot.inlineButton(`${parseInt(amount_to_buy) + 1}/${amount_max}`, { callback: `${product}` }),
-                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Remove'), { callback: `Buy_Rem` })
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Add'), { callback: `Buy_Add` })
                                 ], [
                                     bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Abbrechen'), { callback: `Buy_Escape` }),
                                     bot.inlineButton(`${CentToEuro(parseInt(price) * (parseInt(amount_to_buy) + 1))}`, { callback: `${price}` }),
@@ -102,9 +102,9 @@ module.exports = function (bot, mainconfig, preisliste) {
                         if (1 < parseInt(amount_to_buy)) {
                             let replyMarkup = bot.inlineKeyboard([
                                 [
-                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Add'), { callback: `Buy_Add` }),
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Remove'), { callback: `Buy_Rem` }),
                                     bot.inlineButton(`${parseInt(amount_to_buy) - 1}/${amount_max}`, { callback: `${product}` }),
-                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Remove'), { callback: `Buy_Rem` })
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Add'), { callback: `Buy_Add` })
                                 ], [
                                     bot.inlineButton(newi18n.translate(tglang_response, 'Inline.Knöpfe.Abbrechen'), { callback: `Buy_Escape` }),
                                     bot.inlineButton(`${CentToEuro(parseInt(price) * (parseInt(amount_to_buy) - 1))}`, { callback: `${price}` }),

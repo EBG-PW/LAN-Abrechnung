@@ -10,6 +10,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/snackbar.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -59,6 +60,7 @@
 		<!-- Scripts -->
 			<script>const exports = {};//Fixes i18n Stuff lol.</script>
 			<script src="assets/js/jquery.min.js"></script>
+			<script src="/assets/js/snackbar.js"></script>
 			<script src="assets/js/verifyToken.js"></script>
 			<script src="assets/js/i18n.source.js"></script>
 			<script src="assets/js/i18n.js"></script>
@@ -74,6 +76,8 @@
 			<script src="assets/js/htmltables.js"></script>
 			<script src="assets/js/buttons.js"></script>
 			<script>
+				const SnackBox_Timeout = 400;
+      			const SnackBox_Location = "br";
 				CheckTokenValidity().then(function(TokenData) {
 					//This will wirte all Token data to localstorrage to be used in all funktions
 					writeTokenDataToLocalStorrage(TokenData)
