@@ -41,7 +41,11 @@ function generateJson(Guests, preisliste, mainconfig) {
             let sum_cost = 0;
             let Guest = Guests[i];
             await Promise.all([DB.get.plugs.power.kwh(Guest.userid), DB.get.Inventory.GetGroupedTransactions(Guest.userid), DB.get.tglang.Get(Guest.userid)]).then(function (values) {
-                const [kwh_used, items_used, tglang_response_inner] = values;
+                let [kwh_used, items_used, tglang_response_inner] = values;
+
+                if(tglang_response_inner !== 'de' && tglang_response_inner !== 'en' && tglang_response_inner !== 'it') {
+                    tglang_response_inner = 'en';
+                }
                 // Push Table heads into array position 1
                 Items_Array.push({
                     artikel: newi18n.translate(tglang_response_inner, 'geninvoices.Artikel'),
