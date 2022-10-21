@@ -224,6 +224,7 @@
         }
 
         .c-form__groupLabel {
+        pointer-events: none;
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -338,6 +339,26 @@
   const getUrl = window.location;
   const baseUrl = getUrl.protocol + "//" + getUrl.host + "/";
   const UserIDFromUrl = getUrl.pathname.split("/")[5]
+  let EnterCounter = 0;
+
+  $("#userid").on('keyup', function (e) {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      document.querySelector('.c-form__next').click();
+      //Check if Browser already autofilled Password field.
+      if (EnterCounter == 1 || document.getElementById('password').value !== "") {
+        document.querySelector('.c-form__next').click();
+        submit();
+      }
+      EnterCounter++;
+    }
+  });
+
+  $("#password").on('keyup', function (e) {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      document.querySelector('.c-form__next').click();
+      submit();
+    }
+  });
 
   $(document).ready(function(){
     CheckTokenValidity()
