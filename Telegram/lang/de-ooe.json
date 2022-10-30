@@ -76,193 +76,193 @@
     "list": "Foigende Gäste san Admin:{{AdminList}}"
   },
   "PaySystem": {
-    "Success": "Du hast die Registration erfolgreich abgeschlossen\n\nBitte überweise nun die Kosten für die {{DiffDays}} Tage LAN-Party:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Höhe der Überweisung für {{DiffDays}} Tage beträgt: <pre language='c++'>{{Kosten}}</pre>",
-    "SuccessSubUser": "Du hast die Registration erfolgreich abgeschlossen\n\nDu bist für {{DiffDays}} Tage Gast von {{Username}}",
-    "PushMessageHauptGast": "{{Subguest}} hat sich erfolgreich registriert und ist nun Gast von dir.\n\nBitte überweise nun die zusätzlichen Kosten für die {{DiffDays}} Tage von {{Subguest}} LAN-Party:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Höhe der Zusatzkosten beträgt <pre language='c++'>{{Zusatzkosten}}</pre>Die gesamt Kosten betragen: <pre language='c++'>{{Kosten}}</pre>"
+    "Success": "Du hosd di erfoigreich regisdriad\n\nHiazt muasd des Göd fia {{DiffDays}} Dog LAN-Party zoin:\n\n<b>Kontoinhoba:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Vawendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDes Göd wosd fia {{DiffDays}} Dog zoin muasd san: <pre language='c++'>{{Kosten}}</pre>",
+    "SuccessSubUser": "Du hosd di erfoigreich regisdriad\n\nDu bisd fia {{DiffDays}} Dog Gosd vun {{Username}}",
+    "PushMessageHauptGast": "{{Subguest}} hod si erfoigreich regisdriad und is hiazt a Gosd vun dia.\n\nHiazt muasd nu des Göd fia {{DiffDays}} Dog vun {{Subguest}} zoin:\n\n<b>Kontoinhoba:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Vawendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDes Göd wosd nu dazua zoin muasd san <pre language='c++'>{{Zusatzkosten}}</pre>Insgesaumt muasd so fü zoin: <pre language='c++'>{{Kosten}}</pre>"
   },
   "Hauptmenu": {
-    "Text": "<b>Hauptmenü:</b>\n{{Username}} hier kannst du alle Funktionen des Bots sehen.\n\nUnter 'Mehr Infos' findest du die Hausordnung und Konditionen denen du zugestimmt hast.",
+    "Text": "<b>Hauptmenü:</b>\n{{Username}} do kausd olle Funktionen vum Bot segn.\n\nWaunsd auf 'Mea Infos' druckst findsd de Hausordnung und den andern Schmarrn denst akzeptiert hosd",
     "Knöpfe": {
-      "Zahlung": "Zahlung",
-      "Artikel": "Artikel kaufen",
-      "Spenden": "Spenden",
-      "Other": "Mehr Infos",
-      "Webpanel": "Webpanel"
+      "Zahlung": "Zohlung",
+      "Artikel": "Artikl kafn",
+      "Spenden": "Spendn",
+      "Other": "Mea Infos",
+      "Webpanel": "Webpenl"
     }
   },
   "Payed": {
-    "Text": "{{Username}}, {{Status_String}}\n\nBetrag: {{money}}\nID: {{PayedID}}",
-    "True": "deine Zahlung wurde von unserem System <b>bestätigt</b>",
-    "False": "deine Zahlung wurde von unserem System noch <b>nicht bestätigt</b>, sollte das zu beginn der LAN-Party noch immer der Fall sein wende dich bitte an die Veranstalter!"
+    "Text": "{{Username}}, {{Status_String}}\n\nBetrog: {{money}}\nID: {{PayedID}}",
+    "True": "dei Zohlung is vum System <b>bestätigt</b> woan",
+    "False": "dei Zohlung is vum System <b>net bestätigt</b> woan, waun des am Aufaung vun da LAN-Party öwei nu so is daun möd di bei de Veraunstoita"
   },
   "Spenden": {
-    "Text": "Du kannst gerne eine Kleinigkeit 'Spenden', wenn du zufrieden mit der Planung und Organisation bist.\n\nKlicke dazu einfach auf den Knopf unten und wähle die Spendenhöhe aus ;)",
+    "Text": "Du kosd gern a Klanigkeit spendn waun da de Planung und Organisation daugt.\n\nDafia muasd auf den Knopf untn druckn und daun auswöhn wüfüsd spendn wüsd ;)",
     "Knöpfe": {
-      "Spenden": "Jetzt Spenden",
-      "SpendeAlles": "Spenden dein gesamtes Guthaben",
+      "Spenden": "Hiazt spendn",
+      "SpendeAlles": "Ois spendn",
       "Hauptmenu": "⏪ Hauptmenü"
     }
   },
   "SpendenAll": {
-    "Text": "Möchtest du dein gesamtes restliches Guthaben in Höhe von {{current_balance}} spenden?",
+    "Text": "Mechadst wirkli dei gaunzes restliches Guthobn vun {{current_balance}} spendn?",
     "Knöpfe": {
-      "Ja": "Ja",
-      "Nein": "Nein",
+      "Ja": "Jo",
+      "Nein": "Na",
       "Hauptmenu": "⏪ Hauptmenü"
     },
     "Fehler": {
-      "NoMoney": "Du hast nicht genug Guthaben um dein gesamtes Guthaben zu spenden."
+      "NoMoney": "Du hosd ned gnuag Göd."
     }
   },
   "Preisliste": {
     "PauschalKosten": {
-      "Wasserpauschale": "Wasserpauschale (Klo, Dusche, etc)",
-      "Strompauschale": "Strompauschale (Flur, Räume, Küche, etc)",
-      "Verbrauchsgüterpauschale": "Verbrauchsgüterpauschale (Seife, etc)",
-      "Netzwerkpauschale": "Netzwerkpauschale",
-      "KostenKWH": "Kosten pro kWh"
+      "Wasserpauschale": "Wossapauschale (Scheisshaus, Duschn, urs)",
+      "Strompauschale": "Strompauschale (Vorhaus, Räume, Küch, urs)",
+      "Verbrauchsgüterpauschale": "Vabrauchsgütapauschale (Safn, urs)",
+      "Netzwerkpauschale": "Netzweakpauschale",
+      "KostenKWH": "Kostn fia jede kWh"
     }
   },
   "Sprachen": {
-    "Text": "Hier kannst du deine Sprache ändern",
+    "Text": "Do kosd dei Sproch ändan",
     "Knöpfe": {
       "DE": "🇩🇪",
       "EN": "🇬🇧",
       "UA": "🇺🇦",
       "IT": "🇮🇹",
       "FR": "🇫🇷",
-      "Zurück": "⏪ Zurück",
+      "Zurück": "⏪ Zruck",
       "Full": {
-        "DE": "Hochdeutsch",
-        "DE-BY": "Bayerisch"
+        "DE": "Piefkisch",
+        "DE-BY": "Bayrisch"
       }
     }
   },
   "Moreinfo": {
-    "Text": "<b>Mehr Infos:</b>\n{{Username}} hier findest du weitere nützliche Informationen.",
+    "Text": "<b>Mea Infos:</b>\n{{Username}} do findst nu mea praktische Infos",
     "Knöpfe": {
-      "Rules": "Regeln",
-      "Legal": "Legal",
-      "Sprache": "Sprache",
+      "Rules": "Regln",
+      "Legal": "Rechtlicher Schas",
+      "Sprache": "Sproch",
       "Hauptmenu": "⏪ Hauptmenü"
     },
     "Regeln": {
-      "Exit": "❌ Schließen",
-      "AcceptedDate": "\nDu hast die Regeln am {{akteptiert}} akteptiert"
+      "Exit": "❌ Zuamochn",
+      "AcceptedDate": "\nDu hosd de Regln aum {{akteptiert}} akzeptiad"
     },
     "Legal": {
-      "Exit": "❌ Schließen",
-      "AcceptedDate": "\nDu hast die Hinweise und Bestimmungen am {{akteptiert}} akteptiert"
+      "Exit": "❌ Zuamochn",
+      "AcceptedDate": "\nDu hosd de Hinweise und Bestimmungen aum {{akteptiert}} akzeptiad"
     }
   },
   "PushNotification": {
-    "NewOrder": "Es wird Essen bestellt!\n\nBitte auf {{EssenListe}} eins oder mehrere Gerichte raussuchen.\nBitte bis <b>{{Zeit}}</b> bestellen.\n\n<a href='{{WebPanelURL}}/UserBestellungen?{{ID}}'>Webpanel Link</a>",
+    "NewOrder": "Es wiad a Essn bestöhd!\n\nBitte suach da auf dera Listn {{EssenListe}} ans oda mehr Sochn aus.\nBitte bis <b>{{Zeit}}</b> bestöhn.\n\n<a href='{{WebPanelURL}}/UserBestellungen?{{ID}}'>Webpanel Link</a>",
     "Buttons": {
-      "Webpanel": "Webseite"
+      "Webpanel": "Webseitn"
     }
   },
   "Regeln": {
-    "Text": "<b>Bitte lies die Hausordnung aufmerksam durch!</b>\n\n <i>Die folgenden Regeln sind strikt für die Dauer der LAN einzuhalten. Ein Verstoß dieser kann im Ermessen bis zum Ausschluss von der LAN führen.</i>",
+    "Text": "<b>Bitte les da de Hausordnung gscheid durch!</b>\n\n <i>De foigenden Regln san wirkli zum Befoign (wirkli wirkli) sunst fliagst unta Umständn aussi und des wü jo a kana</i>",
     "RegelnAnzahl": "7",
     "Regeln": {
-      "0": "1: Im Gebäude gilt striktes Rauchverbot keine Ausnahme. Es entstehen Aerosole -> es ist <b>Verboten!</b> Für Raucher gibt es die Möglichkeit wie auch vergangenes Jahr im Innenhof bei <u>geschlossener Gebäude Türe</u> zu Rauchen.",
-      "1": "2: Nach aktuellen Bestimmungen gilt im Erdgeschoss während der Bürozeiten (7-17 Uhr Werktags) eine FFP2-Maskenpflicht!",
-      "2": "3: <b>JEDER</b> räumt sein Geschirr und seinen Müll <b>SELBSTSTÄNDIG</b> weg. (Für eine Gebühr von 150€ bekommt ihr eigenes VIP Geschirr und GEOs Dad räumt euren Müll und euer Geschirr ab.)",
-      "3": "4: Verbleibendes nicht verzehrtes Essen in den Restmüll. Pizzas haben in ihren Schachteln in den Kartonagen nichts zu suchen. Ein Verstoß gegen diese Regel hat eine Strafgebühr von 150€ zur Folge. (PS: Ja diese Regel existiert aus gutem Grund.)",
-      "4": "5: Während der Bürozeiten nur in entsprechender Kleidung durchs Gebäude gehen.",
-      "5": "6: Während der Bürozeiten den Lärmpegel auf einem angemessenen Niveau halten.",
-      "6": "7: Bei Alkoholkonsum ist trotzdem ein entsprechendes Verhalten zu erwarten. (GEOs Einstellung gegenüber exzessivem Alkoholkonsum und dessen Auswirkungen sollte jedem bekannt sein)"
+      "0": "1: Im gaunzn Haus is rauchn ohne Ausnaumen vabotn. Soboid Aerosole (Des is a Gas mid wos drin... wia rauch hoid) entstengan -> is des <b>Vabotnb> Wausd so a Suchtla bisd deas ohne seine Tschik net aushoit kausd wie letztes Joa im Hof rauchn, dabei muas owa de <u>Dia zum Haus zuamochn</u>.",
+      "1": "2: Noch den aktuellen Bestimmungen güt im Eadgeschoss zu Bürozeitn (7-17 Uhr Werkdogs) a FFP2-Masknpflicht!",
+      "2": "3: <b>JEDA</b> ramt sei Gschia und sein Müll <b>SÖWA</b> weg. (Waunsd 150€ blechn wüsd griagsd a Premium Gschia und in GEO sei Vota ramt ois fia di weg.)",
+      "3": "4: Den Rest vum Essen in Restmüll. Pizzas haum in da Schochtl ba de Kartonagn nix valuan. Waunsd des misochtesd kosd des 150€ und de kunnt ma a bessa investian (In Premium Gschia zum Beispü). (PS: Jo, de Regel gibts aus guadem Grund.)",
+      "4": "5: Waunsd während de Bürozeitn durchs Haus gehsd daun ziag di gscheid o.",
+      "5": "6: Während de Bürzeitn soisd netta so laud sei, dass do nu wea oaweitn ko.",
+      "6": "7: Waunst saufst dann benimm di. (Wasd eh wie da GEO do drauf is... waunst des net wasd frog na hoid)"
     },
     "Knöpfe": {
-      "Zustimmen": "Zustimmen",
-      "Ablehnen": "Ablehnen"
+      "Zustimmen": "Zuastimma",
+      "Ablehnen": "Olehna"
     },
     "Antworten": {
-      "Zustimmen": "Zugestimmt",
-      "Ablehnen": "Abgelehnt"
+      "Zustimmen": "zuagstimmt",
+      "Ablehnen": "Oglehnt"
     }
   },
   "Legal": {
-    "Text": "<b>Bitte lies die Bestimmungen aufmerksam durch und stimme ihnen zu!</b>",
-    "Preisliste": "Die folgenden Abgaben sind verpflichtend von jedem Gast zu zahlen und werden automatisch berechnet.",
+    "Text": "<b>Bitte les da des ois gscheid durch und stimm daun zua!</b>",
+    "Preisliste": "Des foigende muas jeda zoin, des wird daun a automatisch ozogn.",
     "LegalAnzahl": "3",
     "Legal": {
-      "0": "Zur Abrechnung der Stromkosten wird dir ein Stromzähler zur Verfügung gestellt. Die Benutzung des Zählers ist verpflichtend. Der Zähler ist nicht amtlich geeicht und hat eine Toleranz von 1%",
-      "1": "Es gibt einige allgemeine Abgaben für die LAN diese sind unten aufgeführt und dienen dazu um dieses Event ohne verlust für GEO und seinen Dad durchführen zu können.",
-      "2": "Du hast kein Problem damit spontan kein Netzwerk mehr zu haben oder einen freundlichen RubberDucky in deinen PC zu bekommen. :D"
+      "0": "Fia des Stromkosdn griagsd an Zöhla. Den Zöhla muasd a nehma. Dea Zöhla is ned aumtlich geichd und hod a Tolaranz vun 1%",
+      "1": "Es gibd a boa oigemeine Ausgobn, de stengan untn und san dafia do, dass da GEO und sei Vota net drauf soin (War jo sunst irgendwie oasch).",
+      "2": "Du hosd ka Problem damid waun auf amoi des Intanet weg is oda du an liabn kloanen GummiEnterich in PC eini griagsd. :D"
     },
     "Knöpfe": {
-      "Zustimmen": "Zustimmen",
-      "Ablehnen": "Ablehnen"
+      "Zustimmen": "Zuastimma",
+      "Ablehnen": "Olehna"
     },
     "Antworten": {
-      "Zustimmen": "Zugestimmt",
-      "Ablehnen": "Abgelehnt"
+      "Zustimmen": "Zuagstimmt",
+      "Ablehnen": "Oglehnd"
     }
   },
   "loadprice": {
-    "Text": "Es wurden {{Amount}} Artikel eingelesen oder geupdatet und das hat {{duration}} gedauert."
+    "Text": "Es san {{Amount}} Sochn eiglesn oda upgedatet woan und des hod {{duration}} dauat."
   },
   "loadplugs": {
-    "Text": "Es wurden {{Amount}} Steckdosen eingelesen oder geupdatet, die von {{ControlerAmount}} Clients verwaltet werden und das hat {{duration}} gedauert."
+    "Text": "Es san {{Amount}} Steckdons eiglesn oda upgedatet woan, de vun {{ControlerAmount}} Clients vawoitet wean und des hod {{duration}} dauat."
   },
   "geninvoices": {
-    "Abrechnung": "Abrechnung",
-    "Artikel": "Artikel",
-    "PricePerUnit": "Einzelpreis",
-    "Amount": "Anzahl",
+    "Abrechnung": "Orechnung",
+    "Artikel": "Sochn",
+    "PricePerUnit": "Anzlpreis",
+    "Amount": "Aunzoi",
     "Price": "Preis",
     "kwh": "Elektrische Energie (in kWh)",
-    "Payed": "Eingezahlt",
-    "TotalSpend": "Gesamtausgaben",
-    "Difference": "Differenz",
-    "Text": "Es wurden {{Amount}} Abrechnungen generiert und das hat {{duration}} gedauert.\nErstellen der Config hat {{config_duration}} gedauert.\nErstellen der PDFs hat {{exec_duration}} gedauert.\nDas senden der PDFs hat {{send_duration}} gedauert."
+    "Payed": "Eizoid",
+    "TotalSpend": "Gesaumtausgobn",
+    "Difference": "Diffarenz",
+    "Text": "Es san {{Amount}} Orechnungen genariad woan und des hod {{duration}} dauat.\nDes erstöhn vun da Config hod {{config_duration}} dauat.\nDes erstöhn vun de PDFs hod {{exec_duration}} dauat.\nDes sendn vun de PDFs hod {{send_duration}} dauat."
   },
   "Inline": {
     "SubUserInvite": {
-      "Title": "Einladung",
-      "Description": "Sende eine Einladung.",
-      "Text": "Klicke auf den Button um die Einladung anzunehmen."
+      "Title": "Eilodung",
+      "Description": "Send a Eilodung.",
+      "Text": "Druck auf den Knopf, dasd de Eilodung aunimmsd."
     },
     "NoQuery": {
-      "ID": "NoQuery",
-      "Text": "Bitte gib einen Artikel in die Leiste ein",
-      "Message": "Um einen Artikel zu kaufen, musst du den Namen in der Chat Leiste eingeben und dann das passende Feld auswählen.\n\n<b>Hier eine Liste aller Artikel:</b>\n"
+      "ID": "KoaWoswasi",
+      "Text": "Gib de Soch des wüsd in de Leistn ei",
+      "Message": "Damidsd a Soch kafn kausd muasd in naumen in den Chat eigebn und daun den richtigen auswöhn.\n\n<b>Do is Listn mid olle Artikln:</b>\n"
     },
     "NotFound": {
-      "ID": "NotFound",
-      "Text": "Artikel konnte nicht gefunden werden",
-      "Message": "Der Artikel {{}} konnte leider nicht gefunden werden."
+      "ID": "NetGfundn",
+      "Text": "De Soch gibts leida net",
+      "Message": "De Soch {{}} is leida net auffindboa."
     },
     "Found": {
       "ID": "N{{ID}}",
-      "Text": "{{Produkt}} von {{Hersteller}}",
-      "Beschreibung": "Preis pro Stück: {{Preis}} - Es sind {{Verfügbar}} auf Lager",
-      "Message": "<b>Ausgewählter Artikel:</b> {{produktname}} von {{produktcompany}}\nPreis pro Stück: {{price}}\nAuf Lager: {{storrage}}\n\nUm den Artikel zu kaufen klick unten auf den Knopf."
+      "Text": "{{Produkt}} vun {{Hersteller}}",
+      "Beschreibung": "Preis pro Stickl: {{Preis}} - Es san {{Verfügbar}} im Loga",
+      "Message": "<b>Ausgwöhde Soch:</b> {{produktname}} vun {{produktcompany}}\nPreis pro Stickl: {{price}}\nIm Loga: {{storrage}}\n\nDamidsd des kafn kausd muasd untn am Knopf druckn."
     },
     "Knöpfe": {
       "Add": "+1",
       "Remove": "-1",
-      "Abbrechen": "Abbrechen",
-      "Bestätigen": "Bestätigen",
-      "Kaufen": "Buchen",
-      "SubUserInvite": "Einladung Annehmen"
+      "Abbrechen": "Obrechn",
+      "Bestätigen": "Bestätign",
+      "Kaufen": "Buchn",
+      "SubUserInvite": "Eilodung Aunehma"
     },
     "Confirm": {
-      "NotPayed": "Du hast noch nicht gezahlt oder deine Zahlung wurde noch nicht verarbeitet.",
-      "OverLimit": "Du hast dein Limit von {{limit}} überschritten.",
-      "NotAllowedToPay": "Du bist nicht berechtigt zu bezahlen. Der Lan-Member muss dies im Webpanel aktivieren.",
-      "DoesNotExist": "Das ausgewählte Produkt {{produktname}} von {{produktcompany}} wurde leider aus dem Angebot entfernt.",
-      "NotEnoth": "Das Produkt {{produktname}} von {{produktcompany}} ist leider nicht mehr in ausrechender Menge verfügbar!",
-      "OtherBuy": "Das gewählte Produkt wurde zeitgleich von jemand anderem gekauft, versuche es bitte nochmals!"
+      "NotPayed": "Du hosd nu net zoid oda dei Zohlung is nu ned vaoaweit woan.",
+      "OverLimit": "Du hosd dei Limit vun {{limit}} übaschrittn.",
+      "NotAllowedToPay": "Du biad net zua Zohlung berechdigd. Da Lan-Memba muas des im Webpenl eischoitn.",
+      "DoesNotExist": "De ausgwöhde Soch {{produktname}} vun {{produktcompany}} is leida ausm Aungebot gnumma woan.",
+      "NotEnoth": "Vun da Soch {{produktname}} vun {{produktcompany}} is leida nimma gnuag do!",
+      "OtherBuy": "De ausgwöhde Soch is leida vun wem aundan a grod kafd woan... probiers bitte nu amoi"
     },
-    "MainMessage": "<b>Ausgewählter Artikel:</b> {{produktname}} von {{produktcompany}}\nPreis pro Stück: {{price}}\nAuf Lager: {{storrage}}\n\nBitte wähle unten die Menge aus und bestetige deinen Kauf. Warte bitte auf die Bestätigung durch den Bot.",
-    "MainProgress": "Buchungsmenü wird aufgerufen...",
-    "Escape": "Buchungsmenü wurde geschlossen...",
-    "TooMutch": "Du kannst nicht mehr kaufen als auf Lager ist.",
-    "TooLitle": "Du kannst nicht weniger als eins kaufen.",
-    "Donation": "Vielen dank für deine Spende von {{price}} an <a href='{{Company_Name_URL}}'>{{Company_Name}}</a> ❤️",
-    "ItemBought": "Du hast erfolgreich {{amount}} mal das Produkt {{produktname}} von {{produktcompany}} für {{price}} gekauft.\n\nDu kannst den Artikel nun entnehmen.",
-    "ItemsBought": "Du hast erfolgreich {{amount}} mal die Produkte {{produktname}} von {{produktcompany}} für {{price}} gekauft.\n\nDu kannst die Artikel nun entnehmen."
+    "MainMessage": "<b>Ausgwöhde Soch:</b> {{produktname}} vun {{produktcompany}}\nPreis pro Stickl: {{price}}\nIm loga: {{storrage}}\n\nBitte wöh untn aus wia fü und bestätig daun den Kauf. Woat daun drauf das da Bot des a checkt hod.",
+    "MainProgress": "Buchungsmenü wird aufgruafn...",
+    "Escape": "Buchungsmenü wiad zuagmochd...",
+    "TooMutch": "Du kosd ned mea kafn wia im Loga is (obsd deppad bisd hob I gfrogt).",
+    "TooLitle": "Du kosd ned weniga wie oans kafn (a waun negatives Essn kinda fancy warat).",
+    "Donation": "Schen daung das {{price}} aun <a href='{{Company_Name_URL}}'>{{Company_Name}}</a> gspendt hosd ❤️",
+    "ItemBought": "Du hosd erfoigreich {{amount}} moi {{produktname}} vun {{produktcompany}} fia {{price}} kafd.\n\nDu kosd da des Zeig hiazt hoin.",
+    "ItemsBought": "Du hosd erfoigreich {{amount}} moi {{produktname}} vun {{produktcompany}} fia {{price}} kafd.\n\nDu kosd da des Zeig hiazt hoin."
   }
 }
