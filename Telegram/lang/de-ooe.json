@@ -134,7 +134,8 @@
       "Zurück": "⏪ Zruck",
       "Full": {
         "DE": "Piefkisch",
-        "DE-BY": "Bayrisch"
+        "DE-BY": "Bayrisch",
+        "DE-OOE": "Oberösterreichisch"
       }
     }
   },
@@ -165,7 +166,7 @@
     "Text": "<b>Bitte les da de Hausordnung gscheid durch!</b>\n\n <i>De foigenden Regln san wirkli zum Befoign (wirkli wirkli) sunst fliagst unta Umständn aussi und des wü jo a kana</i>",
     "RegelnAnzahl": "7",
     "Regeln": {
-      "0": "1: Im gaunzn Haus is rauchn ohne Ausnaumen vabotn. Soboid Aerosole (Des is a Gas mid wos drin... wia rauch hoid) entstengan -> is des <b>Vabotnb> Wausd so a Suchtla bisd deas ohne seine Tschik net aushoit kausd wie letztes Joa im Hof rauchn, dabei muas owa de <u>Dia zum Haus zuamochn</u>.",
+      "0": "1: Im gaunzn Haus is rauchn ohne Ausnaumen vabotn. Soboid Aerosole (Des is a Gas mid wos drin... wia rauch hoid) entstengan -> is des <b>Vabotn</b> Wausd so a Suchtla bisd deas ohne seine Tschik net aushoit kausd wie letztes Joa im Hof rauchn, dabei muas owa de <u>Dia zum Haus zuamochn</u>.",
       "1": "2: Noch den aktuellen Bestimmungen güt im Eadgeschoss zu Bürozeitn (7-17 Uhr Werkdogs) a FFP2-Masknpflicht!",
       "2": "3: <b>JEDA</b> ramt sei Gschia und sein Müll <b>SÖWA</b> weg. (Waunsd 150€ blechn wüsd griagsd a Premium Gschia und in GEO sei Vota ramt ois fia di weg.)",
       "3": "4: Den Rest vum Essen in Restmüll. Pizzas haum in da Schochtl ba de Kartonagn nix valuan. Waunsd des misochtesd kosd des 150€ und de kunnt ma a bessa investian (In Premium Gschia zum Beispü). (PS: Jo, de Regel gibts aus guadem Grund.)",

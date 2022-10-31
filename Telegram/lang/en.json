@@ -134,7 +134,8 @@
       "Zurück": "⏪ return",
       "Full": {
         "DE": "Normal German",
-        "DE-BY": "Bavarian"
+        "DE-BY": "Bavarian",
+        "DE-OOE": "Upper Austria"
       }
     }
   },

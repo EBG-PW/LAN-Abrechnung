@@ -134,7 +134,8 @@
 		"Zurück": "⏪ retourner",
 		"Full": {
 		  "DE": "Allemand normal",
-		  "DE-BY": "Bavaroise"
+		  "DE-BY": "Bavaroise",
+		  "DE-OOE": "Haut-autrichien"
 		}
 	  }
 	},

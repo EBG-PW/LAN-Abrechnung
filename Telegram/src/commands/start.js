@@ -1,7 +1,7 @@
 const path = require('path');
 const DB = require('../../../Web/lib/postgres');
 const { default: i18n } = require('new-i18n')
-const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'),  ['de', 'en', 'de-by', 'ua', 'it', 'fr'], process.env.Fallback_Language);
+const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'),  ['de', 'en', 'de-by', 'de-ooe', 'ua', 'it', 'fr'], process.env.Fallback_Language);
 const { log } = require('../../../Web/lib/logger');
 
 module.exports = function (bot, mainconfig, preisliste) {
@@ -27,6 +27,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                                     inlineKeyboard.push([
                                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE'), { callback: `RSU_${msg.from.id}_setlang_de_${text_array[1]}` }),
                                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `RSU_${msg.from.id}_setlang_de-by_${text_array[1]}` }),
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE-OOE'), { callback: `RSU_${msg.from.id}_setlang_de-ooe_${text_array[1]}` }),
                                     ])
                                     //Push Rules Button to enter registration
                                     inlineKeyboard.push([
@@ -47,6 +48,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                                     inlineKeyboard.push([
                                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
                                         bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `R_${msg.from.id}_setlang_de-by` }),
+                                        bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE-OOE'), { callback: `R_${msg.from.id}_setlang_de-ooe` }),
                                     ])
                                     //Push Rules Button to enter registration
                                     inlineKeyboard.push([
@@ -70,6 +72,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                         inlineKeyboard.push([
                             bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE'), { callback: `R_${msg.from.id}_setlang_de` }),
                             bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE-BY'), { callback: `R_${msg.from.id}_setlang_de-by` }),
+                            bot.inlineButton(newi18n.translate(process.env.Fallback_Language, 'Sprachen.Knöpfe.Full.DE-OOE'), { callback: `R_${msg.from.id}_setlang_de-ooe` }),
                         ])
                         //Push Rules Button to enter registration
                         inlineKeyboard.push([
