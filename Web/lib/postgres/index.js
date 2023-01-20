@@ -712,7 +712,7 @@ let PlugsToggleAllowedState = function (userid) {
 
 let ToggleSubUserPayedAllowedState = function (hauptgast_userid, userid) {
   return new Promise(function (resolve, reject) {
-    pool.query(`UPDATE guests SET payed = NOT payed WHERE hauptgast_userid = $1 AND userid = $2`,[
+    pool.query(`UPDATE guests SET payed = NOT payed WHERE hauptgast_userid = $1 AND userid = $2`, [
       hauptgast_userid, userid
     ], (err, result) => {
       if (err) { reject(err) }
@@ -723,7 +723,7 @@ let ToggleSubUserPayedAllowedState = function (hauptgast_userid, userid) {
 
 let SetSubUserPayedAmount = function (hauptgast_userid, userid, payed_amount) {
   return new Promise(function (resolve, reject) {
-    pool.query(`UPDATE guests SET payed_ammount = $1 WHERE hauptgast_userid = $2 AND userid = $3`,[
+    pool.query(`UPDATE guests SET payed_ammount = $1 WHERE hauptgast_userid = $2 AND userid = $3`, [
       payed_amount, hauptgast_userid, userid
     ], (err, result) => {
       if (err) { reject(err) }

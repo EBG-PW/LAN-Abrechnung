@@ -31,7 +31,7 @@
 						<div class="inner">
 							<h1 class="major" id="MainHeadline"></h1>
 							<h3 id="StromText"></h3>
-							<canvas id="StromChart" style="display: block; box-sizing: border-box; height: 100px; width: 800px;" width="1200" height="250"></canvas>
+							<div id="StromChart"> </div>
 						</div>
 					</section>
 
@@ -57,7 +57,7 @@
 			<script>const exports = {};//Fixes i18n Stuff lol.</script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/verifyToken.js"></script>
-			<script src="assets/js/chart.js"></script>
+			<script src="assets/js/apexcharts.js"></script>
 			<script src="assets/js/i18n.source.js"></script>
 			<script src="assets/js/i18n.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
@@ -105,13 +105,18 @@
     						const { event, data_payload } = message_data;
 							if(event === 'plug_power'){
 								PowerGraphData.push(data_payload.Power)
-								if(PowerGraphData.length >= TotalKWH.graph_length){
-									PowerGraphData.shift()
+								if(powerChart.w.config.series[0].data.length >= Number(TotalKWH.graph_length)){
+									//powerChart.w.config.series[0].data.shift() // Makes the chart wobbly... GH ISSUE OFFEN
 								}
-								powerChart.data.datasets[0].data = PowerGraphData;
+
+								console.log([...powerChart.w.config.series[0].data, [Date.now(), data_payload.Power]])
+								
+								powerChart.updateSeries([{
+									data: [...powerChart.w.config.series[0].data, [Date.now(), data_payload.Power]]
+								}])
+								
 								$("#StromText").html(translate('Stromseite.Text', {totalkwh: (((data_payload.TotalEnergy/ 1000)-TotalKWH.power_start).toFixed(3)).replace(".", ","), totalkostenkwh: CentToEuro(((data_payload.TotalEnergy/ 1000)-TotalKWH.power_start).toFixed(3)*TotalKWH.price)}));
 								$("#MainHeadline").html(`${translate('Header.Links.Strom')}  |  ${data_payload.Power}W`);
-								powerChart.update()
 							} else if (event === 'plug_history') {
 								for(let i = 0; i < data_payload.length; i++) {
 									PowerGraphData.push(data_payload[i].Power)
@@ -121,73 +126,108 @@
 										PowerGraphData.push(0)
 									}
 								}
-								CreateChart(PowerGraphData.reverse())
+
+								CreateChart(PowerGraphData)
 							}
 						}
 
 						function CreateChart(PowerGraphDataF) {
-							let labels = [];
-
-							for(let i = 0; i < TotalKWH.graph_length; i++) {
-								labels.push(`${i-TotalKWH.graph_length+1}`);
+							let series = [];
+							
+							for(let i = 0; i < PowerGraphDataF.length; i++) {
+								series.push([Date.now() - 1000 * i, PowerGraphDataF[i]]);
 							}
 
-							const data = {
-								labels: labels,
-								datasets: [{
-									label: 'Power (W)',
-									backgroundColor: 'rgb(255, 99, 132)',
-									borderColor: 'rgb(255, 99, 132)',
-									data: PowerGraphDataF,
-								}],
-								fill: false,
-								tension: 0.4
+							series.reverse();
+
+							window.Apex = {
+								chart: {
+									foreColor: "#fff",
+									toolbar: {
+									show: false
+									}
+								},
+
+								stroke: {
+									width: 3
+								},
+								dataLabels: {
+									enabled: false
+								},
+								grid: {
+									borderColor: "#40475D"
+								},
+								xaxis: {
+									axisTicks: {
+									color: "#333"
+									},
+									axisBorder: {
+									color: "#333"
+									}
+								},
+								fill: {
+									type: "gradient",
+									gradient: {
+										type: "vertical",
+										gradientToColors: ["#F55555", "#fad932", "#2aa811"]
+									}
+								},
+								yaxis: {
+									decimalsInFloat: 2,
+									opposite: true,
+									labels: {
+									offsetX: -10
+									}
+								}
 							};
 
-							const config = {
-								type: 'line',
-								data: data,
-								options: {
-									responsive: true,
-									interaction: {
-										intersect: false,
-									},
-									elements: {
-										line: {
-											tension: 0.5, // disables bezier curves
-										},
-										point:{
-											radius: 0
+							const options = {
+								series: [{
+									data: series
+								}],
+								chart: {
+									id: 'realtime',
+									height: 350,
+									type: 'line',
+									animations: {
+										enabled: true,
+										easing: 'linear',
+										dynamicAnimation: {
+											speed: 1000
 										}
 									},
-									scales: {
-										y: {
-											beginAtZero: true
-										}
+									toolbar: {
+										show: false
 									},
-									animation: {
-										duration: 1, // general animation time
-									},
+									zoom: {
+										enabled: false
+									}
+								},
+								dataLabels: {
+									enabled: false
+								},
+								stroke: {
+									curve: 'smooth'
+								},
+								markers: {
+									size: 0
+								},
+								xaxis: {
+									type: "datetime",
+    								range: 60*1000
+								},
+								yaxis: {
+									max: 600
+								},
+								legend: {
+									show: false
 								},
 							};
-							powerChart = new Chart(
-								document.getElementById('StromChart').getContext('2d'),
-								config
-							);
+							
+							powerChart = new ApexCharts(document.getElementById('StromChart'), options);
+							powerChart.render();
 						}
-						//Chart.js
-						
 					});
-					//Create the chart
-
-
-					//createChart()
-					/*
-					setTimeout(function() {
-						myChart.data.datasets[0].data = [4,34,75,346,53,436,54];
-						myChart.update();
-					}, 1000);
-					*/
 				})
 			</script>
 	</body>
