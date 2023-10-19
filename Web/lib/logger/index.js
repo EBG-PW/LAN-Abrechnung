@@ -39,19 +39,19 @@ const template = (templateid, data) => {
 const logColorShort = (levelnumber) => {
     switch (levelnumber) {
         case 1:
-            if(process.env.LOG_COLOR == 'true') return '\x1b[31m[E]\x1b[0m';
+            if (process.env.LOG_COLOR == 'true') return '\x1b[31m[E]\x1b[0m';
             return '[E]';
         case 2:
-            if(process.env.LOG_COLOR == 'true') return '\x1b[33m[W]\x1b[0m';
+            if (process.env.LOG_COLOR == 'true') return '\x1b[33m[W]\x1b[0m';
             return '[W]';
         case 3:
-            if(process.env.LOG_COLOR == 'true') return '\x1b[32m[I]\x1b[0m';
+            if (process.env.LOG_COLOR == 'true') return '\x1b[32m[I]\x1b[0m';
             return '[I]';
         case 4:
-            if(process.env.LOG_COLOR == 'true') return '\x1b[35m[D]\x1b[0m';
+            if (process.env.LOG_COLOR == 'true') return '\x1b[35m[D]\x1b[0m';
             return '[D]';
         case 5:
-            if(process.env.LOG_COLOR == 'true') return '\x1b[36m[S]\x1b[0m';
+            if (process.env.LOG_COLOR == 'true') return '\x1b[36m[S]\x1b[0m';
             return '[S]';
         default:
             return '\x1b[0m'
@@ -66,19 +66,19 @@ const logColorShort = (levelnumber) => {
 const logColor = (levelnumber) => {
     switch (levelnumber) {
         case 1:
-            if(process.env.LOG_COLOR == 'true') return '\x1b[31m';
+            if (process.env.LOG_COLOR == 'true') return '\x1b[31m';
             return '';
         case 2:
-            if(process.env.LOG_COLOR == 'true') return '\x1b[33m';
+            if (process.env.LOG_COLOR == 'true') return '\x1b[33m';
             return '';
         case 3:
-            if(process.env.LOG_COLOR == 'true') return '\x1b[32m';
+            if (process.env.LOG_COLOR == 'true') return '\x1b[32m';
             return '';
         case 4:
-            if(process.env.LOG_COLOR == 'true') return '\x1b[35m';
+            if (process.env.LOG_COLOR == 'true') return '\x1b[35m';
             return '';
         case 5:
-            if(process.env.LOG_COLOR == 'true') return '\x1b[36m';
+            if (process.env.LOG_COLOR == 'true') return '\x1b[36m';
             return '';
         default:
             return ''
@@ -92,7 +92,7 @@ const logColor = (levelnumber) => {
  * @returns 
  */
 const logFormater = (levelnumber, text) => {
-    if(process.env.LOG_TEMPLATE) {
+    if (process.env.LOG_TEMPLATE) {
         const avaibleVars = {
             levelnumber: levelnumber,
             level: Levels[levelnumber - 1],
