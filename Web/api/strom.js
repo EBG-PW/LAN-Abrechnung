@@ -7,9 +7,9 @@ const Joi = require('joi');
 const { SendEvent } = require('pm2-ctl')
 var path = require('path');
 let reqPath = path.join(__dirname, '../../');
-const DB = require('../../lib/postgres');
+const DB = require('@lib/postgres');
 const { tokenpermissions } = require('../middleware/tokenVerify')
-const { log } = require('../../lib/logger');
+const { log } = require('@lib/logger');
 const ecosystem = require('../../../ecosystem.config.js');
 const PlugServer_Process_Name = ecosystem.apps[2].name;
 

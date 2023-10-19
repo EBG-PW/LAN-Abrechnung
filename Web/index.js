@@ -1,7 +1,5 @@
 const app = require('./src/app');
 
-console.log("All Systems Running!")
-
 process.on('message', function (packet) {
   const { data } = packet;
   console.log(` Got Data:`, data)

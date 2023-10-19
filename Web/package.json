@@ -14,6 +14,13 @@
     "type": "git",
     "url": ""
   },
+  "_moduleAliases": {
+    "@lib": "lib/",
+    "@src": "src/",
+    "@api": "api/",
+    "@config": "..config/",
+    "@middleware": "middleware/"
+  },
   "license": "AGPL-3.0",
   "dependencies": {
     "bcrypt": "^5.0.1",

@@ -13,8 +13,8 @@ setInterval(function () {
     pm2ctl.SendEvent.ToProcess(PlugsServer_Process_Name, { event: 'KeepAliveNotify', data: { name: "WebServer" } })
 }, 55*1000);
 
-const middleware = require('./middleware');
-const api = require('./api');
+const middleware = require('@middleware');
+const api = require('@api');
 
 const app = express();
 app.set('trust proxy', 1); //If Behind PROXY

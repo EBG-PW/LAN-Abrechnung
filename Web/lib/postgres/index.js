@@ -1,6 +1,6 @@
 const pg = require('pg');
-const { log } = require('../../lib/logger');
-const permission_groups = require('../../../config/permission_groups');
+const { log } = require('@lib/logger');
+const permission_groups = require('@config/permission_groups');
 
 const pool = new pg.Pool({
   user: process.env.DB_USER,
