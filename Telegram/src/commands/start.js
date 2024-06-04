@@ -6,11 +6,14 @@ const { log } = require('../../../Web/lib/logger');
 
 module.exports = function (bot, mainconfig, preisliste) {
     bot.on(/^\/start/i, (msg) => {
+        // Check if the message is a private message
         if (msg.chat.type === "private") {
             DB.get.Guests.ByID(msg.from.id).then(function (User_response) {
+                // Check if the user exists in the DB
                 if (User_response.length <= 0 || parseInt(mainconfig.SudoUser) === msg.from.id) {
                     let inlineKeyboard = []
                     const text_array = msg.text.split('_');
+                    // Check if the user is a SubGuest
                     if (text_array.length === 2) {
                         if (text_array[0].includes('SubGuest')) {
                             DB.get.Guests.ByID(text_array[1]).then(function (HauptGuest_response) {

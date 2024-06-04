@@ -8,6 +8,7 @@ const { log } = require('../../../Web/lib/logger');
 module.exports = function (bot, mainconfig, preisliste) {
     bot.on('callbackQuery', (msg) => {
         DB.get.tglang.Get(msg.from.id).then(function (tglang_response) {
+            // Will set the required parameters for the message (If the button in in a chat or via a @Bot)
             if ('inline_message_id' in msg) {
                 var inlineId = msg.inline_message_id;
             } else {

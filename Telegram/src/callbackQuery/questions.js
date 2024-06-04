@@ -1,7 +1,7 @@
 const path = require('path');
 const DB = require('../../../Web/lib/postgres');
 const { default: i18n } = require('new-i18n')
-const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'),  ['de', 'en', 'de-by', 'de-ooe', 'ua', 'it', 'fr'], process.env.Fallback_Language);
+const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'), ['de', 'en', 'de-by', 'de-ooe', 'ua', 'it', 'fr'], process.env.Fallback_Language);
 const { log } = require('../../../Web/lib/logger');
 const { boolToText } = require('../../lib/utils');
 const randomstring = require('randomstring');
@@ -241,31 +241,23 @@ module.exports = function (bot, mainconfig, preisliste) {
                                 ).catch(error => log.error('Error:', error));
                             }
 
-                            let WebToken = randomstring.generate({
-                                length: mainconfig.RegTokenLength, //DO NOT CHANCE!!!
-                                charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
-                            });
-
-                            DB.write.RegToken.NewToken(msg.from.id, msg.from.username, WebToken).then(function (response) {
-
+                            try {
                                 let replyMarkup = bot.inlineKeyboard([
                                     [
-                                        bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.WebReg'), { url: `${process.env.WebPanelURL}/api/v1/register/load/${WebToken}` })
+                                        bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.WebReg'), { url: `${process.env.OAUTH_URL}?client_id=${process.env.OAUTH_CLIENT_ID}&scope=${process.env.OAUTH_SCOPE}` })
                                     ]
                                 ]);
 
                                 return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Fragen.WebReg'), { replyMarkup });
+                            } catch (error) {
+                                log.error(error)
+                                return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Error.ExecuteCommandFehler'));
+                            }
 
                             }).catch(function (error) {
                                 log.error(error)
                                 return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Error.DBFehler'));
                             })
-
-
-                        }).catch(function (error) {
-                            log.error(error)
-                            return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Error.DBFehler'));
-                        })
                     }
                 }
             }
