@@ -4,7 +4,6 @@ const db = require('../lib/postgres');
 const { log } = require('../../Web/lib/logger');
 const request = require('request');
 const app = require('uWebSockets.js').App();
-const { writeDatapoint } = require('../lib/influx');
 const Cache = require('js-object-cache');
 const pm2 = require('pm2')
 
@@ -191,11 +190,6 @@ app.ws('/client', {
         delete InfluxPlugObject.IP
         delete InfluxPlugObject.ControlerToken
         delete InfluxPlugObject.ID
-        if (process.env.Influx_Enable === 'true' || process.env.Influx_Enable === true) {
-          writeDatapoint('PowerPlug', InfluxPlugObject, data_payload.data.ID.toString()).catch(function (err) {
-            log.error(err);
-          });
-        }
       } else {
         //The requested controler dosn´t exist...
         ws.send(JSON.stringify({ event: commandClient.failed, data_payload: { error: 'Not permitted' } }));
