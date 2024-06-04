@@ -134,25 +134,24 @@ module.exports = function (bot, mainconfig, preisliste) {
 
                             let replyMarkup = bot.inlineKeyboard([
                                 [
-                                    bot.inlineButton(newi18n.translate(tglang_response, 'Antworten.Vollständig'), { callback: 'F_VC_Voll' }),
-                                    bot.inlineButton(newi18n.translate(tglang_response, 'Antworten.Teil'), { callback: 'F_VC_Teil' }),
-                                    bot.inlineButton(newi18n.translate(tglang_response, 'Antworten.Nein'), { callback: 'F_VC_Nein' })
-                                ], [
-                                    bot.inlineButton(newi18n.translate(tglang_response, 'Antworten.NichtSagen'), { callback: 'F_VC_Secret' })
+
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Antworten.Ja'), { callback: 'F_BC_true' }),
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Antworten.Nein'), { callback: 'F_BC_false' })
                                 ]
                             ]);
 
-                            return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Fragen.Vaccinated'), { replyMarkup });
+                            return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Fragen.BouncyCastle'), { replyMarkup });
+
                         }).catch(function (error) {
                             log.error(error)
                             return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Error.DBFehler'));
                         })
                     }
 
-                    if (data[1] === 'VC')  //Is the guest Vaccinated
+                    if (data[1] === 'BC')  //Guest wants a bouncy castle
                     {
-                        DB.write.Guests.UpdateCollumByID(msg.from.id, "vaccinated", data[2]).then(function (response) {
-                            let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${newi18n.translate(tglang_response, `Vaccinated.${data[2]}`)}`
+                        DB.write.Guests.UpdateCollumByID(msg.from.id, "bouncycastle", data[2]).then(function (response) {
+                            let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${newi18n.translate(tglang_response, `BouncyCastle.${data[2]}`)}`
                             if ('inline_message_id' in msg) {
                                 bot.editMessageText(
                                     { inlineMsgId: inlineId }, Message,
@@ -174,6 +173,14 @@ module.exports = function (bot, mainconfig, preisliste) {
                                     bot.inlineButton(newi18n.translate(tglang_response, 'Arrivale.4_Voll'), { callback: 'F_EA_4' }),
                                     bot.inlineButton(newi18n.translate(tglang_response, 'Arrivale.5_Voll'), { callback: 'F_EA_5' }),
                                     bot.inlineButton(newi18n.translate(tglang_response, 'Arrivale.6_Voll'), { callback: 'F_EA_6' })
+                                ], [
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Arrivale.7_Voll'), { callback: 'F_EA_7' }),
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Arrivale.8_Voll'), { callback: 'F_EA_8' }),
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Arrivale.9_Voll'), { callback: 'F_EA_9' })
+                                ], [
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Arrivale.10_Voll'), { callback: 'F_EA_10' }),
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Arrivale.11_Voll'), { callback: 'F_EA_11' }),
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Arrivale.12_Voll'), { callback: 'F_EA_12' })
                                 ]
                             ]);
 
@@ -212,6 +219,14 @@ module.exports = function (bot, mainconfig, preisliste) {
                                     bot.inlineButton(newi18n.translate(tglang_response, 'Depature.4_Voll'), { callback: 'F_ED_4' }),
                                     bot.inlineButton(newi18n.translate(tglang_response, 'Depature.5_Voll'), { callback: 'F_ED_5' }),
                                     bot.inlineButton(newi18n.translate(tglang_response, 'Depature.6_Voll'), { callback: 'F_ED_6' })
+                                ], [
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Depature.7_Voll'), { callback: 'F_ED_7' }),
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Depature.8_Voll'), { callback: 'F_ED_8' }),
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Depature.9_Voll'), { callback: 'F_ED_9' })
+                                ], [
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Depature.10_Voll'), { callback: 'F_ED_10' }),
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Depature.11_Voll'), { callback: 'F_ED_11' }),
+                                    bot.inlineButton(newi18n.translate(tglang_response, 'Depature.12_Voll'), { callback: 'F_ED_12' })
                                 ]
                             ]);
 

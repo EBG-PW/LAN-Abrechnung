@@ -20,6 +20,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS guests (
     displays_count smallint DEFAULT 0,
     network_cable boolean DEFAULT False,
     vr boolean DEFAULT False,
+    bouncycastle boolean DEFAULT False,
     expected_arrival timestamp with time zone,
     expected_departure timestamp with time zone,
     accepted_rules timestamp with time zone,

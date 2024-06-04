@@ -1,8 +1,8 @@
 {
   "WellcomeMSG": "Willkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.\n\nWähle deine Sprache:",
   "WellcomeMSGSubGuest": "Du wurdest als Begleitung von {{Username}} eingeladen\n\nWillkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.\n\nWähle deine Sprache:",
-  "WellcomeMSGAR": "Willkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.\n\nDu bist bereits regestriert. Hier das Haumtmenü.",
-  "WellcomeErr": "Bitte beende deine Regestrierung. Fals du dies bereits gemacht hast, hast du vermulich die Regeln nicht aktzeptiert und bist somit leider nicht willkommen!",
+  "WellcomeMSGAR": "Willkommen zur Local-Area-Network-Party {{LanName}} mit diesem Bot kannst du dich registrieren.\n\nDu bist bereits registriert. Hier das Hauptmenü.",
+  "WellcomeErr": "Bitte beende deine Registrierung. Falls du dies bereits gemacht hast, hast du vermutlich die Regeln nicht aktzeptiert und bist somit leider nicht willkommen!",
   "Fragen": {
     "PC": "Hast du einen Computer (PC) dabei?",
     "Displays": "Wie viele Displays bringst du mit?",
@@ -11,7 +11,8 @@
     "Vaccinated": "Welchem Impfstatus wirst du zum Zeitpunkt deiner Anreise haben?",
     "Arrivale": "Wann ist den geplanter Anreisetag?",
     "Depature": "Wann ist den geplanter Abreisetag?",
-    "WebReg": "Bitte klicke auf den Knopf um dein Webpanel Passwort zu setzen."
+    "WebReg": "Bitte klicke auf den Knopf um dein Webpanel Passwort zu setzen.",
+    "BouncyCastle": "Möchtest du während der LAN in den Genuss einer Hüpfburg kommen? :D"
   },
   "Antworten": {
     "Ja": "Ja",
@@ -37,33 +38,61 @@
     "Nein": "Nein",
     "Secret": "Geheim"
   },
+  "BouncyCastle": {
+    "Ja": "Du möchtest in den Genuss einer Hüpfburg kommen!",
+    "Nein": "Du bist alt, langweilig und gebrechlich!"
+  },
   "Arrivale": {
-    "1": "30.12.22",
-    "1_Voll": "FR: 30.12.2022",
-    "2": "31.12.22",
-    "2_Voll": "SA: 31.12.2022",
-    "3": "1.1.23",
-    "3_Voll": "SO: 01.01.2023",
-    "4": "2.1.23",
-    "4_Voll": "MO: 02.01.2023",
-    "5": "3.1.23",
-    "5_Voll": "DI: 03.01.2023",
-    "6": "4.1.23",
-    "6_Voll": "MI: 04.01.2023"
+    "1": "29.6.24",
+    "1_Voll": "SA: 29.06.2024",
+    "2": "30.6.24",
+    "2_Voll": "SO: 30.06.2024",
+    "3": "1.7.24",
+    "3_Voll": "MO: 01.07.2024",
+    "4": "2.7.24",
+    "4_Voll": "DI: 02.07.2024",
+    "5": "3.7.24",
+    "5_Voll": "MI: 03.07.2024",
+    "6": "4.7.24",
+    "6_Voll": "DO: 04.07.2024",
+    "7": "5.7.24",
+    "7_Voll": "FR: 05.07.2024",
+    "8": "6.7.24",
+    "8_Voll": "SA: 06.07.2024",
+    "9": "7.7.24",
+    "9_Voll": "SO: 07.07.2024",
+    "10": "8.7.24",
+    "10_Voll": "MO: 08.07.2024",
+    "11": "9.7.24",
+    "11_Voll": "DI: 09.07.2024",
+    "12": "10.7.24",
+    "12_Voll": "MI: 10.07.2024"
   },
   "Depature": {
-    "1": "4.1.23",
-    "1_Voll": "MI: 04.01.2023",
-    "2": "5.1.23",
-    "2_Voll": "DO: 05.01.2023",
-    "3": "6.1.23",
-    "3_Voll": "FR: 06.01.2023",
-    "4": "7.1.23",
-    "4_Voll": "SA: 07.01.2023",
-    "5": "8.1.23",
-    "5_Voll": "SO: 08.01.2023",
-    "6": "9.1.23",
-    "6_Voll": "MO: 09.01.2023"
+    "1": "2.7.24",
+    "1_Voll": "DI: 02.07.2024",
+    "2": "3.7.24",
+    "2_Voll": "MI: 03.07.2024",
+    "3": "4.7.24",
+    "3_Voll": "DO: 04.07.2024",
+    "4": "5.7.24",
+    "4_Voll": "FR: 05.07.2024",
+    "5": "6.7.24",
+    "5_Voll": "SA: 06.07.2024",
+    "6": "7.7.24",
+    "6_Voll": "SO: 07.07.2024",
+    "7": "8.7.24",
+    "7_Voll": "MO: 08.07.2024",
+    "8": "9.7.24",
+    "8_Voll": "DI: 09.07.2024",
+    "9": "10.7.24",
+    "9_Voll": "MI: 10.07.2024",
+    "10": "11.7.24",
+    "10_Voll": "DO: 11.07.2024",
+    "11": "12.7.24",
+    "11_Voll": "FR: 12.07.2024",
+    "12": "13.7.24",
+    "12_Voll": "SA: 13.07.2024"
   },
   "Admin": {
     "MustBeReply": "Dieser Befehl kann nur als Antwort verwendet werden.",
@@ -76,7 +105,7 @@
     "list": "Folgende Gäste sind Admin:{{AdminList}}"
   },
   "PaySystem": {
-    "Success": "Du hast die Registration erfolgreich abgeschlossen\n\nBitte überweise nun die Kosten für die {{DiffDays}} Tage LAN-Party:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Höhe der Überweisung für {{DiffDays}} Tage beträgt: <pre language='c++'>{{Kosten}}</pre>",
+    "Success": "Du hast die Registration erfolgreich abgeschlossen\n\nBitte überweise nun die Kosten für die {{DiffDays}} Tage LAN-Party:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}}</pre>\n</b> <pre language='c++'>{{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Höhe der Überweisung für {{DiffDays}} Tage beträgt: <pre language='c++'>{{Kosten}}</pre>",
     "SuccessSubUser": "Du hast die Registration erfolgreich abgeschlossen\n\nDu bist für {{DiffDays}} Tage Gast von {{Username}}",
     "PushMessageHauptGast": "{{Subguest}} hat sich erfolgreich registriert und ist nun Gast von dir.\n\nBitte überweise nun die zusätzlichen Kosten für die {{DiffDays}} Tage von {{Subguest}} LAN-Party:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Höhe der Zusatzkosten beträgt <pre language='c++'>{{Zusatzkosten}}</pre>Die gesamt Kosten betragen: <pre language='c++'>{{Kosten}}</pre>"
   },
@@ -143,17 +172,17 @@
     "Text": "<b>Mehr Infos:</b>\n{{Username}} hier findest du weitere nützliche Informationen.",
     "Knöpfe": {
       "Rules": "Regeln",
-      "Legal": "Legal",
+      "Legal": "Rechtliches",
       "Sprache": "Sprache",
       "Hauptmenu": "⏪ Hauptmenü"
     },
     "Regeln": {
       "Exit": "❌ Schließen",
-      "AcceptedDate": "\nDu hast die Regeln am {{akteptiert}} akteptiert"
+      "AcceptedDate": "\nDu hast die Regeln am {{akteptiert}} akzeptiert"
     },
     "Legal": {
       "Exit": "❌ Schließen",
-      "AcceptedDate": "\nDu hast die Hinweise und Bestimmungen am {{akteptiert}} akteptiert"
+      "AcceptedDate": "\nDu hast die Hinweise und Bestimmungen am {{akteptiert}} akzeptiert"
     }
   },
   "PushNotification": {
@@ -168,7 +197,7 @@
     "Regeln": {
       "0": "1: Im Gebäude gilt striktes Rauchverbot keine Ausnahme. Es entstehen Aerosole -> es ist <b>Verboten!</b> Für Raucher gibt es die Möglichkeit wie auch vergangenes Jahr im Innenhof bei <u>geschlossener Gebäude Türe</u> zu Rauchen.",
       "1": "2: Nach aktuellen Bestimmungen gilt im Erdgeschoss während der Bürozeiten (7-17 Uhr Werktags) eine FFP2-Maskenpflicht!",
-      "2": "3: <b>JEDER</b> räumt sein Geschirr und seinen Müll <b>SELBSTSTÄNDIG</b> weg. (Für eine Gebühr von 150€ bekommt ihr eigenes VIP Geschirr und GEOs Dad räumt euren Müll und euer Geschirr ab.)",
+      "2": "3: <b>JEDER</b> räumt sein Geschirr (in den Geschirrspüler!!!!) und seinen Müll (in den Mülleimer!!!!) <b>SELBSTSTÄNDIG</b> weg. (Für eine Gebühr von 350€ bekommt ihr eigenes VIP Geschirr und GEOs Dad räumt euren Müll und euer Geschirr ab.)",
       "3": "4: Verbleibendes nicht verzehrtes Essen in den Restmüll. Pizzas haben in ihren Schachteln in den Kartonagen nichts zu suchen. Ein Verstoß gegen diese Regel hat eine Strafgebühr von 150€ zur Folge. (PS: Ja diese Regel existiert aus gutem Grund.)",
       "4": "5: Während der Bürozeiten nur in entsprechender Kleidung durchs Gebäude gehen.",
       "5": "6: Während der Bürozeiten den Lärmpegel auf einem angemessenen Niveau halten.",

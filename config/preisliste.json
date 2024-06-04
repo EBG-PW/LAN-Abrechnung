@@ -1,24 +1,24 @@
 {   
-    "FixKostenProTag": 1875,
+    "FixKostenProTag": 2000,
     "PauschalKosten": {
         "Wasser": {
-            "Preis": 100,
+            "Preis": 200,
             "Beschreibung": "Wasserpauschale"
         },
         "Strom": {
-            "Preis": 500,
+            "Preis": 800,
             "Beschreibung": "Strompauschale"
         },
         "Verbrauchsgüter": {
-            "Preis": 400,
+            "Preis": 500,
             "Beschreibung": "Verbrauchsgüterpauschale"
         },
         "Netzwerk": {
-            "Preis": 500,
+            "Preis": 700,
             "Beschreibung": "Netzwerkpauschale"
         },
         "StromKWH": {
-            "Preis": 1000,
+            "Preis": 35,
             "Beschreibung": "KostenKWH"
         }
     },
