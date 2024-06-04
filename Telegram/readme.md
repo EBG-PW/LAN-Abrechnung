@@ -4,7 +4,7 @@
 ## Installation
    ```sh
    git clone https://github.com/EBG-PW/LAN-Abrechnung.git
-   cd ./LAN-Abrechnung/Finanzen/Telegram && npm i
+   cd ./LAN-Abrechnung/Telegram && npm i
    nano .env
    node ./index.js
    ```

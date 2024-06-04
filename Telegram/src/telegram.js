@@ -8,12 +8,12 @@ const newi18n = new i18n(path.join(__dirname, '../', 'lang'),  ['de', 'en', 'de-
 const { log } = require('../../Web/lib/logger');
 const { CentToEuro } = require('../lib/utils');
 const pm2ctl = require('pm2-ctl');
-const ecosystem = require('../../ecosystem.config.js');
-const PlugsServer_Process_Name = ecosystem.apps[2].name;
+//const ecosystem = require('../../ecosystem.config.js');
+//const PlugsServer_Process_Name = ecosystem.apps[2].name;
 
-setInterval(function () {
+/*setInterval(function () {
     pm2ctl.SendEvent.ToProcess(PlugsServer_Process_Name, { event: 'KeepAliveNotify', data: { name: "TelegramBot" } })
-}, 55 * 1000);
+}, 55 * 1000);*/
 
 let mainconfig, preisliste;
 

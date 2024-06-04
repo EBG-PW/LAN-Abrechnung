@@ -1,12 +1,12 @@
 {
     "SudoUser": "206921999",
-    "LanName": "Sommerlan 2021",
-    "LanDauer": 8,
+    "LanName": "SommerLAN 2024",
+    "LanDauer": 15,
     "RegTokenLength": 32,
     "WebTokenLength": 64,
-    "KontoInhaber": "Viktor",
-    "KontoIban": "AT....",
-    "KontoBank": "Österreichische Bank lol",
-    "Verwendungszweg": "Lan2021",
-    "LanChat": -1001675639034
+    "KontoInhaber": "Elektronische Begeisterung Gemeinsam. Projekt Werkstatt",
+    "KontoIban": "AT693456000003633823",
+    "KontoBank": "Raiffeisenbank OOE",
+    "Verwendungszweg": "Lan2024",
+    "LanChat": -1001217047330
 }
