@@ -271,6 +271,7 @@ const check = () => {
                         log.info(`${data.IP} is not allowed to be ON`);
                         SwitchPlugPower(data.IP, false).catch(error => log.error(error));
                     }
+                    log.info(`Send message: ${JSON.stringify({ event: command.plug.power, data_payload: { data } })}`);
                     ws.send(JSON.stringify({ event: command.plug.power, data_payload: { data } }));
                 } else {
                     log.error(`${results[i].reason}`);
@@ -294,6 +295,7 @@ const ConnectWS = () => {
         ws_connection_error_counter = 1;
         ws_connected = true;
         ws_connecting = false;
+        log.info(`Send message: ${{ event: command.setting.controler, data_payload: { token: token } }}`);
         ws.send(JSON.stringify({ event: command.setting.controler, data_payload: { token: token } }));
     });
 
@@ -312,6 +314,7 @@ const ConnectWS = () => {
             PlugCache.set_object('ipaddr', data_payload.plugs);
             log.system(`Resived data to monitor ${PlugCache.keys().length} plugs`);
         } else if (event === command.setting.controler) {
+            log.info(`Send message: ${JSON.stringify({ event: command.setting.controler, data_payload: { token: token } })}`);
             ws.send(JSON.stringify({ event: command.setting.controler, data_payload: { token: token } }));
         }
     });
