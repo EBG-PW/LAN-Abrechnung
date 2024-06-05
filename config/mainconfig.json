@@ -1,6 +1,11 @@
 {
     "SudoUser": "206921999",
     "LanName": "SommerLAN 2024",
+    "ZVR": "123456789",
+    "Veranstalter": "Elektronische Begeisterung Gemeinsam. Projekt Werkstatt",
+    "Straße": "sdaer 1",
+    "PLZORT": "1234 Musterhausen",
+    "Country": "Oesterreich",
     "LanDauer": 15,
     "RegTokenLength": 32,
     "WebTokenLength": 64,
