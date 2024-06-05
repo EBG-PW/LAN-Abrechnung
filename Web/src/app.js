@@ -15,6 +15,7 @@ setInterval(function () {
 
 const middleware = require('./middleware');
 const api = require('./api');
+const oauth = require('./oauth');
 
 const app = express();
 app.set('trust proxy', 1); //If Behind PROXY
@@ -60,7 +61,6 @@ app.get('/Plugs', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'www-public', 'Plugs.html'));
 });
 
-
 app.get('/Inventory', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'www-public', 'Inventory.html'));
 })
@@ -74,11 +74,9 @@ app.get('/Subusermanager', (req, res) => {
 });
 
 app.use('/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets')));
-app.use('/api/v1/login/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets'))); //For Login plugin
-app.use('/api/v1/login/login/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets'))); //For Login plugin
-app.use('/api/v1/register/load/assets', express.static(path.join(__dirname, '..', 'www-public', 'assets'))); //For Register plugin
 
 app.use('/api/v1', api);
+app.use('/oauth', oauth);
 
 app.use(middleware.notFound);
 app.use(middleware.errorHandler);

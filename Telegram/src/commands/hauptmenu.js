@@ -26,7 +26,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                             bot.inlineButton(newi18n.translate(tglang_response, 'Hauptmenu.Knöpfe.Other'), { callback: '/moreinfo' })
                         ],
                         [
-                            bot.inlineButton(newi18n.translate(tglang_response, 'Hauptmenu.Knöpfe.Webpanel'), { url: `${process.env.WebPanelURL}/api/v1/login/login/${msg.from.id}` }),
+                            bot.inlineButton(newi18n.translate(tglang_response, 'Hauptmenu.Knöpfe.Webpanel'), { url: `${process.env.WebPanelURL}/oauth/forward` }),
                         ]
                     ]);
 
@@ -54,7 +54,7 @@ module.exports = function (bot, mainconfig, preisliste) {
             }
         }).catch(function (error) {
             log.error(error)
-            return bot.sendMessage(chatId, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
+            return bot.sendMessage(msg.from.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
         });
     });
 

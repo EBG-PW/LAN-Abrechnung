@@ -13,6 +13,9 @@ const pool = new pg.Pool({
 // payed is used in 2 ways, for main guest its if he has payed. If subguest, its if he is allowed to pay (Buffet)
 pool.query(`CREATE TABLE IF NOT EXISTS guests (
     userid bigint PRIMARY KEY,
+    puuid UUID DEFAULT null,
+    access_token text DEFAULT null,
+    refresh_token text DEFAULT null,
     hauptgast_userid bigint,
     username text UNIQUE,
     passwort text,
@@ -204,6 +207,24 @@ let CheckGuestByID = function (user_id) {
         resolve(false);
       } else {
         resolve(true);
+      }
+    });
+  });
+}
+
+/**
+ * This function will return a guest by username
+ * @param {Number} user_id 
+ * @returns {boolean}
+ */
+const CheckIfGuestHasPUUID = function (user_id) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT puuid FROM guests WHERE userid = '${user_id}'`, (err, result) => {
+      if (err) { reject(err) }
+      if (result.rows[0].puuid === null) {
+        resolve(true);
+      } else {
+        resolve(false);
       }
     });
   });
@@ -713,7 +734,7 @@ let PlugsToggleAllowedState = function (userid) {
 
 let ToggleSubUserPayedAllowedState = function (hauptgast_userid, userid) {
   return new Promise(function (resolve, reject) {
-    pool.query(`UPDATE guests SET payed = NOT payed WHERE hauptgast_userid = $1 AND userid = $2`,[
+    pool.query(`UPDATE guests SET payed = NOT payed WHERE hauptgast_userid = $1 AND userid = $2`, [
       hauptgast_userid, userid
     ], (err, result) => {
       if (err) { reject(err) }
@@ -724,7 +745,7 @@ let ToggleSubUserPayedAllowedState = function (hauptgast_userid, userid) {
 
 let SetSubUserPayedAmount = function (hauptgast_userid, userid, payed_amount) {
   return new Promise(function (resolve, reject) {
-    pool.query(`UPDATE guests SET payed_ammount = $1 WHERE hauptgast_userid = $2 AND userid = $3`,[
+    pool.query(`UPDATE guests SET payed_ammount = $1 WHERE hauptgast_userid = $2 AND userid = $3`, [
       payed_amount, hauptgast_userid, userid
     ], (err, result) => {
       if (err) { reject(err) }
@@ -1230,6 +1251,55 @@ const SetPermissionGroupToUser = function (userid, permission_group) {
   });
 }
 
+/**
+ * Add or update a user in the DB from an oAuth login
+ * @param {Object} oAuthUserData 
+ * @param {Object} oAuthToken 
+ * @returns {boolean} didRegister
+ */
+const oAuthLoginTransaction = async (oAuthUserData, oAuthToken) => {
+  const client = await pool.connect();
+  let didRegister = false; // Initialize didRegister variable
+  try {
+    await client.query('BEGIN'); // Begin transaction
+
+    const userExists = await CheckGuestByID(oAuthUserData.integration_TELEGRAM);
+    didRegister = await CheckIfGuestHasPUUID(oAuthUserData.integration_TELEGRAM); // Update didRegister variable
+
+    if (!userExists) {
+      throw new Error("User not found");
+    }
+
+    const hauptgast_response = await GetHauptGuestofguest(oAuthUserData.integration_TELEGRAM);
+
+    let RegPromiseArray = [];
+
+    if (hauptgast_response === false) { // When false, then it's a guest. If true, it's the userid of the hauptgast
+      RegPromiseArray.push(SetPermissionGroupToUser(oAuthUserData.integration_TELEGRAM, "user_group")) // Set user group
+    } else {
+      // Set permissions for the user that currently tries to register
+      RegPromiseArray.push(SetPermissionGroupToUser(oAuthUserData.integration_TELEGRAM, "sub_group")) // Set subuser group
+      if (hauptgast_response.permission_group !== "admin_group") { // If haupt user is admin, he can do everything anyway
+        // Set permissions for the Hauptgast, so he can manage the subuser
+        RegPromiseArray.push(SetPermissionGroupToUser(hauptgast_response.hauptgast_userid, "user_sub_group")) // Set user group with subguest admin permissions
+      }
+    }
+
+    RegPromiseArray.push(UpdateCollumByID(oAuthUserData.integration_TELEGRAM, 'puuid', oAuthUserData.puuid))
+    RegPromiseArray.push(UpdateCollumByID(oAuthUserData.integration_TELEGRAM, 'access_token', oAuthToken.access_token))
+    RegPromiseArray.push(UpdateCollumByID(oAuthUserData.integration_TELEGRAM, 'refresh_token', oAuthToken.refresh_token))
+    await Promise.all(RegPromiseArray);
+
+    await client.query('COMMIT'); // Commit transaction
+    return didRegister; // Return the didRegister variable after the transaction is committed
+  } catch (error) {
+    await client.query('ROLLBACK'); // Rollback transaction
+    throw error;
+  } finally {
+    client.release(); // Release the client back to the pool
+  }
+};
+
 let get = {
   Guests: {
     All: GetGuests,
@@ -1356,6 +1426,7 @@ let message = {
 }
 
 module.exports = {
+  oAuthLoginTransaction,
   get,
   write,
   del,

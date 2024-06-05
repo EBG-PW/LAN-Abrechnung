@@ -259,7 +259,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                             try {
                                 let replyMarkup = bot.inlineKeyboard([
                                     [
-                                        bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.WebReg'), { url: `${process.env.OAUTH_URL}?client_id=${process.env.OAUTH_CLIENT_ID}&scope=${process.env.OAUTH_SCOPE}` })
+                                        bot.inlineButton(newi18n.translate(tglang_response, 'Knöpfe.WebReg'), { url: `${process.env.OAUTH_URL}/auth/oauth?client_id=${process.env.OAUTH_CLIENT_ID}&scope=${process.env.OAUTH_SCOPE}` })
                                     ]
                                 ]);
 
