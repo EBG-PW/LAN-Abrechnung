@@ -35,8 +35,10 @@ module.exports = function (bot, mainconfig, preisliste) {
             let Kosten = CentToEuro(parseInt(Guest_response[0].payed_ammount));
 
             Promise.all(PromiseArray).then(function (hauptgast) {
-                const [hauptgast_response] = hauptgast;
-                console.log(hauptgast_response);
+                let hauptgast_response = hauptgast;
+                if (hauptgast.length <= 0) {
+                    hauptgast_response = Guest_response;
+                }
                 let Status_String = ""
                 if (Guest_response[0].payed === true || hauptgast_response[0].payed === true) {
                     Status_String = newi18n.translate(tglang_response, 'Payed.True')
