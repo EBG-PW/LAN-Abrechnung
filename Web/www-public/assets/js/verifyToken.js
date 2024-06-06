@@ -19,11 +19,12 @@ function CheckTokenValidity(){
       })
       posting.fail(function(err) {
         if(err.status === 401){
-          window.location.replace(`${baseUrl}api/v1/login/login`);
+          window.location.replace(`${baseUrl}oauth/forward`);
+          // Send to a oauth redirect page
         }
       });
     }else{
-      window.location.replace(`${baseUrl}api/v1/login/login`);
+      window.location.replace(`${baseUrl}oauth/forward`);
     }
   });
 }

@@ -33,17 +33,6 @@ const LoginCheck = Joi.object({
 
 const router = express.Router();
 
-router.get("/login/:UserID", limiter, (reg, res, next) => {
-    res.status(200);
-    res.sendFile(path.join(__dirname + '../../../' + 'data' + '/Plugin_Login/index.html'));
-});
-
-
-router.get("/login", limiter, (reg, res, next) => {
-    res.status(200);
-    res.sendFile(path.join(__dirname + '../../../' + 'data' + '/Plugin_Login/index.html'));
-});
-
 router.post("/check", limiter, async (reg, res, next) => {
     try {
         const value = await LoginCheck.validateAsync(reg.body);

@@ -99,11 +99,16 @@ function generateJson(Guests, preisliste, mainconfig) {
                 })
                 // Generate the final object
                 Restult_array.push({
-                    headline: `${mainconfig.LanName} ${newi18n.translate(tglang_response_inner, 'geninvoices.Abrechnung')}`,
-                    userid: Guest.userid,
-                    username: Guest.username,
-                    date: new Date().toLocaleDateString('de-DE'),
-                    items: Items_Array
+                    "headline": `${mainconfig.LanName} ${newi18n.translate(tglang_response_inner, 'geninvoices.Abrechnung')}`,
+                    "userid": Guest.userid,
+                    "username": Guest.username,
+                    "zvr": mainconfig.ZVR,
+                    "veranstalter": mainconfig.Veranstalter,
+                    "strasse": mainconfig.Straße,
+                    "pzort": mainconfig.PLZORT,
+                    "country": mainconfig.Country,
+                    "date": new Date().toLocaleDateString('de-DE'),
+                    "items": Items_Array
                 })
             }).catch(function (error) {
                 log.error(error)

@@ -3,19 +3,24 @@ import json
 import pdf
 
 struct PDFTemplate {
-	username string [required]
-	userid string [required]
-	headline string [required]
-	date string [required]
+	username string @[required]
+	userid string @[required]
+	headline string @[required]
+	date string @[required]
+	zvr string @[required]
+	veranstalter string @[required]
+	strasse string @[required]
+	pzort string @[required]
+	country string @[required]
 	items []struct {
-		artikel string [required]
-		priceper string [required]
-		amount string [required]
-		price string [required]
-	} [required]
+		artikel string @[required]
+		priceper string @[required]
+		amount string @[required]
+		price string @[required]
+	} @[required]
 }
 
-[console]
+@[console]
 fn main() {
 	config := os.read_lines('./config.json') or {
 		eprintln('Could not read config file')
@@ -72,7 +77,7 @@ fn genpdf(template &PDFTemplate) {
 	}
 
 	mut fnt_params_text := pdf.Text_params{
-		font_size: 22.0
+		font_size: 18.0
 		font_name: 'Helvetica'
 		s_color: pdf.RGB{
 			r: 0
@@ -152,15 +157,31 @@ fn genpdf(template &PDFTemplate) {
 
 	// Write elements to PDF
 	page.push_content(
-		page.draw_base_text(template.headline, 50, 18, fnt_params_headline)
+		page.draw_base_text(template.headline, 40, 10, fnt_params_headline)
+	)	
+
+	page.push_content(
+		page.draw_base_text(template.username, 40, 20, fnt_params_text)
 	)
 
 	page.push_content(
-		page.draw_base_text(template.username, 50, 28, fnt_params_text)
+		page.draw_base_text(template.date, 40, 26, fnt_params_text)
 	)
 
 	page.push_content(
-		page.draw_base_text(template.date, 170, 8, fnt_params_text)
+		page.draw_base_text(template.zvr, 120, 20, fnt_params_text)
+	)
+
+	page.push_content(
+		page.draw_base_text(template.strasse, 120, 26, fnt_params_text)
+	)
+
+	page.push_content(
+		page.draw_base_text(template.pzort, 120, 32, fnt_params_text)
+	)
+
+	page.push_content(
+		page.draw_base_text(template.country, 120, 38, fnt_params_text)
 	)
 
 	page.push_content(
@@ -309,6 +330,16 @@ fn genpdf(template &PDFTemplate) {
 	for index < doc.page_list.len {
 		mut page_f := &doc.page_list[index]
 		//----- Footer -----
+		// Add template.veranstalter to footer
+
+		fnt_params_list.text_align = .left
+		page_f.text_box(template.veranstalter, pdf.Box{
+			x: 10
+			y: pg_fmt.h - 10
+			w: pg_fmt.w - 20
+			h: 20
+		}, fnt_params_list)
+
 		footer := 'Page ${index + 1} of $doc.page_list.len'
 		fnt_params_list.text_align = .right
 		page_f.text_box(footer, pdf.Box{

@@ -295,7 +295,7 @@ const ConnectWS = () => {
         ws_connection_error_counter = 1;
         ws_connected = true;
         ws_connecting = false;
-        log.info(`Send message: ${{ event: command.setting.controler, data_payload: { token: token } }}`);
+        log.info(`Send message: ${JSON.stringify({ event: command.setting.controler, data_payload: { token: token } })}`);
         ws.send(JSON.stringify({ event: command.setting.controler, data_payload: { token: token } }));
     });
 
