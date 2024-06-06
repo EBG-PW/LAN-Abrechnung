@@ -151,7 +151,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                     if (data[1] === 'BC')  //Guest wants a bouncy castle
                     {
                         DB.write.Guests.UpdateCollumByID(msg.from.id, "bouncycastle", data[2]).then(function (response) {
-                            let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${newi18n.translate(tglang_response, `BouncyCastle.${data[2]}`)}`
+                            let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${boolToText(data[2], tglang_response)}}`
                             if ('inline_message_id' in msg) {
                                 bot.editMessageText(
                                     { inlineMsgId: inlineId }, Message,
