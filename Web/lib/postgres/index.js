@@ -100,7 +100,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS regtoken (
 pool.query(`CREATE TABLE IF NOT EXISTS webtoken (
   userid bigint,
   username text,
-  ip INET,
+  ip text,
   browser text,
   token text PRIMARY KEY,
   admin boolean DEFAULT False,
