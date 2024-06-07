@@ -13,7 +13,7 @@ function logout() {
       headers: { Authorization: "Bearer " + localStorage.getItem("Token") }
     });
     posting.done(function (result) {
-      setTimeout(function () { window.location.replace(`${baseUrl}api/v1/login/login`); }, 100);
+      setTimeout(function () { window.location.replace(`${baseUrl}/oauth/forward`); }, 100);
       localStorage.removeItem('Admin');
       localStorage.removeItem('Permissions_Read');
       localStorage.removeItem('Permissions_Write');
