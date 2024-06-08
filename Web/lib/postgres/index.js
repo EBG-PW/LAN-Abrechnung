@@ -160,7 +160,7 @@ pool.query(`CREATE TABLE IF NOT EXISTS bestellungen (
  */
 let GetGuests = function () {
   return new Promise(function (resolve, reject) {
-    pool.query('SELECT guests.userid, hauptgast_userid, guests.username, guests.passwort, guests.pc, guests.displays_count, guests.network_cable, guests.vr, guests.expected_arrival, guests.expected_departure, guests.accepted_rules, guests.accepted_legal, guests.payed, guests.pyed_id, guests.admin, guests.permission_group, guests.vaccinated, guests.time, guests.payed_ammount, guests.lang, plugs.allowed_state FROM guests LEFT JOIN plugs ON guests.userid = plugs.userid', (err, result) => {
+    pool.query('SELECT guests.userid, hauptgast_userid, guests.username, guests.bouncycastle, guests.passwort, guests.pc, guests.displays_count, guests.network_cable, guests.vr, guests.expected_arrival, guests.expected_departure, guests.accepted_rules, guests.accepted_legal, guests.payed, guests.pyed_id, guests.admin, guests.permission_group, guests.vaccinated, guests.time, guests.payed_ammount, guests.lang, plugs.allowed_state FROM guests LEFT JOIN plugs ON guests.userid = plugs.userid', (err, result) => {
       if (err) { reject(err) }
       resolve(result.rows);
     });
@@ -173,7 +173,7 @@ let GetGuests = function () {
  */
 let GetGuestsSave = function () {
   return new Promise(function (resolve, reject) {
-    pool.query('SELECT userid, username, pc, displays_count, network_cable, vr, expected_arrival, expected_departure, lang FROM guests', (err, result) => {
+    pool.query('SELECT userid, username, pc, bouncycastle, displays_count, network_cable, vr, expected_arrival, expected_departure, lang FROM guests', (err, result) => {
       if (err) { reject(err) }
       resolve(result.rows);
     });
@@ -1264,24 +1264,27 @@ const oAuthLoginTransaction = async (oAuthUserData, oAuthToken) => {
     await client.query('BEGIN'); // Begin transaction
 
     const userExists = await CheckGuestByID(oAuthUserData.integration_TELEGRAM);
-    didRegister = await CheckIfGuestHasPUUID(oAuthUserData.integration_TELEGRAM); // Update didRegister variable
 
     if (!userExists) {
       throw new Error("User not found");
     }
 
+    didRegister = await CheckIfGuestHasPUUID(oAuthUserData.integration_TELEGRAM); // Update didRegister variable
+
     const hauptgast_response = await GetHauptGuestofguest(oAuthUserData.integration_TELEGRAM);
 
     let RegPromiseArray = [];
 
-    if (hauptgast_response === false) { // When false, then it's a guest. If true, it's the userid of the hauptgast
-      RegPromiseArray.push(SetPermissionGroupToUser(oAuthUserData.integration_TELEGRAM, "user_group")) // Set user group
-    } else {
-      // Set permissions for the user that currently tries to register
-      RegPromiseArray.push(SetPermissionGroupToUser(oAuthUserData.integration_TELEGRAM, "sub_group")) // Set subuser group
-      if (hauptgast_response.permission_group !== "admin_group") { // If haupt user is admin, he can do everything anyway
-        // Set permissions for the Hauptgast, so he can manage the subuser
-        RegPromiseArray.push(SetPermissionGroupToUser(hauptgast_response.hauptgast_userid, "user_sub_group")) // Set user group with subguest admin permissions
+    if (didRegister) {
+      if (hauptgast_response === false) { // When false, then it's a guest. If true, it's the userid of the hauptgast
+        RegPromiseArray.push(SetPermissionGroupToUser(oAuthUserData.integration_TELEGRAM, "user_group")) // Set user group
+      } else {
+        // Set permissions for the user that currently tries to register
+        RegPromiseArray.push(SetPermissionGroupToUser(oAuthUserData.integration_TELEGRAM, "sub_group")) // Set subuser group
+        if (hauptgast_response.permission_group !== "admin_group") { // If haupt user is admin, he can do everything anyway
+          // Set permissions for the Hauptgast, so he can manage the subuser
+          RegPromiseArray.push(SetPermissionGroupToUser(hauptgast_response.hauptgast_userid, "user_sub_group")) // Set user group with subguest admin permissions
+        }
       }
     }
 

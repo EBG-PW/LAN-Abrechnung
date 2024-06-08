@@ -67,7 +67,7 @@ function Table_AdminUserDataList() {
         }
 
         //Add Table Format parameter...
-        $("#AdminUsersTabelle").html(CustomCreateTable(['username', 'userid', 'payed', 'admin', 'vaccinated', 'payed_ammount', 'pyed_id', 'button_chancePlugAllowedState', 'dropdown_permisionGroup'], OptionsList, AdminUserDataList.GuestsList_response, 'GästeAdminUserTabelle', true))
+        $("#AdminUsersTabelle").html(CustomCreateTable(['username', 'userid', 'bouncycastle', 'payed', 'admin', 'payed_ammount', 'pyed_id', 'button_chancePlugAllowedState', 'dropdown_permisionGroup'], OptionsList, AdminUserDataList.GuestsList_response, 'GästeAdminUserTabelle', true))
 
         let NotPayedUsers = []
         AdminUserDataList.GuestsList_response.map((user, index) => {
@@ -106,7 +106,7 @@ function Table_UserDataList() {
             UserDataList.GuestsList_response[i].username = `${UserDataList.GuestsList_response[i].username} ${convertFlags(UserDataList.GuestsList_response[i].lang)}`
         }
         //Add Table FOrmat parameter...
-        $("#StartSeitenTabelle").html(CreateTable(['username', 'pc', 'displays_count', 'network_cable', 'vr', 'expected_arrival', 'expected_departure'], UserDataList.GuestsList_response, 'StartSeiteUserTabelle', true))
+        $("#StartSeitenTabelle").html(CreateTable(['username', 'pc', 'bouncycastle', 'displays_count', 'network_cable', 'vr', 'expected_arrival', 'expected_departure'], UserDataList.GuestsList_response, 'StartSeiteUserTabelle', true))
     });
 }
 

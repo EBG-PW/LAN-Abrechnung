@@ -71,6 +71,7 @@ const i18n = new I18n({
         StartSeiteUserTabelle: {
           username: "Nutzername",
           pc: "PC",
+          bouncycastle: "Hüpfburg",
           displays_count: "Monitore",
           network_cable: "LAN-Kabel",
           vr: "VR",
@@ -80,9 +81,9 @@ const i18n = new I18n({
         GästeAdminUserTabelle: {
           username: "Nutzername",
           userid: "NutzerID",
+          bouncycastle: "Hüpfburg",
           payed: "Gezahlt",
           admin: "TG Admin",
-          vaccinated: "Geimpft",
           payed_ammount: "Zahlung",
           pyed_id: "Zahlungs ID",
           button_chancePlugAllowedState: "Steckdose Erlauben",
@@ -264,6 +265,7 @@ const i18n = new I18n({
         StartSeiteUserTabelle: {
           username: "Username",
           pc: "PC",
+          bouncycastle: "Bouncy Castle",
           displays_count: "Monitors",
           network_cable: "LAN-Cable",
           vr: "VR",
@@ -273,9 +275,9 @@ const i18n = new I18n({
         GästeAdminUserTabelle: {
           username: "Username",
           userid: "UserID",
+          bouncycastle: "Bouncy Castle",
           payed: "Payed",
           admin: "TG Admin",
-          vaccinated: "Vaccinated",
           payed_ammount: "Payment",
           pyed_id: "Payment ID",
           button_chancePlugAllowedState: "Plug Allowed",
