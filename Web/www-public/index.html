@@ -95,10 +95,12 @@
 					Table_UserDataList()
 					Table_DonationList("Startseite.DontationText")
 					Promise.all([GetTotalSpend(), GeTotalKWH(), getMYData()]).then((values) => {
-						let RestGuthaben = CentToEuro(values[2].me.payed_ammount - (values[0].total + (values[1].kwh*values[1].price)))
-						let Guthaben = CentToEuro(values[2].me.payed_ammount)
-						let EssenKosten = CentToEuro(values[0].total)
-						let Stromkosten = CentToEuro(values[1].kwh*values[1].price)
+						console.log(values)
+						console.log(values[1].kwh || 0, values[1].price || 1_000)
+						const RestGuthaben = CentToEuro(values[2].me.payed_ammount - (values[0].total + ((values[1].kwh || 0) * (values[1].price || 1_000))))
+						const Guthaben = CentToEuro(values[2].me.payed_ammount)
+						const EssenKosten = CentToEuro(values[0].total)
+						const Stromkosten = CentToEuro((values[1].kwh || 0) * (values[1].price || 1_000))
 						$("#Guthaben").html(translate('Startseite.Guthaben', {restguthaben: RestGuthaben}));
 						$("#StartseiteText").html(translate('Startseite.Text', {guthaben: Guthaben, essenkosten: EssenKosten, stromkosten: Stromkosten}));
 					});
