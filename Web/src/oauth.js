@@ -72,6 +72,14 @@ router.get("/ebg/callback", limiter, async (reg, res, next) => {
 
         const oAuthUserData = await oAuthUserData_request.json();
 
+        if(oAuthUserData.integration_TELEGRAM === undefined){
+            res.status(500);
+            res.json({
+                message: "Telegram Integration not found!",
+            });
+            return;
+        }
+
         const didRegister = await DB.oAuthLoginTransaction(oAuthUserData, oAuthToken);
 
         if (didRegister) {
