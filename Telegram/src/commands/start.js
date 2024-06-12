@@ -1,7 +1,7 @@
 const path = require('path');
 const DB = require('../../../Web/lib/postgres');
 const { default: i18n } = require('new-i18n')
-const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'),  ['de', 'en', 'de-by', 'de-ooe', 'ua', 'it', 'fr'], process.env.Fallback_Language);
+const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'), ['de', 'en', 'de-by', 'de-ooe', 'ua', 'it', 'fr'], process.env.Fallback_Language);
 const { log } = require('../../../Web/lib/logger');
 
 module.exports = function (bot, mainconfig, preisliste) {

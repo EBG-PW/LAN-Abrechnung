@@ -1,9 +1,16 @@
 const path = require('path');
 const DB = require('../../../Web/lib/postgres');
 const { default: i18n } = require('new-i18n')
-const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'),  ['de', 'en', 'de-by', 'de-ooe', 'ua', 'it', 'fr'], process.env.Fallback_Language);
+const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'), ['de', 'en', 'de-by', 'de-ooe', 'ua', 'it', 'fr'], process.env.Fallback_Language);
 const { CentToEuro } = require('../../lib/utils');
 const { log } = require('../../../Web/lib/logger');
+
+// Function to check if a string is UTF-8 friendly
+function isUtf8Friendly(str) {
+    // Regular expression to match valid UTF-8 characters
+    const utf8Regex = /^[\u0000-\u007F\u0080-\u07FF\u0800-\uFFFF\u10000-\u10FFFF]*$/;
+    return utf8Regex.test(str);
+}
 
 module.exports = function (bot, mainconfig, preisliste) {
     bot.on('callbackQuery', (msg) => {
@@ -25,6 +32,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                         if (data.length === 3) {
                             // IF user didn´t awnser yet
                             let UserLang = msg.from.language_code || mainconfig.DefaultLang
+                            if(!msg.from.username) isUtf8Friendly(msg.from.first_name) ? msg.from.username = msg.from.first_name : msg.from.username = "FallBackUsername"
                             DB.write.Guests.NewUser(msg.from.id, msg.from.username, UserLang).then(function (response) {
 
                                 let replyMarkup = bot.inlineKeyboard([
