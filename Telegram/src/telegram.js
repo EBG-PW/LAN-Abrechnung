@@ -182,7 +182,7 @@ const WebRegSendConfim = (ChatID) => {
 
             let PayCode = randomstring.generate({
                 length: 8,
-                charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+                charset: 'abcdefghjklmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ1234567890'
             });
             DB.get.Guests.ByID(ChatID).then(function (Guest_Response) {
                 if (Guest_Response[0].hauptgast_userid === null) {
