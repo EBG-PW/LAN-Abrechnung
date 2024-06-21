@@ -100,9 +100,9 @@
     "list": "Foigende Gäste san Admin:{{AdminList}}"
   },
   "PaySystem": {
-    "Success": "Du hosd di erfoigreich regisdriad\n\nHiazt muasd des Göd fia {{DiffDays}} Dog LAN-Party zoin:\n\n<b>Kontoinhoba:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Vawendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDes Göd wosd fia {{DiffDays}} Dog zoin muasd san: <pre language='c++'>{{Kosten}}</pre>",
+    "Success": "Du hosd di erfoigreich regisdriad\n\nHiazt muasd des Göd fia {{DiffDays}} Dog LAN-Party zoin:\n\n<b>Kontoinhoba:</b> <code>{{Kontoinhaber}}</code>\n<b>IBAN & Bank:</b> <code>{{IBAN}} {{Bank}}</code>\n<b>Vawendungszweck (Bitte Groß- und Kleinschreibung beachten):</b> <code>{{Verwendungszweg}}-{{PayCode}}</code>\n\nDes Göd wosd fia {{DiffDays}} Dog zoin muasd san: <code>{{Kosten}}</code>",
     "SuccessSubUser": "Du hosd di erfoigreich regisdriad\n\nDu bisd fia {{DiffDays}} Dog Gosd vun {{Username}}",
-    "PushMessageHauptGast": "{{Subguest}} hod si erfoigreich regisdriad und is hiazt a Gosd vun dia.\n\nHiazt muasd nu des Göd fia {{DiffDays}} Dog vun {{Subguest}} zoin:\n\n<b>Kontoinhoba:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Vawendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDes Göd wosd nu dazua zoin muasd san <pre language='c++'>{{Zusatzkosten}}</pre>Insgesaumt muasd so fü zoin: <pre language='c++'>{{Kosten}}</pre>"
+    "PushMessageHauptGast": "{{Subguest}} hod si erfoigreich regisdriad und is hiazt a Gosd vun dia.\n\nHiazt muasd nu des Göd fia {{DiffDays}} Dog vun {{Subguest}} zoin:\n\n<b>Kontoinhoba:</b> <code>{{Kontoinhaber}}</code>\n<b>IBAN & Bank:</b> <code>{{IBAN}} {{Bank}}</code>\n<b>Vawendungszweck:</b> <code>{{Verwendungszweg}}-{{PayCode}}</code>\n\nDes Göd wosd nu dazua zoin muasd san <code>{{Zusatzkosten}}</code>Insgesaumt muasd so fü zoin: <code>{{Kosten}}</code>"
   },
   "Hauptmenu": {
     "Text": "<b>Hauptmenü:</b>\n{{Username}} do kausd olle Funktionen vum Bot segn.\n\nWaunsd auf 'Mea Infos' druckst findsd de Hausordnung und den andern Schmarrn denst akzeptiert hosd",

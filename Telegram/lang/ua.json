@@ -76,9 +76,9 @@
     "list": "Адміністратори наступні гості: {{AdminList}}"
   },
   "PaySystem": {
-    "Success": "Ви успішно завершили реєстрацію\n\nБудь ласка, переносьте витрати на дні LAN-Party {{DiffDays}} зараз:\n\n<b>утримувач рахунку:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Підстава для оплати:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nСума переносу для {{DiffDays}} днів є: <pre language='c++'>{{Kosten}}</pre>",
+    "Success": "Ви успішно завершили реєстрацію\n\nБудь ласка, переносьте витрати на дні LAN-Party {{DiffDays}} зараз:\n\n<b>утримувач рахунку:</b> <code>{{Kontoinhaber}}</code>\n<b>IBAN & Bank:</b> <code>{{IBAN}} {{Bank}}</code>\n<b>Підстава для оплати (чутливий до регістру):</b> <code>{{Verwendungszweg}}-{{PayCode}}</code>\n\nСума переносу для {{DiffDays}} днів є: <code>{{Kosten}}</code>",
     "SuccessSubUser": "Ви успішно завершили реєстрацію\n\nЯкщо ви залишитеся у дні {{DiffDays}} , і ви є гостем {{Username}}",
-    "PushMessageHauptGast": "{{Subguest}} завершив реєстрацію і тепер ваш гість.\n\nБудь ласка, переносьте додаткову вартість {{DiffDays}} днів для {{Subguest}}:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nСума зайвих витрат є <pre language='c++'>{{Zusatzkosten}}</pre>The new total is: <pre language='c++'>{{Kosten}}</pre>"
+    "PushMessageHauptGast": "{{Subguest}} завершив реєстрацію і тепер ваш гість.\n\nБудь ласка, переносьте додаткову вартість {{DiffDays}} днів для {{Subguest}}:\n\n<b>Kontoinhaber:</b> <code>{{Kontoinhaber}}</code>\n<b>IBAN & Bank:</b> <code>{{IBAN}} {{Bank}}</code>\n<b>Verwendungszweck:</b> <code>{{Verwendungszweg}}-{{PayCode}}</code>\n\nСума зайвих витрат є <code>{{Zusatzkosten}}</code>The new total is: <code>{{Kosten}}</code>"
   },
   "Hauptmenu": {
     "Text": "<b>Головне меню:</b>\n{{Username}} тут ви можете побачити всі функції бота.\n\nЗа 'Більше інформації' ви знайдете правила будинку та умови, які ви погодились.",

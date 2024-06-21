@@ -76,9 +76,9 @@
 	  "list": "Les invités suivants sont admin: {{AdminList}}"
 	},
 	"PaySystem": {
-	  "Success": "Vous avez réussi l’inscription\n\nVeuillez transférer les coûts pour les {{DiffDays}} jours de LAN-Party maintenant:\n\n<b>titulaire du compte:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Banque:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Motif du paiement:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nLe montant du transfert pour {{DiffDays}} jours est: <pre language='c++'>{{Kosten}}</pre>",
+	  "Success": "Vous avez réussi l’inscription\n\nVeuillez transférer les coûts pour les {{DiffDays}} jours de LAN-Party maintenant:\n\n<b>titulaire du compte:</b> <code>{{Kontoinhaber}}</code>\n<b>IBAN & Banque:</b> <code>{{IBAN}} {{Bank}}</code>\n<b>Motif du paiement (sensible aux majuscules et minuscules):</b> <code>{{Verwendungszweg}}-{{PayCode}}</code>\n\nLe montant du transfert pour {{DiffDays}} jours est: <code>{{Kosten}}</code>",
 	  "SuccessSubUser": "Vous avez réussi l’inscription\n\nVous restez pour {{DiffDays}} jours et vous êtes invité de {{Username}}",
-	  "PushMessageHauptGast": "{{Subguest}} a complété la registartion et est maintenant votre invité.\n\nVeuillez transférer le coût supplémentaire de {{DiffDays}} jours pour {{Subguest}}:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Banque:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nLe montant des frais supplémentaires est <pre language='c++'>{{Zusatzkosten}}</pre>le nouveau total est: <pre language='c++'>{{Kosten}}</pre>"
+	  "PushMessageHauptGast": "{{Subguest}} a complété la registartion et est maintenant votre invité.\n\nVeuillez transférer le coût supplémentaire de {{DiffDays}} jours pour {{Subguest}}:\n\n<b>Kontoinhaber:</b> <code>{{Kontoinhaber}}</code>\n<b>IBAN & Banque:</b> <code>{{IBAN}} {{Bank}}</code>\n<b>Verwendungszweck:</b> <code>{{Verwendungszweg}}-{{PayCode}}</code>\n\nLe montant des frais supplémentaires est <code>{{Zusatzkosten}}</code>le nouveau total est: <code>{{Kosten}}</code>"
 	},
 	"Hauptmenu": {
 	  "Text": "<b>Menu principal:</b>\n{{Username}} ici vous pouvez voir toutes les fonctions du bot.\n\nSous 'Plus d’infos', vous trouverez les règles et conditions de la maison que vous avez acceptées.",

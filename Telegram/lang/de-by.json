@@ -100,9 +100,9 @@
     "list": "Foigende Gäste san Admin:{{AdminList}}"
   },
   "PaySystem": {
-    "Success": "Du hosd de Registration eafolgreich obgschlossn\n\nBitte übaweise de Kosdn fia de {{DiffDays}} Tage LAN-Party jetz:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Vawendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Hechn da Übaweisung für {{DiffDays}} Tage beträgt: <pre language='c++'>{{Kosten}}</pre>",
+    "Success": "Du hosd de Registration eafolgreich obgschlossn\n\nBitte übaweise de Kosdn fia de {{DiffDays}} Tage LAN-Party jetz:\n\n<b>Kontoinhaber:</b> <code>{{Kontoinhaber}}</code>\n<b>IBAN & Bank:</b> <code>{{IBAN}} {{Bank}}</code>\n<b>Vawendungszweck (Bitte Groß- und Kleinschreibung beachten):</b> <code>{{Verwendungszweg}}-{{PayCode}}</code>\n\nDie Hechn da Übaweisung für {{DiffDays}} Tage beträgt: <code>{{Kosten}}</code>",
     "SuccessSubUser": "Du hast die Registration erfolgreich abgeschlossen\n\nDu bist für {{DiffDays}} Tage Gast von {{Username}}",
-    "PushMessageHauptGast": "{{Subguest}} hat sich erfolgreich registriert und ist nun Gast von dir.\n\nBitte überweise nun die zusätzlichen Kosten für die {{DiffDays}} Tage von {{Subguest}} LAN-Party:\n\n<b>Kontoinhaber:</b> <pre language='c++'>{{Kontoinhaber}}</pre>\n<b>IBAN & Bank:</b> <pre language='c++'>{{IBAN}} {{Bank}}</pre>\n<b>Verwendungszweck:</b> <pre language='c++'>{{Verwendungszweg}}-{{PayCode}}</pre>\n\nDie Höhe der Zusatzkosten beträgt <pre language='c++'>{{Zusatzkosten}}</pre>Die gesamt Kosten betragen: <pre language='c++'>{{Kosten}}</pre>"
+    "PushMessageHauptGast": "{{Subguest}} hat sich erfolgreich registriert und ist nun Gast von dir.\n\nBitte überweise nun die zusätzlichen Kosten für die {{DiffDays}} Tage von {{Subguest}} LAN-Party:\n\n<b>Kontoinhaber:</b> <code>{{Kontoinhaber}}</code>\n<b>IBAN & Bank:</b> <code>{{IBAN}} {{Bank}}</code>\n<b>Verwendungszweck:</b> <code>{{Verwendungszweg}}-{{PayCode}}</code>\n\nDie Höhe der Zusatzkosten beträgt <code>{{Zusatzkosten}}</code>Die gesamt Kosten betragen: <code>{{Kosten}}</code>"
   },
   "Hauptmenu": {
     "Text": "<b>Habtmenü:</b>\n{{Username}} do kannst du olle Funktiona des Bots seng.\n\nUnta 'Mehr Infos' findest du de Heislordnung und Konditiona dane du zuagstimmt hosd.",

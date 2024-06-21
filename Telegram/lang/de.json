@@ -105,7 +105,7 @@
     "list": "Folgende Gäste sind Admin:{{AdminList}}"
   },
   "PaySystem": {
-    "Success": "Du hast die Registration erfolgreich abgeschlossen\n\nBitte überweise nun die Kosten für die {{DiffDays}} Tage LAN-Party:\n\n<b>Kontoinhaber:</b> <code>{{Kontoinhaber}}</code>\n<b>IBAN & Bank:</b> <code>{{IBAN}}</code> <code>{{Bank}}</code>\n<b>Verwendungszweck:</b> <code>{{Verwendungszweg}}-{{PayCode}}</code>\n\nDie Höhe der Überweisung für {{DiffDays}} Tage beträgt: <code>{{Kosten}}</code>",
+    "Success": "Du hast die Registration erfolgreich abgeschlossen\n\nBitte überweise nun die Kosten für die {{DiffDays}} Tage LAN-Party:\n\n<b>Kontoinhaber:</b> <code>{{Kontoinhaber}}</code>\n<b>IBAN & Bank:</b> <code>{{IBAN}}</code> <code>{{Bank}}</code>\n<b>Verwendungszweck (Bitte Groß- und Kleinschreibung beachten):</b> <code>{{Verwendungszweg}}-{{PayCode}}</code>\n\nDie Höhe der Überweisung für {{DiffDays}} Tage beträgt: <code>{{Kosten}}</code>",
     "SuccessSubUser": "Du hast die Registration erfolgreich abgeschlossen\n\nDu bist für {{DiffDays}} Tage Gast von {{Username}}",
     "PushMessageHauptGast": "{{Subguest}} hat sich erfolgreich registriert und ist nun Gast von dir.\n\nBitte überweise nun die zusätzlichen Kosten für die {{DiffDays}} Tage von {{Subguest}} LAN-Party:\n\n<b>Kontoinhaber:</b> <code>{{Kontoinhaber}}</code>\n<b>IBAN & Bank:</b> <code>{{IBAN}} {{Bank}}</code>\n<b>Verwendungszweck:</b> <code>{{Verwendungszweg}}-{{PayCode}}</code>\n\nDie Höhe der Zusatzkosten beträgt <code>{{Zusatzkosten}}</code> Die gesamten Kosten betragen: <code>{{Kosten}}</code>"
 },
