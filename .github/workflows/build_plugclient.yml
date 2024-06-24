@@ -3,7 +3,7 @@ name: Build PlugClient
 on:
   push:
     branches: [master]
-    paths: [PlugsClient/**]
+    paths: [PlugsClientTasmota/**]
   workflow_dispatch:
   
 jobs:
