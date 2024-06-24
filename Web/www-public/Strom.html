@@ -88,7 +88,11 @@
 
 						$("#StromText").html(translate('Stromseite.Text', {totalkwh: (TotalKWH.kwh).replace(".", ","), totalkostenkwh: CentToEuro(TotalKWH.kwh*TotalKWH.price)}));
 
-						const webSocket = new WebSocket(`ws://${TotalKWH.url_websocket}/webuser`);
+						let websocket_prefix = "wss";
+						if (location.protocol !== 'https:') {
+							websocket_prefix = "ws";
+						}
+						const webSocket = new WebSocket(`${websocket_prefix}://${TotalKWH.url_websocket}/webuser`);
 						let PowerGraphData = []
 
 						webSocket.onerror = function(message) {
