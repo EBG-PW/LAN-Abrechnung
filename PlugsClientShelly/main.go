@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"github.com/gorilla/websocket"
@@ -41,14 +42,15 @@ type plug struct {
 }
 
 type plugPower struct {
-	Token       string  `json:"ControlerToken"` // TODO: fix the typo in the server
-	PlugId      int     `json:"ID"`
-	Ipaddr      net.IP  `json:"IP"`
-	State       bool    `json:"ON"`
-	Voltage     float64 `json:"Voltage"`
-	Current     float64 `json:"Current"`
-	Power       float64 `json:"Power"`
-	TotalEnergy float64 `json:"TotalEnergy"`
+	Token           string  `json:"ControllerToken"`
+	PlugId          int     `json:"ID"`
+	Ipaddr          net.IP  `json:"IP"`
+	State           bool    `json:"ON"`
+	Voltage         float64 `json:"Voltage"`
+	Current         float64 `json:"Current"`
+	Power           float64 `json:"Power"`
+	TotalEnergy     float64 `json:"TotalEnergy"`
+	PlugTemperature float64 `json:"PlugTemperature"`
 }
 
 type switchEnergy struct {
@@ -97,6 +99,8 @@ func (p *plug) UnmarshalJSON(data []byte) error {
 }
 
 func GetPlugPower(settings plug) SwitchStatus {
+	var data SwitchStatus
+
 	//goland:noinspection HttpUrlsUsage
 	switchUrl := &url.URL{
 		Scheme: "http",
@@ -109,33 +113,39 @@ func GetPlugPower(settings plug) SwitchStatus {
 
 	var resp, err = http.Get(switchUrl.String())
 	if err != nil {
-		panic(err)
-	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-
+		var netErr net.Error
+		if errors.As(err, &netErr) && netErr.Timeout() {
+			fmt.Println("Request timed out")
+		} else {
+			fmt.Println("Error making request:", err)
 		}
-	}(resp.Body)
 
-	//fmt.Println("Response Status:", resp.Status)
+	} else {
+		defer func(Body io.ReadCloser) {
+			err := Body.Close()
+			if err != nil {
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Printf("Error reading plug response body: %v\n", err)
-		os.Exit(1)
+			}
+		}(resp.Body)
+
+		//fmt.Println("Response Status:", resp.Status)
+
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Printf("Error reading plug response body: %v\n", err)
+			os.Exit(1)
+		}
+
+		err = json.Unmarshal([]byte(body), &data)
+		if err != nil {
+			fmt.Println("Error unmarshaling plug JSON:", err)
+			os.Exit(1)
+		}
+		data.IP = settings.Ipaddr
+		//fmt.Println(data)
+		SetPlugState(settings.Ipaddr, settings.AllowedState, settings.PlugId, data)
+
 	}
-
-	var data SwitchStatus
-	err = json.Unmarshal([]byte(body), &data)
-	if err != nil {
-		fmt.Println("Error unmarshaling plug JSON:", err)
-		os.Exit(1)
-	}
-	data.IP = settings.Ipaddr
-	//fmt.Println(data)
-	SetPlugState(settings.Ipaddr, settings.AllowedState, settings.PlugId, data)
-
 	return data
 }
 
@@ -157,7 +167,13 @@ func SetPlugState(ip net.IP, desiredState bool, id int, currentState SwitchStatu
 
 		var resp, err = http.Get(switchUrl.String())
 		if err != nil {
-			panic(err)
+			var netErr net.Error
+			if errors.As(err, &netErr) && netErr.Timeout() {
+				fmt.Println("Request timed out")
+			} else {
+				fmt.Println("Error making request:", err)
+			}
+
 		}
 		defer func(Body io.ReadCloser) {
 			err := Body.Close()
@@ -170,7 +186,7 @@ func SetPlugState(ip net.IP, desiredState bool, id int, currentState SwitchStatu
 }
 
 func PlugRoutine(ctx context.Context, settings plug, token string) {
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(1 * time.Second)
 	defer ticker.Stop()
 	fmt.Printf("Spawn of worker for plug %d\n", settings.PlugId)
 
@@ -181,26 +197,32 @@ func PlugRoutine(ctx context.Context, settings plug, token string) {
 			return
 		case <-ticker.C:
 			data := GetPlugPower(settings)
-			plugData := plugPower{
-				Token:       token,
-				PlugId:      settings.PlugId,
-				Ipaddr:      settings.Ipaddr,
-				State:       data.Output,
-				Voltage:     data.Voltage,
-				Current:     data.Current,
-				Power:       data.APower,
-				TotalEnergy: data.AEnergy.Total,
+			if data.IP != nil {
+				plugData := plugPower{
+					Token:           token,
+					PlugId:          settings.PlugId,
+					Ipaddr:          settings.Ipaddr,
+					State:           data.Output,
+					Voltage:         data.Voltage,
+					Current:         data.Current,
+					Power:           data.APower,
+					TotalEnergy:     data.AEnergy.Total,
+					PlugTemperature: data.Temperature.TC,
+				}
+
+				event := event{
+					Event: "plug_power",
+					DataPayload: map[string]interface{}{
+						"data": plugData,
+					},
+				}
+
+				plugPowerChannel <- event
+				//fmt.Println(event)
+			} else {
+				fmt.Println("Did not get back data for Plug ", settings.PlugId)
 			}
 
-			event := event{
-				Event: "plug_power",
-				DataPayload: map[string]interface{}{
-					"data": plugData,
-				},
-			}
-
-			plugPowerChannel <- event
-			//fmt.Println(event)
 		}
 
 	}
