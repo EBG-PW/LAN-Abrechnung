@@ -174,11 +174,11 @@ app.ws('/client', {
 
     } else if (event === commandClient.plug.status) {
       //Subscribe this websocket to the client ID, so user Websockets can send data to the correct client
-      //ws.subscribe(`/client/id/${ControlerCache.get(data_payload.data.ControlerToken).controlerid}`);
+      //ws.subscribe(`/client/id/${ControlerCache.get(data_payload.data.ControllerToken).controlerid}`);
     } else if (event === commandClient.plug.power) {
-      if (ControlerCache.has(data_payload.data.ControlerToken)) {
+      if (ControlerCache.has(data_payload.data.ControllerToken)) {
         //Runs when the client sends status of one plug
-        KeepAliveUpdate(`PlugControler${ControlerCache.get(data_payload.data.ControlerToken).controlername}`) // Update the keep alive timestamp
+        KeepAliveUpdate(`PlugControler${ControlerCache.get(data_payload.data.ControllerToken).controlername}`) // Update the keep alive timestamp
         //Create the flow cache in case it doesn't exist
         if (!PlugHistoryCache.has_flow(data_payload.data.ID)) {
           PlugHistoryCache.create_flow(data_payload.data.ID, process.env.plug_power_cache);
@@ -188,7 +188,7 @@ app.ws('/client', {
         app.publish(`/plug/id/${data_payload.data.ID}`, JSON.stringify({ event: commandWebuser.plug.power, data_payload: data_payload.data }));
         const InfluxPlugObject = { ...data_payload.data }; // Clone the object wihout outer reference, inner reference is still there but there isnt a inner object anyway
         delete InfluxPlugObject.IP
-        delete InfluxPlugObject.ControlerToken
+        delete InfluxPlugObject.ControllerToken
         delete InfluxPlugObject.ID
       } else {
         //The requested controler dosn´t exist...
@@ -398,6 +398,12 @@ pm2.connect(function (err) {
     })
   })
 })
+
+
+// Call the function every 5 seconds (5000 milliseconds) using an arrow function
+setInterval(() => {
+  app.publish(`/client/id/1`, JSON.stringify({ event: commandClient.setting.controler, data: "" }));
+}, 30000);
 
 
 module.exports = app
