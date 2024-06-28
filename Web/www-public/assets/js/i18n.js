@@ -407,17 +407,23 @@ function translate(Key, Variables) {
 }
 
 function convertFlags(lang_string) {
+
+  const cdn_base= "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72";
+  let flagChar;
+  
   if (lang_string === "de") {
-    return '<img width="18" height="14" src="https://twemoji.maxcdn.com/v/13.1.0/72x72/1f1e9-1f1ea.png">'; // 🇩🇪
+    flagChar = "1f1e9-1f1ea"; // 🇩🇪 
   } else if (lang_string === "en") {
-    return '<img width="18" height="14" src="https://twemoji.maxcdn.com/v/13.1.0/72x72/1f1ec-1f1e7.png">'; // 🇬🇧
+    flagChar = "1f1ec-1f1e7"; // 🇬🇧
   } else if (lang_string === "ua") {
-    return '<img width="18" height="14" src="https://twemoji.maxcdn.com/v/13.1.0/72x72/1f1fa-1f1e6.png">'; // 🇺🇦
+   flagChar = "1f1fa-1f1e6"; // 🇺🇦
   } else if (lang_string === "it") {
-    return '<img width="18" height="14" src="https://twemoji.maxcdn.com/v/13.1.0/72x72/1f1ee-1f1f9.png">'; // 🇮🇹
+    flagChar = "1f1ee-1f1f9"; // 🇮🇹
   } else {
-    return lang_string
+    return lang_string;
   }
+
+  return `<img width="18" height="14" src="${cdn_base}/${flagChar}.png">`;
 }
 
 //Gets triggerd by the language selector, will update the Language in Client and send API Request
