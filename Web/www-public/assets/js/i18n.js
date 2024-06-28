@@ -412,13 +412,13 @@ function convertFlags(lang_string) {
   let flagChar;
   
   if (lang_string === "de") {
-    flagChar = "1f1e9-1f1ea" // 🇩🇪 
+    flagChar = "1f1e9-1f1ea"; // 🇩🇪 
   } else if (lang_string === "en") {
     flagChar = "1f1ec-1f1e7"; // 🇬🇧
   } else if (lang_string === "ua") {
    flagChar = "1f1fa-1f1e6"; // 🇺🇦
   } else if (lang_string === "it") {
-    flagChar = "1f1ee-1f1f9" // 🇮🇹
+    flagChar = "1f1ee-1f1f9"; // 🇮🇹
   } else {
     return lang_string;
   }
