@@ -6,7 +6,6 @@ const request = require('request');
 const app = require('uWebSockets.js').App();
 const Cache = require('js-object-cache');
 const pm2 = require('pm2')
-const { plugserver_metrics } = require('../../config/metrics');
 
 //Some variables to keep track of metrics
 const StatsCounters = {
@@ -103,7 +102,7 @@ const ReBuildUserCache = () => {
 const KeepAliveUpdate = (fromSoftware) => {
   // The wasNofifyed key is there to prevent spam.
   // We check this cache every x seconds and if the key wasNofifyed is set false we send a notification
-  KeepAliveCache.set(fromSoftware, { timestamp: Date.now(), wasNofifyed: false });
+  KeepAliveCache.set(fromSoftware, {timestamp: Date.now(), wasNofifyed: false});
 }
 
 /* Clients route is used for the PlugClients connecting, the PlugsClient will establish a connection to this appliaction. */
@@ -326,7 +325,7 @@ setInterval(function () {
 
 setInterval(function () {
   KeepAliveCache.keys().forEach(function (key) {
-    if (new Date(KeepAliveCache.get(key).timestamp).getTime() + (2 * 60 * 1000) < Date.now() && KeepAliveCache.get(key).wasNofifyed === false) {
+    if (new Date(KeepAliveCache.get(key).timestamp).getTime() + (2*60*1000) < Date.now() && KeepAliveCache.get(key).wasNofifyed === false) {
       //send telegram message
       request(`https://api.telegram.org/bot${process.env.Telegram_Bot_Token}/sendMessage?chat_id=${process.env.Telegram_Nofify_Channel}&text=System ${key} is offline!`);
       log.error(`KeepAlive timeout for ${key}`);
@@ -360,24 +359,6 @@ app.get('/raw', (res, req) => {
   res.writeStatus('200 OK').end(util.inspect(StatsCounters, { showHidden: true, depth: null, colors: false }));
 })
 
-app.get('/metrics', (res, req) => {
-  try {
-    const metrics = [];
-
-    for (const [key, value] of Object.entries(plugserver_metrics)) {
-      const metric = StatsCounters[key]
-      metrics.push(`# HELP ${value.metric} ${value.help}`);
-      metrics.push(`# TYPE ${value.metric} ${value.type}`);
-
-      metrics.push(`${value.metric}{instance="plugserver"} ${metric}`);
-    }
-
-    res.writeStatus('200 OK').end(metrics.join('\n'));
-  } catch (error) {
-    log.error(error);
-  }
-});
-
 process.on('message', function (packet) {
   const { event, data } = packet.data;
   if (event === 'PlugsToggleAllowedState') {
@@ -399,7 +380,7 @@ process.on('message', function (packet) {
     }).catch(function (err) {
       log.error(err);
     })
-  } else if (event === 'KeepAliveNotify') {
+  } else if(event === 'KeepAliveNotify'){
     KeepAliveUpdate(data.name);
   }
 })
