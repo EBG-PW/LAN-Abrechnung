@@ -239,11 +239,17 @@
     "PricePerUnit": "per unit",
     "Amount": "Importo",
     "Price": "Prezzo",
-    "kwh": "Elettricità (in kWh)",
     "Payed": "Prepagato",
     "TotalSpend": "Spesa totale",
     "Difference": "Differenza",
-    "Text": "Ci sono state {{Amount}} fatture generate e che hanno preso {{duration}}.\nLa creazione della configurazione ha preso {{config_duration}}.\nLa creazione dei PDF ha preso {{exec_duration}}.\nL'invio dei file ha richiesto {{send_duration}}."
+    "Text": "Ci sono state {{Amount}} fatture generate e che hanno preso {{duration}}.\nLa creazione della configurazione ha preso {{config_duration}}.\nLa creazione dei PDF ha preso {{exec_duration}}.\nL'invio dei file ha richiesto {{send_duration}}.",
+    "PauschalKosten": {
+      "kwh":"Elettricità costo per kWh",
+      "Wasser": "Acqua flat rate",
+      "Strom": "Elettricità flat rate",
+      "Verbrauchsgüter": "Beni di consumo flat rate",
+      "Netzwerk": "Rete flat rate"
+    }
   },
   "Inline": {
     "SubUserInvite": {

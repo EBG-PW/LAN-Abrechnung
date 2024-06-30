@@ -243,11 +243,17 @@
     "PricePerUnit": "per unit",
     "Amount": "Amount",
     "Price": "Price",
-    "kwh": "Electricity (in kWh)",
     "Payed": "Prepaid",
     "TotalSpend": "Total spend",
     "Difference": "Difference",
-    "Text": "There were {{Amount}} invoices generated and that took {{duration}}.\nCreating the config took {{config_duration}}.\nCreating the PDFs took {{exec_duration}}.\nSending the files took {{send_duration}}."
+    "Text": "There were {{Amount}} invoices generated and that took {{duration}}.\nCreating the config took {{config_duration}}.\nCreating the PDFs took {{exec_duration}}.\nSending the files took {{send_duration}}.",
+    "PauschalKosten": {
+      "kwh":"Electricity (in kWh)",
+      "Wasser": "Water flat rate",
+      "Strom": "Electricity flat rate",
+      "Verbrauchsgüter": "Consumables flat rate",
+      "Netzwerk": "Network flat rate"
+    }
   },
   "Inline": {
     "SubUserInvite": {
