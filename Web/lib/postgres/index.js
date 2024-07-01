@@ -994,7 +994,7 @@ let GetPlugs = function () {
                 INNER JOIN plugs_controler ON plugs_controlerid = controlerid 
                 LEFT JOIN guests ON plugs.userid = guests.userid 
                 LEFT JOIN plugs_power ON plugs.plugid = plugs_power.plugid
-                ORDER BY plugid ASC`, (err, result) => {
+                ORDER BY power_used DESC`, (err, result) => {
       if (err) { reject(err) }
       resolve(result.rows);
     });
