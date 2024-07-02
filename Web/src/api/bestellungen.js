@@ -61,7 +61,7 @@ const limiter = rateLimit({
 
 const NewOderCheck = Joi.object({
     EssenListe: Joi.string().required(),
-    Zeit: Joi.string().required()
+    Zeit: Joi.string().min(1).max(3600).required()
 });
 
 const GetUserOrderCheck = Joi.object({
@@ -71,8 +71,8 @@ const GetUserOrderCheck = Joi.object({
 const UserOrderCheck = Joi.object({
     orderid: customJoi.string().required(),
     article: customJoi.string().required(),
-    price: Joi.number().required(),
-    Amount: Joi.number().required()
+    price: Joi.number().min(0).max(1000000).required(),
+    Amount: Joi.number().min(0).max(999).required()
 });
 
 const switchOrderStateByKeyCheck = Joi.object({
