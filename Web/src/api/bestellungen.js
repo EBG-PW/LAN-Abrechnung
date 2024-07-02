@@ -87,7 +87,7 @@ router.post("/new", limiter, tokenpermissions(), async (reg, res, next) => {
         if (reg.permissions.write.includes('admin_bestellungen') || reg.permissions.write.includes('admin_all')) {
             let ID = randomstring.generate({
                 length: 32,
-                charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
             });
             let Zeit = new Date().getTime() + (value.Zeit * 60 * 1000)
             let ZeitString = new Date(Zeit);
@@ -144,7 +144,7 @@ router.post("/newUserOrder", limiter, tokenpermissions(), async (reg, res, next)
                     if (Order_Response.rows[0].timeuntil > new Date().getTime()) {
                         let OrderKey = randomstring.generate({
                             length: 32,
-                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
                         });
                         DB.write.order.AddOrderArticle(reg.check.Data.userid, value.article, value.Amount, Number(value.price) * Number(value.Amount), value.orderid, OrderKey).then(function (AddOrderArticle_Response) {
                             res.status(200);
@@ -224,7 +224,7 @@ router.get("/switchOrderStateByKey", limiter, tokenpermissions(), async (reg, re
                 if (GetOrder_response.rows[0].status === false) {
                     let T_ID = randomstring.generate({
                         length: 32,
-                        charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                        charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
                     });
                     let Product = {
                         produktname: GetOrder_response.rows[0].artikel,
