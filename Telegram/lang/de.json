@@ -243,11 +243,17 @@
     "PricePerUnit": "Einzelpreis",
     "Amount": "Anzahl",
     "Price": "Preis",
-    "kwh": "Elektrische Energie (in kWh)",
     "Payed": "Eingezahlt",
     "TotalSpend": "Gesamtausgaben",
     "Difference": "Differenz",
-    "Text": "Es wurden {{Amount}} Abrechnungen generiert und das hat {{duration}} gedauert.\nErstellen der Config hat {{config_duration}} gedauert.\nErstellen der PDFs hat {{exec_duration}} gedauert.\nDas senden der PDFs hat {{send_duration}} gedauert."
+    "Text": "Es wurden {{Amount}} Abrechnungen generiert und das hat {{duration}} gedauert.\nErstellen der Config hat {{config_duration}} gedauert.\nErstellen der PDFs hat {{exec_duration}} gedauert.\nDas senden der PDFs hat {{send_duration}} gedauert.",
+    "PauschalKosten": {
+      "kwh":"Elektrische Energie (in kWh)",
+      "Wasser": "Wasserpauschale",
+      "Strom": "Strompauschale",
+      "Verbrauchsgüter": "Verbrauchsgüterpauschale",
+      "Netzwerk": "Netzwerkpauschale"
+    }
   },
   "Inline": {
     "SubUserInvite": {

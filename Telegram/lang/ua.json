@@ -213,11 +213,17 @@
     "PricePerUnit": "per unit",
     "Amount": "Сума",
     "Price": "Ціна",
-    "kwh": "Електрика (в кВт)",
     "Payed": "Передплачено",
     "TotalSpend": "Всього витрачено",
     "Difference": "Різниця",
-    "Text": "Було згенеровано {{Amount}} рахунків-фактур, і це зайняло {{duration}}.\nСтворення конфігурації зайняло {{config_duration}}.\nСтворення PDF зайняло {{exec_duration}}.\nВідправлення файлів прийнято {{send_duration}}."
+    "Text": "Було згенеровано {{Amount}} рахунків-фактур, і це зайняло {{duration}}.\nСтворення конфігурації зайняло {{config_duration}}.\nСтворення PDF зайняло {{exec_duration}}.\nВідправлення файлів прийнято {{send_duration}}.",
+    "PauschalKosten": {
+      "kwh":"Ціна за кіловат-годину",
+      "Wasser": "Вода flat rate",
+      "Strom": "Електрика flat rate",
+      "Verbrauchsgüter": "Витратні товари flat rate",
+      "Netzwerk": "Мережева flat rate"
+    }
   },
   "Inline": {
     "SubUserInvite": {

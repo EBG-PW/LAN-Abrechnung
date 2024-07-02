@@ -213,11 +213,17 @@
 	  "PricePerUnit": "Par unité",
 	  "Amount": "Montant",
 	  "Price": "Prix",
-	  "kwh": "Électricité (en kWh)",
 	  "Payed": "Prépayé",
 	  "TotalSpend": "Total des dépenses",
 	  "Difference": "Différence",
-	  "Text": "Il y avait {{Amount}} factures générées et qui ont pris {{duration}}.\nLa création de la configuration a pris {{config_duration}}.\nCréation des PDF a pris {{exec_duration}}.\nEnvoi des fichiers a pris {{send_duration}}."
+	  "Text": "Il y avait {{Amount}} factures générées et qui ont pris {{duration}}.\nLa création de la configuration a pris {{config_duration}}.\nCréation des PDF a pris {{exec_duration}}.\nEnvoi des fichiers a pris {{send_duration}}.",
+	  "PauschalKosten": {
+		"kwh":"Èlectricité coût par kWh",
+		"Wasser": "Forfait eau",
+		"Strom": "Forfait électricité",
+		"Verbrauchsgüter": "Consommables à taux fixe",
+		"Netzwerk": "Forfait réseau"
+		}
 	},
 	"Inline": {
 	  "SubUserInvite": {
