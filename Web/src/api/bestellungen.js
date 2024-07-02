@@ -275,7 +275,7 @@ router.post("/delUserOrder", limiter, tokenpermissions(), async (reg, res, next)
         if (reg.permissions.write.includes('user_bestellungen') || reg.permissions.write.includes('admin_bestellungen') || reg.permissions.write.includes('admin_all')) {
             DB.get.order.GetByKey(value.key).then(function (Order_key_Response) {
                 DB.get.order.GetOrder(Order_key_Response.rows[0].orderid).then(function (Order_Response) {
-                    if (Order_Response.rows[0].timeuntil > new Date().getTime() && Order_Response.rows[0].status === false) {
+                    if (Order_Response.rows[0].timeuntil > new Date().getTime() && Order_key_Response.rows[0].status === false) {
                         DB.del.order.ByKey(value.key, reg.check.Data.userid).then(function (Del_Response) {
                             res.status(200);
                             res.json({
