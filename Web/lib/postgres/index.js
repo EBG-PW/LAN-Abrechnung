@@ -550,7 +550,15 @@ let AddProduct = function (Product) {
  */
 let LookLikeProduct = function (query) {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT * FROM products WHERE LOWER(produktname) LIKE LOWER('%${query}%')`, (err, result) => {
+    const words = query.split(' ').filter(word => word.trim() !== ''); // Split the query into words and remove empty strings
+    let sql = "SELECT * FROM products WHERE ";
+
+    words.forEach((word, index) => {
+      if (index > 0) sql += " AND ";
+      sql += `LOWER(produktname) LIKE LOWER('%${word}%')`;
+    });
+
+    pool.query(sql, (err, result) => {
       if (err) { reject(err) }
       resolve(result);
     });
