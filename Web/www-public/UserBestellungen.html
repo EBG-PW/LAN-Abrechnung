@@ -132,7 +132,7 @@
 						let price = $('#price').val()
 						price = price.replace(",",".")
 						price = price.replace("€","");
-						price = Number(price)*100;
+						price = Math.round(Number(price)*100);
 
 						const posting = $.ajax({
 							url: `${baseUrl}api/v1/bestellungen/newUserOrder`,
