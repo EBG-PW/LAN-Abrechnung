@@ -116,7 +116,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                         })
                     }
 
-                    if (data[1] === 'VR')  //Does teh guest got a VR-Headset (For Space resons)
+                    if (data[1] === 'VR')  //Does the guest got a VR-Headset (For Space resons)
                     {
                         DB.write.Guests.UpdateCollumByID(msg.from.id, "vr", data[2]).then(function (response) {
                             let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${boolToText(data[2], tglang_response)}`
