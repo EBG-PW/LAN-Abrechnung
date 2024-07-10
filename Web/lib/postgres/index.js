@@ -1092,7 +1092,7 @@ let GetInvetory = function () {
  */
 let GetDonation = function () {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT guests.username, SUM(bought*price) AS total_donation FROM shopinglist INNER JOIN guests ON shopinglist.userid = guests.userid WHERE produktname = 'Spende' GROUP BY guests.username ORDER BY SUM(bought*price) DESC`, (err, result) => {
+    pool.query(`SELECT guests.username, SUM(price) AS total_donation FROM shopinglist INNER JOIN guests ON shopinglist.userid = guests.userid WHERE produktname = 'Spende' GROUP BY guests.username ORDER BY SUM(bought*price) DESC`, (err, result) => {
       if (err) { reject(err) }
       resolve(result);
     });
