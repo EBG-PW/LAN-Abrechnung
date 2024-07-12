@@ -29,7 +29,7 @@ app.use(expressCspHeader({
     'default-src': [SELF],
     'script-src': [SELF, INLINE],
     'style-src': [SELF, INLINE],
-    'img-src': [SELF, INLINE, 'https://twemoji.maxcdn.com/v/13.1.0/72x72/'],
+    'img-src': [SELF, INLINE, 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/'],
     'worker-src': [NONE],
     'connect-src': [[SELF], `ws://${process.env.WebSocketURL}`, `wss://${process.env.WebSocketURL}`],
     'block-all-mixed-content': true
