@@ -288,7 +288,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                     generateJson(Guests, preisliste, mainconfig).then(function (response) {
                         fs.writeFileSync(path.join(__dirname, '../', '../', '../', 'pdfGenerator', 'config.json'), JSON.stringify(response));
                         const config_end = new Date().getTime();
-                        executeCommand('renderpdf', path.join(__dirname, '../', '../', '../', 'pdfGenerator')).then(function (executeCommand_response) {
+                        executeCommand('./renderpdf', path.join(__dirname, '../', '../', '../', 'pdfGenerator')).then(function (executeCommand_response) {
                             const exec_end = new Date().getTime();
                             let Send_Incoices = [];
                             fs.readdirSync(path.join(__dirname, '../', '../', '../', 'pdfGenerator')).forEach(function (file) {
@@ -333,7 +333,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                     generateJson(Guests, preisliste, mainconfig).then(function (response) {
                         fs.writeFileSync(path.join(__dirname, '../', '../', '../', 'pdfGenerator', 'config.json'), JSON.stringify(response));
                         const config_end = new Date().getTime();
-                        executeCommand('renderpdf', path.join(__dirname, '../', '../', '../', 'pdfGenerator')).then(function (executeCommand_response) {
+                        executeCommand('./renderpdf', path.join(__dirname, '../', '../', '../', 'pdfGenerator')).then(function (executeCommand_response) {
                             const exec_end = new Date().getTime();
                             let Send_Incoices = [];
                             fs.readdirSync(path.join(__dirname, '../', '../', '../', 'pdfGenerator')).forEach(function (file) {
