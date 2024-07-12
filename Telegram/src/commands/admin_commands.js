@@ -291,4 +291,49 @@ module.exports = function (bot, mainconfig, preisliste) {
             return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
         });
     });
+
+    bot.on(/^\/testgeninvoices/i, (msg) => {
+        const run_start = new Date().getTime();
+        Promise.all([DB.get.Guests.Check.Admin(msg.from.id), DB.get.tglang.Get(msg.from.id)]).then(function (values) {
+            const [Admin_Check_response, tglang_response] = values;
+            if (Admin_Check_response === true || parseInt(mainconfig.SudoUser) === msg.from.id) {
+                DB.get.Guests.Main().then(function (Guests) {
+                    const config_start = new Date().getTime();
+                    generateJson(Guests, preisliste, mainconfig).then(function (response) {
+                        fs.writeFileSync(path.join(__dirname, '../', '../', '../', 'pdfGenerator', 'config.json'), JSON.stringify(response));
+                        const config_end = new Date().getTime();
+                        executeCommand('renderpdf', path.join(__dirname, '../', '../', '../', 'pdfGenerator')).then(function (executeCommand_response) {
+                            const exec_end = new Date().getTime();
+                            let Send_Incoices = [];
+                            fs.readdirSync(path.join(__dirname, '../', '../', '../', 'pdfGenerator')).forEach(function (file) {
+                                if (file.match(/\.pdf$/) !== null) {
+                                    Send_Incoices.push(bot.sendDocument(msg.from.id, path.join(__dirname, '../', '../', '../', 'pdfGenerator', file)));
+                                }
+                            });
+                            Promise.allSettled(Send_Incoices).then(function (response) {
+                                const send_end = new Date().getTime();
+                                let amount_word_count = (executeCommand_response.match(/Generating/g) || []).length;
+                                bot.sendMessage(msg.chat.id, executeCommand_response);
+                                bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'geninvoices.Text', { Amount: amount_word_count, duration: TimeConvert(new Date().getTime() - run_start), config_duration: TimeConvert(config_end - config_start), exec_duration: TimeConvert(exec_end - config_end), send_duration: TimeConvert(send_end - exec_end) }));
+                            })
+                        }).catch(function (error) {
+                            log.error(error)
+                            return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Error.ExecuteCommandFehler'));
+                        });
+                    }).catch(function (error) {
+                        log.error(error)
+                        return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
+                    })
+                }).catch(function (error) {
+                    log.error(error)
+                    return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
+                })
+            } else {
+                return bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'Admin.MustBeAdmin'));
+            }
+        }).catch(function (error) {
+            log.error(error)
+            return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
+        });
+    });
 }
