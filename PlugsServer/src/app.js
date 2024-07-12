@@ -6,6 +6,7 @@ const request = require('request');
 const app = require('uWebSockets.js').App();
 const Cache = require('js-object-cache');
 const pm2 = require('pm2')
+const { plugserver_metrics } = require('../../config/metrics');
 
 //Some variables to keep track of metrics
 const StatsCounters = {
@@ -358,6 +359,24 @@ app.get('/raw', (res, req) => {
   StatsCounters.TotalWebRESTRequests++;
   res.writeStatus('200 OK').end(util.inspect(StatsCounters, { showHidden: true, depth: null, colors: false }));
 })
+
+app.get('/metrics', (res, req) => {
+  try {
+    const metrics = [];
+
+    for (const [key, value] of Object.entries(plugserver_metrics)) {
+      const metric = StatsCounters[key]
+      metrics.push(`# HELP ${value.metric} ${value.help}`);
+      metrics.push(`# TYPE ${value.metric} ${value.type}`);
+
+      metrics.push(`${value.metric}{instance="plugserver"} ${metric}`);
+    }
+
+    res.writeStatus('200 OK').end(metrics.join('\n'));
+  } catch (error) {
+    log.error(error);
+  }
+});
 
 process.on('message', function (packet) {
   const { event, data } = packet.data;

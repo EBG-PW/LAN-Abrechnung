@@ -61,7 +61,7 @@ const limiter = rateLimit({
 
 const NewOderCheck = Joi.object({
     EssenListe: Joi.string().required(),
-    Zeit: Joi.string().required()
+    Zeit: Joi.string().min(1).max(3600).required()
 });
 
 const GetUserOrderCheck = Joi.object({
@@ -71,8 +71,8 @@ const GetUserOrderCheck = Joi.object({
 const UserOrderCheck = Joi.object({
     orderid: customJoi.string().required(),
     article: customJoi.string().required(),
-    price: Joi.number().required(),
-    Amount: Joi.number().required()
+    price: Joi.number().min(0).max(1000000).required(),
+    Amount: Joi.number().min(0).max(999).required()
 });
 
 const switchOrderStateByKeyCheck = Joi.object({
@@ -87,7 +87,7 @@ router.post("/new", limiter, tokenpermissions(), async (reg, res, next) => {
         if (reg.permissions.write.includes('admin_bestellungen') || reg.permissions.write.includes('admin_all')) {
             let ID = randomstring.generate({
                 length: 32,
-                charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
             });
             let Zeit = new Date().getTime() + (value.Zeit * 60 * 1000)
             let ZeitString = new Date(Zeit);
@@ -144,7 +144,7 @@ router.post("/newUserOrder", limiter, tokenpermissions(), async (reg, res, next)
                     if (Order_Response.rows[0].timeuntil > new Date().getTime()) {
                         let OrderKey = randomstring.generate({
                             length: 32,
-                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
                         });
                         DB.write.order.AddOrderArticle(reg.check.Data.userid, value.article, value.Amount, Number(value.price) * Number(value.Amount), value.orderid, OrderKey).then(function (AddOrderArticle_Response) {
                             res.status(200);
@@ -224,7 +224,7 @@ router.get("/switchOrderStateByKey", limiter, tokenpermissions(), async (reg, re
                 if (GetOrder_response.rows[0].status === false) {
                     let T_ID = randomstring.generate({
                         length: 32,
-                        charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                        charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
                     });
                     let Product = {
                         produktname: GetOrder_response.rows[0].artikel,
@@ -275,7 +275,7 @@ router.post("/delUserOrder", limiter, tokenpermissions(), async (reg, res, next)
         if (reg.permissions.write.includes('user_bestellungen') || reg.permissions.write.includes('admin_bestellungen') || reg.permissions.write.includes('admin_all')) {
             DB.get.order.GetByKey(value.key).then(function (Order_key_Response) {
                 DB.get.order.GetOrder(Order_key_Response.rows[0].orderid).then(function (Order_Response) {
-                    if (Order_Response.rows[0].timeuntil > new Date().getTime() && Order_Response.rows[0].status === false) {
+                    if (Order_Response.rows[0].timeuntil > new Date().getTime() && Order_key_Response.rows[0].status === false) {
                         DB.del.order.ByKey(value.key, reg.check.Data.userid).then(function (Del_Response) {
                             res.status(200);
                             res.json({

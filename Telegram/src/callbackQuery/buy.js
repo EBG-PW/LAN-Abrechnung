@@ -172,7 +172,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                 
                                                                         let transaction_id = randomstring.generate({
                                                                             length: mainconfig.RegTokenLength, //DO NOT CHANCE!!!
-                                                                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                                                                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
                                                                         });
                 
                                                                         DB.write.shopinglist.Buy(hauptgast.userid, msg.from.id, SQLprodukt, transaction_id).then(function (Write_Shoppinglist) { //Here Stuff needs to be chanced when subusers will be added!!
@@ -250,7 +250,7 @@ module.exports = function (bot, mainconfig, preisliste) {
 
                                                         let transaction_id = randomstring.generate({
                                                             length: mainconfig.RegTokenLength, //DO NOT CHANCE!!!
-                                                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                                                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
                                                         });
 
                                                         DB.write.shopinglist.Buy(msg.from.id, msg.from.id, SQLprodukt, transaction_id).then(function (Write_Shoppinglist) { //Here Stuff needs to be chanced when subusers will be added!!

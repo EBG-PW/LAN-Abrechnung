@@ -2,7 +2,7 @@ const path = require('path');
 const DB = require('../../../Web/lib/postgres');
 const fs = require('fs');
 const { default: i18n } = require('new-i18n')
-const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'),  ['de', 'en', 'de-by', 'de-ooe', 'ua', 'it', 'fr'], process.env.Fallback_Language);
+const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'), ['de', 'en', 'de-by', 'de-ooe', 'ua', 'it', 'fr'], process.env.Fallback_Language);
 const { log } = require('../../../Web/lib/logger');
 const exec = require('node:child_process').exec;
 const { AtrbutCheck, TimeConvert, CentToEuro } = require('../../lib/utils');
@@ -29,6 +29,23 @@ function executeCommand(command, cwd) {
 }
 
 /**
+ * Replace non supported chars in the PDF generator
+ * @param {String} str 
+ * @returns 
+ */
+const replaceNonSupportedChars = (str) => {
+    str = str.replace(/ä/g, 'ae');
+    str = str.replace(/ö/g, 'oe');
+    str = str.replace(/ü/g, 'ue');
+    str = str.replace(/ß/g, 'ss');
+    str = str.replace(/Ä/g, 'Ae');
+    str = str.replace(/Ö/g, 'Oe');
+    str = str.replace(/Ü/g, 'Ue');
+    str = str.replace(' €', ' Euro');
+    return str;
+}
+
+/**
  * Will generate the config json
  * @param {Array} Guests 
  * @returns 
@@ -36,14 +53,14 @@ function executeCommand(command, cwd) {
 function generateJson(Guests, preisliste, mainconfig) {
     return new Promise(async function (resolve, reject) {
         let Restult_array = [];
-        for(let i = 0; i < Guests.length; i++) {
+        for (let i = 0; i < Guests.length; i++) {
             let Items_Array = [];
             let sum_cost = 0;
             let Guest = Guests[i];
             await Promise.all([DB.get.plugs.power.kwh(Guest.userid), DB.get.Inventory.GetGroupedTransactions(Guest.userid), DB.get.tglang.Get(Guest.userid)]).then(function (values) {
                 let [kwh_used, items_used, tglang_response_inner] = values;
 
-                if(tglang_response_inner !== 'de' && tglang_response_inner !== 'en' && tglang_response_inner !== 'it') {
+                if (tglang_response_inner !== 'de' && tglang_response_inner !== 'en' && tglang_response_inner !== 'it') {
                     tglang_response_inner = 'en';
                 }
                 // Push Table heads into array position 1
@@ -53,26 +70,40 @@ function generateJson(Guests, preisliste, mainconfig) {
                     amount: newi18n.translate(tglang_response_inner, 'geninvoices.Amount'),
                     price: newi18n.translate(tglang_response_inner, 'geninvoices.Price'),
                 })
-                // Push power into row 2
+                // Push used power (kwh) into row 2
                 if (kwh_used.rows.length > 0) {
                     sum_cost += Number(kwh_used.rows[0].power_used * preisliste.PauschalKosten.StromKWH.Preis);
                     Items_Array.push({
-                        artikel: newi18n.translate(tglang_response_inner, 'geninvoices.kwh'),
-                        priceper: CentToEuro(preisliste.PauschalKosten.StromKWH.Preis).replace(' €', ' Euro'),
+                        artikel: replaceNonSupportedChars(newi18n.translate(tglang_response_inner, 'geninvoices.PauschalKosten.kwh')),
+                        priceper: replaceNonSupportedChars(CentToEuro(preisliste.PauschalKosten.StromKWH.Preis)),
                         amount: kwh_used.rows[0].power_used.toFixed(3).toString().replace('.', ',') + "x",
-                        price: CentToEuro(kwh_used.rows[0].power_used * preisliste.PauschalKosten.StromKWH.Preis).replace(' €', ' Euro'),
+                        price: replaceNonSupportedChars(CentToEuro(kwh_used.rows[0].power_used * preisliste.PauschalKosten.StromKWH.Preis)),
                     })
                 }
+
+                // Add other mandatory costs from preisliste.PauschalKosten exept StrimKWH
+                for (const key in preisliste.PauschalKosten) {
+                    if (key === 'StromKWH') continue;
+
+                    sum_cost += Number(preisliste.PauschalKosten[key].Preis);
+                    Items_Array.push({
+                        artikel: replaceNonSupportedChars(newi18n.translate(tglang_response_inner, `geninvoices.PauschalKosten.${key}`)),
+                        priceper: replaceNonSupportedChars(CentToEuro(preisliste.PauschalKosten[key].Preis)),
+                        amount: "1x",
+                        price: replaceNonSupportedChars(CentToEuro(preisliste.PauschalKosten[key].Preis)),
+                    })
+                }
+
                 // Push all the bough items into the array
                 //Here is price_per_item also avaible
                 if (items_used.length > 0) {
                     items_used.map((item) => {
                         sum_cost += Number(item.price_sum);
                         Items_Array.push({
-                            artikel: item.produktname.substring(0, 32),
-                            priceper: CentToEuro(item.price_per_item).replace(' €', ' Euro'),
+                            artikel: replaceNonSupportedChars(item.produktname.substring(0, 32)),
+                            priceper: replaceNonSupportedChars(CentToEuro(item.price_per_item)),
                             amount: `${item.bough}x`,
-                            price: CentToEuro(item.price_sum).replace(' €', ' Euro'),
+                            price: replaceNonSupportedChars(CentToEuro(item.price_sum)),
                         })
                     })
                 }
@@ -114,7 +145,7 @@ function generateJson(Guests, preisliste, mainconfig) {
                 log.error(error)
                 return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
             })
-            if(i == Guests.length - 1) {
+            if (i == Guests.length - 1) {
                 resolve(Restult_array);
             }
         }
@@ -217,7 +248,7 @@ module.exports = function (bot, mainconfig, preisliste) {
         if (fs.existsSync(path.join(__dirname, '../', '../', '../', 'config', 'plugsconfig.json'))) {
             plugsconfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../', '../', '../', 'config', 'plugsconfig.json')));
         }
-        
+
         Promise.all([DB.get.Guests.Check.Admin(msg.from.id), DB.get.tglang.Get(msg.from.id)]).then(function (values) {
             const [Admin_Check_response, tglang_response] = values;
             if (Admin_Check_response === true || parseInt(mainconfig.SudoUser) === msg.from.id) {
@@ -268,8 +299,8 @@ module.exports = function (bot, mainconfig, preisliste) {
                             Promise.allSettled(Send_Incoices).then(function (response) {
                                 const send_end = new Date().getTime();
                                 let amount_word_count = (executeCommand_response.match(/Generating/g) || []).length;
-                            bot.sendMessage(msg.chat.id, executeCommand_response);
-                            bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'geninvoices.Text', { Amount: amount_word_count, duration: TimeConvert(new Date().getTime() - run_start), config_duration: TimeConvert(config_end - config_start), exec_duration: TimeConvert(exec_end - config_end), send_duration: TimeConvert(send_end - exec_end) }));
+                                bot.sendMessage(msg.chat.id, executeCommand_response);
+                                bot.sendMessage(msg.chat.id, newi18n.translate(tglang_response, 'geninvoices.Text', { Amount: amount_word_count, duration: TimeConvert(new Date().getTime() - run_start), config_duration: TimeConvert(config_end - config_start), exec_duration: TimeConvert(exec_end - config_end), send_duration: TimeConvert(send_end - exec_end) }));
                             })
                         }).catch(function (error) {
                             log.error(error)

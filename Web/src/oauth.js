@@ -90,7 +90,7 @@ router.get("/ebg/callback", limiter, async (reg, res, next) => {
 
         const WebToken = randomstring.generate({
             length: process.env.WebTokenLength, //DO NOT CHANCE!!!
-            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
         });
         //Write new Webtoken
         const Guest_result = await DB.get.Guests.ByID(oAuthUserData.integration_TELEGRAM); // Overfetching vom Feinsten

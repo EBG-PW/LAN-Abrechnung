@@ -238,11 +238,17 @@
     "PricePerUnit": "Anzlpreis",
     "Amount": "Aunzoi",
     "Price": "Preis",
-    "kwh": "Elektrische Energie (in kWh)",
     "Payed": "Eizoid",
     "TotalSpend": "Gesaumtausgobn",
     "Difference": "Diffarenz",
-    "Text": "Es san {{Amount}} Orechnungen genariad woan und des hod {{duration}} dauat.\nDes erstöhn vun da Config hod {{config_duration}} dauat.\nDes erstöhn vun de PDFs hod {{exec_duration}} dauat.\nDes sendn vun de PDFs hod {{send_duration}} dauat."
+    "Text": "Es san {{Amount}} Orechnungen genariad woan und des hod {{duration}} dauat.\nDes erstöhn vun da Config hod {{config_duration}} dauat.\nDes erstöhn vun de PDFs hod {{exec_duration}} dauat.\nDes sendn vun de PDFs hod {{send_duration}} dauat.",
+    "PauschalKosten": {
+      "kwh":"Kostn fia jede kWh",
+      "Wasser": "Wossapauschale",
+      "Strom": "Strompauschale",
+      "Verbrauchsgüter": "Vabrauchsgütapauschale",
+      "Netzwerk": "Netzweakpauschale"
+    }
   },
   "Inline": {
     "SubUserInvite": {

@@ -2,7 +2,7 @@ const path = require('path');
 const DB = require('../../../Web/lib/postgres');
 const { default: i18n } = require('new-i18n')
 const newi18n = new i18n(path.join(__dirname, '../', '../', 'lang'), ['de', 'en', 'de-by', 'de-ooe', 'ua', 'it', 'fr'], process.env.Fallback_Language);
-const { CentToEuro } = require('../../lib/utils');
+const { CentToEuro, boolToText } = require('../../lib/utils');
 const { log } = require('../../../Web/lib/logger');
 
 // Function to check if a string is UTF-8 friendly
@@ -32,7 +32,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                         if (data.length === 3) {
                             // IF user didn´t awnser yet
                             let UserLang = msg.from.language_code || mainconfig.DefaultLang
-                            if(!msg.from.username) isUtf8Friendly(msg.from.first_name) ? msg.from.username = msg.from.first_name : msg.from.username = "FallBackUsername"
+                            if (!msg.from.username) isUtf8Friendly(msg.from.first_name) ? msg.from.username = msg.from.first_name : msg.from.username = "FallBackUsername"
                             DB.write.Guests.NewUser(msg.from.id, msg.from.username, UserLang).then(function (response) {
 
                                 let replyMarkup = bot.inlineKeyboard([
@@ -260,27 +260,28 @@ module.exports = function (bot, mainconfig, preisliste) {
                             //If user accepted legal, then gets forwarted to questions
                             let newDate = new Date(Date.now());
                             DB.write.Guests.UpdateCollumByID(msg.from.id, "accepted_legal", newDate).then(function (response) {
-                                let replyMarkup = bot.inlineKeyboard([
-                                    [
-                                        bot.inlineButton(newi18n.translate(tglang_response, 'Antworten.Vollständig'), { callback: 'F_VC_Voll' }),
-                                        bot.inlineButton(newi18n.translate(tglang_response, 'Antworten.Teil'), { callback: 'F_VC_Teil' }),
-                                        bot.inlineButton(newi18n.translate(tglang_response, 'Antworten.Nein'), { callback: 'F_VC_Nein' })
-                                    ], [
-                                        bot.inlineButton(newi18n.translate(tglang_response, 'Antworten.NichtSagen'), { callback: 'F_VC_Secret' })
-                                    ]
-                                ]);
-
+                                let Message = `${msg.message.text}\n\n<b>Antwort:</B> ${boolToText(data[2], tglang_response)}`
                                 if ('inline_message_id' in msg) {
                                     bot.editMessageText(
-                                        { inlineMsgId: inlineId }, newi18n.translate(tglang_response, 'Fragen.Vaccinated'),
-                                        { parseMode: 'html', replyMarkup }
+                                        { inlineMsgId: inlineId }, Message,
+                                        { parseMode: 'html' }
                                     ).catch(error => log.error('Error:', error));
                                 } else {
                                     bot.editMessageText(
-                                        { chatId: chatId, messageId: messageId }, newi18n.translate(tglang_response, 'Fragen.Vaccinated'),
-                                        { parseMode: 'html', replyMarkup }
+                                        { chatId: chatId, messageId: messageId }, Message,
+                                        { parseMode: 'html' }
                                     ).catch(error => log.error('Error:', error));
                                 }
+
+                                let replyMarkup = bot.inlineKeyboard([
+                                    [
+
+                                        bot.inlineButton(newi18n.translate(tglang_response, 'Antworten.Ja'), { callback: 'F_BC_true' }),
+                                        bot.inlineButton(newi18n.translate(tglang_response, 'Antworten.Nein'), { callback: 'F_BC_false' })
+                                    ]
+                                ]);
+
+                                return bot.sendMessage(msg.message.chat.id, newi18n.translate(tglang_response, 'Fragen.BouncyCastle'), { replyMarkup });
                             });
                         } else {
                             //User did not accept legal, so it ends here

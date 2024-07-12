@@ -550,7 +550,15 @@ let AddProduct = function (Product) {
  */
 let LookLikeProduct = function (query) {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT * FROM products WHERE LOWER(produktname) LIKE LOWER('%${query}%')`, (err, result) => {
+    const words = query.split(' ').filter(word => word.trim() !== ''); // Split the query into words and remove empty strings
+    let sql = "SELECT * FROM products WHERE ";
+
+    words.forEach((word, index) => {
+      if (index > 0) sql += " AND ";
+      sql += `LOWER(produktname) LIKE LOWER('%${word}%')`;
+    });
+
+    pool.query(sql, (err, result) => {
       if (err) { reject(err) }
       resolve(result);
     });
@@ -994,7 +1002,7 @@ let GetPlugs = function () {
                 INNER JOIN plugs_controler ON plugs_controlerid = controlerid 
                 LEFT JOIN guests ON plugs.userid = guests.userid 
                 LEFT JOIN plugs_power ON plugs.plugid = plugs_power.plugid
-                ORDER BY plugid ASC`, (err, result) => {
+                ORDER BY power_used DESC`, (err, result) => {
       if (err) { reject(err) }
       resolve(result.rows);
     });
@@ -1084,7 +1092,7 @@ let GetInvetory = function () {
  */
 let GetDonation = function () {
   return new Promise(function (resolve, reject) {
-    pool.query(`SELECT guests.username, SUM(bought*price) AS total_donation FROM shopinglist INNER JOIN guests ON shopinglist.userid = guests.userid WHERE produktname = 'Spende' GROUP BY guests.username ORDER BY SUM(bought*price) DESC`, (err, result) => {
+    pool.query(`SELECT guests.username, SUM(price) AS total_donation FROM shopinglist INNER JOIN guests ON shopinglist.userid = guests.userid WHERE produktname = 'Spende' GROUP BY guests.username ORDER BY SUM(bought*price) DESC`, (err, result) => {
       if (err) { reject(err) }
       resolve(result);
     });

@@ -50,7 +50,7 @@ router.post("/check", limiter, async (reg, res, next) => {
                         let IP = reg.headers['x-forwarded-for'] || reg.socket.remoteAddress
                         let WebToken = randomstring.generate({
                             length: process.env.WebTokenLength, //DO NOT CHANCE!!!
-                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!'
+                            charset: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
                         });
                         //Write new Webtoken
                         DB.write.webtoken.Add(value.userid, Guest_result[0].username, IP, UserAgent.source, WebToken, Guest_result[0].admin, Guest_result[0].lang).then(function (WebToken_respone) {

@@ -132,7 +132,7 @@
 						let price = $('#price').val()
 						price = price.replace(",",".")
 						price = price.replace("€","");
-						price = Number(price)*100;
+						price = Math.round(Number(price)*100);
 
 						const posting = $.ajax({
 							url: `${baseUrl}api/v1/bestellungen/newUserOrder`,
@@ -160,33 +160,63 @@
 										  $('#price').removeClass('highlight');
 										}, 2000);
 									}else{
-										let RespArr = err.responseJSON.message.split('"');
+										const validationMessage = err.responseJSON.message;
+										// Define known JOI error patterns
+										const joiErrorPatterns = {
+												'greater than or equal to': 'number.min',
+												'less than or equal to': 'number.max',
+												'must be a number': 'number.base',
+												'must be a string': 'string.base',
+												'is required': 'any.required',
+												'must be a valid date': 'date.base',
+												'must match the required pattern': 'string.pattern.base',
+												'must be': 'any.only',
+												'is not allowed to be empty': 'string.empty'
+												// Add more patterns as needed
+											};
 
-										function jsUcfirst(string) 
-										{
-											return string.charAt(0).toUpperCase() + string.slice(1);
-										}
+											// Extract the field name from the validation message
+											const fieldNameMatch = validationMessage.match(/"([^"]+)"/);
+											if (!fieldNameMatch) {
+												console.error('Could not extract field name from validation message:', validationMessage);
+												return;
+											}
+											const fieldName = fieldNameMatch[1];
 
-										if(RespArr[2].replace(/"/g,'',) === " is not allowed to be empty"){
-											$('#result').text("Bad Stuff :(");
-											if(RespArr[1].replace(/"/g,'',) === "article"){
-												$('#article').addClass("highlight");
-												setTimeout(function () {
-													$('#article').removeClass('highlight');
-												}, 2000);
-												$('#result').text(translate('UserBestellungenseite.Form.Errors.ArticleNull'));
+											// Find the matching error type
+											let errorTypeKey = 'undefined';
+											for (const [pattern, key] of Object.entries(joiErrorPatterns)) {
+												if (validationMessage.includes(pattern)) {
+													errorTypeKey = key;
+													break;
+												}
 											}
 
-											if(RespArr[1].replace(/"/g,'',) === "orderid"){
-												$('#orderid').addClass("highlight");
-													setTimeout(function () {
-												  		$('#orderid').removeClass('highlight');
-													}, 2000);
-												$('#result').text(translate('UserBestellungenseite.Form.Errors.OrderidNull'));
-											}
-										}
+											// Construct the translation key
+											const translationKey = `Joi.${errorTypeKey}`;
+
+											// Highlight the relevant input field
+											const fieldSelector = `#${fieldName}`;
+											$(fieldSelector).addClass("highlight");
+
+											// Remove the highlight class after 2 seconds
+											setTimeout(function() {
+												$(fieldSelector).removeClass("highlight");
+											}, 2000);
+
+											// Use i18next to get the localized error message
+											const errorMessage = translate(translationKey, {
+												field: fieldName,
+												limit: validationMessage.match(/greater than or equal to ([0-9]+)/) ? validationMessage.match(/greater than or equal to ([0-9]+)/)[1] : undefined,
+												// Add more context extraction if needed
+											});
+
+											// Set the localized error message in the result element
+											$('#result').text(errorMessage);
 									}
 									/*Handle API rate limiting*/
+							}else if(err.status === 404) {
+								$('#result').text(translate('UserBestellungenseite.Form.Errors.NotFound'));
 							}else if(err.status === 429){
 								$('#result').text(translate('UserBestellungenseite.Form.Errors.TomManyRequests'));
 							}else if(err.status === 410){

@@ -2,6 +2,33 @@ const i18n = new I18n({
   fallback: 'de',
   languages: {
     de: {
+      "Joi": {
+        "string": {
+          "empty": "{{field}} darf nicht leer sein",
+          "min": "{{field}} muss mindestens {{limit}} Zeichen lang sein",
+          "max": "{{field}} darf höchstens {{limit}} Zeichen lang sein",
+          "email": "{{field}} muss eine gültige E-Mail-Adresse sein",
+          "alphanum": "{{field}} darf nur a-Z & 0-9 enthalten",
+          "pattern": {
+            "base": "{{field}} muss dem erforderlichen Muster entsprechen"
+          }
+        },
+        "number": {
+          "base": "{{field}} muss eine Zahl sein",
+          "min": "{{field}} muss größer oder gleich {{limit}} sein",
+          "max": "{{field}} muss kleiner oder gleich {{limit}} sein"
+        },
+        "date": {
+          "base": "{{field}} muss ein gültiges Datum sein",
+          "min": "Das Datum von {{field}} muss nach dem {{limit}} liegen",
+          "max": "Das Datum von {{field}} muss vor dem {{limit}} liegen"
+        },
+        "any": {
+          "required": "{{field}} ist erforderlich",
+          "only": "{{field}} darf nur {{valids}} sein"
+        },
+        "required": "{{field}} ist erforderlich"
+      },
       Header: {
         Links: {
           Startseite: "Startseite",
@@ -38,6 +65,7 @@ const i18n = new I18n({
           Submit: "Hinzufügen",
           Success: "Hinzufügen erfolgreich!",
           Errors: {
+            NotFound: "BestellungsID nicht gefunden",
             PriceNumber: "Preis muss eine Nummer sein",
             PriceNull: "Preis muss angegeben werden",
             ArticleNull: "Artikel muss angegeben werden",
@@ -128,7 +156,7 @@ const i18n = new I18n({
           controlername: "Location Name",
           token: "Location Token",
           power_used: "Verbrauch",
-          state:  "Status",
+          state: "Status",
         },
         UserUserOrderTabelle: {
           username: "Nutzername",
@@ -196,6 +224,33 @@ const i18n = new I18n({
       }
     },
     en: {
+      "Joi": {
+        "string": {
+          "empty": "{{field}} must not be empty",
+          "min": "{{field}} must be at least {{limit}} characters long",
+          "max": "{{field}} must be at most {{limit}} characters long",
+          "email": "{{field}} must be a valid email address",
+          "alphanum": "{{field}} must contain only letters and numbers",
+          "pattern": {
+            "base": "{{field}} must match the required pattern"
+          }
+        },
+        "number": {
+          "base": "{{field}} must be a number",
+          "min": "{{field}} must be greater than or equal to {{limit}}",
+          "max": "{{field}} must be less than or equal to {{limit}}"
+        },
+        "date": {
+          "base": "{{field}} must be a valid date",
+          "min": "The date of {{field}} must be after {{limit}}",
+          "max": "The date of {{field}} must be before {{limit}}"
+        },
+        "any": {
+          "required": "{{field}} is required",
+          "only": "{{field}} must be one of {{valids}}"
+        },
+        "required": "{{field}} is required"
+      },
       Header: {
         Links: {
           Startseite: "Startpage",
@@ -232,6 +287,7 @@ const i18n = new I18n({
           Submit: "Add",
           Success: "Add successful!",
           Errors: {
+            NotFound: "OrderID not found",
             PriceNumber: "Price must be a number",
             PriceNull: "Price must be filled",
             ArticleNull: "Article must be filled",
@@ -322,7 +378,7 @@ const i18n = new I18n({
           controlername: "Location Name",
           token: "Location Token",
           power_used: "Power used",
-          state:  "State",
+          state: "State",
         },
         UserUserOrderTabelle: {
           username: "Username",
@@ -408,15 +464,15 @@ function translate(Key, Variables) {
 
 function convertFlags(lang_string) {
 
-  const cdn_base= "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72";
+  const cdn_base = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72";
   let flagChar;
-  
+
   if (lang_string === "de") {
     flagChar = "1f1e9-1f1ea"; // 🇩🇪 
   } else if (lang_string === "en") {
     flagChar = "1f1ec-1f1e7"; // 🇬🇧
   } else if (lang_string === "ua") {
-   flagChar = "1f1fa-1f1e6"; // 🇺🇦
+    flagChar = "1f1fa-1f1e6"; // 🇺🇦
   } else if (lang_string === "it") {
     flagChar = "1f1ee-1f1f9"; // 🇮🇹
   } else {
