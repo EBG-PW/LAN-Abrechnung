@@ -11,6 +11,8 @@ struct PDFTemplate {
 	veranstalter string @[required]
 	strasse string @[required]
 	pzort string @[required]
+	iban string @[required]
+	payedid string @[required]
 	country string @[required]
 	items []struct {
 		artikel string @[required]
@@ -169,6 +171,14 @@ fn genpdf(template &PDFTemplate) {
 	)
 
 	page.push_content(
+		page.draw_base_text(template.date, 40, 32, fnt_params_text)
+	)
+
+	page.push_content(
+		page.draw_base_text(template.date, 40, 38, fnt_params_text)
+	)
+
+	page.push_content(
 		page.draw_base_text(template.zvr, 120, 20, fnt_params_text)
 	)
 
@@ -311,7 +321,7 @@ fn genpdf(template &PDFTemplate) {
 		}, fnt_params_list)
 
 		// Dynamic new page dedection
-		if y > (pg_fmt.h - 20) {
+		if y > (pg_fmt.h - 30) {
 			page_index = page_index + 1
 			new_page = true
 			page_n = doc.create_page(pdf.Page_params{

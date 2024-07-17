@@ -195,6 +195,20 @@ let GetGuestsByID = function (user_id) {
 }
 
 /**
+ * This function will return a guests payed ID by username
+ * @param {Number} user_id 
+ * @returns 
+ */
+let GetUserPayedID = function (user_id) {
+  return new Promise(function (resolve, reject) {
+    pool.query(`SELECT pyed_id FROM guests WHERE userid = '${user_id}'`, (err, result) => {
+      if (err) { reject(err) }
+      resolve(result.rows[0]);
+    });
+  });
+}
+
+/**
  * This function will check if a user exists
  * @param {number} user_id
  * @returns {boolean}
@@ -1320,6 +1334,7 @@ let get = {
     ShopingSpend: GetTotalShoppingListSpendByUser,
     ByID: GetGuestsByID,
     Main: ListHauptGuest,
+    GetPayedID: GetUserPayedID,
     Check: {
       ByID: CheckGuestByID,
       Admin: CheckIfAdminbyID,

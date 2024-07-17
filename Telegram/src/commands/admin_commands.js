@@ -57,8 +57,8 @@ function generateJson(Guests, preisliste, mainconfig) {
             let Items_Array = [];
             let sum_cost = 0;
             let Guest = Guests[i];
-            await Promise.all([DB.get.plugs.power.kwh(Guest.userid), DB.get.Inventory.GetGroupedTransactions(Guest.userid), DB.get.tglang.Get(Guest.userid)]).then(function (values) {
-                let [kwh_used, items_used, tglang_response_inner] = values;
+            await Promise.all([DB.get.plugs.power.kwh(Guest.userid), DB.get.Inventory.GetGroupedTransactions(Guest.userid), DB.get.tglang.Get(Guest.userid), DB.get.Guests.GetPayedID(Guest.userid)]).then(function (values) {
+                let [kwh_used, items_used, tglang_response_inner, guest_userresponse] = values;
 
                 if (tglang_response_inner !== 'de' && tglang_response_inner !== 'en' && tglang_response_inner !== 'it') {
                     tglang_response_inner = 'en';
@@ -137,6 +137,7 @@ function generateJson(Guests, preisliste, mainconfig) {
                     "veranstalter": mainconfig.Veranstalter,
                     "strasse": mainconfig.Straße,
                     "pzort": mainconfig.PLZORT,
+                    "payedid": guest_userresponse.payed_id,
                     "country": mainconfig.Country,
                     "iban": mainconfig.KontoIban,
                     "date": new Date().toLocaleDateString('de-DE'),
@@ -334,7 +335,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                     generateJson(Guests, preisliste, mainconfig).then(function (response) {
                         fs.writeFileSync(path.join(__dirname, '../', '../', '../', 'pdfGenerator', 'config.json'), JSON.stringify(response));
                         const config_end = new Date().getTime();
-                        executeCommand('./renderpdf', path.join(__dirname, '../', '../', '../', 'pdfGenerator')).then(function (executeCommand_response) {
+                        executeCommand('renderpdf', path.join(__dirname, '../', '../', '../', 'pdfGenerator')).then(function (executeCommand_response) {
                             const exec_end = new Date().getTime();
                             let Send_Incoices = [];
                             fs.readdirSync(path.join(__dirname, '../', '../', '../', 'pdfGenerator')).forEach(function (file) {
