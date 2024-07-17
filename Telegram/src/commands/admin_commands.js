@@ -137,7 +137,7 @@ function generateJson(Guests, preisliste, mainconfig) {
                     "veranstalter": mainconfig.Veranstalter,
                     "strasse": mainconfig.Straße,
                     "pzort": mainconfig.PLZORT,
-                    "payedid": `${mainconfig.Verwendungszweg}-${guest_userresponse.payed_id}`,
+                    "payedid": `VZ: ${mainconfig.Verwendungszweg}-${guest_userresponse.pyed_id}`,
                     "country": mainconfig.Country,
                     "iban": mainconfig.KontoIban,
                     "date": new Date().toLocaleDateString('de-DE'),
