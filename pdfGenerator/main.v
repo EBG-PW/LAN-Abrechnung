@@ -244,7 +244,7 @@ fn genpdf(template &PDFTemplate) {
 			}, fnt_params_list)
 
 			page.text_box(template.items[0].priceper, pdf.Box{
-				x: 18
+				x: 108
 				y: y - 5
 				w: 125 - 90
 				h: 4

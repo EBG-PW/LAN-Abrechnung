@@ -138,6 +138,7 @@ function generateJson(Guests, preisliste, mainconfig) {
                     "strasse": mainconfig.Straße,
                     "pzort": mainconfig.PLZORT,
                     "country": mainconfig.Country,
+                    "iban": mainconfig.KontoIban,
                     "date": new Date().toLocaleDateString('de-DE'),
                     "items": Items_Array
                 })
