@@ -171,11 +171,11 @@ fn genpdf(template &PDFTemplate) {
 	)
 
 	page.push_content(
-		page.draw_base_text(template.date, 40, 32, fnt_params_text)
+		page.draw_base_text(template.iban, 40, 32, fnt_params_text)
 	)
 
 	page.push_content(
-		page.draw_base_text(template.date, 40, 38, fnt_params_text)
+		page.draw_base_text(template.payedid, 40, 38, fnt_params_text)
 	)
 
 	page.push_content(
