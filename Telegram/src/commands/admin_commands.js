@@ -133,7 +133,7 @@ function generateJson(Guests, preisliste, mainconfig) {
                     "headline": `${mainconfig.LanName} ${newi18n.translate(tglang_response_inner, 'geninvoices.Abrechnung')}`,
                     "userid": Guest.userid,
                     "username": Guest.username,
-                    "zvr": mainconfig.ZVR,
+                    "zvr": `ZVR: ${mainconfig.ZVR}`,
                     "veranstalter": mainconfig.Veranstalter,
                     "strasse": mainconfig.Straße,
                     "pzort": mainconfig.PLZORT,
@@ -147,6 +147,7 @@ function generateJson(Guests, preisliste, mainconfig) {
                 log.error(error)
                 return bot.sendMessage(msg.chat.id, newi18n.translate(process.env.Fallback_Language || 'en', 'Error.DBFehler'));
             })
+
             if (i == Guests.length - 1) {
                 resolve(Restult_array);
             }
@@ -335,7 +336,7 @@ module.exports = function (bot, mainconfig, preisliste) {
                     generateJson(Guests, preisliste, mainconfig).then(function (response) {
                         fs.writeFileSync(path.join(__dirname, '../', '../', '../', 'pdfGenerator', 'config.json'), JSON.stringify(response));
                         const config_end = new Date().getTime();
-                        executeCommand('renderpdf', path.join(__dirname, '../', '../', '../', 'pdfGenerator')).then(function (executeCommand_response) {
+                        executeCommand('./renderpdf', path.join(__dirname, '../', '../', '../', 'pdfGenerator')).then(function (executeCommand_response) {
                             const exec_end = new Date().getTime();
                             let Send_Incoices = [];
                             fs.readdirSync(path.join(__dirname, '../', '../', '../', 'pdfGenerator')).forEach(function (file) {

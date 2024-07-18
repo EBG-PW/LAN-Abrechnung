@@ -56,7 +56,7 @@ fn genpdf(template &PDFTemplate) {
 		format: 'A4'
 		gen_content_obj: true
 		is_stream: true
-		compress: false
+		compress: true
 	})
 
 	mut page := &doc.page_list[page_n]
@@ -201,10 +201,12 @@ fn genpdf(template &PDFTemplate) {
 	// Draw table
 	mut page_index := 0
 	mut new_page := false
+	mut add_total_displacement := 0
+	mut not_draw_blue_line := false
 	for i, item in template.items {
 		mut y := 0
 		if i == 0 {
-			y = 45
+			y = 45 // Start at 45 for header red line
 			page.use_shader('sep_list_red')
 			page.push_content(page.draw_gradient_box('sep_list_red', pdf.Box{
 				x: 8
@@ -214,32 +216,38 @@ fn genpdf(template &PDFTemplate) {
 			}, 10))
 		} else {
 			if page_index > 0 {
-				y = 50 + ((i * 6) - (page_index * 255))
+				y = 50 + ((i * 6) - (page_index * 250)) + add_total_displacement
 			} else {
-				y = 50 + (i * 6)
+				y = 50 + (i * 6) + add_total_displacement
 			}
 		}
 
-		if i >= (template.items.len - 3) {
-			y += 6
-			if i == (template.items.len - 3) {
-				page.use_shader('sep_list_geen')
-				page.push_content(page.draw_gradient_box('sep_list_geen', pdf.Box{
-					x: 8
-					y: y - 7
-					w: 194
-					h: 1.5
-				}, 10))
-			}
+		// Do not draw blue Line since we´ll draw a green line for the last 3 items
+		if i == (template.items.len - 4) {
+			not_draw_blue_line = true
+		}
+		// Draw green line for last 3 items (total, prepayment, rest)
+		if i == (template.items.len - 3) {
+			add_total_displacement += 6
+			y += 6 // Ajust current y because its calculated above this if statement
+			page.use_shader('sep_list_geen')
+			page.push_content(page.draw_gradient_box('sep_list_geen', pdf.Box{
+				x: 8
+				y: y - 6
+				w: 194
+				h: 1.5
+			}, 10))
 		}
 
 		//Start putting content on the page with updated y
 		if new_page {
+			// Draw Table Header (Artikel, Preis pro Stück, Menge, Preis) and Red Line
 			page.use_shader('sep_list_red')
-			y = y - 5
+			page.use_shader('sep_list_blue') // Load blue shader for new page aswell
+			mut newheader_y := y - 6 // Move the y position up a bit (By one line)
 			page.push_content(page.draw_gradient_box('sep_list_red', pdf.Box{
 				x: 8
-				y: y+1
+				y: newheader_y + 1
 				w: 194
 				h: 0.5
 			}, 10))
@@ -248,21 +256,22 @@ fn genpdf(template &PDFTemplate) {
 
 			page.text_box(template.items[0].artikel, pdf.Box{
 				x: 10
-				y: y - 5
+				y: newheader_y - 5
 				w: 108 - 10
 				h: 4
 			}, fnt_params_list)
 
+			fnt_params_list.text_align = .right
 			page.text_box(template.items[0].priceper, pdf.Box{
 				x: 108
-				y: y - 5
+				y: newheader_y - 5
 				w: 125 - 90
 				h: 4
 			}, fnt_params_list)
 
 			page.text_box(template.items[0].amount, pdf.Box{
 				x: 125
-				y: y - 5
+				y: newheader_y - 5
 				w: 172 - 130
 				h: 4
 			}, fnt_params_list)
@@ -270,25 +279,31 @@ fn genpdf(template &PDFTemplate) {
 			fnt_params_list.text_align = .right
 			page.text_box(template.items[0].price, pdf.Box{
 				x: 172
-				y: y - 5
+				y: newheader_y - 5
 				w: 200 - 172
 				h: 4
 			}, fnt_params_list)
 
 			new_page = false //Set it to false because we are done with drawing new page stuff
-			continue
-		} else if i != 0 {
+		}
+		
+		if i != 0 {
 			// If I decide to skip line  i could do it here, this could become usefull if artikels are too long and need spliting
-			if i != (template.items.len - 4) {
-				page.push_content(page.draw_gradient_box('sep_list_blue', pdf.Box{
-					x: 8
-					y: y+1
-					w: 194
-					h: 0.5
-				}, 10))
+			if i != (template.items.len - 1) {
+				if !not_draw_blue_line {
+					page.push_content(page.draw_gradient_box('sep_list_blue', pdf.Box{
+						x: 8
+						y: y + 1
+						w: 194
+						h: 0.5
+					}, 10))
+				}
+
+				not_draw_blue_line = false
 			}
 		}
 
+		// Draw the items (On Item 0 it will draw the header)
 		fnt_params_list.text_align = .left
 		page.text_box(item.artikel, pdf.Box{
 			x: 10
@@ -321,7 +336,7 @@ fn genpdf(template &PDFTemplate) {
 		}, fnt_params_list)
 
 		// Dynamic new page dedection
-		if y > (pg_fmt.h - 30) {
+		if y > (pg_fmt.h - 40) { // Should be 40
 			page_index = page_index + 1
 			new_page = true
 			page_n = doc.create_page(pdf.Page_params{
@@ -330,12 +345,10 @@ fn genpdf(template &PDFTemplate) {
 				compress: true
 			})
 			page = &doc.page_list[page_n]
-			page.use_shader('sep_list_blue')
-			
 		}
 	}
 
-	// render the footers
+	// After all pages where created we can add the footer
 	mut index := 0
 	for index < doc.page_list.len {
 		mut page_f := &doc.page_list[index]
