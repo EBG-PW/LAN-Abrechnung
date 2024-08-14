@@ -1,4 +1,4 @@
-name: Go Cross-Platform Build
+name: Go Plugclient Cross-Platform Build
 
 on:
   push:
@@ -7,32 +7,40 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  ubuntu:
+    name: Go Plugclient Cross-Platform Build
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        goos: [linux, linux, windows]
-        goarch: [arm64, amd64, amd64]
-        exclude:
-          - goos: linux
-            goarch: amd64
+    timeout-minutes: 5
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
+    - uses: actions/checkout@v2
+    
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: 1.21
 
-    - name: Build
+    - name: Build for Linux ARM64
       run: |
-        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -o output/${{ matrix.goos }}_${{ matrix.goarch }}/PlugsClientShelly
+        cd ./PlugsClientShelly
+        GOOS=linux GOARCH=arm64 go build -o plugclient-linux-arm64
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: PlugsClientShelly-${{ matrix.goos }}-${{ matrix.goarch }}
-        path: output/${{ matrix.goos }}_${{ matrix.goarch }}/PlugsClientShelly
+    - name: Build for Linux x64
+      run: |
+        cd ./PlugsClientShelly
+        GOOS=linux GOARCH=amd64 go build -o plugclient-linux-x64
+
+    - name: Build for Windows x64
+      run: |
+        cd ./PlugsClientShelly
+        GOOS=windows GOARCH=amd64 go build -o plugclient-win-x64.exe
+
+    - name: Commit build
+      run: |
+        git config --global user.name github-actions[bot]
+        git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
+        git add ./PlugsClientShelly/plugclient-linux-arm64
+        git add ./PlugsClientShelly/plugclient-linux-x64
+        git add ./PlugsClientShelly/plugclient-win-x64.exe
+        git commit -am "Automated binary build"
+        git push
