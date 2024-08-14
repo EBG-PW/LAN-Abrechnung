@@ -2,11 +2,9 @@ name: Go Cross-Platform Build
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [master]
+    paths: [PlugsClientShelly/**]
+  workflow_dispatch:
 
 jobs:
   build:
