@@ -19,7 +19,7 @@ jobs:
         cache: npm
     - name: Build
       run: |
-        cd ./PlugsClient
+        cd ./PlugsClientTasmota
         npm install
         npm install -g pkg
         pkg -t node16-win,node16-linux,node16-linux-arm64, index.js -o plugclient
@@ -27,8 +27,8 @@ jobs:
       run: |
         git config --global user.name github-actions[bot]
         git config --global user.email 41898282+github-actions[bot]@users.noreply.github.com
-        git add ./PlugsClient/plugclient-linux-arm64
-        git add ./PlugsClient/plugclient-linux-x64
-        git add ./PlugsClient/plugclient-win-x64.exe
+        git add ./PlugsClientTasmota/plugclient-linux-arm64
+        git add ./PlugsClientTasmota/plugclient-linux-x64
+        git add ./PlugsClientTasmota/plugclient-win-x64.exe
         git commit -am "Automated binary build"
         git push
