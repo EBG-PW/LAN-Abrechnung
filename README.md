@@ -19,17 +19,16 @@ Tested on Windows 10/11 and Linux Debian 11/Ubuntu 22.04
 ## Features
 - Member regestration & administration
 - Powerplug monitoring & administration
-- Buffet Buying & Managment
+- Buffet Selection & Managment
 - Advanced permission and group managment with custom groups
-- Pushnotifications
+- Pushnotifications (via Telegram)
 - Dynamic cost calculation by user
 - LAN Guests can add sub-users to their account with custom permissions and budget
 - Food order managment
 - Fully translated*
 - Build in monitoring, will notify if something is wrong with web, telegram or plugclients.
 - Realtime Logs available via websocket
-- [WIP] Invoices
-- InfluxDB support for powerplug statistics, you can use it to create fancy graphs
+- Invoices
 - Donations
 
 \*German\*\*, English, Italian\*\*, French, Ukrainian, Bavarian\*\*, Upper Austrian\*\*  
