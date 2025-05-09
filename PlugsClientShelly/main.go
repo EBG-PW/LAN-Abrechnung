@@ -165,22 +165,23 @@ func SetPlugState(ip net.IP, desiredState bool, id int, currentState SwitchStatu
 		queryParams.Set("on", "false")
 		switchUrl.RawQuery = queryParams.Encode()
 
-		var resp, err = http.Get(switchUrl.String())
-		if err != nil {
-			var netErr net.Error
-			if errors.As(err, &netErr) && netErr.Timeout() {
-				fmt.Println("Request timed out")
-			} else {
-				fmt.Println("Error making request:", err)
-			}
-
-		}
-		defer func(Body io.ReadCloser) {
-			err := Body.Close()
-			if err != nil {
-
-			}
-		}(resp.Body)
+		//var resp, err = http.Get(switchUrl.String())
+		//if err != nil {
+		//	var netErr net.Error
+		//	if errors.As(err, &netErr) && netErr.Timeout() {
+		//		fmt.Println("Request timed out")
+		//	} else {
+		//		fmt.Println("Error making request:", err)
+		//	}
+		//
+		//}
+		//defer func(Body io.ReadCloser) {
+		//	err := Body.Close()
+		//	if err != nil {
+		//
+		//	}
+		//}(resp.Body)
+		fmt.Printf(switchUrl.String())
 	}
 
 }
@@ -216,7 +217,7 @@ func PlugRoutine(ctx context.Context, settings plug, token string) {
 						"data": plugData,
 					},
 				}
-
+				//fmt.Println(plugData.Token)
 				plugPowerChannel <- event
 				//fmt.Println(event)
 			} else {
@@ -394,7 +395,7 @@ func main() {
 		case <-interrupt:
 			fmt.Println("Shutting Down application")
 			cancel()
-			time.Sleep(2 * time.Second)
+			time.Sleep(4 * time.Second)
 			os.Exit(0)
 		}
 	}

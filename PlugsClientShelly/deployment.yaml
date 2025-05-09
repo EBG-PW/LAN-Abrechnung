@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plugs-client-shelly
+  labels:
+    app: plugs-client-shelly
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plugs-client-shelly
+  template:
+    metadata:
+      labels:
+        app: plugs-client-shelly
+    spec:
+      containers:
+        - name: plugs-client-shelly
+          image: registry.player-val.eu/ebg/plugs-client-shelly:5
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: plugs-client-shelly-secret
+                  key: TOKEN
+            - name: ADDR
+              valueFrom:
+                secretKeyRef:
+                  name: plugs-client-shelly-secret
+                  key: ADDR
+
+
